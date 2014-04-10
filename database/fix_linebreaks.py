@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+import os, re
 
 files = os.listdir('.')
 
@@ -19,7 +19,7 @@ for f in files:
             else:
                 # read in this row
                 thisrow = row.strip().split('|')
-                thisrow = [c.replace('\r','').replace('\n',' ') for c in thisrow]
+                thisrow = [re.sub('^ +| +$','',re.sub(' +',' ',c.replace('\r','').replace('\n',' ').replace('\\',' '))) for c in thisrow]
                 # append to the last list in towrite
                 if len(towrite) == 0:
                     towrite.append(thisrow)
