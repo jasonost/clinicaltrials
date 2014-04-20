@@ -20,3 +20,16 @@ from interventions i
 group by i.nct_id;
 
 create index interventions_complex_mod_nct_id_idx on interventions_complex_mod(nct_id);
+
+-- summary of sponsors 
+create table sponsors_mod as
+select nct_id, 
+  max(case when sponsor_type = 'Lead Sponsor' then agency end) agency,
+  max(case when sponsor_type = 'Lead Sponsor' then agency_class end) agency_class,
+  max(case when agency_class = 'Industry' then 'Y' else 'N' end) any_industry,
+  count(*) num_sponsors
+from sponsors
+group by nct_id;
+
+create index sponsors_mod_nct_id_idx on sponsors_mod(nct_id);
+
