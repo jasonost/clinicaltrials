@@ -51,7 +51,7 @@ create index design_mod_nct_id_idx on design_mod(nct_id);
 
 -- create locations_mod table, similar to lead sponsor table. Studies classified into US only, US and Non-US, and Non-US only
 
-create table location_mod2 as
+create table location_mod as
 select l.nct_id, 
   case when count(*)  = 1 then min(country)
        else 'Multiple' end country,
