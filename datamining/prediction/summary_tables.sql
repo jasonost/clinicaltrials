@@ -33,37 +33,32 @@ group by nct_id;
 
 create index sponsors_mod_nct_id_idx on sponsors_mod(nct_id);
 
-# create a sponsors table that sums number of sponsors per study, identifies lead sponsor agency, and adds boolean field if any industry entity is involved 
-
-
-create index sponsors_mod_nct_id_idx on sponsors_mod(nct_id);
-
-# create design_mod table, converts design from long to wide format
+-- create design_mod table, converts design from long to wide format
 create table design_mod as
-	select nct_id,
-	max(case when design_name = 'Intervention Model' then design_value end) intervention_model,
-	max(case when design_name = 'Masking' then design_value end) masking,
-	max(case when design_name = 'Primary Purpose' then design_value end) primary_purpose,
-	max(case when design_name = 'Observational Model' then design_value end) observational_model,
-	max(case when design_name = 'Time Perspective' then design_value end) time_perspective,
-	max(case when design_name = 'Allocation' then design_value end) allocation,
-	max(case when design_name = 'Endpoint Classification' then design_value end) endpoint,
-	max(case when design_name = 'Additional Descriptors' then design_value end) additional_descriptors
-	FROM designs
-	GROUP BY NCT_ID; 
+select nct_id,
+  max(case when design_name = 'Intervention Model' then design_value end) intervention_model,
+  max(case when design_name = 'Masking' then design_value end) masking,
+  max(case when design_name = 'Primary Purpose' then design_value end) primary_purpose,
+  max(case when design_name = 'Observational Model' then design_value end) observational_model,
+  max(case when design_name = 'Time Perspective' then design_value end) time_perspective,
+  max(case when design_name = 'Allocation' then design_value end) allocation,
+  max(case when design_name = 'Endpoint Classification' then design_value end) endpoint,
+  max(case when design_name = 'Additional Descriptors' then design_value end) additional_descriptors
+FROM designs
+GROUP BY NCT_ID; 
 
 create index design_mod_nct_id_idx on design_mod(nct_id);
 
-# create locations_mod table, similar to lead sponsor table. Studies classified into US only, US and Non-US, and Non-US only
+-- create locations_mod table, similar to lead sponsor table. Studies classified into US only, US and Non-US, and Non-US only
 
-create table location_mod as
+create table location_mod2 as
 select l.nct_id, 
-	case when count(*)  = 1 then min(country)
-		else 'Multiple' end country,
-	case when country = 'United States' and count(*) = 1 then 'US' 
-		 when country = 'United States' and count(*) > 1 then 'US and Non-US'
-		 else 'Non-US Only' end country_class,
-	count(*) num_countries 
+  case when count(*)  = 1 then min(country)
+       else 'Multiple' end country,
+  case when sum(case when country = 'United States' then 1 else 0 end) > 0 and count(*) = 1 then 'US' 
+       when sum(case when country = 'United States' then 1 else 0 end) > 0 and count(*) > 1 then 'US and Non-US'
+       else 'Non-US Only' end country_class,
+  count(*) num_countries 
 from location_countries l
 group by nct_id;
 
