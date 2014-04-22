@@ -21,6 +21,12 @@ group by i.nct_id;
 
 create index interventions_complex_mod_nct_id_idx on interventions_complex_mod(nct_id);
 
+-- create modification of sponsors to pull out universities from "other"
+create table sponsors_univ as
+select nct_id, sponsor_type, agency, 
+  case when agency like '%universit%' or agency like '%college%' or agency like '%school%' then 'Academic' else agency_class end agency_class
+from sponsors;
+
 -- summary of sponsors 
 create table sponsors_mod as
 select nct_id, 
@@ -63,3 +69,4 @@ from location_countries l
 group by nct_id;
 
 create index location_mod_nct_id_idx on location_mod(nct_id);
+
