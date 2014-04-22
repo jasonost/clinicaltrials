@@ -1,0 +1,649 @@
+Hospital de Clínicas "José de San Martín" of the University of Buenos Aires, Buenos Aires
+Macquarie University Hospital
+Gold Coast University Hospital
+University Hospital Antwerpen, Antwerpen
+Erasmus Hospital, Brussels
+UZ Brussel, University Hospital of the Vrije Universiteit Brussel, Brussels
+University Pediatric Hospital Queen Fabiola, Brussels
+University Hospital St-Luc, Brussels
+University Hospital Gent, Ghent
+University Hospital Leuven, Leuven
+University Hospital Liège, Liège
+Federal University of Brasília, University Hospital of Brasília, HUB, Brasília, Federal District
+Hospital of Base, Hospital de Base, HB, University Hospital, Brasília, Federal District
+Armed Forces Hospital, Hospital das Forças Armadas, HFA, University Hospital, Brasília, Federal District
+Federal University of São Paulo, Paulista School of Medicine Clinics Hospital, São Paulo
+Clinics Hospital of the State University of Campinas, Campinas
+University of São Paulo, School of Medicine Clinics Hospital, São Paulo
+University of São Paulo, School of Medicine at Ribeirao Preto´s Clinics Hospital, Ribeirão Preto
+Hospital de Clínicas de Porto Alegre, Faculdade de Medicina da Universidade Federal do Rio Grande do Sul, Porto Alegre, Rio Grande do Sul
+Federal University of Santa Catarina, University Hospital, Florianópolis, Santa Catarina
+Vancouver Hospital and Health Sciences Centre, Vancouver, British Columbia
+St. Paul's Hospital, Vancouver, British Columbia
+B.C. Children's and Women's Hospital, Vancouver, British Columbia
+Royal Columbian Hospital, New Westminster, British Columbia
+Foothills Hospital, Calgary, Alberta
+University of Alberta Hospital, Edmonton, Alberta
+Royal University Hospital, Saskatoon, Saskatchewan
+Winnipeg General Hospital
+Hamilton General Hospital, Hamilton, Ontario (McMaster University)
+McMaster Children's Hospital, Hamilton, Ontario (McMaster University)
+Children's Hospital of Eastern Ontario, Ottawa, Ontario (University of Ottawa)
+Montfort Hospital, Ottawa, Ontario (University of Ottawa)
+Hospital for Sick Children, Toronto, Ontario (University of Toronto)
+Centre for Addiction and Mental Health, Toronto, Ontario (University of Toronto)
+Kingston General Hospital, Kingston, Ontario (Queen's University)
+Hotel Dieu Hospital (Kingston, Ontario), Kingston, Ontario (Queen's University)
+Providence Continuing Care Centre, Kingston, Ontario (Queen's University)
+Women's College Hospital, Toronto, Ontario (University of Toronto)
+Victoria Hospital (London, Ontario) (University of Western Ontario)
+North York General Hospital, Toronto, Ontario (University of Toronto)
+Princess Margaret Cancer Centre, Toronto, Ontario (University of Toronto)
+St. Michael's Hospital, Toronto (University of Toronto)
+Sunnybrook Health Sciences Centre, Toronto, Ontario (University of Toronto)
+Toronto East General Hospital (University of Toronto)
+Toronto General Hospital (University of Toronto)
+Toronto Western Hospital (University of Toronto)
+University Hospital (London, Ontario) (University of Western Ontario)
+St. John's Rehab Hospital, Toronto, Ontario (University of Toronto)
+Markham Stouffville Hospital, Markham, Ontario - beginning 2010 (University of Toronto)
+The Royal, Ottawa, Ontario (University of Ottawa)
+The Ottawa Hospital, Ottawa, Ontario (University of Ottawa)
+Centre hospitalier de l'Université de Montréal, Montreal, Quebec
+Hôpital Maisonneuve-Rosemont (Université de Montréal), Montreal, Quebec
+Centre hospitalier universitaire Sainte-Justine, Montreal, Quebec
+McGill University Health Centre (McGill University), Montreal, Quebec
+Jewish General Hospital (McGill University), Montreal, Quebec
+Douglas Hospital, Montreal, Quebec
+Hôpital du Sacré-Cœur de Montréal, Montreal, Quebec
+Centre hospitalier universitaire de Québec - Centre hospitalier de l'Université Laval, Laval, Quebec
+Saint John Regional Hospital
+IWK Health Centre, Halifax
+Queen Elizabeth II Health Sciences Centre, Halifax
+Nova Scotia Hospital, Dartmouth, Nova Scotia
+Janeway Children's Health and Rehabilitation Centre, St. John's, NL
+Stanton Regional Hospital, Yellowknife - partners with University of Calgary and the University of Alberta
+Hospital Clínico de la Pontificia Universidad Católica de Chile, Pontifical Catholic University of Chile
+Hospital Clínico de la Universidad de Chile, University of Chile
+Hospital Clínico Viña del Mar, National University Andres Bello
+Hospital Clínico Instituto de Seguridad del Trabajo, in Viña del Mar
+Hospital Clínico Herminda Martin, in Chillán
+Chongqing Medical University Hospitals
+Third Hospital of Hebei Medical University, Shijiazhuang, Hebei
+Wuhan Union Hospital, Tongji Medical College, Wuhan
+Wuhan Tongji Hospital, Tongji Medical College, Wuhan
+Ruijin Hospital, School of Medicine, Shanghai Jiao Tong University
+Renji Hospital, School of Medicine, Shanghai Jiao Tong University
+Xinhua Hospital, School of Medicine, Shanghai Jiao Tong University
+1st People's Hospital, Shanghai Jiao Tong University
+3rd People's Hospital, School of Medicine, Shanghai Jiao Tong University
+6th People's Hospital, Shanghai Jiao Tong University
+9th People's Hospital, School of Medicine, Shanghai Jiao Tong University
+Shanghai Children's Medical Center, School of Medicine, Shanghai Jiao Tong University
+Shanghai Children's Hospital, Shanghai Jiao Tong University
+Shanghai Mental Health Center, School of Medicine, Shanghai Jiao Tong University
+Shanghai Chest Hospital, Shanghai Jiao Tong University
+Zhongshan Hospital, Shanghai Medical College, Fudan University
+Huashan Hospital, Shanghai Medical College, Fudan University
+Huadong Hospital, Shanghai Medical College, Fudan University
+Eye & ENT Hospital, Shanghai Medical College, Fudan University
+Sichuan University Hospitals
+First Affiliated Hospital, Zhejiang University School of Medicine
+Second Affiliated Hospital, Zhejiang University School of Medicine
+Sir Run Run Shaw Hospital, Zhejiang University School of Medicine
+Children's Hospital, Zhejiang University School of Medicine
+Women's Hospital, Zhejiang University School of Medicine
+Zhejiang Stomatology Hospital, Zhejiang University School of Medicine
+Clínica Universitaria Teletón, Bogotá
+Hospital Infantil Universitario de San José, Bogotá
+Hospital San Juan de Dios, Bogotá
+Hospital Universitario del Valle, Cali
+Hospital Universitario Fundación Santa fé, Bogotá
+Hospital Universitario de la Samaritana (HUS), Bogotá
+Hospital Universitario San Ignacio (HUSI), Bogotá
+Hospital Universitario San Vicente de Paul (HUSVP), Medellín
+Hospital Universitario de Santander, Bucaramanga
+Fakultní nemocnice v Motole, Prague
+Všeobecná fakultní nemocnice v Praze, Prague
+Fakultní nemocnice Královské Vinohrady, Prague
+Fakultní Thomayerova Nemocnice, Prague
+Fakultní nemocnice Olomouc, Olomouc
+Fakultní nemocnice Hradec Králové, Hradec Králové
+Fakultní nemocnice Plzeň, Plzeň
+Fakultní nemocnice Ostrava, Ostrava
+Fakultní nemocnice Brno, Brno
+Fakultní nemocnice u sv. Anny v Brně, Brno
+Odense Universitetshospital, Odense
+Copenhagen University Hospital, Copenhagen
+Århus Universitetshospital, Skejby, Skejby
+Århus Universitetshospital, Århus Sygehus, Århus
+Århus Universitetshospital, Psykiatrisk Hospital i Århus, Århus
+Ain Shams University Hospital (El-Demerdash Hospital)
+Kasr El Aini Hospital
+National Cancer Institute Egypt
+Theodor Bilharz Research Institute
+Alexandria University Hospitals
+The Suzanne Mubarak Regional Centre for Women's Health and Development
+Assiut University Hospital
+Beni-Suef University Hospital
+Fayoum University Hospital
+Suez Canal University Hospital
+Ismailia Teaching oncology hospital
+Kafrelsheikh University Hospital
+Mansoura University Hospital
+Minufiya University Hospital
+South Valley University Hospital
+Tanta University Hospital
+Helsinki University Central Hospital (HYKS), University of Helsinki
+Kuopio University Hospital (KYS), University of Kuopio
+Oulu University Hospital (OYS), University of Oulu
+Tampere University Hospital (TAYS), University of Tampere
+Turku University Hospital (TYKS), University of Turku
+Hôpital civil, Strasbourg
+Universitätsklinikum Freiburg, Freiburg
+Universitätsklinikum Heidelberg, Heidelberg
+Universitätsmedizin Mannheim, Mannheim
+Universitätsklinikum Tübingen, Tübingen
+Universitätsklinikum Ulm, Ulm
+Universitätsklinikum Erlangen, Erlangen
+Klinikum der Universität München, (Klinikum Großhadern) Munich
+Rechts der Isar Hospital, Munich
+Universitätsklinikum Regensburg, Regensburg
+Universitätsklinikum Würzburg, Würzburg
+Charité – Universitätsmedizin Berlin, Berlin:
+Campus Benjamin Franklin (CBF), Berlin-Steglitz
+Campus Berlin-Buch (CBB), Berlin-Buch
+Charité Campus Mitte (CCM), Berlin-Mitte
+Campus Virchow-Klinikum (CVK), Berlin-Wedding
+University Medical Center Hamburg-Eppendorf, (Universitätsklinikum Hamburg-Eppendorf (UKE)). Hamburg
+Universitätsklinikum Frankfurt am Main, Frankfurt
+Universitätsklinikum Gießen und Marburg
+Campus Gießen, Gießen
+Campus Marburg, Marburg
+Greifswald University Hospital, University of Greifswald, Greifswald
+Universitätsklinikum Rostock, Rostock
+Universitätsklinikum Göttingen, Göttingen
+Medizinische Hochschule Hannover, Hannover
+Universitätsklinikum Aachen, Aachen
+University Hospitals of the Ruhr-University of Bochum, Bochum, Herne and Bad Oeynhausen
+Bergmannsheil University Hospitals, Bochum
+Universitätsklinikum Bonn, Bonn
+Universitätsklinikum Düsseldorf, Düsseldorf
+Universitätsklinikum Essen, Essen
+Universitätsklinikum Köln, Cologne
+Universitätsklinikum Münster, Münster
+Klinikum der Johannes Gutenberg-Universität Mainz, Mainz
+Universitätsklinikum des Saarlandes, Homburg
+Universitätsklinikum Dresden, Dresden
+Universitätsklinikum Leipzig, Leipzig
+Berufsgenossenschaftliche Kliniken Bergmannstrost Halle, University of Halle-Wittenberg
+Universitätsklinikum Halle, Halle, University of Halle-Wittenberg
+Universitätsklinikum Magdeburg, Otto-von-Guericke University, Magdeburg
+Universitätsklinikum Schleswig-Holstein
+Campus Lübeck, Lübeck
+Campus Kiel, Kiel
+Universitätsklinikum Jena, Friedrich Schiller University of Jena
+Korle Bu Teaching Hospital, University of Ghana Medical School, Accra
+Komfo Anokye Teaching Hospital, Kwame Nkrumah University of Science and Technology College of Health Sciences, Kumasi
+Central Regional Hospital, University of Cape Coast School of Medical Sciences, Cape Coast
+Tamale Regional Teaching Hospital, University for Development Studies School of Medicine and Health Sciences, Tamale
+University Hospital, University of Cape CoastCape Coast
+University Hospital, Kwame Nkrumah University of Science & TechnologyKumasi
+University Hospital, University of GhanaLegon
+Prince of Wales Hospital, Shatin
+The Duchess of Kent Children's Hospital at Sandy Bay
+Grantham Hospital
+Hong Kong Sanatorium and Hospital
+Alice Ho Miu Ling Nethersole Hospital
+Kowloon Hospital
+MacLehose Medical Rehabilitation Centre
+Pamela Youde Nethersole Eastern Hospital
+Queen Mary Hospital, Hong Kong, Pokfulam
+Ruttonjee Hospital
+Tsan Yuk Hospital
+Tung Wah Hospital
+Tang Shiu Kin Hospital
+Tung Wah Eastern Hospital
+Queen Elizabeth Hospital
+Landspítali University Hospital, Reykjavík
+Dr. Cipto Mangunkusumo Hospital, Jakarta
+Dr. Sardjito Hospital, Yogyakarta
+Dr. Soetomo Hospital, Surabaya
+Dr. Kariadi Hospital, Semarang
+Dr. Hassan Sadikin Hospital, Bandung
+Cork University Hospital, Cork
+Mater Misericordiae University Hospital, Dublin
+Mercy University Hospital, Cork
+St. Vincent's University Hospital, Dublin
+Children's University Hospital, Temple Street, Dublin
+University Hospital Galway, Galway
+St Patrick's University Hospital, Dublin
+Mercy University Hospital, Cork#
+University Hospital Limerick, Limerick
+Hadassah Medical Centers, in Ein Kerem and Mount Scopus, Jerusalem
+Shaarei Zedek Medical Center, Jerusalem
+Bikur Holim Medical Center, Jerusalem
+Soroka Hospital, Beer Sheva
+Tel Aviv Sourasky Medical Center, Tel Aviv
+Rabin Medical Center, Petah Tikva
+Sheba Medical Center, Ramat Gan
+Assaf HaRofeh Medical Center, Tzrifin
+Rambam Hospital, Haifa
+Bnei Zion medical Center, Haifa
+Kaplan Medical Center, Rehovot
+Ziv Medical Center, Safed
+Wolfson Medical Center, Holon
+Azienda Ospedaliero Universitaria Ospedali Riuniti Umberto I - GM Lancisi - G Salesi di Ancona - Marche Polytechnic University, Ancona
+Policlinico Sant'Orsola-Malpighi - University of Bologna, Bologna
+Ospedale SS. Annunziata di Chieti - University of Chieti-Pescara, Chieti loc. Scalo
+Azienda Ospedaliera Universitaria di Ferrara Arcispedale Sant'Anna - University of Ferrara, Cona
+Azienda ospedaliero-universitaria Careggi - University of Florence, Florence
+IRCCS-Azienda Ospedaliera Universitaria "San Martino" - University of Genoa, Genoa
+San Raffaele Hospital, Milan
+Azienda ospedaliera - Universitaria Policlinico di Modena - University of Modena and Reggio Emilia, Modena
+Azienda Ospedaliera San Gerardo - University of Milano Bicocca, Monza
+Azienda Ospedaliera-Universitaria San Luigi Gonzaga - University of Turin, Orbassano
+Azienda Ospedaliero- Universitaria di Parma - University of Parma
+Policlinico San Matteo - University of Pavia, Pavia
+Azienda Ospedaliero-Universitaria Pisana - University of Pisa, Pisa
+Agostino Gemelli University Polyclinic - Università Cattolica del Sacro Cuore, Rome
+Policlinico Universitario Campus Bío-Medico -Universita' Campus Bío-Medico, Rome- Trigoria
+Policlinico Umberto I - University of Rome "la Sapienza", Rome
+Policlinico Tor Vergata - University of Tor Vergata, Rome
+Azienda Ospedaliera Universitaria Senese - Ospedale Santa Maria alle Scotte - University of Siena
+Azienda Ospedaliero - Universitaria Ospedali Riuniti Trieste - University of Trieste, Trieste
+L'Azienda Ospedaliero Universitaria San Giovanni Battista di Torino - University of Turin, Turin
+Azienda Ospedaliero-Universitaria Santa Maria della Misericordia - University of Udine, Udine
+Azienda Ospedaliera Universitaria Integrata Verona - University of Verona, Verona
+Asahikawa Medical College Hospital w:ja:旭川医科大学附属病院
+Hokkaido University Hospital w:ja:北海道大学病院
+Tohoku University Hospital w:ja:東北大学病院
+National Defense Medical College Hospital w:ja:防衛医科大学校病院
+The University of Tokyo Hospital w:ja:東京大学医学部附属病院
+Keio University Hospital w:ja:慶應義塾大学病院
+Nagoya University Hospital w:ja:名古屋大学医学部附属病院
+Nagoya City University Hospital w:ja:名古屋市立大学病院
+Gifu University Hospital w:ja:岐阜大学医学部附属病院
+University of Fukui Hospital w:ja:福井大学医学部附属病院
+Osaka University Hospital w:ja:大阪大学医学部附属病院li>
+Osaka University Dental Hospital w:ja:大阪大学歯学部附属病院
+Osaka City University Hospital w:ja:大阪市立大学医学部附属病院
+Okayama University Hospital w:ja:岡山大学病院
+Kyūshū University Hospital w:ja:九州大学病院
+King Abdullah University Hospital, Irbid
+University of Jordan Hospital, Amman
+Aga Khan University Hospital, Nairobi
+Pauls Stradins Clinical University Hospital, Riga
+Macau University of Science and Technology Hospital
+University Malaya Medical Centre, Kuala Lumpur
+Hospital University Kebangsaan Malaysia
+Hospital University Sains Malaysia
+Hospital Civil de Guadalajara, Universidad de Guadalajara
+Hospital San José Tec de Monterrey, ITESM
+Centro Médico Zambrano Hellion, Monterrey ITESM
+Hospital Universitario Dr. José Eleuterio González, Monterrey UANL
+Academic Medical Center (AMC), Amsterdam (University of Amsterdam (UvA))
+Free University Medical Center (VUMC), Amsterdam (Vrije Universiteit (VUMC))
+University Medical Center Groningen (UMCG), Groningen
+Leiden University Medical Center (LUMC), Leiden (University of Leiden (UL))
+Academic Hospital Maastricht (AZM), Maastricht
+University Medical Center St Radboud (UMCN), Nijmegen
+Erasmus MC (EUMC), Rotterdam
+University Medical Center Utrecht (UMCU), Utrecht
+Tribhuvan University Teaching Hospital, Tribhuvan University
+Delta State University Teaching Hospital (DELSUTH), Oghara, Delta State [1]
+Lagos University Teaching Hospital (LUTH), Idiaraba, Lagos State
+Olabisi Onabanjo University Teaching Hospital, Sagamu (OOUTH), Sagamu, Ogun State
+University College Hospital, Ibadan (UCH), Oyo State
+University Teaching Hospital, Enugu (UNTH), Enugu State<sup id="cite_ref-1" class="reference"><span>[</span>1<span>]</span></sup>
+University of Ilorin Teaching Hospital, Ilorin, (UITH), Kwara State, [2]
+University of Maiduguri Teaching Hospital, Maiduguri, (UMTH), Borno State
+Jos University Teaching Hospital, Jos (JUTH), Plateau State
+Usmanu Danfodiyo University Teaching Hospital, Sokoto, (UDUTH), Sokoto State, [3]
+University of Uyo Teaching Hospital Akwa-Ibom State
+Nnamdi Azikiwe University Teaching Hospital, Nnewi, Anambra
+University of Calabar Teaching Hospital (UCTH), Calabar
+Ebonyi State University Teaching Hospital
+University of Benin Teaching Hospital, Benin City
+Irrua Specialist Teaching Hospital, Irrua
+Enugu State University Teaching Hospital Parklane Enugu
+Imo State University Teaching Hospital (IMSUTH), Orlu
+Ahmadu Bello University Teaching Hospital, Shika, Zaria
+Aminu Kano Teaching Hospital, Kano
+Lagos State University Teaching Hospital (LASUTH), Ikeja, Lagos
+Ladoke Akintola University Teaching Hospital, Osogbo
+University of Port Harcourt teaching Hospital, Port Harcourt
+Obafemi Awolowo University Teaching Hospital, Ile-Ife
+Akershus University Hospital, Skedsmo (University of Oslo)
+Haukeland University Hospital, Bergen (University of Bergen)
+Oslo University Hospital, Oslo (University of Oslo)
+Aker University Hospital, Oslo (University of Oslo)
+Rikshospitalet, Oslo (University of Oslo)
+Ullevål University Hospital, Oslo (University of Oslo)
+St. Olavs University Hospital, Trondheim (Norwegian University of Science and Technology)
+University Hospital of North Norway, Tromsø (University of Tromsø)
+Graz University Hospital - Medical University of Graz, Graz
+Ayub Teaching Hospital attached to Ayub Medical College, Abbottabad
+Aga Khan University Hospital attached to Aga Khan University, Karachi
+<b>Baqai University Hospital</b>, Karachi
+<b>Dr. Ziauddin University Hospital</b>, Karachi
+<b>Mayo Hospital</b> attached to the King Edward Medical College, Lahore
+Jinnah Hospital attached to Allama Iqbal Medical College, Lahore
+Capitol University Medical City, Capitol University, Cagayan de Oro
+De La Salle Health Sciences Institute, Dasmariñas City, Cavite
+Fatima Medical Center, Our Lady of Fatima University, Valenzuela City
+FEU Hospital, Far Eastern University, Quezon City
+Manila Central University Hospital, Caloocan City
+Maria Reyna Xavier University Hospital, Xavier University – Ateneo de Cagayan, Cagayan de Oro
+Saint Louis University Hospital of the Sacred Heart, Baguio City
+St. Paul University Manila - St. Paul Hospital (formerly known as Jose P. Rizal Hospital and National Medical Research Center), Cavite
+UERMMMC, University of the East, Quezon City
+University of the Philippines Manila - Philippine General Hospital
+University of Santo Tomas Hospital, Manila
+St John's Hospital (Hospital de São João), Porto
+Coimbra University Hospitals, Coimbra
+St Mary's Hospital (Hospital de Santa Maria), Lisboa
+National University Hospital - Yong Loo Lin School of Medicine, National University of Singapore
+Hospital Torrecárdenas.
+Hospital Jerez de la Frontera.
+Hospital La Línea.
+Hospital Puerta del Mar.
+Hospital Puerto Real.
+Hospital Universitario Reina Sofía de Córdoba.
+Hospital Universitario Virgen de las Nieves.
+Hospital Clínico San Cecilio.
+Hospital Juan Ramón Jimenez.
+Complejo Hospitalario de Jaén.
+Hospital Carlos Haya.
+Hospital Clínico de Málaga.
+Hospital virgen del rocio.
+Hospital Virgen de Valme.
+Hospital Virgen de Macarena.
+Hospital Universitario Marqués de Valdecilla.
+Hospital Universitario 12 de Octubre
+Hospital Clínico San Carlos
+Hospital General Universitario Gregorio Maranon
+Centro Superior de Estudios Universitarios La Salle.
+Enfermería de la Comunidad de Madrid
+Enfermería de la Cruz Roja
+Enfermería de la Fundación Jiménez Díaz
+Enfermería La Paz
+Enfermería Puerta de Hierro
+Fisioterapia de la ONCE
+Hospital Universitario Santa María del Rosell.
+Hospital Universitario Virgen de la Arrixaca.
+Hospital General Universitario Reina Sofía de Murcia.
+Hospital Morales Meseguer.
+Clínica Universidad de Navarra, Facultad de Medicina.
+Bardera Polytechnic, Bardera
+Edna Maternity Hospital, Hargeisa
+Groote Schuur Hospital, Cape Town
+Pretoria Academic Hospital, Pretoria (renamed Steve Biko Hospital in 2008)
+Tygerberg Hospital, Bellville
+Charlotte Maxeke Johannesburg Academic Hospital, Johannesburg
+Universitas Hospital, Bloemfontein
+King Edward VIII Hospital, Durban
+Dr George Mukhari Hospital, Ga-Rankuwa
+Nelson Mandela Academic Hospital, Mthatha
+Karolinska University Hospital, Stockholm
+Uppsala University Hospital, Uppsala
+Norrland's University Hospital, Umeå
+Sahlgrenska University Hospital, Gothenburg
+Örebro University Hospital, Örebro
+Skåne University Hospital, Malmö and Lund
+Linköping University Hospital, Linköping
+University Hospital of Basel (USB), Basel
+University Hospital of Bern (Inselspital), Bern
+University Hospital of Geneva (HUG), Geneva
+University Hospital of Lausanne (CHUV), Lausanne
+University Hospital of Zurich (USZ), Zurich
+National Taiwan University Hospital - National Taiwan University
+Buddhist Tzu Chi General Hospital - Tzu Chi University
+King Chulalongkorn Memorial Hospital - Faculty of Medicine, Chulalongkorn University
+Phramongkutklao Hospital - Phramongkutklao College of Medicine
+Ramathibodi Hospital - Mahidol University
+Siriraj Hospital - Mahidol University
+Vajira Hospital - Faculty of Medicine Vajira Hospital, University of Bangkok Metropolis
+Chiang Mai University Hospital - Chiang Mai University
+Burapha University Hospital - Burapha University
+Prince of Songkla Hospital - Prince of Songkla University
+Srinagarindra Hospital - Khon Kaen University
+HRH Princess Maha Chakri Sirindhorn Medical Center - Srinakharinwirot University
+Thammasat University Hospital - Thammasat University
+Naresuan University Hospital - Naresuan University
+Aberdeen Royal Infirmary - University of Aberdeen
+University Hospital Birmingham - University of Birmingham Medical School, University of Birmingham
+Bradford Royal Infirmary - Leeds School of Medicine, University of Leeds, University of Bradford
+St. Luke's Hospital, Bradford - Leeds School of Medicine, University of Leeds, University of Bradford
+Royal Sussex County Hospital - Brighton and Sussex Medical School, University of Sussex, University of Brighton
+Frenchay Hospital - Bristol Medical School, University of Bristol
+Southmead Hospital - Bristol Medical School, University of Bristol
+Bristol Royal Infirmary - Bristol Medical School, University of Bristol
+Addenbrooke's Hospital - Cambridge Clinical School, University of Cambridge
+University Hospital of Wales - Cardiff University School of Medicine, Cardiff University
+Children's Hospital for Wales - Cardiff University School of Medicine, Cardiff University
+University Dental Hospital, Cardiff - Cardiff University School of Medicine, Cardiff University
+University Hospital Llandough - Cardiff University School of Medicine, Cardiff University
+University Hospital Coventry - Warwick Medical School, University of Warwick
+Cumberland Infirmary - Newcastle University Medical School, Newcastle University
+West Cumberland Hospital - Newcastle University Medical School, Newcastle University
+University Hospital of North Durham - Newcastle University, Durham University
+Ninewells Hospital - University of Dundee
+Royal Infirmary of Edinburgh - University of Edinburgh Medical School, University of Edinburgh
+Western General Hospital - University of Edinburgh Medical School, University of Edinburgh
+St John's Hospital, Livingston - University of Edinburgh Medical School, University of Edinburgh
+Royal Devon and Exeter Hospital - Peninsula Medical School, University of Exeter, University of Plymouth
+Queen Elizabeth Hospital - Newcastle University Medical School, Newcastle University
+Glasgow Royal Infirmary - University of Glasgow
+Stobhill Hospital - University of Glasgow
+Victoria Infirmary - University of Glasgow
+Southern General Hospital - University of Glasgow
+Western Infirmary - University of Glasgow
+James Paget Hospital - University of East Anglia Medical School, University of East Anglia
+Hull Royal Infirmary - Hull York Medical School, University of Hull
+Castle Hill Hospital - Hull York Medical School, University of Hull
+St James's University Hospital, Leeds - University of Leeds
+Leeds General Infirmary - University of Leeds
+Leicester Royal Infirmary - Leicester Medical School, University of Leicester
+Leicester General Hospital - Leicester Medical School, University of Leicester
+Glenfield Hospital - Leicester Medical School, University of Leicester
+Aintree University Hospitals NHS Foundation Trust, University of Liverpool
+Alder Hey Children's Hospital, University of Liverpool
+Liverpool Heart and Chest Hospital, University of Liverpool
+Liverpool Women's Hospital, University of Liverpool
+Royal Liverpool University Hospital, University of Liverpool
+Broadgreen Hospital, University of Liverpool
+St Helens & Knowsley Teaching Hospitals NHS Trust, University of Liverpool
+Wirral University Teaching Hospital NHS Foundation Trust, University of Liverpool
+King's College Hospital - King's College London, University of London
+St. Thomas' Hospital - King's College London, University of London
+Guy's Hospital - King's College London, University of London
+University College Hospital - UCL Medical School, University of London; UCL Partners
+University Hospital Lewisham - King's College London, University of London
+Royal Free Hospital - UCL Medical School, University of London; UCL Partners
+Whittington Hospital - UCL Medical School, University of London
+Great Ormond Street Hospital - UCL Medical School, University of London; UCL Partners
+Charing Cross Hospital - Imperial College School of Medicine, University of London
+Chelsea and Westminster Hospital - Imperial College School of Medicine, University of London
+St. Mary's Hospital (London) - Imperial College School of Medicine, University of London
+St George's Hospital - St. George's, University of London
+Royal London Hospital - Barts and The London School of Medicine and Dentistry, University of London
+St. Bartholomew's Hospital - Barts and The London School of Medicine and Dentistry, University of London
+Newham University Hospital - Barts and The London School of Medicine and Dentistry, University of London
+Whipps Cross University Hospital - Barts and The London School of Medicine and Dentistry, University of London
+Mayday University Hospital - University of London
+West Middlesex University Hospital - Imperial College School of Medicine, University of London
+Queen Mary's Hospital, Sidcup - University of London
+Manchester Royal Infirmary - University of Manchester
+North Manchester General Hospital - University of Manchester
+University Hospital of South Manchester - University of Manchester
+Salford Royal - University of Manchester
+Royal Victoria Infirmary - Newcastle University Medical School, Newcastle University
+Freeman Hospital-Newcastle University Medical School, Newcastle University
+Norfolk and Norwich University Hospital - University of East Anglia Medical School, University of East Anglia
+Wansbeck General Hospital - Newcastle University Medical School, Newcastle University
+Queen's Medical Centre - University of Nottingham
+Nottingham City Hospital - University of Nottingham
+The Princess Royal Hospital - Brighton and Sussex Medical School, University of Sussex, University of Brighton
+John Radcliffe Hospital - Oxford University
+Churchill Hospital - Oxford University
+Derriford Hospital - Peninsula Medical School, University of Exeter, University of Plymouth
+Royal Hallamshire Hospital - University of Sheffield, Sheffield Hallam University
+Northern General Hospital - University of Sheffield, Sheffield Hallam University
+Sheffield Children's Hospital - University of Sheffield, Sheffield Hallam University
+Southampton General Hospital - Southampton Medical School, University of Southampton
+South Tyneside District Hospital - Newcastle University Medical School, Newcastle University
+University Hospital of North Staffordshire - Keele University Medical School, Keele University
+Morriston Hospital - Swansea University School of Medicine, Swansea University
+Singleton Hospital - Swansea University School of Medicine, Swansea University
+Bishop Auckland Hospital - Newcastle University Medical School, Newcastle University
+Darlington Memorial Hospital - Newcastle University Medical School, Durham University, Newcastle University
+James Cook University Hospital - University of Teesside, Newcastle University Medical School, Durham University, Newcastle University
+University Hospital of Hartlepool - Newcastle University Medical School, Newcastle University
+University Hospital of North Tees- Newcastle University Medical School, Newcastle University
+Royal Cornwall Hospital - Peninsula Medical School, University of Exeter, University of Plymouth
+North Wales Regional Hospital - Wrexham Medical Institute, Glyndwr University
+York Hospital - University of York
+University of Alabama Hospitals (UAB), Birmingham
+University of South Alabama Medical Center, Mobile
+University of Arizona Medical Center, Tucson, Arizona
+University of Arkansas for Medical Sciences/UAMS Medical Center, Little Rock
+Community Regional Medical Center, Fresno
+Loma Linda University Medical Center, Loma Linda
+Los Angeles County-USC Medical Center, Los Angeles
+Ronald Reagan UCLA Medical Center, Los Angeles
+San Francisco General Hospital (UCSF), San Francisco
+Stanford University Medical Center, Palo Alto
+UC Davis Medical Center, Sacramento
+UCI Medical Center, Orange
+UCSD Medical Center, San Diego
+UCSF Medical Center, San Francisco
+University of Colorado Hospital, Aurora- Suhabthan
+UConn Health Center, Farmington
+Yale-New Haven Hospital, New Haven
+The George Washington University Hospital, Washington, D.C.
+Georgetown University Hospital, Washington, D.C.
+Howard University Hospital, Washington, D.C.
+Jackson Memorial Hospital, Miller School of Medicine, University of Miami, Miami
+Shands at the University of Florida, University of Florida, Gainesville
+Shands Jacksonville, University of Florida, Jacksonville
+University of Miami Hospital, University of Miami, Miami
+Baptist Hospital of Miami, Florida International University, Miami
+Tampa General Hospital, University of South Florida Health Morsani College of Medicine, Tampa
+Emory University Hospital, Atlanta
+Grady Memorial Hospital, staffed by Emory & Morehouse Medical Schools, Atlanta
+Emory University Hospital-Midtown, Atlanta
+Memorial Medical Center, Savannah
+Medical College of Georgia, Augusta
+Medical Center of Central Georgia, Macon
+Loyola University Medical Center, Maywood
+Northwestern Memorial Hospital, Chicago
+Rush University Medical Center, Chicago
+University of Chicago Medical Center, Chicago
+University of Illinois Medical Center, Chicago
+OSF Saint Francis Medical Center, Peoria
+Indiana University Hospital, Indianapolis
+University of Iowa Hospitals and Clinics, Iowa City
+University of Kansas Hospital, Kansas City
+Albert B. Chandler Hospital, University of Kentucky, Lexington
+Eastern State Hospital, University of Kentucky, Lexington
+Good Samaritan Hospital, University of Kentucky, Lexington
+Kentucky Children's Hospital, University of Kentucky, Lexington
+University of Louisville Hospital, Louisville
+Medical Center of Louisiana at New Orleans, New Orleans
+Ochsner Medical Center (Greater New Orleans)
+Tulane Medical Center at New Orleans, New Orleans
+Johns Hopkins Hospital, Baltimore
+University of Maryland Medical Center, Baltimore
+Walter Reed National Military Medical Center, Bethesda
+Beth Israel Deaconess Medical Center, Boston
+Boston Medical Center, Boston
+Brigham and Women's Hospital, Boston
+Massachusetts General Hospital, Boston
+Tufts Medical Center, Boston
+UMass Memorial Medical Center, Worcester
+Detroit Medical Center, Detroit
+Sparrow Hospital, Michigan State University, Lansing
+University of Michigan Health System, Ann Arbor
+University of Minnesota Medical Center, Minneapolis
+Mayo Medical School, Rochester
+University of Mississippi Medical Center, Jackson
+Barnes-Jewish Hospital, St. Louis
+Saint Louis University Hospital, St. Louis
+University of Missouri Health Care, Columbia
+Columbia Regional Hospital
+University of Missouri Children's Hospital
+University of Missouri Hospital
+Washington University of St. Louis, St. Louis
+Creighton University Medical Center, Omaha
+University of Nebraska Medical Center, Omaha
+University Medical Center, Las Vegas
+Dartmouth-Hitchcock Medical Center, Lebanon
+Hoboken University Medical Center, Hoboken
+Cooper University Hospital, Camden
+Hackensack University Medical Center, Hackensack
+Jersey Shore University Medical Center, Neptune
+Kennedy University Hospitals, (Cherry Hill, Stratford, Washington Twp.)
+Robert Wood Johnson University Hospital, New Brunswick
+Saint Peter's University Hospital, New Brunswick
+The University Hospital, Newark
+University Medical Center at Princeton, Princeton
+University of New Mexico Hospital, Albuquerque
+Albany Medical Center Hospital, Albany
+Bellevue Hospital Center, New York City
+Jacobi Medical Center, Bronx, New York
+Long Island College Hospital, Brooklyn
+Montefiore Medical Center, Bronx, New York
+Mount Sinai Hospital, New York City
+Nassau University Medical Center, Nassau County
+New York-Presbyterian Hospital, New York City
+New York University Medical Center, New York City
+North Shore University Hospital, Manhasset
+State University of New York Downstate Medical Center, Brooklyn, New York City
+Stony Brook University Medical Center, at SUNY Stony Brook
+University of Rochester Medical Center, Rochester
+Upstate University Hospital, Syracuse
+Westchester Medical Center University Hospital, at Valhalla, New York
+Duke University Medical Center, Durham
+Vidant Medical Center, Greenville
+UNC Hospitals, Chapel Hill
+Wake Forest Baptist Medical Center, Winston-Salem
+The Ohio State University Medical Center, Ohio State University, Columbus
+University of Cincinnati Medical Center, University of Cincinnati, Cincinnati
+University Hospitals Case Medical Center, Case Western Reserve University, Cleveland
+University of Toledo Medical Center, University of Toledo, Toledo
+Cleveland Clinic, Cleveland Clinic Lerner College of Medicine of Case Western Reserve University, Cleveland
+Oklahoma State University Medical Center, Tulsa
+University of Oklahoma Health Sciences Center, Oklahoma City
+OHSU Hospital, Portland
+Penn State Milton S. Hershey Medical Center, Hershey
+Temple University Hospital, Philadelphia
+Thomas Jefferson University Hospital, Philadelphia
+University of Pennsylvania Health System, Philadelphia
+University of Pittsburgh Medical Center, Pittsburgh
+Hahnemann University Hospital, Philadelphia
+Rhode Island Hospital, Warren Alpert Medical School of Brown University, Rhode Island
+Greenville Memorial Hospital, Greenville
+Greenville Hospital System University Medical Center
+Medical University of South Carolina, Charleston
+Palmetto Health Richland, Columbia
+Palmetto Health Baptist Columbia
+Palmetto Health Children's Hospital
+Palmetto Health South Carolina Cancer Center
+William Jennings Bryan Dorn VA Medical Center
+University of Tennessee Medical Center, Knoxville
+Vanderbilt University Medical Center, Nashville
+University Health System, San Antonio
+University Medical Center - Texas Tech University Health Sciences Center, Lubbock
+University of Texas Southwestern - University Hospitals, Dallas
+University of Texas Medical Branch (UTMB) at Galveston University Hospital, Galveston
+University of Texas MD Anderson Cancer Center, Houston
+University of Texas Health Science Center at Houston
+University of Utah Hospital, Salt Lake City
+Sentara Norfolk General Hospital, Norfolk
+UVa Health System, Charlottesville, Virginia
+Virginia Commonwealth University Medical Center, Richmond
+University of Washington Medical Center, Seattle
+Froedtert Hospital and Children's Hospital of Wisconsin with the Medical College of Wisconsin, Milwaukee
+University of Wisconsin Hospital and Clinics and Gundersen Lutheran Medical Center with the University of Wisconsin School of Medicine and Public Health, Madison and La Crosse
+West Virginia University Hospitals, Morgantown
