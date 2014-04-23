@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Clinical Trials Browser</title>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/d3.v3.js"></script>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+    <div id="wrapper">
+
+        <div id ="header">
+            <h2 id="main-title">Clinical Trials Browser</h2>
+        </div>
+
+        <div id="sidebar">
+            <div id="options" class="side-div">
+                options
+            </div>
+
+            <div id="navigator" class="side-div">
+                navigator
+            </div>
+        </div>
+
+        <div id="main-area">
+        </div>
+
+    </div>
+
+    <script>
+
+    // setting css for elements
+    var windowHeight = $(window).height() - 8;
+    var windowWidth = $(window).width() - 8;
+    d3.select("#wrapper")
+        .style("height", windowHeight + "px")
+        .style("width", windowWidth + "px")
+        .style("margin", "4px");
+    d3.select("#header")
+        .style("font-size", (0.04 * windowHeight) + "px")
+        .style("width", "96%")
+        .style("height", "5%")
+        .style("background-color", "#666")
+        .style("padding-left", "1%")
+        .style("padding-right", "3%");
+    d3.select("#options")
+        .style("height", (0.38 * windowHeight) + "px");
+    d3.select("#navigator")
+        .style("height", (0.48 * windowHeight) + "px");
+    d3.selectAll(".side-div")
+        .style("margin-top", (0.02 * windowHeight) + "px")
+        .style("padding", (0.01 * windowHeight) + "px")
+        .style("width", (0.2 * windowWidth - 0.02 * windowHeight) + "px")
+        .style("background-color", "#999");
+    d3.select("#sidebar")
+        .style("float", "left")
+    d3.select("#main-area")
+        .style("float", "left");
+
+    // bubble chart parameters
+    var width = 0.8 * windowWidth,
+        height = 0.95 * windowHeight,
+        padding = 3,
+        maxRadius = 100,
+        color = d3.scale.category20c(),
+        current_vals = {level: 0, showby: "cond", values: "studies"},
+        data,
+        node,
+        link,
+        nodes = [],
+        links = [];
+
+    var force = d3.layout.force()
+          .nodes(nodes)
+          .links(links)
+          .linkDistance(80)
+          .size([width, height])
+          .on("tick", tick)
+          .charge(charge);
+
+
+    // dictionary to look up length of mesh_id to use
+    var level_length = {
+        0: 1,
+        1: 3,
+        2: 7,
+        3: 11,
+        4: 15,
+        5: 19,
+        6: 23,
+        7: 27,
+        8: 31,
+        9: 35,
+        10: 39,
+        11: 43,
+        12: 47
+    }
+
+    var vis = d3.select("#main-area").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "bubble");
+
+    d3.json("vizdata/studies.json", function(error, json) {
+      if (error) return console.warn(error);
+
+      data = json;
+      update(current_vals.level, current_vals.showby, current_vals.values, data);
+
+    });
+
+    function update(level, showby, values, curdata) {
+
+      // create dictionary of bubble sizes
+      var bubble_dict = {};
+      var nct_id = Object.keys(curdata);
+      var tempdata = {}; 
+      for (i=0; i<nct_id.length; i++) {
+          var curdict = curdata[nct_id[i]];
+          if ( 'cond' in curdict ) {
+              var conds = d3.set(curdict['cond'].map(function(c) {return c.slice(0,level_length[level])})).values();
+              for (var c=0; c<conds.length; c++) {
+                  if ( !(conds[c] in bubble_dict) ) {
+                      bubble_dict[conds[c]] = 0;
+                  }
+                  bubble_dict[conds[c]] += values == "enrollment" ? curdict.enr : 1;
+              }
+          }
+      } 
+
+      // get largest value and scale all other values appropriately
+      var maxval = d3.max(get_values(bubble_dict));
+      var bubble_keys = Object.keys(bubble_dict);
+      for (i=0; i<bubble_keys.length; i++) {
+          var oldval = bubble_dict[bubble_keys[i]];
+          nodes.push({
+            name: bubble_keys[i],
+            val: oldval,
+            size: (Math.log(oldval) / Math.log(maxval)) * maxRadius
+          });
+      }
+
+      node = vis.selectAll("circle.node")
+          .data(nodes)
+          .style("fill", "steelblue")
+          .attr("r", function(d) { return d.size; });
+
+      node.enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .attr("r", function(d) {return d.size; })
+        .style("fill", "steelblue")
+        .call(force.drag);
+
+      node.exit().remove();
+
+      link = vis.selectAll("line.link")
+          .data(links, function(d) { return d.target.id; });
+
+      // Enter any new links.
+      link.enter()
+          .insert("line", ".node")
+          .attr("class", "link")
+          .attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      force.start() 
+
+    }
+
+    // function to get values from dictionary
+    var get_values = function(dict) {
+        return Object.keys(dict).map(function(key) {return dict[key];});
+    };
+
+    function charge(d) {
+      return -Math.pow(d.size, 2.0) / 7;
+    }
+
+    function tick(e) {
+      node.each(collide(0.5));
+
+      node
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+      
+      link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+    }
+
+    function collide(alpha) {
+      return function(d) {
+        nodes.forEach(function(d2) {
+          if(d != d2) {
+            var x = d.x - d2.x;
+            var y = d.y - d2.y;
+            var distance = Math.sqrt(x * x + y * y);
+
+            var minDistance = d.size + d2.size + padding;
+
+            if(distance < minDistance) {
+              var newDistance = ((distance - minDistance) / distance) * alpha;
+              d.x = d.x - (x * newDistance);
+              d.y = d.y - (y * newDistance);
+              d2.x = d2.x + (x * newDistance);
+              d2.y = d2.y + (y * newDistance);
+            }
+          }
+        });
+      };
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+/* ---------------------------------------------------------------------------------------------------- */
+/* RESET CSS */
+
+/* 0. resetting css is highly recommended; this overrides some default browser styles and allows you to start from a "blank slate" */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+body {
+    font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+}
+
+#header {
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+circle.node {
+  cursor: pointer;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+line.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+
