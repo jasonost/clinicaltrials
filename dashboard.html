@@ -27,6 +27,7 @@ svg {
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
 <script>
 
 var margin = {top: 10, right: 10, bottom: 100, left: 40},
@@ -35,7 +36,7 @@ var margin = {top: 10, right: 10, bottom: 100, left: 40},
     height = 500 - margin.top - margin.bottom,
     height2 = 500 - margin2.top - margin2.bottom;
 
-var parseDate = d3.time.format("%b %Y").parse;
+var parseDate = d3.time.format("%Y").parse;
 
 var x = d3.time.scale().range([0, width]),
     x2 = d3.time.scale().range([0, width]),
@@ -52,15 +53,15 @@ var brush = d3.svg.brush()
 
 var area = d3.svg.area()
     .interpolate("monotone")
-    .x(function(d) { return x(d.date); })
+    .x(function(d) { return x(d["years"]); })
     .y0(height)
-    .y1(function(d) { return y(d.price); });
+    .y1(function(d) { return y(d["count"]); });
 
 var area2 = d3.svg.area()
     .interpolate("monotone")
-    .x(function(d) { return x2(d.date); })
+    .x(function(d) { return x2(d["years"]); })
     .y0(height2)
-    .y1(function(d) { return y2(d.price); });
+    .y1(function(d) { return y2(d["count"]); });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -97,7 +98,6 @@ var context = svg.append("g")
         12: 47
     };
 
-// var years = [1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014];
 
 var current_vals = {level: 0, showby: "cond", values: "studies"},
     cond = 'G';
@@ -111,34 +111,9 @@ d3.json("vizdata/studies.json", function(error, json) {
 });
 
 
-      
-
-    // function update(cond, level, showby, values, curdata) {
-
-    //   var histo_dict = {};
-    //   var nct_id = Object.keys(curdata);
-    //   for (i=0; i<nct_id.length; i++) {
-    //       var curdict = curdata[nct_id[i]];
-    //       if ( 'cond' in curdict ) {
-    //         var curcond = d3.set(curdict['cond'].map(function(c) {
-    //           conds = c.slice(0,level_length[level]);
-    //           if 
-    //           return c.slice(0,level_length[level])})).values();
-    //       var years = d3.set(curdict['yr']).values();
-    //       for (var c=0; c<years.length; c++) {
-    //         if ( c.slice(0,level_length[level]) === cond ) {
-    //               if ( !(years[c] in histo_dict) ) {
-    //                   histo_dict[years[c]] = 0;
-    //               }
-    //               histo_dict[years[c]] += values == "enrollment" ? curdict.enr : 1;
-    //           }
-    //       }
-    //   }
-    // }
-
 function update(level, showby, values, curdata) {
 
-  // create dictionary of bubble sizes
+  // create dictionary of histogram
   var histo_dict = {};
   var nct_id = Object.keys(curdata);
   var tempdata = {}; 
@@ -154,8 +129,20 @@ function update(level, showby, values, curdata) {
   }
   console.log(histo_dict);
 
-  var xvals = Object.keys(histo_dict);
-  var yvals = get_values(histo_dict);
+  data = [];
+  for(var key in histo_dict) {
+      data.push({"years":parseInt(key), "count":histo_dict[key]});
+      }
+  console.log('data',data["years"]);
+
+  data.forEach(function(d) {
+    d["years"] = parseDate(String(d["years"]));
+  });
+
+  var xvals = Object.keys(histo_dict).map(function(c){return parseDate(c);});
+  var yvals = get_values(histo_dict).map(Number);
+
+  console.log(xvals);
 
   x.domain(d3.extent(xvals));
   y.domain([0, d3.max(yvals)]);
