@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+svg {
+  font: 10px sans-serif;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body></body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+console.log('here');
+// dictionary to look up length of mesh_id to use
+var level_length = {
+    0: 1,
+    1: 3,
+    2: 7,
+    3: 11,
+    4: 15,
+    5: 19,
+    6: 23,
+    7: 27,
+    8: 31,
+    9: 35,
+    10: 39,
+    11: 43,
+    12: 47
+};
+
+var current_vals = {level: 0, showby: "cond", values: "studies"},
+    cond = 'G';
+
+d3.json("vizdata/studies.json", function(error, json) {
+  if (error) return console.warn(error);
+
+  data = json;
+  update(current_vals.level, current_vals.showby, current_vals.values, data);
+
+});
+
+function update(level, showby, values, curdata) {
+
+    // create dictionary of bubble sizes
+    var histo_dict = {};
+    var nct_id = Object.keys(curdata);
+    var tempdata = {}; 
+    for (i=0; i<nct_id.length; i++) {
+      var curdict = curdata[nct_id[i]];
+      if ( 'yr' in curdict ) {
+          var years = d3.set(curdict['yr']).values();
+          for (var c=0; c<years.length; c++) {
+              if ( !(years[c] in histo_dict) ) {
+                  histo_dict[years[c]] = 0;
+              }
+              histo_dict[years[c]] += values == "enrollment" ? curdict.enr : 1;
+          }
+      }
+    }
+    console.log(); 
+    }
+
+</script>
