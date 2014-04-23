@@ -26,15 +26,21 @@ svg {
 
 </style>
 <body>
+
+<div id="chartContainer">
+</div>
+
+</body>
+
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
 <script>
 
 var margin = {top: 10, right: 10, bottom: 100, left: 40},
-    margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    margin2 = {top: 100, right: 10, bottom: 20, left: 40},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom,
-    height2 = 500 - margin2.top - margin2.bottom;
+    height = 200 - margin.top - margin.bottom,
+    height2 = 200 - margin2.top - margin2.bottom;
 
 var parseDate = d3.time.format("%Y").parse;
 
@@ -51,11 +57,11 @@ var brush = d3.svg.brush()
     .x(x2)
     .on("brush", brushed);
 
-var area = d3.svg.area()
-    .interpolate("monotone")
-    .x(function(d) { return x(d["years"]); })
-    .y0(height)
-    .y1(function(d) { return y(d["count"]); });
+// var area = d3.svg.area()
+//     .interpolate("monotone")
+//     .x(function(d) { return x(d["years"]); })
+//     .y0(height)
+//     .y1(function(d) { return y(d["count"]); });
 
 var area2 = d3.svg.area()
     .interpolate("monotone")
@@ -73,9 +79,9 @@ svg.append("defs").append("clipPath")
     .attr("width", width)
     .attr("height", height);
 
-var focus = svg.append("g")
-    .attr("class", "focus")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// var focus = svg.append("g")
+//     .attr("class", "focus")
+//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var context = svg.append("g")
     .attr("class", "context")
@@ -149,19 +155,19 @@ function update(cond, level, showby, values, curdata) {
   x2.domain(x.domain());
   y2.domain(y.domain());
 
-  focus.append("path")
-      .datum(data)
-      .attr("class", "area")
-      .attr("d", area);
+  // focus.append("path")
+  //     .datum(data)
+  //     .attr("class", "area")
+  //     .attr("d", area);
 
-  focus.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+  // focus.append("g")
+  //     .attr("class", "x axis")
+  //     .attr("transform", "translate(0," + height + ")")
+  //     .call(xAxis);
 
-  focus.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
+  // focus.append("g")
+  //     .attr("class", "y axis")
+  //     .call(yAxis);
 
   context.append("path")
       .datum(data)
@@ -182,6 +188,34 @@ function update(cond, level, showby, values, curdata) {
 
 }
 
+//funtion for updating graphs from view finder
+function update_graphs(data, date_range) {
+
+  clearBox('chartContainer');
+
+  var new_date = [];
+
+  data.forEach(function(d) {
+    temp = parseInt(String(d["years"]).slice(11,15));
+    console.log('in', temp);
+    if (temp >= date_range[0] && temp <= date_range[1]) {   //date_range.indexOf(temp) > -1
+      new_date.push({"years":temp, "count": d["count"]});
+    }
+  });
+
+  console.log(new_date);
+
+  var histosvg = dimple.newSvg("#chartContainer", 590, 400);
+
+    var myChart = new dimple.chart(histosvg, new_date);
+    myChart.setBounds('20%', '30%', '75%', '30%');
+    myChart.addCategoryAxis("x", "years");
+    myChart.addMeasureAxis("y", "count");
+    myChart.addSeries("Channel", dimple.plot.bar);
+    myChart.addLegend(65, 10, 510, 20, "right");
+    myChart.draw();
+}
+
 // function to get values from dictionary
 var get_values = function(dict) {
   return Object.keys(dict).map(function(key) {return dict[key];});
@@ -189,10 +223,15 @@ var get_values = function(dict) {
 
 function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
-  console.log(brush.extent());
-  focus.select(".area").attr("d", area);
-  focus.select(".x.axis").call(xAxis);
-  //call update
+  var date_range = [parseInt(String(brush.extent()[0]).slice(11,15)),parseInt(String(brush.extent()[1]).slice(11,15))];
+  console.log(date_range);
+  // focus.select(".area").attr("d", area);
+  // focus.select(".x.axis").call(xAxis);
+  update_graphs(data, date_range);
+}
+
+function clearBox(elementID) {
+  document.getElementById(elementID).innerHTML = "";
 }
 
 
