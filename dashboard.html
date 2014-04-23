@@ -120,20 +120,21 @@ function update(level, showby, values, curdata) {
   for (i=0; i<nct_id.length; i++) {
       var curdict = curdata[nct_id[i]];
       if ( 'yr' in curdict ) {
+        if (parseInt(curdict['yr'])>1998 && parseInt(curdict['yr'])<2014) {
           var years = curdict['yr'];
             if ( !(years in histo_dict) ) {
                 histo_dict[years] = 0;
               }
               histo_dict[years] += values == "enrollment" ? curdict.enr : 1;
+        }
       }
-  }
+      }
   console.log(histo_dict);
 
   data = [];
   for(var key in histo_dict) {
       data.push({"years":parseInt(key), "count":histo_dict[key]});
       }
-  console.log('data',data["years"]);
 
   data.forEach(function(d) {
     d["years"] = parseDate(String(d["years"]));
@@ -142,7 +143,6 @@ function update(level, showby, values, curdata) {
   var xvals = Object.keys(histo_dict).map(function(c){return parseDate(c);});
   var yvals = get_values(histo_dict).map(Number);
 
-  console.log(xvals);
 
   x.domain(d3.extent(xvals));
   y.domain([0, d3.max(yvals)]);
@@ -189,14 +189,10 @@ var get_values = function(dict) {
 
 function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
+  console.log(brush.extent());
   focus.select(".area").attr("d", area);
   focus.select(".x.axis").call(xAxis);
 }
 
-function type(d) {
-  d.date = parseDate(d.date);
-  d.price = +d.price;
-  return d;
-}
 
 </script>
