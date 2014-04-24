@@ -19,19 +19,20 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
+    font-size:100%;
     font: inherit;
     vertical-align: baseline;
 }
 
 body {
-    font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 #header {
-    color: white;
+    color: rgb(255,153,0);
     text-align: left;
-    font-weight: bold;
+    font-weight: 400;
+    font-style: italic;
 }
 
 circle.node {
