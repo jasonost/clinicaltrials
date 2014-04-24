@@ -1,45 +1,75 @@
 // setting css for elements
 var windowHeight = window.innerHeight - 8;
 var windowWidth = window.innerWidth - 8;
+
+var borderWidth = 1;
+
+var headerHeight = 0.07 * windowHeight;
+if (headerHeight > 50) { headerHeight = 50; }
+
+var headerFontSize = 0.05 * windowHeight;
+if (headerFontSize > 36) { headerFontSize = 36; }
+
+var headerFontSpacing = windowWidth * 0.0025;
+if (headerFontSpacing > 3) { headerFontSpacing = 3; }
+
+var topMargin = 0.02 * windowHeight;
+if (topMargin > 10) { topMargin = 10; }
+
+var divPadding = 0.01 * windowHeight;
+if (divPadding > 8) { divPadding = 8; }
+
+var leftWidth = 0.2 * windowWidth - (2 * divPadding);
+if (leftWidth > 240 - (2 * divPadding)) { leftWidth = 240 - (2 * divPadding); }
+
+var rightWidth = 0.3 * windowWidth - (2 * divPadding);
+if (rightWidth > 400 - (2 * divPadding)) { rightWidth = 400 - (2 * divPadding); }
+
+var centerWidth = windowWidth - leftWidth - rightWidth - (4 * divPadding) - (4 * borderWidth);
+
+var mainHeight = windowHeight - headerHeight - topMargin;
+var dashboardHeight = mainHeight - (2 * divPadding) - (2 * borderWidth);
+var optionsHeight = (mainHeight * 0.4) - (2 * divPadding) - (2 * borderWidth);
+var navigatorHeight = mainHeight - optionsHeight - topMargin - (4 * divPadding) - (4 * borderWidth);
+
 d3.select("#wrapper")
     .style("height", windowHeight + "px")
     .style("width", windowWidth + "px")
     .style("margin", "4px");
 d3.select("#header")
-    .style("font-size", (0.05 * windowHeight) + "px")
+    .style("font-size", headerFontSize + "px")
+    .style("letter-spacing", headerFontSpacing + "px")
     .style("width", "96%")
-    .style("height", "10%")
-    .style("max-height", (0.07 * windowHeight) + "px")
+    .style("height", headerHeight + "px")
     .style("vertical-align","middle")
     .style("background-color", "rgb(68,68,68)")
     .style("padding-left", "1%")
     .style("padding-right", "3%");
 d3.select("#options")
-    .style("height", (0.38 * windowHeight) + "px");
+    .style("height", optionsHeight + "px");
 d3.select("#navigator")
-    .style("height", (0.48 * windowHeight) + "px");
+    .style("height", navigatorHeight + "px");
 d3.selectAll(".side-div")
-    .style("margin-top", (0.02 * windowHeight) + "px")
-    .style("padding", (0.01 * windowHeight) + "px")
-    .style("width", (0.2 * windowWidth - 0.02 * windowHeight) + "px")
-    .style("max-width", "200px")
-    .style("border","1px solid")
+    .style("margin-top", topMargin + "px")
+    .style("padding", divPadding + "px")
+    .style("width", leftWidth + "px")
+    .style("border", borderWidth + "px solid")
     .style("border-color", "rgb(229,150,54)")
     .style("background-color", "#fff");
 d3.select("#sidebar")
     .style("float", "left")
 d3.select("#bubbleviz")
     .style("float", "left")
-    .style("width", (0.5 * windowWidth) + "px")
-    .style("height", (0.95 * windowHeight) + "px");
+    .style("margin-top", topMargin + "px")
+    .style("width", centerWidth + "px")
+    .style("height", mainHeight + "px");
 d3.select("#dashboard")
     .style("float", "left")
-    .style("width", (0.3 * windowWidth - 0.02 * windowHeight) + "px")
-    .style("max-width", "350px")
-    .style("height", (0.91 * windowHeight) + "px")
-    .style("padding", (0.01 * windowHeight) + "px")
-    .style("margin-top", (0.02 * windowHeight) + "px")
-    .style("border","1px solid")
+    .style("width", rightWidth + "px")
+    .style("height", dashboardHeight + "px")
+    .style("padding", divPadding + "px")
+    .style("margin-top", topMargin + "px")
+    .style("border", borderWidth + "px solid")
     .style("border-color", "rgb(229,150,54)")
     .style("background-color", "#fff");
 
@@ -76,22 +106,26 @@ var data,
     location_data = [],
     intervention_data = [];
 
+// filter parameter placeholders
+var time_filter = [],
+    cond_filter,
+    intervention_filter;
+
 // overall data parameters
 var current_vals = {level: 0, showby: "cond", values: "studies"};
 
 // bubble chart parameters
-var bubble_width = 0.5 * windowWidth,
-    bubble_height = 0.95 * windowHeight,
+var bubble_width = centerWidth,
+    bubble_height = mainHeight,
     padding = 3,
     maxRadius = 100,
     color = d3.scale.category20c(),
     node,
     link,
-    nodes_bubbles = [],
     links_bubbles = [];
 
 var force = d3.layout.force()
-    .nodes(nodes_bubbles)
+    .nodes(bubble_data)
     .links(links_bubbles)
     .linkDistance(80)
     .size([bubble_width, bubble_height])
@@ -211,17 +245,27 @@ function update(level, showby, values, curdata) {
     var maxsize = bubble_height / 4;
     var minsize = bubble_height / 80;
     var bubble_keys = Object.keys(bubble_dict);
+
+    while(bubble_data.length > 0) {
+        bubble_data.pop();
+    };
     for (i=0; i<bubble_keys.length; i++) {
         var oldval = bubble_dict[bubble_keys[i]].studies;
-        nodes_bubbles.push({
+        bubble_data.push({
           name: bubble_keys[i],
           val: oldval,
           size: ((oldval - minval) / (maxval - minval) * (maxsize - minsize)) + minsize
         });
     }
 
+makebubble();
+
+}
+
+function makebubble() {
+
     node = vis.selectAll("circle.node")
-        .data(nodes_bubbles)
+        .data(bubble_data)
         .style("fill", "steelblue")
         .attr("r", function(d) { return d.size; });
 
@@ -248,14 +292,9 @@ function update(level, showby, values, curdata) {
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    force.start() 
+    force.start()
 
 }
-
-// function to get values from dictionary
-var get_values = function(dict) {
-    return Object.keys(dict).map(function(key) {return dict[key];});
-};
 
 function charge(d) {
   return -Math.pow(d.size, 2.0) / 7;
@@ -276,7 +315,7 @@ function tick(e) {
 
 function collide(alpha) {
   return function(d) {
-    nodes_bubbles.forEach(function(d2) {
+    bubble_data.forEach(function(d2) {
       if(d != d2) {
         var x = d.x - d2.x;
         var y = d.y - d2.y;
