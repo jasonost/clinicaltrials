@@ -6,10 +6,12 @@ d3.select("#wrapper")
     .style("width", windowWidth + "px")
     .style("margin", "4px");
 d3.select("#header")
-    .style("font-size", (0.04 * windowHeight) + "px")
+    .style("font-size", (0.05 * windowHeight) + "px")
     .style("width", "96%")
-    .style("height", "5%")
-    .style("background-color", "#666")
+    .style("height", "10%")
+    .style("max-height", (0.07 * windowHeight) + "px")
+    .style("vertical-align","middle")
+    .style("background-color", "rgb(68,68,68)")
     .style("padding-left", "1%")
     .style("padding-right", "3%");
 d3.select("#options")
@@ -20,7 +22,10 @@ d3.selectAll(".side-div")
     .style("margin-top", (0.02 * windowHeight) + "px")
     .style("padding", (0.01 * windowHeight) + "px")
     .style("width", (0.2 * windowWidth - 0.02 * windowHeight) + "px")
-    .style("background-color", "#999");
+    .style("max-width", "200px")
+    .style("border","1px solid")
+    .style("border-color", "rgb(229,150,54)")
+    .style("background-color", "#fff");
 d3.select("#sidebar")
     .style("float", "left")
 d3.select("#bubbleviz")
@@ -30,10 +35,13 @@ d3.select("#bubbleviz")
 d3.select("#dashboard")
     .style("float", "left")
     .style("width", (0.3 * windowWidth - 0.02 * windowHeight) + "px")
+    .style("max-width", "350px")
     .style("height", (0.91 * windowHeight) + "px")
     .style("padding", (0.01 * windowHeight) + "px")
     .style("margin-top", (0.02 * windowHeight) + "px")
-    .style("background-color", "#999");
+    .style("border","1px solid")
+    .style("border-color", "rgb(229,150,54)")
+    .style("background-color", "#fff");
 
 // dictionary to look up length of mesh_id to use
 var level_length = {
