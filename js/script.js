@@ -83,12 +83,12 @@ var bubble_width = 0.5 * windowWidth,
     links_bubbles = [];
 
 var force = d3.layout.force()
-      .nodes(nodes_bubbles)
-      .links(links_bubbles)
-      .linkDistance(80)
-      .size([bubble_width, bubble_height])
-      .on("tick", tick)
-      .charge(charge);
+    .nodes(nodes_bubbles)
+    .links(links_bubbles)
+    .linkDistance(80)
+    .size([bubble_width, bubble_height])
+    .on("tick", tick)
+    .charge(charge);
 
 var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
@@ -97,132 +97,150 @@ var vis = d3.select("#bubbleviz").append("svg")
 
 // load data
 d3.json("vizdata/all_data.json", function(error, json) {
-  if (error) return console.warn(error);
+    if (error) return console.warn(error);
 
-  data = json.studies;
-  mesh = json.mesh;
-  intervention = json.interventions;
-  loc = json.locations;
-  phase = json.phase;
-  sponsor = json.sponsors;
-  stat = json.status;
-  update(current_vals.level, current_vals.showby, current_vals.values, data);
+    data = json.studies;
+    mesh = json.mesh;
+    intervention = json.interventions;
+    loc = json.locations;
+    phase = json.phase;
+    sponsor = json.sponsors;
+    stat = json.status;
+    update(current_vals.level, current_vals.showby, current_vals.values, data);
 
 });
 
 // procedure to update all the chart data objects
 function update(level, showby, values, curdata) {
 
-  // create dictionaries with raw counts
-  var bubble_dict = {},
-      time_dict = {},
-      sponsor_dict = {},
-      status_dict = {},
-      phase_dict = {},
-      location_dict = {},
-      intervention_dict = {};
-  for (i=0; i<data.length; i++) {
-      var to_add = values == "enrollment" ? data[i]['en'] : 1;
-      // bubbles
-      var conds = d3.set(data[i]['co'].map(function(c) {return mesh[c]['id'].slice(0,level_length[level])})).values();
-      for (var c=0; c<conds.length; c++) {
-          if ( !(conds[c] in bubble_dict) ) {
-              bubble_dict[conds[c]] = 0;
-          }
-          bubble_dict[conds[c]] += to_add;
-      }
-      // time
-      if ( !(data[i]['yr'] in time_dict) ) {
-          time_dict[data[i]['yr']] = 0;
-      }
-      time_dict[data[i]['yr']] += to_add;
-      // sponsors
-      var sponsor_name = sponsor[data[i]['sp']];
-      if ( !(sponsor_name in sponsor_dict) ) {
-          sponsor_dict[sponsor_name] = {industry: 0, no_industry: 0};
-      }
-      if ( data[i]['in'] == 1) {
-          sponsor_dict[sponsor_name]['industry'] += to_add;
-      } else {
-          sponsor_dict[sponsor_name]['no_industry'] += to_add;
-      }
-      // status
-      var status_name = stat[data[i]['st']];
-      if ( !(status_name in status_dict) ) {
-          status_dict[status_name] = 0;
-      }
-      status_dict[status_name] += to_add;
-      // phase
-      var phase_name = phase[data[i]['ph']]
-      if ( !(phase_name in phase_dict) ) {
-          phase_dict[phase_name] = 0;
-      }
-      phase_dict[phase_name] += to_add;
-      // location
-      for (var l=0; l<data[i]['lo'].length; l++) {
-          var loc_name = loc[data[i]['lo'][l]];
-          if ( !(loc_name in location_dict) ) {
-              location_dict[loc_name] = 0;
-          }
-          location_dict[loc_name] += to_add;
-      }
-      // intervention
-      for (var v=0; v<data[i]['iv'].length; v++) {
-          var iv_name = intervention[data[i]['iv'][v]];
-          if ( !(iv_name in intervention_dict) ) {
-              intervention_dict[iv_name] = 0;
-          }
-          intervention_dict[iv_name] += to_add;
-      }
-  }
+    // create dictionaries with raw counts
+    var bubble_dict = {},
+        time_dict = {},
+        sponsor_dict = {},
+        status_dict = {},
+        phase_dict = {},
+        location_dict = {},
+        intervention_dict = {};
+    for (i=0; i<data.length; i++) {
+        var enrollment = data[i]['en'];
+        // bubbles
+        var conds = d3.set(data[i]['co'].map(function(c) {return mesh[c]['id'].slice(0,level_length[level])})).values();
+        for (var c=0; c<conds.length; c++) {
+            if ( !(conds[c] in bubble_dict) ) {
+                bubble_dict[conds[c]] = {studies: 0, enrollment: 0};
+            }
+            bubble_dict[conds[c]].studies += 1;
+            bubble_dict[conds[c]].enrollment += enrollment;
+        }
+        // time
+        if ( !(data[i]['yr'] in time_dict) ) {
+            time_dict[data[i]['yr']] = {studies: 0, enrollment: 0};
+        }
+        time_dict[data[i]['yr']].studies += 1;
+        time_dict[data[i]['yr']].enrollment += enrollment;
+        // sponsors
+        var sponsor_name = sponsor[data[i]['sp']];
+        if ( !(sponsor_name in sponsor_dict) ) {
+            sponsor_dict[sponsor_name] = {industry: {studies: 0, enrollment: 0}, no_industry: {studies: 0, enrollment: 0}};
+        }
+        if ( data[i]['in'] == 1) {
+            sponsor_dict[sponsor_name]['industry'].studies += 1;
+            sponsor_dict[sponsor_name]['industry'].enrollment += enrollment;
+        } else {
+            sponsor_dict[sponsor_name]['no_industry'].studies += 1;
+            sponsor_dict[sponsor_name]['no_industry'].enrollment += enrollment;
+        }
+        // status
+        var status_name = stat[data[i]['st']];
+        if ( !(status_name in status_dict) ) {
+            status_dict[status_name] = {studies: 0, enrollment: 0};
+        }
+        status_dict[status_name].studies += 1;
+        status_dict[status_name].enrollment += enrollment;
+        // phase
+        var phase_name = phase[data[i]['ph']]
+        if ( !(phase_name in phase_dict) ) {
+            phase_dict[phase_name] = {studies: 0, enrollment: 0};
+        }
+        phase_dict[phase_name].studies += 1;
+        phase_dict[phase_name].enrollment += enrollment;
+        // location
+        for (var l=0; l<data[i]['lo'].length; l++) {
+            var loc_name = loc[data[i]['lo'][l]];
+            if ( !(loc_name in location_dict) ) {
+                location_dict[loc_name] = {studies: 0, enrollment: 0};
+            }
+            location_dict[loc_name].studies += 1;
+            location_dict[loc_name].enrollment += enrollment;
+        }
+        // intervention
+        for (var v=0; v<data[i]['iv'].length; v++) {
+            var iv_name = intervention[data[i]['iv'][v]];
+            if ( !(iv_name in intervention_dict) ) {
+                intervention_dict[iv_name] = {studies: 0, enrollment: 0};
+            }
+            intervention_dict[iv_name].studies += 1;
+            intervention_dict[iv_name].enrollment += enrollment;
+        }
+    }
 
-  // translate dictionaries into lists of dictionaries
+    // translate dictionaries into lists of dictionaries
+    var objkeys = Object.keys(time_dict);
+    while(time_data.length > 0) {
+        time_data.pop();
+    };
+    for (var i=0; i<objkeys.length; i++) {
+        time_data.push({
+            name: objkeys[i],
+            studies: time_dict[objkeys[i]].studies,
+            enrollment: time_dict[objkeys[i]].enrollment
+        });
+    }
 
+    // get largest bubble value and scale all other values appropriately
+    var maxval = d3.max(Object.keys(bubble_dict).map(function(key) {return bubble_dict[key].studies;}));
+    var minval = d3.min(Object.keys(bubble_dict).map(function(key) {return bubble_dict[key].studies;}));
+    var maxsize = bubble_height / 4;
+    var minsize = bubble_height / 80;
+    var bubble_keys = Object.keys(bubble_dict);
+    for (i=0; i<bubble_keys.length; i++) {
+        var oldval = bubble_dict[bubble_keys[i]].studies;
+        nodes_bubbles.push({
+          name: bubble_keys[i],
+          val: oldval,
+          size: ((oldval - minval) / (maxval - minval) * (maxsize - minsize)) + minsize
+        });
+    }
 
-  // get largest bubble value and scale all other values appropriately
-  var maxval = d3.max(get_values(bubble_dict));
-  var minval = d3.min(get_values(bubble_dict));
-  var maxsize = bubble_height / 4;
-  var minsize = bubble_height / 80;
-  var bubble_keys = Object.keys(bubble_dict);
-  for (i=0; i<bubble_keys.length; i++) {
-      var oldval = bubble_dict[bubble_keys[i]];
-      nodes_bubbles.push({
-        name: bubble_keys[i],
-        val: oldval,
-        size: ((oldval - minval) / (maxval - minval) * (maxsize - minsize)) + minsize
-      });
-  }
+    node = vis.selectAll("circle.node")
+        .data(nodes_bubbles)
+        .style("fill", "steelblue")
+        .attr("r", function(d) { return d.size; });
 
-  node = vis.selectAll("circle.node")
-      .data(nodes_bubbles)
+    node.enter()
+      .append("circle")
+      .attr("class", "node")
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .attr("r", function(d) {return d.size; })
       .style("fill", "steelblue")
-      .attr("r", function(d) { return d.size; });
+      .call(force.drag);
 
-  node.enter()
-    .append("circle")
-    .attr("class", "node")
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", function(d) {return d.size; })
-    .style("fill", "steelblue")
-    .call(force.drag);
+    node.exit().remove();
 
-  node.exit().remove();
+    link = vis.selectAll("line.link")
+        .data(links_bubbles, function(d) { return d.target.id; });
 
-  link = vis.selectAll("line.link")
-      .data(links_bubbles, function(d) { return d.target.id; });
+    // Enter any new links.
+    link.enter()
+        .insert("line", ".node")
+        .attr("class", "link")
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
 
-  // Enter any new links.
-  link.enter()
-      .insert("line", ".node")
-      .attr("class", "link")
-      .attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-
-  force.start() 
+    force.start() 
 
 }
 
