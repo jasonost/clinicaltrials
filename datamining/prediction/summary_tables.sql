@@ -24,7 +24,12 @@ create index interventions_complex_mod_nct_id_idx on interventions_complex_mod(n
 -- create modification of sponsors to pull out universities from "other"
 create table sponsors_univ as
 select nct_id, sponsor_type, agency, 
-  case when agency like '%universit%' or agency like '%college%' or agency like '%school%' then 'Academic' else agency_class end agency_class
+  case when agency_class in ('U.S. Fed','NIH') then 'US Federal'
+       when agency like '%universit%' or 
+            agency like '%college%' or 
+            agency like '%school%' or
+            agency like '%oncology group%'
+       then 'Academic' else agency_class end agency_class
 from sponsors;
 
 -- summary of sponsors 
@@ -34,7 +39,7 @@ select nct_id,
   max(case when sponsor_type = 'Lead Sponsor' then agency_class end) agency_class,
   max(case when agency_class = 'Industry' then 'Y' else 'N' end) any_industry,
   count(*) num_sponsors
-from sponsors
+from sponsors_univ
 group by nct_id;
 
 create index sponsors_mod_nct_id_idx on sponsors_mod(nct_id);
