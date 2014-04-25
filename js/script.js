@@ -350,7 +350,6 @@ function makeBubble() {
       .style("fill", "steelblue");
 
     node.append("text")
-        .attr("class", "node")
         .attr("x", function(d) { return d.x; })
         .attr("y", function(d) { return d.y; })
         .attr("dy", ".35em")
@@ -429,14 +428,39 @@ function mouseout_bubble(d, i) {
 
 function click_bubble(d, i) {
 
-    clearArray(bubble_data);
-    node = vis.selectAll(".node")
-        .data(bubble_data);
-    node.exit().remove();
+    var clicked_bubble = this;
 
-    cond_filter = d.cond_id;
-    level += 1;
-    update(curdata);
+    d3.select("#bubble-tooltip")
+        .style("visibility", "hidden")
+
+    d3.select(clicked_bubble)
+        .select("circle")
+        .transition()
+        .duration(2000)
+        .attr("r", bubble_height)
+        .style("opacity", 0)
+        .each("end", function() {
+            clearArray(bubble_data);
+            node = vis.selectAll(".node")
+                .data(bubble_data);
+            node.exit().remove();
+
+            cond_filter = d.cond_id;
+            level += 1;
+            update(curdata);
+        });
+    d3.select(clicked_bubble)
+        .select("text")
+        .transition()
+        .duration(2000)
+        .style("font-size", function(d) { return d.size; })
+        .style("opacity", 0);
+    d3.selectAll(".node")
+        .filter(function(d) { return this != clicked_bubble; })
+        .transition()
+        .duration(10)
+        .style("opacity", 0);
+
 }
 
 function addCommas(nStr) {
