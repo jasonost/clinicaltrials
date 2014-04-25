@@ -10,6 +10,9 @@ if (headerHeight > 50) { headerHeight = 50; }
 var headerFontSize = 0.05 * windowHeight;
 if (headerFontSize > 36) { headerFontSize = 36; }
 
+var tooltipFontSize = 0.015 * windowHeight;
+if (tooltipFontSize < 8) { tooltipFontSize = 8; }
+
 var headerFontSpacing = windowWidth * 0.0025;
 if (headerFontSpacing > 3) { headerFontSpacing = 3; }
 
@@ -72,6 +75,8 @@ d3.select("#dashboard")
     .style("border", borderWidth + "px solid")
     .style("border-color", "rgb(229,150,54)")
     .style("background-color", "#fff");
+d3.select(".tooltip")
+    .style("font-size", tooltipFontSize + "px");
 
 // dictionary to look up length of mesh_id to use
 var level_length = {
@@ -93,6 +98,7 @@ var level_length = {
 // data placeholders
 var data,
     mesh,
+    reverse_mesh = {},
     intervention,
     loc,
     phase,
@@ -121,6 +127,7 @@ var bubble_width = centerWidth,
     maxRadius = 100,
     color = d3.scale.category20c(),
     node,
+    node_text,
     link,
     links_bubbles = [];
 
@@ -148,6 +155,15 @@ d3.json("vizdata/all_data.json", function(error, json) {
     phase = json.phase;
     sponsor = json.sponsors;
     stat = json.status;
+
+    // create associative array to look up mesh terms from id's
+    var mesh_keys = Object.keys(mesh);
+    for (m=0; m<mesh_keys.length; m++) {
+        var k = mesh_keys[m];
+        reverse_mesh[mesh[k].id] = mesh[k].term;
+    }
+    reverse_mesh['U'] = 'Unassigned';
+
     update(current_vals.level, current_vals.showby, current_vals.values, data);
 
 });
@@ -168,11 +184,12 @@ function update(level, showby, values, curdata) {
         // bubbles
         var conds = d3.set(data[i]['co'].map(function(c) {return mesh[c]['id'].slice(0,level_length[level])})).values();
         for (var c=0; c<conds.length; c++) {
-            if ( !(conds[c] in bubble_dict) ) {
-                bubble_dict[conds[c]] = {studies: 0, enrollment: 0};
+            var cond_term = reverse_mesh[conds[c]];
+            if ( !(cond_term in bubble_dict) ) {
+                bubble_dict[cond_term] = {studies: 0, enrollment: 0};
             }
-            bubble_dict[conds[c]].studies += 1;
-            bubble_dict[conds[c]].enrollment += enrollment;
+            bubble_dict[cond_term].studies += 1;
+            bubble_dict[cond_term].enrollment += enrollment;
         }
         // time
         if ( !(data[i]['yr'] in time_dict) ) {
@@ -253,7 +270,8 @@ function update(level, showby, values, curdata) {
         var oldval = bubble_dict[bubble_keys[i]].studies;
         bubble_data.push({
           name: bubble_keys[i],
-          val: oldval,
+          studies: bubble_dict[bubble_keys[i]].studies,
+          enrollment: bubble_dict[bubble_keys[i]].enrollment,
           size: ((oldval - minval) / (maxval - minval) * (maxsize - minsize)) + minsize
         });
     }
@@ -264,10 +282,8 @@ makebubble();
 
 function makebubble() {
 
-    node = vis.selectAll("circle.node")
-        .data(bubble_data)
-        .style("fill", "steelblue")
-        .attr("r", function(d) { return d.size; });
+    node = vis.selectAll("circle")
+        .data(bubble_data);
 
     node.enter()
       .append("circle")
@@ -276,9 +292,28 @@ function makebubble() {
       .attr("cy", function(d) { return d.y; })
       .attr("r", function(d) {return d.size; })
       .style("fill", "steelblue")
+      .on("mouseover", mouseover_bubble)
+      .on("mouseout", mouseout_bubble)
       .call(force.drag);
 
     node.exit().remove();
+
+    node_text = vis.selectAll("text")
+        .data(bubble_data);
+
+    node_text.enter()
+        .append("text")
+        .attr("class", "node")
+        .attr("x", function(d) { return d.x; })
+        .attr("y", function(d) { return d.y; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .style("font-size", function(d) { return d.size / 4; })
+        .style("opacity", function(d) { return d.size > 20 ? 1 : 0; })
+        .text(function(d) { return d.name; })
+        .call(force.drag);
+
+    node_text.exit().remove();
 
     link = vis.selectAll("line.link")
         .data(links_bubbles, function(d) { return d.target.id; });
@@ -301,16 +336,21 @@ function charge(d) {
 }
 
 function tick(e) {
-  node.each(collide(0.5));
+    node.each(collide(0.5));
+    node_text.each(collide(0.5));
 
-  node
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; });
-  
-  link.attr("x1", function(d) { return d.source.x; })
-    .attr("y1", function(d) { return d.source.y; })
-    .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; });
+    node
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+    node_text
+        .attr("x", function(d) { return d.x; })
+        .attr("y", function(d) { return d.y; });
+
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
 }
 
 function collide(alpha) {
@@ -334,3 +374,38 @@ function collide(alpha) {
     });
   };
 }
+
+function mouseover_bubble(d, i) {
+    d3.select(this)
+        .style("stroke", "#000")
+        .style("stroke-width", "3px");
+
+    d3.select("#bubble-tooltip")
+        .style("visibility", "visible")
+        .html("<span style='font-weight: bolder'>" + d.name + "</span><br/># of studies:&nbsp;" + addCommas(d.studies) + "<br/># enrolled:&nbsp;" + addCommas(d.enrollment))
+        .style("top", function () { return (d3.max([50,d3.event.pageY - 80]))+"px"})
+        .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
+}
+
+function mouseout_bubble(d, i) {
+    d3.select(this)
+        .style("stroke", "#fff")
+        .style("stroke-width", "0.5px");
+
+    d3.select("#bubble-tooltip")
+        .style("visibility", "hidden")
+}
+
+function addCommas(nStr) {
+    nStr += '';
+    var x = nStr.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+}
+
+
