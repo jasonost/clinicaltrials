@@ -431,7 +431,10 @@ function click_bubble(d, i) {
     var clicked_bubble = this;
 
     d3.select("#bubble-tooltip")
-        .style("visibility", "hidden")
+        .style("visibility", "hidden");
+    d3.select(clicked_bubble)
+        .select("text")
+        .style("opacity", 1);
 
     d3.select(clicked_bubble)
         .select("circle")
@@ -453,7 +456,7 @@ function click_bubble(d, i) {
         .select("text")
         .transition()
         .duration(2000)
-        .style("font-size", function(d) { return d.size; })
+        .style("font-size", function(d) { return d.size * 2; })
         .style("opacity", 0);
     d3.selectAll(".node")
         .filter(function(d) { return this != clicked_bubble; })
