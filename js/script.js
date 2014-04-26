@@ -302,6 +302,8 @@ function update(curdata) {
     var scale_factor = d3.min([d3.max([4, totalval / maxval]), 8]) * 0.8;
     var maxsize = bubble_height / scale_factor;
     var minsize = bubble_height / 80;
+    var bubble_scale = d3.scale.linear().domain([minval, maxval]).range([minsize, maxsize]);
+    var sum_size = d3.sum(val_array.map(function(c) {return bubble_scale(c);}));
 
     var bubble_keys = Object.keys(bubble_dict);
     clearArray(bubble_data);
@@ -312,7 +314,7 @@ function update(curdata) {
           cond_id: bubble_dict[bubble_keys[i]].cond_id,
           studies: bubble_dict[bubble_keys[i]].studies,
           enrollment: bubble_dict[bubble_keys[i]].enrollment,
-          size: ((oldval - minval) / (maxval - minval) * (maxsize - minsize)) + minsize
+          size: bubble_scale(oldval)
         });
     }
 
@@ -428,41 +430,84 @@ function mouseout_bubble(d, i) {
 
 function click_bubble(d, i) {
 
+    // get parameters to recreate bubble
     var clicked_bubble = this;
+    var clicked_circle = d3.select(clicked_bubble).select("circle");
+    var cur_fill = clicked_circle.style("fill"),
+        cur_cx = clicked_circle.attr("cx"),
+        cur_cy = clicked_circle.attr("cy"),
+        cur_r = clicked_circle.attr("r");
+    var clicked_text = d3.select(clicked_bubble).select("text");
+    var cur_x = clicked_text.attr("x"),
+        cur_y = clicked_text.attr("y"),
+        cur_fontsize = clicked_text.style("font-size"),
+        cur_text = clicked_text.text();
+
+    // recreate bubble as cicle
+    var temp_circle = vis.selectAll(".temp")
+        .data([1]);
+    temp_circle.enter()
+        .append("g")
+        .attr("class", "temp");
+    temp_circle.append("circle")
+        .attr("cx", cur_cx)
+        .attr("cy", cur_cy)
+        .attr("r", cur_r)
+        .style("fill", cur_fill);
+    temp_circle.append("text")
+        .attr("x", cur_x)
+        .attr("y", cur_y)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .style("font-size", cur_fontsize)
+        .text(cur_text);
 
     d3.select("#bubble-tooltip")
         .style("visibility", "hidden");
-    d3.select(clicked_bubble)
-        .select("text")
-        .style("opacity", 1);
 
-    d3.select(clicked_bubble)
+    // blow up the new circle and then get rid of it
+    d3.select(".temp")
         .select("circle")
         .transition()
-        .duration(2000)
+        .duration(1500)
         .attr("r", bubble_height)
+        .style("opacity", 0);
+    d3.select(".temp")
+        .select("text")
+        .transition()
+        .duration(1500)
+        .style("font-size", function(d) { return d.size * 2; })
         .style("opacity", 0)
+        .each("end", function() {
+            vis.selectAll(".temp").remove();
+        });
+
+    // disappear old bubbles and call function to replace them
+    d3.selectAll(".node")
+        .select("text")
+        .transition()
+        .duration(200)
+        .style("font-size", 0)
+        .style("opacity", 0);
+    d3.selectAll(".node")
+        .select("circle")
+        .filter(function(d) { return this != clicked_bubble; })
+        .transition()
+        .duration(200)
+        .attr("r", 0);
+    d3.select(clicked_bubble)
+        .transition()
+        .duration(201)
+        .style("opacity", "0")
         .each("end", function() {
             clearArray(bubble_data);
             node = vis.selectAll(".node")
                 .data(bubble_data);
             node.exit().remove();
-
             cond_filter = d.cond_id;
             level += 1;
             update(curdata);
         });
-    d3.select(clicked_bubble)
-        .select("text")
-        .transition()
-        .duration(2000)
-        .style("font-size", function(d) { return d.size * 2; })
-        .style("opacity", 0);
-    d3.selectAll(".node")
-        .filter(function(d) { return this != clicked_bubble; })
-        .transition()
-        .duration(10)
-        .style("opacity", 0);
 
 }
 
