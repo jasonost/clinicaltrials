@@ -35,6 +35,14 @@ body {
     font-style: italic;
 }
 
+#bubbleviz {
+    z-index: 100;
+}
+
+#extracanvas {
+    z-index: 50;
+}
+
 circle.node {
   cursor: pointer;
   stroke: #fff;
@@ -47,3 +55,18 @@ line.link {
   stroke-width: 1.5px;
 }
 
+.tooltip {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    color: white;
+    opacity: .8333;
+    background: #333;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 101;
+    visibility: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+}
