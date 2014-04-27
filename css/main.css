@@ -70,3 +70,40 @@ line.link {
     white-space: nowrap;
     pointer-events: none;
 }
+
+/* view finder */
+
+#chartFinder svg {
+  display: block;
+  margin: auto;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+/* Histogram */
+
+#chartContainer svg {
+  display: block;
+  margin: auto;
+}
+

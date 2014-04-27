@@ -148,6 +148,39 @@ var vis = d3.select("#bubbleviz").append("svg")
     .attr("height", bubble_height)
     .attr("class", "bubble");
 
+//View Finder vars
+//view finder based on: http://bl.ocks.org/mbostock/1667367
+
+var time_view = [],
+    date_range = [],
+    time_select_margin = {top: 0, right: 0, bottom: 0, left: 0},
+    time_select_margin2 = {top: 0, right: 0, bottom: 20, left: 0},
+    time_select_width = ((document.getElementById("options").offsetWidth) * 0.85) - time_select_margin.left - time_select_margin.right, //200 - margin.left - margin.right,
+    time_select_height = ((document.getElementById("options").offsetWidth) * 0.25) - time_select_margin.top - time_select_margin.bottom, //100 - margin.top - margin.bottom,
+    time_select_height2 = ((document.getElementById("options").offsetWidth) * 0.25) - time_select_margin2.top - time_select_margin2.bottom; //100 - margin2.top - margin2.bottom;
+
+var parseDate = d3.time.format("%Y").parse;
+
+var time_select_x = d3.time.scale().range([0, time_select_width]),
+    time_select_x2 = d3.time.scale().range([0, time_select_width]),
+    time_select_y = d3.scale.linear().range([time_select_height, 0]),
+    time_select_y2 = d3.scale.linear().range([time_select_height2, 0]);
+
+var time_select_xAxis = d3.svg.axis().scale(time_select_x).orient("bottom"),
+    time_select_xAxis2 = d3.svg.axis().scale(time_select_x2).orient("bottom"),
+    time_select_yAxis = d3.svg.axis().scale(time_select_y).orient("left");
+
+var brush = d3.svg.brush()
+    .x(time_select_x2)
+    .on("brushend", brushed);
+
+var svg = d3.select("#chartFinder").append("svg")
+    .attr("width", time_select_width + time_select_margin.left + time_select_margin.right)
+    .attr("height", time_select_height + time_select_margin.top + time_select_margin.bottom);
+
+var histosvg = dimple.newSvg("#chartHisto", '80%', '33%'),
+    histo;
+
 // load data
 d3.json("vizdata/all_data.json", function(error, json) {
     if (error) return console.warn(error);
@@ -169,6 +202,9 @@ d3.json("vizdata/all_data.json", function(error, json) {
     reverse_mesh['U'] = 'Unassigned';
 
     update(curdata);
+    makeBubble();
+    makeviewfinder();
+    histo = makehisto();
 
 });
 
@@ -189,8 +225,8 @@ function update(dataset) {
     }
     if ( time_filter.length > 0 ) {
         var time_series = '';
-        for (var t=+time_series[0]; t<+time_series[1]+1; t++ ) {
-            if ( time_series.length > 0 ) {
+        for (var t=+time_filter[0]; t<+time_filter[1]+1; t++ ) {
+            if ( time_filter.length > 0 ) {
                 time_series += "," + t;
             } else {
                 time_series += t;
@@ -205,6 +241,7 @@ function update(dataset) {
     if ( filter_test.length == 0 ) {
         filter_test = "1==1";
     }
+    console.log(filter_test);
 
     // create dictionaries with raw counts
     var bubble_dict = {},
@@ -329,7 +366,17 @@ function update(dataset) {
         });
     }
 
-makeBubble();
+    clearArray(time_view);
+    time_data.forEach(function(d) {
+       if (parseInt(d.name)>1998 && parseInt(d.name)<2014) {
+            time_view.push({"years":d.name, "studies": d.studies});
+        }
+    });
+
+    time_view.forEach(function(d) {
+        d.years = parseDate(String(d.years));
+    });
+
 
 }
 
@@ -365,10 +412,6 @@ function makeBubble() {
     node.append("text")
         .attr("transform", function(d) { 
             return "translate(" + d.x + ")"; })
-        .attr("y", function(d) { 
-            var numlines = splitLines(d.name, 20).length;
-            return d.y - (numlines * (d.size / 6)); 
-        })
         .style("font-size", function(d) { return d.size / 4; })
         .style("opacity", function(d) { return d.size > 30 ? 1 : 0; })
         .each(function(d) {
@@ -385,6 +428,98 @@ function makeBubble() {
     node.exit().remove();
 
     force.start()
+
+}
+
+function makeviewfinder() {
+
+    var xvals = [];
+    var yvals = [];
+    time_view.forEach(function(d) {
+        xvals.push(d.years);
+        yvals.push(d.studies);
+    });
+
+    time_select_x.domain(d3.extent(xvals));
+    time_select_y.domain([0, d3.max(yvals)]);
+    time_select_x2.domain(time_select_x.domain());
+    time_select_y2.domain(time_select_y.domain());
+
+    d3.select("#chartFinder")
+        .select("svg")
+        .selectAll(".context").remove();
+
+    var area2 = d3.svg.area()
+        .interpolate("monotone")
+        .x(function(d) { return time_select_x2(d.years); })
+        .y0(time_select_height2)
+        .y1(function(d) { return time_select_y2(d.studies); });
+
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .attr("class", "context")
+      .append("rect")
+        .attr("width", time_select_width)
+        .attr("height", time_select_height);
+
+    var context = svg.append("g")
+        .attr("class", "context")
+        .attr("transform", "translate(" + time_select_margin2.left + "," + time_select_margin2.top + ")");
+
+    context.append("path")
+      .datum(time_view)
+      .attr("class", "area")
+      .attr("d", area2);
+
+    context.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + time_select_height2 + ")")
+      .call(time_select_xAxis2);
+
+    context.append("g")
+      .attr("class", "x brush")
+      .call(brush)
+    .selectAll("rect")
+      .attr("y", -6)
+      .attr("height", time_select_height2 + 7); 
+
+}
+
+//function for making histogram
+function makehisto() {
+
+    time_new = [];
+    time_data.forEach(function(d) {
+        if (parseInt(d.name)>1998 && parseInt(d.name)<2014) {
+            time_new.push({"years":parseInt(d.name), "studies": d.studies});
+        }
+    });
+
+    // var maxY = d3.max(time_new.map(function(item) {return item.studies;}));
+
+    var myChart = new dimple.chart(histosvg, time_new);
+    myChart.setBounds('20%', '30%', '75%', '30%');
+    var x = myChart.addCategoryAxis("x", "years");
+    var y = myChart.addMeasureAxis("y", "studies");
+    // y.overrideMax = maxY;
+    myChart.addSeries("Studies", dimple.plot.bar);
+
+    myChart.draw(1500);
+    cleanAxis(y, 2);
+    return myChart;
+}
+
+function brushed() {
+    time_select_x.domain(brush.empty() ? time_select_x2.domain() : brush.extent());
+    clearArray(date_range);
+    date_range = [parseInt(String(brush.extent()[0]).slice(11,15)),parseInt(String(brush.extent()[1]).slice(11,15))];
+    time_filter[0] = date_range[0];
+    time_filter[1] = date_range[1];
+
+    d3.select(".node")
+        .select("circle")
+        .attr("class", "clicked");
+    disappearBubbles();
 
 }
 
@@ -455,9 +590,14 @@ function mouseout_bubble(d, i) {
 
 function click_bubble(d, i) {
 
+    // udpate total variables
+    cond_filter = d.cond_id;
+    level += 1;
+
     // get parameters to recreate bubble
     var clicked_bubble = this;
     var clicked_circle = d3.select(clicked_bubble).select("circle");
+    clicked_circle.attr("class", "clicked");
 /*
     var cur_fill = clicked_circle.style("fill"),
         cur_cx = clicked_circle.attr("cx"),
@@ -485,6 +625,11 @@ function click_bubble(d, i) {
             d3.select(".temp").remove();
         });
 */
+    disappearBubbles();
+    makeviewfinder();
+}
+
+function disappearBubbles() {
     // disappear old bubbles and call function to replace them
     d3.select("#bubble-tooltip")
         .style("visibility", "hidden");
@@ -497,24 +642,28 @@ function click_bubble(d, i) {
         .style("opacity", 0);
     d3.selectAll(".node")
         .select("circle")
-        .filter(function(d) { return this != clicked_bubble; })
         .transition()
         .duration(200)
         .attr("r", 0);
-    d3.select(clicked_bubble)
-        .transition()
-        .duration(201)
-        .style("opacity", "0")
-        .each("end", function() {
-            clearArray(bubble_data);
-            node = vis.selectAll(".node")
-                .data(bubble_data);
-            node.exit().remove();
-            cond_filter = d.cond_id;
-            level += 1;
-            update(curdata);
-        });
 
+    clearArray(bubble_data);
+    console.log(bubble_data);
+    node = vis.selectAll(".node")
+        .data(bubble_data);
+    node.exit().remove();
+    update(curdata);
+    makeBubble();
+
+    var new_date = [];
+    time_view.forEach(function(d) {
+        temp = parseInt(String(d["years"]).slice(11,15));
+        if (temp >= date_range[0] && temp <= date_range[1]) {   //date_range.indexOf(temp) > -1
+            new_date.push({"years":temp, "studies": d.studies});
+    }
+    });
+
+    histo.data = new_date;
+    histo.draw(1000);
 }
 
 function addCommas(nStr) {
@@ -561,3 +710,31 @@ function clearArray(arr) {
     };
 }
 
+// function for cleaning up y axis
+// from: http://stackoverflow.com/questions/23305230/how-do-you-reduce-the-number-of-y-axis-ticks-in-dimple-js
+// Pass in an axis object and an interval.
+ var cleanAxis = function (axis, oneInEvery) {
+     // This should have been called after draw, otherwise do nothing
+     if (axis.shapes.length > 0) {
+         // Leave the first label
+         var del = false;
+         // If there is an interval set
+         if (oneInEvery > 1) {
+             // Operate on all the axis text
+             axis.shapes.selectAll("text")
+             .each(function (d) {
+                 // Remove all but the nth label
+                 if (del % oneInEvery !== 0) {
+                     this.remove();
+                     // Find the corresponding tick line and remove
+                     axis.shapes.selectAll("line").each(function (d2) {
+                         if (d === d2) {
+                             this.remove();
+                         }
+                     });
+                 }
+                 del += 1;
+             });
+         }
+     }
+ };
