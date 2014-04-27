@@ -60,12 +60,16 @@ d3.selectAll(".side-div")
     .style("border-color", "rgb(229,150,54)")
     .style("background-color", "#fff");
 d3.select("#sidebar")
-    .style("float", "left")
-d3.select("#bubbleviz")
+    .style("float", "left");
+d3.select("#mainsection")
     .style("float", "left")
     .style("margin-top", topMargin + "px")
     .style("width", centerWidth + "px")
     .style("height", mainHeight + "px");
+d3.selectAll("#bubbleviz,#extracanvas")
+    .style("width", "100%")
+    .style("height", "100%")
+    .style("position", "absolute");
 d3.select("#dashboard")
     .style("float", "left")
     .style("width", rightWidth + "px")
@@ -136,7 +140,8 @@ var force = d3.layout.force()
     .nodes(bubble_data)
     .size([bubble_width, bubble_height])
     .on("tick", tick)
-    .charge(charge);
+    .charge(charge)
+    .gravity(.11);
 
 var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
@@ -168,18 +173,18 @@ d3.json("vizdata/all_data.json", function(error, json) {
 });
 
 // procedure to update all the chart data objects
-function update(curdata) {
+function update(dataset) {
 
-    // write data filter test to identify records of interest and generate title text
+    // write data filter test to identify records of interest 
     var filter_test = '';
     if ( cond_filter.length > 0 ) {
-        filter_test += "getCond(curdata[cur_length]['co']).has('" + cond_filter + "') > 0";
+        filter_test += "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
     }
     if ( intervention_filter.length > 0 ) {
         if ( filter_test.length > 0 ) {
-            filter_test += " && curdata[cur_length]['iv'] == '" + intervention_filter + "'";
+            filter_test += " && dataset[cur_length]['iv'] == '" + intervention_filter + "'";
         } else {
-            filter_test += "curdata[cur_length]['iv'] == '" + intervention_filter + "'";
+            filter_test += "dataset[cur_length]['iv'] == '" + intervention_filter + "'";
         }
     }
     if ( time_filter.length > 0 ) {
@@ -192,9 +197,9 @@ function update(curdata) {
             }
         }
         if ( filter_test.length > 0 ) {
-            filter_test += " && [" + time_series + "].indexOf(curdata[cur_length]['yr']) >= 0";
+            filter_test += " && [" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
         } else {
-            filter_test += "[" + time_series + "].indexOf(curdata[cur_length]['yr']) >= 0";
+            filter_test += "[" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
         }
     }
     if ( filter_test.length == 0 ) {
@@ -209,17 +214,21 @@ function update(curdata) {
         phase_dict = {},
         location_dict = {},
         intervention_dict = {};
-    var cur_length = curdata.length;
+    var cur_length = dataset.length;
+    var istrue = 1==1;
     while (cur_length--) {
         if ( eval(filter_test) ) {
-            var enrollment = curdata[cur_length]['en'];
+            var enrollment = dataset[cur_length]['en'];
             // bubbles
-            var conds = d3.set(curdata[cur_length]['co']
+            var conds = d3.set(dataset[cur_length]['co']
                 .map(function(c) {
                     if ( level == 0 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
                         return mesh[c]['id'].slice(0,level_length[level]);
                     }
-                })).values();
+                    return;
+                }))
+                .values()
+                .filter(function(t) { return t !== "undefined"});
             for (var c=0; c<conds.length; c++) {
                 var cond_term = reverse_mesh[conds[c]];
                 if ( !(cond_term in bubble_dict) ) {
@@ -229,17 +238,17 @@ function update(curdata) {
                 bubble_dict[cond_term].enrollment += enrollment;
             }
             // time
-            if ( !(curdata[cur_length]['yr'] in time_dict) ) {
-                time_dict[curdata[cur_length]['yr']] = {studies: 0, enrollment: 0};
+            if ( !(dataset[cur_length]['yr'] in time_dict) ) {
+                time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
             }
-            time_dict[curdata[cur_length]['yr']].studies += 1;
-            time_dict[curdata[cur_length]['yr']].enrollment += enrollment;
+            time_dict[dataset[cur_length]['yr']].studies += 1;
+            time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
             // sponsors
-            var sponsor_name = sponsor[curdata[cur_length]['sp']];
+            var sponsor_name = sponsor[dataset[cur_length]['sp']];
             if ( !(sponsor_name in sponsor_dict) ) {
                 sponsor_dict[sponsor_name] = {industry: {studies: 0, enrollment: 0}, no_industry: {studies: 0, enrollment: 0}};
             }
-            if ( curdata[cur_length]['in'] == 1) {
+            if ( dataset[cur_length]['in'] == 1) {
                 sponsor_dict[sponsor_name]['industry'].studies += 1;
                 sponsor_dict[sponsor_name]['industry'].enrollment += enrollment;
             } else {
@@ -247,22 +256,22 @@ function update(curdata) {
                 sponsor_dict[sponsor_name]['no_industry'].enrollment += enrollment;
             }
             // status
-            var status_name = stat[curdata[cur_length]['st']];
+            var status_name = stat[dataset[cur_length]['st']];
             if ( !(status_name in status_dict) ) {
                 status_dict[status_name] = {studies: 0, enrollment: 0};
             }
             status_dict[status_name].studies += 1;
             status_dict[status_name].enrollment += enrollment;
             // phase
-            var phase_name = phase[curdata[cur_length]['ph']]
+            var phase_name = phase[dataset[cur_length]['ph']]
             if ( !(phase_name in phase_dict) ) {
                 phase_dict[phase_name] = {studies: 0, enrollment: 0};
             }
             phase_dict[phase_name].studies += 1;
             phase_dict[phase_name].enrollment += enrollment;
             // location
-            for (var l=0; l<curdata[cur_length]['lo'].length; l++) {
-                var loc_name = loc[curdata[cur_length]['lo'][l]];
+            for (var l=0; l<dataset[cur_length]['lo'].length; l++) {
+                var loc_name = loc[dataset[cur_length]['lo'][l]];
                 if ( !(loc_name in location_dict) ) {
                     location_dict[loc_name] = {studies: 0, enrollment: 0};
                 }
@@ -270,8 +279,8 @@ function update(curdata) {
                 location_dict[loc_name].enrollment += enrollment;
             }
             // intervention
-            for (var v=0; v<curdata[cur_length]['iv'].length; v++) {
-                var iv_name = intervention[curdata[cur_length]['iv'][v]];
+            for (var v=0; v<dataset[cur_length]['iv'].length; v++) {
+                var iv_name = intervention[dataset[cur_length]['iv'][v]];
                 if ( !(iv_name in intervention_dict) ) {
                     intervention_dict[iv_name] = {studies: 0, enrollment: 0};
                 }
@@ -303,7 +312,9 @@ function update(curdata) {
     var maxsize = bubble_height / scale_factor;
     var minsize = bubble_height / 80;
     var bubble_scale = d3.scale.linear().domain([minval, maxval]).range([minsize, maxsize]);
-    var sum_size = d3.sum(val_array.map(function(c) {return bubble_scale(c);}));
+    var sum_size = d3.sum(val_array.map(function(c) {return 3.14159 * Math.pow(bubble_scale(c), 2);}));
+    var canv_size = bubble_height * bubble_width;
+    var size_scale = Math.pow((canv_size * 0.33) / sum_size, 0.5);
 
     var bubble_keys = Object.keys(bubble_dict);
     clearArray(bubble_data);
@@ -314,7 +325,7 @@ function update(curdata) {
           cond_id: bubble_dict[bubble_keys[i]].cond_id,
           studies: bubble_dict[bubble_keys[i]].studies,
           enrollment: bubble_dict[bubble_keys[i]].enrollment,
-          size: bubble_scale(oldval)
+          size: bubble_scale(oldval) * size_scale
         });
     }
 
@@ -352,13 +363,24 @@ function makeBubble() {
       .style("fill", "steelblue");
 
     node.append("text")
-        .attr("x", function(d) { return d.x; })
-        .attr("y", function(d) { return d.y; })
-        .attr("dy", ".35em")
-        .attr("text-anchor", "middle")
+        .attr("transform", function(d) { 
+            return "translate(" + d.x + ")"; })
+        .attr("y", function(d) { 
+            var numlines = splitLines(d.name, 20).length;
+            return d.y - (numlines * (d.size / 6)); 
+        })
         .style("font-size", function(d) { return d.size / 4; })
         .style("opacity", function(d) { return d.size > 30 ? 1 : 0; })
-        .text(function(d) { return d.name; });
+        .each(function(d) {
+            var strings = splitLines(d.name, 20);
+            for (var s=0; s<strings.length; s++) {
+                d3.select(this).append("tspan")
+                    .attr("x", 0)
+                    .attr("dy", "1.2em")
+                    .attr("text-anchor", "middle")
+                    .text(strings[s]);
+            }
+        });
 
     node.exit().remove();
 
@@ -378,8 +400,11 @@ function tick(e) {
         .attr("cy", function(d) { return d.y; });
 
     node.selectAll("text")
-        .attr("x", function(d) { return d.x; })
-        .attr("y", function(d) { return d.y; });
+        .attr("transform", function(d) { return "translate(" + d.x + ")"; })
+        .attr("y", function(d) { 
+            var numlines = splitLines(d.name, 20).length;
+            return d.y - (numlines * (d.size / 6)); 
+        });
 
 }
 
@@ -433,56 +458,37 @@ function click_bubble(d, i) {
     // get parameters to recreate bubble
     var clicked_bubble = this;
     var clicked_circle = d3.select(clicked_bubble).select("circle");
+/*
     var cur_fill = clicked_circle.style("fill"),
         cur_cx = clicked_circle.attr("cx"),
         cur_cy = clicked_circle.attr("cy"),
         cur_r = clicked_circle.attr("r");
-    var clicked_text = d3.select(clicked_bubble).select("text");
-    var cur_x = clicked_text.attr("x"),
-        cur_y = clicked_text.attr("y"),
-        cur_fontsize = clicked_text.style("font-size"),
-        cur_text = clicked_text.text();
 
     // recreate bubble as cicle
-    var temp_circle = vis.selectAll(".temp")
-        .data([1]);
-    temp_circle.enter()
-        .append("g")
+    vis2 = d3.select("#extracanvas").append("svg")
+        .attr("width", bubble_width)
+        .attr("height", bubble_height)
         .attr("class", "temp");
-    temp_circle.append("circle")
+    vis2.append("circle")
         .attr("cx", cur_cx)
         .attr("cy", cur_cy)
         .attr("r", cur_r)
         .style("fill", cur_fill);
-    temp_circle.append("text")
-        .attr("x", cur_x)
-        .attr("y", cur_y)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "middle")
-        .style("font-size", cur_fontsize)
-        .text(cur_text);
-
-    d3.select("#bubble-tooltip")
-        .style("visibility", "hidden");
 
     // blow up the new circle and then get rid of it
-    d3.select(".temp")
-        .select("circle")
+    d3.select(".temp circle")
         .transition()
         .duration(1500)
         .attr("r", bubble_height)
-        .style("opacity", 0);
-    d3.select(".temp")
-        .select("text")
-        .transition()
-        .duration(1500)
-        .style("font-size", function(d) { return d.size * 2; })
         .style("opacity", 0)
         .each("end", function() {
-            vis.selectAll(".temp").remove();
+            d3.select(".temp").remove();
         });
-
+*/
     // disappear old bubbles and call function to replace them
+    d3.select("#bubble-tooltip")
+        .style("visibility", "hidden");
+
     d3.selectAll(".node")
         .select("text")
         .transition()
@@ -521,6 +527,32 @@ function addCommas(nStr) {
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
+}
+
+function splitLines(txt, maxchars) {
+    var words = txt.split(" ");
+    var output = [];
+    var temp_output = "";
+    var num_words = words.length;
+    for (var w=0; w<num_words; w++) {
+        var add_word = words.shift();
+        if (temp_output.length > 0) {
+            if ((temp_output + ' ' + add_word).length > maxchars) {
+                output.push(temp_output);
+                temp_output = add_word;
+            } else {
+                temp_output += ' ' + add_word;
+            }
+        } else if (add_word.length > maxchars) {
+            output.push(add_word);
+        } else {
+            temp_output = add_word;
+        }
+    }
+    if (temp_output.length > 0) {
+        output.push(temp_output);
+    }
+    return output;
 }
 
 function clearArray(arr) {

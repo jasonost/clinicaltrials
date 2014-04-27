@@ -35,6 +35,14 @@ body {
     font-style: italic;
 }
 
+#bubbleviz {
+    z-index: 100;
+}
+
+#extracanvas {
+    z-index: 50;
+}
+
 circle.node {
   cursor: pointer;
   stroke: #fff;
@@ -57,7 +65,7 @@ line.link {
     border: 1px solid lightgrey;
     border-radius: 5px;
     position: absolute;
-    z-index: 10;
+    z-index: 101;
     visibility: hidden;
     white-space: nowrap;
     pointer-events: none;
