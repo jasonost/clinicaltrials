@@ -93,21 +93,111 @@ d3.select(".tooltip")
 
 // add selection buttons to options frame
 
-var button_showby = d3.select("#options").append("svg")
-    .attr("width", (leftWidth * 2 / 3) + "px")
-    .attr("height", (optionsHeight / 4) + "px");
-var button_showby_cond = button_showby.append("g")
-    .attr("class", "option_button")
-    .attr("transform", "translate(" + (leftWidth / 6) + "," + (optionsHeight / 8) + ")")
-    .append("rect")
-    .attr("class", "button_showby_cond")
-   .style("background-color", "#ddd");
-button_showby_cond.append("text")
-    .attr("class", "button_showby_cond")
-    .attr("transform", "translate(" (leftWidth / 6) + "," (optionsHeight / 16) + ")")
+var buttons = d3.select("#options").append("svg")
+    .attr("width", leftWidth + "px")
+    .attr("height", (optionsHeight / 2 + 3) + "px");
+
+buttons.append("text")
+    .attr("width", leftWidth + "px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 8) + "px")
-    .text("By Condition");
+    .style("font-size", (optionsHeight / 16) + "px")
+    .style("font-weight", "700")
+    .text("Show bubbles as");
+var button_showby = buttons.append("g")
+    .attr("class", "option_button")
+    .attr("transform", "translate(0," + (optionsHeight / 8) + ")");
+button_showby.append("rect")
+    .attr("class", "button_showby_cond")
+    .attr("width", (leftWidth / 2 - 6) + "px")
+    .attr("x", "3px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .style("stroke", "rgb(229,150,54)")
+    .style("stroke-opacity", 1)
+    .style("stroke-width", "3px")
+    .style("fill", "#444");
+button_showby.append("text")
+    .attr("class", "button_showby_cond")
+    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dx", (leftWidth / 4) + "px")
+    .attr("text-anchor", "middle")
+    .style("fill", "#fff")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 18) + "px")
+    .text("conditions");
+button_showby.append("rect")
+    .attr("class", "button_showby_inv")
+    .attr("x", (leftWidth / 2 + 3) + "px")
+    .attr("width", (leftWidth / 2 - 6) + "px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .style("stroke", "rgb(229,150,54)")
+    .style("stroke-opacity", 0)
+    .style("stroke-width", "3px")
+    .style("fill", "#ddd");
+button_showby.append("text")
+    .attr("class", "button_showby_inv")
+    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dx", (leftWidth * 3 / 4) + "px")
+    .attr("text-anchor", "middle")
+    .style("fill", "#000")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 18) + "px")
+    .text("interventions");
+
+buttons.append("text")
+    .attr("width", leftWidth + "px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .attr("dy", (optionsHeight * (43/128)) + "px")
+    .attr("dx", (leftWidth / 32) + "px")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 16) + "px")
+    .style("font-weight", "700")
+    .text("Count by");
+var button_sizeby = buttons.append("g")
+    .attr("class", "option_button")
+    .attr("transform", "translate(0," + (optionsHeight * 3 / 8) + ")");
+button_sizeby.append("rect")
+    .attr("class", "button_sizeby_studies")
+    .attr("width", (leftWidth / 2 - 6) + "px")
+    .attr("x", "3px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .style("stroke", "rgb(229,150,54)")
+    .style("stroke-opacity", 1)
+    .style("stroke-width", "3px")
+    .style("fill", "#444");
+button_sizeby.append("text")
+    .attr("class", "button_sizeby_studies")
+    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dx", (leftWidth / 4) + "px")
+    .attr("text-anchor", "middle")
+    .style("fill", "#fff")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 18) + "px")
+    .text("studies");
+button_sizeby.append("rect")
+    .attr("class", "button_sizeby_enroll")
+    .attr("x", (leftWidth / 2 + 3) + "px")
+    .attr("width", (leftWidth / 2 - 6) + "px")
+    .attr("height", (optionsHeight / 8) + "px")
+    .style("stroke", "rgb(229,150,54)")
+    .style("stroke-opacity", 0)
+    .style("stroke-width", "3px")
+    .style("fill", "#ddd");
+button_sizeby.append("text")
+    .attr("class", "button_sizeby_enroll")
+    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dx", (leftWidth * 3 / 4) + "px")
+    .attr("text-anchor", "middle")
+    .style("fill", "#000")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 18) + "px")
+    .text("enrollment");
+
+var click_buttons = d3.selectAll("#options .option_button")
+    .selectAll("rect,text")
+    .on("click", clickButton);
 
 
 
@@ -461,14 +551,14 @@ function getCond(cond_list) {
 function makeBubble() {
 
     node = vis.selectAll(".node")
-        .datum(bubble_data);
+        .data(bubble_data);
 
     node.enter()
       .append("g")
       .attr("class", "node")
-      .on("mouseover", mouseover_bubble)
-      .on("mouseout", mouseout_bubble)
-      .on("click", click_bubble)
+      .on("mouseover", mouseoverBubble)
+      .on("mouseout", mouseoutBubble)
+      .on("click", clickBubble)
       .call(force.drag);
 
     node.append("circle")
@@ -648,7 +738,50 @@ function collide(alpha) {
 
 ****************************************************/
 
-function mouseover_bubble(d, i) {
+function clickButton(d, i) {
+    var button_class = d3.select(this).attr("class");
+    var button_type = button_class.slice(7,13);
+    var button_value = button_class.slice(14);
+
+    function highlightButton(butclass) {
+        d3.select("rect." + butclass)
+            .style("stroke-opacity", 1)
+            .style("fill", "#444");
+        d3.select("text." + butclass)
+            .style("fill", "#fff");
+    }
+
+    function lowlightButton(butclass) {
+        d3.select("rect." + butclass)
+            .style("stroke-opacity", 0)
+            .style("fill", "#ddd");
+        d3.select("text." + butclass)
+            .style("fill", "#000");
+    }
+
+    var other_value;
+    if ( button_type == 'showby' ) {
+        showby = button_value;
+        if ( button_value == 'cond' ) {
+            other_value = 'inv';
+        } else {
+            other_value = 'cond';
+        }
+    } else {
+        values = button_value;
+        if ( button_value == 'studies' ) {
+            other_value = 'enroll';
+        } else {
+            other_value = 'studies';
+        }
+    }
+
+    highlightButton('button_' + button_type + '_' + button_value);
+    lowlightButton('button_' + button_type + '_' + other_value);
+
+}
+
+function mouseoverBubble(d, i) {
     d3.select(this)
         .select("circle")
         .style("stroke", "#000")
@@ -661,7 +794,7 @@ function mouseover_bubble(d, i) {
         .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
 }
 
-function mouseout_bubble(d, i) {
+function mouseoutBubble(d, i) {
     d3.select(this)
         .select("circle")
         .style("stroke", "#fff")
@@ -671,7 +804,7 @@ function mouseout_bubble(d, i) {
         .style("visibility", "hidden")
 }
 
-function click_bubble(d, i) {
+function clickBubble(d, i) {
 
     // udpate total variables
     cond_filter = d.cond_id;
