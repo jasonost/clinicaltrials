@@ -1,3 +1,9 @@
+/****************************************************
+
+    SETTING UP STYLES AND DIVS
+
+****************************************************/
+
 // setting css for elements
 var windowHeight = window.innerHeight - 8;
 var windowWidth = window.innerWidth - 8;
@@ -39,6 +45,7 @@ d3.select("#wrapper")
     .style("height", windowHeight + "px")
     .style("width", windowWidth + "px")
     .style("margin", "4px");
+
 d3.select("#header")
     .style("font-size", headerFontSize + "px")
     .style("letter-spacing", headerFontSpacing + "px")
@@ -48,6 +55,7 @@ d3.select("#header")
     .style("background-color", "rgb(68,68,68)")
     .style("padding-left", "1%")
     .style("padding-right", "3%");
+
 d3.select("#options")
     .style("height", optionsHeight + "px");
 d3.select("#navigator")
@@ -61,14 +69,15 @@ d3.selectAll(".side-div")
     .style("background-color", "#fff");
 d3.select("#sidebar")
     .style("float", "left");
+
 d3.select("#mainsection")
     .style("float", "left")
     .style("margin-top", topMargin + "px")
     .style("width", centerWidth + "px")
     .style("height", mainHeight + "px");
 d3.selectAll("#bubbleviz,#extracanvas")
-    .style("width", "100%")
-    .style("height", "100%")
+    .style("width", centerWidth + "px")
+    .style("height", mainHeight + "px")
     .style("position", "absolute");
 d3.select("#dashboard")
     .style("float", "left")
@@ -81,6 +90,35 @@ d3.select("#dashboard")
     .style("background-color", "#fff");
 d3.select(".tooltip")
     .style("font-size", tooltipFontSize + "px");
+
+// add selection buttons to options frame
+
+var button_showby = d3.select("#options").append("svg")
+    .attr("width", (leftWidth * 2 / 3) + "px")
+    .attr("height", (optionsHeight / 4) + "px");
+var button_showby_cond = button_showby.append("g")
+    .attr("class", "option_button")
+    .attr("transform", "translate(" + (leftWidth / 6) + "," + (optionsHeight / 8) + ")")
+    .append("rect")
+    .attr("class", "button_showby_cond")
+   .style("background-color", "#ddd");
+button_showby_cond.append("text")
+    .attr("class", "button_showby_cond")
+    .attr("transform", "translate(" (leftWidth / 6) + "," (optionsHeight / 16) + ")")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-size", (optionsHeight / 8) + "px")
+    .text("By Condition");
+
+
+
+
+
+
+/****************************************************
+
+    SETTING GLOBAL VARIABLES
+
+****************************************************/
 
 // dictionary to look up length of mesh_id to use
 var level_length = {
@@ -180,6 +218,21 @@ var svg = d3.select("#chartFinder").append("svg")
 
 var histosvg = dimple.newSvg("#chartHisto", '80%', '33%'),
     histo;
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    LOADING DATA AND DOING FIRST UPDATE
+
+****************************************************/
 
 // load data
 d3.json("vizdata/all_data.json", function(error, json) {
@@ -390,10 +443,25 @@ function getCond(cond_list) {
     return d3.set(cond_array);
 }
 
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    CHART DRAWING FUNCTIONS
+
+****************************************************/
+
 function makeBubble() {
 
     node = vis.selectAll(".node")
-        .data(bubble_data);
+        .datum(bubble_data);
 
     node.enter()
       .append("g")
@@ -565,6 +633,21 @@ function collide(alpha) {
   };
 }
 
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    CHART INTERACTION FUNCTIONS
+
+****************************************************/
+
 function mouseover_bubble(d, i) {
     d3.select(this)
         .select("circle")
@@ -665,6 +748,21 @@ function disappearBubbles() {
     histo.data = new_date;
     histo.draw(1000);
 }
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    HELPER AND FORMATTING FUNCTIONS
+
+****************************************************/
 
 function addCommas(nStr) {
     nStr += '';
