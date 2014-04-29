@@ -16,6 +16,12 @@ if (headerHeight > 50) { headerHeight = 50; }
 var headerFontSize = 0.05 * windowHeight;
 if (headerFontSize > 36) { headerFontSize = 36; }
 
+var titleHeight = 0.06 * windowHeight;
+if (titleHeight > 43) { titleHeight = 43; }
+
+var titleFontSize = 0.035 * windowHeight;
+if (titleFontSize > 26) { titleFontSize = 26; }
+
 var tooltipFontSize = 0.015 * windowHeight;
 if (tooltipFontSize < 8) { tooltipFontSize = 8; }
 
@@ -28,18 +34,17 @@ if (topMargin > 10) { topMargin = 10; }
 var divPadding = 0.01 * windowHeight;
 if (divPadding > 8) { divPadding = 8; }
 
-var leftWidth = 0.2 * windowWidth - (2 * divPadding);
-if (leftWidth > 240 - (2 * divPadding)) { leftWidth = 240 - (2 * divPadding); }
+var leftWidth = 0.2 * windowWidth - (2 * divPadding) - (2 * borderWidth);
+if (leftWidth > 240 - (2 * divPadding) - (2 * borderWidth)) { leftWidth = 240 - (2 * divPadding) - (2 * borderWidth); }
 
-var rightWidth = 0.3 * windowWidth - (2 * divPadding);
-if (rightWidth > 400 - (2 * divPadding)) { rightWidth = 400 - (2 * divPadding); }
+var rightWidth = 0.3 * windowWidth;
+if (rightWidth > 400) { rightWidth = 400; }
 
-var centerWidth = windowWidth - leftWidth - rightWidth - (4 * divPadding) - (4 * borderWidth);
+var centerWidth = windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth;
 
-var mainHeight = windowHeight - headerHeight - topMargin;
-var dashboardHeight = mainHeight - (2 * divPadding) - (2 * borderWidth);
-var optionsHeight = (mainHeight * 0.4) - (2 * divPadding) - (2 * borderWidth);
-var navigatorHeight = mainHeight - optionsHeight - topMargin - (4 * divPadding) - (4 * borderWidth);
+var mainHeight = windowHeight - headerHeight - topMargin - titleHeight;
+var optionsHeight = ((mainHeight + titleHeight) * 0.4) - (2 * divPadding) - (2 * borderWidth);
+var navigatorHeight = (mainHeight + titleHeight) - optionsHeight - topMargin - (4 * divPadding) - (4 * borderWidth);
 
 d3.select("#wrapper")
     .style("height", windowHeight + "px")
@@ -56,10 +61,8 @@ d3.select("#header")
     .style("padding-left", "1%")
     .style("padding-right", "3%");
 
-d3.select("#options")
-    .style("height", optionsHeight + "px");
-d3.select("#navigator")
-    .style("height", navigatorHeight + "px");
+d3.select("#sidebar")
+    .style("float", "left");
 d3.selectAll(".side-div")
     .style("margin-top", topMargin + "px")
     .style("padding", divPadding + "px")
@@ -67,33 +70,42 @@ d3.selectAll(".side-div")
     .style("border", borderWidth + "px solid")
     .style("border-color", "rgb(229,150,54)")
     .style("background-color", "#fff");
-d3.select("#sidebar")
-    .style("float", "left");
+
+d3.select("#options")
+    .style("height", optionsHeight + "px");
+
+d3.select("#navigator")
+    .style("height", navigatorHeight + "px")
+    .style("font-size", (navigatorHeight / 24) + "px");
 
 d3.select("#mainsection")
     .style("float", "left")
     .style("margin-top", topMargin + "px")
-    .style("width", centerWidth + "px")
-    .style("height", mainHeight + "px");
-d3.selectAll("#bubbleviz,#extracanvas")
+    .style("width", (centerWidth + rightWidth) + "px")
+    .style("height", (mainHeight + titleHeight) + "px");
+d3.selectAll("#mainsection div")
+    .style("float", "left");
+d3.select("#maintitle")
+    .style("width", (centerWidth + rightWidth) + "px")
+    .style("height", titleHeight + "px")
+    .style("font-size", titleFontSize + "px")
+    .style("vertical-align","middle")
+    .style("text-align", "center");
+d3.select("#bubbleviz")
     .style("width", centerWidth + "px")
     .style("height", mainHeight + "px")
-    .style("position", "absolute");
-d3.select("#dashboard")
-    .style("float", "left")
+    .style("float", "left");
+d3.selectAll("#timechart, #phasechart, #sponsorchart, #outcomechart, #locationchart")
     .style("width", rightWidth + "px")
-    .style("height", dashboardHeight + "px")
-    .style("padding", divPadding + "px")
-    .style("margin-top", topMargin + "px")
-    .style("border", borderWidth + "px solid")
-    .style("border-color", "rgb(229,150,54)")
-    .style("background-color", "#fff");
+    .style("height", ((mainHeight - (topMargin / 3)) / 5) + "px");
+d3.select("#timechart")
+    .style("margin-top", (topMargin / 3) + "px");
 d3.select(".tooltip")
     .style("font-size", tooltipFontSize + "px");
 
 // add selection buttons to options frame
 
-var buttons = d3.select("#options").append("svg")
+var buttons = d3.select("#buttons").append("svg")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 2 + 3) + "px");
 
@@ -177,7 +189,7 @@ button_sizeby.append("text")
     .style("font-size", (optionsHeight / 18) + "px")
     .text("studies");
 button_sizeby.append("rect")
-    .attr("class", "button_sizeby_enroll")
+    .attr("class", "button_sizeby_enrollment")
     .attr("x", (leftWidth / 2 + 3) + "px")
     .attr("width", (leftWidth / 2 - 6) + "px")
     .attr("height", (optionsHeight / 8) + "px")
@@ -186,7 +198,7 @@ button_sizeby.append("rect")
     .style("stroke-width", "3px")
     .style("fill", "#ddd");
 button_sizeby.append("text")
-    .attr("class", "button_sizeby_enroll")
+    .attr("class", "button_sizeby_enrollment")
     .attr("dy", (optionsHeight * (11/128)) + "px")
     .attr("dx", (leftWidth * 3 / 4) + "px")
     .attr("text-anchor", "middle")
@@ -198,6 +210,117 @@ button_sizeby.append("text")
 var click_buttons = d3.selectAll("#options .option_button")
     .selectAll("rect,text")
     .on("click", clickButton);
+
+var timeselector = d3.select("#timeselector").append("svg")
+    .attr("width", leftWidth + "px")
+    .attr("height", (optionsHeight / 2 - 3) + "px")
+    .append("g")
+    .attr("transform", "translate(0," + (optionsHeight / 12) + ")");
+
+var timeselector_barheight,
+    timeselector_barwidth,
+    time_filter = [],
+    timeselector_data = {},
+    data,
+    curdata;
+
+// make time selector in options box
+function makeTimeSelector() {
+
+    var timeselector_x = d3.time.scale()
+        .domain([new Date(1998, 1, 1), new Date(2013, 12, 31)])
+        .range([0, leftWidth]);
+
+    var temp_data = [];
+    for (var y=1998; y<2014; y++) {
+        temp_data.push(y);
+    }
+
+    timeselector_barheight = optionsHeight / 3;
+    timeselector_barwidth = leftWidth / temp_data.length;
+
+    var bar_container = timeselector.append("g")
+        .attr("id", "bar_container")
+        .attr("width", leftWidth)
+        .attr("height", timeselector_barheight);
+
+    bar_container.selectAll("rect")
+        .data(temp_data)
+        .enter()
+        .append("rect")
+        .attr("class", "timebars")
+        .attr("transform", function(d, i) { return "translate(" + i * timeselector_barwidth + "," + (timeselector_barheight - 0) + ")"; })
+        .attr("width", timeselector_barwidth)
+        .attr("height", 0)
+        .style("fill", "rgb(229,150,54)");
+
+    var timeselector_brush = d3.svg.brush()
+        .x(timeselector_x)
+        .on("brushend", brushended);
+
+    timeselector.append("line")
+        .attr("x1", 0)
+        .attr("x2", leftWidth)
+        .attr("y1", optionsHeight / 3)
+        .attr("y2", optionsHeight / 3)
+        .attr("class", "axis")
+        .style("stroke-width", "0.25px")
+        .style("stroke", "#333");
+
+    var timeselector_text = timeselector.append("g")
+        .attr("transform", "translate(0," + (optionsHeight * 9 / 24) + ")");
+    timeselector_text.append("text")
+        .style("fill", "#000")
+        .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+        .style("font-size", (optionsHeight / 24) + "px")
+        .text("Pre-1999");
+    timeselector_text.append("text")
+        .attr("x", leftWidth)
+        .attr("text-anchor", "end")
+        .style("fill", "#000")
+        .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+        .style("font-size", (optionsHeight / 24) + "px")
+        .text("2013");
+
+    var gBrush = timeselector.append("g")
+        .attr("class", "brush")
+        .call(timeselector_brush)
+        .call(timeselector_brush.event);
+
+    gBrush.selectAll("rect")
+        .attr("height", optionsHeight / 3);
+
+    function brushended() {
+        if (!d3.event.sourceEvent) return; // only transition after input
+        var extent0 = timeselector_brush.extent(),
+            extent1 = extent0.map(d3.time.year.round);
+
+        // if empty when rounded, use floor & ceil instead
+        if (extent1[0] >= extent1[1]) {
+            extent1[0] = d3.time.year.floor(extent0[0]);
+            extent1[1] = d3.time.year.ceil(extent0[1]);
+        }
+
+        d3.select(this).transition()
+            .call(timeselector_brush.extent(extent1))
+            .call(timeselector_brush.event);
+
+        var date_range = [parseInt(String(timeselector_brush.extent()[0]).slice(11,15)),parseInt(String(timeselector_brush.extent()[1]).slice(11,15))];
+        time_filter[0] = date_range[0];
+        time_filter[1] = date_range[1];
+        curdata = data;
+        updateViz();
+    }
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -228,9 +351,7 @@ var level_length = {
 }
 
 // data placeholders
-var data,
-    curdata,
-    mesh,
+var mesh,
     reverse_mesh = {},
     intervention,
     loc,
@@ -239,16 +360,25 @@ var data,
     stat,
     bubble_data = [],
     time_data = [],
+    time_data_total = [],
     sponsor_data = [],
+    sponsor_data_total = [],
     status_data = [],
+    status_data_total = [],
     phase_data = [],
+    phase_data_total = [],
     location_data = [],
-    intervention_data = [];
+    location_data_total = [];
 
 // filter and display parameter placeholders
-var time_filter = [],
-    cond_filter = '',
+var cond_filter = '',
     intervention_filter = '',
+    filter_test,
+    charttitle = '',
+    curcounts = '',
+    curconds = 'All',
+    curinv = 'All',
+    curyears = 'Pre-1999 to 2013'
     level = 0,
     showby = "cond",
     values = "studies";
@@ -275,39 +405,6 @@ var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
     .attr("height", bubble_height)
     .attr("class", "bubble");
-
-//View Finder vars
-//view finder based on: http://bl.ocks.org/mbostock/1667367
-
-var time_view = [],
-    date_range = [],
-    time_select_margin = {top: 0, right: 0, bottom: 0, left: 0},
-    time_select_margin2 = {top: 0, right: 0, bottom: 20, left: 0},
-    time_select_width = ((document.getElementById("options").offsetWidth) * 0.85) - time_select_margin.left - time_select_margin.right, //200 - margin.left - margin.right,
-    time_select_height = ((document.getElementById("options").offsetWidth) * 0.25) - time_select_margin.top - time_select_margin.bottom, //100 - margin.top - margin.bottom,
-    time_select_height2 = ((document.getElementById("options").offsetWidth) * 0.25) - time_select_margin2.top - time_select_margin2.bottom; //100 - margin2.top - margin2.bottom;
-
-var parseDate = d3.time.format("%Y").parse;
-
-var time_select_x = d3.time.scale().range([0, time_select_width]),
-    time_select_x2 = d3.time.scale().range([0, time_select_width]),
-    time_select_y = d3.scale.linear().range([time_select_height, 0]),
-    time_select_y2 = d3.scale.linear().range([time_select_height2, 0]);
-
-var time_select_xAxis = d3.svg.axis().scale(time_select_x).orient("bottom"),
-    time_select_xAxis2 = d3.svg.axis().scale(time_select_x2).orient("bottom"),
-    time_select_yAxis = d3.svg.axis().scale(time_select_y).orient("left");
-
-var brush = d3.svg.brush()
-    .x(time_select_x2)
-    .on("brushend", brushed);
-
-var svg = d3.select("#chartFinder").append("svg")
-    .attr("width", time_select_width + time_select_margin.left + time_select_margin.right)
-    .attr("height", time_select_height + time_select_margin.top + time_select_margin.bottom);
-
-var histosvg = dimple.newSvg("#chartHisto", '80%', '33%'),
-    histo;
 
 
 
@@ -344,47 +441,27 @@ d3.json("vizdata/all_data.json", function(error, json) {
     }
     reverse_mesh['U'] = 'Unassigned';
 
-    update(curdata);
+    updateData(curdata);
+    time_data_total = time_data,
+    sponsor_data = sponsor_data_total,
+    status_data = status_data_total,
+    phase_data = phase_data_total,
+    location_data = location_data_total;
+
+    updateText();
+    makeTimeSelector();
+    updateTimeBars();
     makeBubble();
+    /*
     makeviewfinder();
     histo = makehisto();
-
+    */
 });
 
 // procedure to update all the chart data objects
-function update(dataset) {
+function updateData(dataset) {
 
-    // write data filter test to identify records of interest 
-    var filter_test = '';
-    if ( cond_filter.length > 0 ) {
-        filter_test += "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
-    }
-    if ( intervention_filter.length > 0 ) {
-        if ( filter_test.length > 0 ) {
-            filter_test += " && dataset[cur_length]['iv'] == '" + intervention_filter + "'";
-        } else {
-            filter_test += "dataset[cur_length]['iv'] == '" + intervention_filter + "'";
-        }
-    }
-    if ( time_filter.length > 0 ) {
-        var time_series = '';
-        for (var t=+time_filter[0]; t<+time_filter[1]+1; t++ ) {
-            if ( time_filter.length > 0 ) {
-                time_series += "," + t;
-            } else {
-                time_series += t;
-            }
-        }
-        if ( filter_test.length > 0 ) {
-            filter_test += " && [" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
-        } else {
-            filter_test += "[" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
-        }
-    }
-    if ( filter_test.length == 0 ) {
-        filter_test = "1==1";
-    }
-    console.log(filter_test);
+    writeFilter();
 
     // create dictionaries with raw counts
     var bubble_dict = {},
@@ -468,12 +545,15 @@ function update(dataset) {
                 intervention_dict[iv_name].enrollment += enrollment;
             }
         } else {
-            curdata.splice(cur_length, 1);
+            //curdata.splice(cur_length, 1);
         }
     }
 
     // translate dictionaries into lists of dictionaries
     var objkeys = Object.keys(time_dict);
+    for (var y=1998; y<2014; y++) {
+        timeselector_data[y] = {studies: 0, enrollment: 0};
+    }
     clearArray(time_data);
     for (var i=0; i<objkeys.length; i++) {
         time_data.push({
@@ -481,10 +561,20 @@ function update(dataset) {
             studies: time_dict[objkeys[i]].studies,
             enrollment: time_dict[objkeys[i]].enrollment
         });
+        if (+objkeys[i] < 1999) {
+            timeselector_data[1998].studies += time_dict[objkeys[i]].studies;
+            timeselector_data[1998].enrollment += time_dict[objkeys[i]].enrollment;
+        } else if (+objkeys[i] == 2014) {
+            timeselector_data[2013].studies += time_dict[objkeys[i]].studies;
+            timeselector_data[2013].enrollment += time_dict[objkeys[i]].enrollment;
+        } else {
+            timeselector_data[+objkeys[i]].studies += time_dict[objkeys[i]].studies;
+            timeselector_data[+objkeys[i]].enrollment += time_dict[objkeys[i]].enrollment;
+        }
     }
 
     // get largest bubble value and scale all other values appropriately
-    var val_array = Object.keys(bubble_dict).map(function(key) {return values == "studies" ? bubble_dict[key].studies : bubble_dict[key].enrollment;});
+    var val_array = Object.keys(bubble_dict).map(function(key) {return bubble_dict[key][values];});
     var maxval = d3.max(val_array);
     var minval = d3.min(val_array);
     var totalval = d3.sum(val_array);
@@ -509,17 +599,83 @@ function update(dataset) {
         });
     }
 
-    clearArray(time_view);
-    time_data.forEach(function(d) {
-       if (parseInt(d.name)>1998 && parseInt(d.name)<2014) {
-            time_view.push({"years":d.name, "studies": d.studies});
+}
+
+function writeFilter() {
+
+    // write data filter test to identify records of interest 
+    filter_test = '';
+    charttitle = 'Studies of ';
+
+    if ( cond_filter.length > 0 ) {
+        filter_test = "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
+        charttitle += reverse_mesh[cond_filter] + ' ';
+        var thiscond = '';
+        var condarray = cond_filter.split('.');
+        for (var c=0; c<condarray.length; c++) {
+            if ( c == 0 ) {
+                thiscond = condarray[c];
+                curconds = reverse_mesh[thiscond.slice(0,1)] + '<br/>';
+                if ( condarray[c].length > 1 ) {
+                    curconds += '&nbsp;' + reverse_mesh[thiscond] + '<br/>';
+                }
+            } else {
+                thiscond += "." + condarray[c];
+                curconds += Array(c+2).join('&nbsp;') + reverse_mesh[thiscond];
+                if ( c < condarray.length - 1 ) {
+                    curconds += '<br/>';
+                }
+            }
         }
-    });
-
-    time_view.forEach(function(d) {
-        d.years = parseDate(String(d.years));
-    });
-
+    } else {
+        curconds = 'All';
+        charttitle += 'all conditions ';
+    }
+    if ( intervention_filter.length > 0 ) {
+        if ( filter_test.length > 0 ) {
+            filter_test += " && dataset[cur_length]['iv'] == '" + intervention_filter + "'";
+        } else {
+            filter_test += "dataset[cur_length]['iv'] == '" + intervention_filter + "'";
+        }
+        charttitle += 'using ' + intervention_filter + ' interventions';
+        curinv = intervention_filter;
+    } else {
+        curinv = 'All';
+        charttitle += 'using any intervention';
+    }
+    if ( time_filter.length > 0 ) {
+        var time_series = '';
+        for (var t=+time_filter[0]; t<+time_filter[1]; t++ ) {
+            if ( time_filter.length > 0 ) {
+                time_series += "," + t;
+            } else {
+                time_series += t;
+            }
+        }
+        if ( filter_test.length > 0 ) {
+            filter_test += " && [" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
+        } else {
+            filter_test += "[" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
+        }
+        var startyear = +time_filter[0];
+        var endyear = +time_filter[1] - 1;
+        if (startyear == 1998) {
+            charttitle += ", " + endyear + " or earlier";
+            curyears = "Pre-1999 to " + endyear;
+        } else {
+            charttitle += ', from ' + time_filter[0] + ' to ' + endyear;
+            curyears = time_filter[0] + ' to ' + endyear;
+        }
+    } else {
+        var all_time = [];
+        if ( filter_test.length > 0 ) {
+            filter_test += " && dataset[cur_length]['yr'] <= 2013";
+        } else {
+            filter_test += "dataset[cur_length]['yr'] <= 2013";
+        }
+        curyears = 'Pre-1999 to 2013';
+        charttitle += ', 2013 or earlier';
+    }
 
 }
 
@@ -547,6 +703,46 @@ function getCond(cond_list) {
     CHART DRAWING FUNCTIONS
 
 ****************************************************/
+var timeselector_scale;
+function updateTimeBars() {
+    var newdata = Object.keys(timeselector_data).map(function(v) { return timeselector_data[v][values]; });
+    var maxval = d3.max(newdata);
+    timeselector_scale = d3.scale.linear().domain([0,maxval]).range([0,timeselector_barheight]);
+    d3.select("#bar_container")
+        .selectAll("rect")
+        .data(newdata)
+        .attr("transform", function(d, i) { return "translate(" + i * timeselector_barwidth + "," + (timeselector_barheight - timeselector_scale(d)) + ")"; })
+        .attr("height", function(d) { return timeselector_scale(d); });
+
+}
+
+function updateViz() {
+    disappearBubbles();
+    updateData(curdata);
+    updateText();
+    makeBubble();
+}
+
+function updateText () {
+    d3.select("#maintitle")
+        .html("<p>" + charttitle + "</p");
+    var num_studies = 0;
+    var num_enroll = 0;
+    for (var t=0; t<time_data.length; t++) {
+        num_studies += time_data[t].studies;
+        num_enroll += time_data[t].enrollment;
+    }
+    d3.select("#numstudies")
+        .html(addCommas(num_studies));
+    d3.select("#enrollpart")
+        .html(addCommas(num_enroll));
+    d3.select("#navigate_conditions")
+        .html(curconds);
+    d3.select("#navigate_interventions")
+        .html(curinv);
+    d3.select("#navigate_time")
+        .html(curyears);
+}
 
 function makeBubble() {
 
@@ -588,61 +784,7 @@ function makeBubble() {
     force.start()
 
 }
-
-function makeviewfinder() {
-
-    var xvals = [];
-    var yvals = [];
-    time_view.forEach(function(d) {
-        xvals.push(d.years);
-        yvals.push(d.studies);
-    });
-
-    time_select_x.domain(d3.extent(xvals));
-    time_select_y.domain([0, d3.max(yvals)]);
-    time_select_x2.domain(time_select_x.domain());
-    time_select_y2.domain(time_select_y.domain());
-
-    d3.select("#chartFinder")
-        .select("svg")
-        .selectAll(".context").remove();
-
-    var area2 = d3.svg.area()
-        .interpolate("monotone")
-        .x(function(d) { return time_select_x2(d.years); })
-        .y0(time_select_height2)
-        .y1(function(d) { return time_select_y2(d.studies); });
-
-    svg.append("defs").append("clipPath")
-        .attr("id", "clip")
-        .attr("class", "context")
-      .append("rect")
-        .attr("width", time_select_width)
-        .attr("height", time_select_height);
-
-    var context = svg.append("g")
-        .attr("class", "context")
-        .attr("transform", "translate(" + time_select_margin2.left + "," + time_select_margin2.top + ")");
-
-    context.append("path")
-      .datum(time_view)
-      .attr("class", "area")
-      .attr("d", area2);
-
-    context.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + time_select_height2 + ")")
-      .call(time_select_xAxis2);
-
-    context.append("g")
-      .attr("class", "x brush")
-      .call(brush)
-    .selectAll("rect")
-      .attr("y", -6)
-      .attr("height", time_select_height2 + 7); 
-
-}
-
+/*
 //function for making histogram
 function makehisto() {
 
@@ -666,21 +808,7 @@ function makehisto() {
     cleanAxis(y, 2);
     return myChart;
 }
-
-function brushed() {
-    time_select_x.domain(brush.empty() ? time_select_x2.domain() : brush.extent());
-    clearArray(date_range);
-    date_range = [parseInt(String(brush.extent()[0]).slice(11,15)),parseInt(String(brush.extent()[1]).slice(11,15))];
-    time_filter[0] = date_range[0];
-    time_filter[1] = date_range[1];
-
-    d3.select(".node")
-        .select("circle")
-        .attr("class", "clicked");
-    disappearBubbles();
-
-}
-
+*/
 function charge(d) {
   return -Math.pow(d.size, 2.0) / 7;
 }
@@ -770,7 +898,7 @@ function clickButton(d, i) {
     } else {
         values = button_value;
         if ( button_value == 'studies' ) {
-            other_value = 'enroll';
+            other_value = 'enrollment';
         } else {
             other_value = 'studies';
         }
@@ -810,39 +938,8 @@ function clickBubble(d, i) {
     cond_filter = d.cond_id;
     level += 1;
 
-    // get parameters to recreate bubble
-    var clicked_bubble = this;
-    var clicked_circle = d3.select(clicked_bubble).select("circle");
-    clicked_circle.attr("class", "clicked");
-/*
-    var cur_fill = clicked_circle.style("fill"),
-        cur_cx = clicked_circle.attr("cx"),
-        cur_cy = clicked_circle.attr("cy"),
-        cur_r = clicked_circle.attr("r");
-
-    // recreate bubble as cicle
-    vis2 = d3.select("#extracanvas").append("svg")
-        .attr("width", bubble_width)
-        .attr("height", bubble_height)
-        .attr("class", "temp");
-    vis2.append("circle")
-        .attr("cx", cur_cx)
-        .attr("cy", cur_cy)
-        .attr("r", cur_r)
-        .style("fill", cur_fill);
-
-    // blow up the new circle and then get rid of it
-    d3.select(".temp circle")
-        .transition()
-        .duration(1500)
-        .attr("r", bubble_height)
-        .style("opacity", 0)
-        .each("end", function() {
-            d3.select(".temp").remove();
-        });
-*/
-    disappearBubbles();
-    makeviewfinder();
+    updateViz();
+    updateTimeBars();
 }
 
 function disappearBubbles() {
@@ -863,23 +960,10 @@ function disappearBubbles() {
         .attr("r", 0);
 
     clearArray(bubble_data);
-    console.log(bubble_data);
     node = vis.selectAll(".node")
         .data(bubble_data);
     node.exit().remove();
-    update(curdata);
-    makeBubble();
 
-    var new_date = [];
-    time_view.forEach(function(d) {
-        temp = parseInt(String(d["years"]).slice(11,15));
-        if (temp >= date_range[0] && temp <= date_range[1]) {   //date_range.indexOf(temp) > -1
-            new_date.push({"years":temp, "studies": d.studies});
-    }
-    });
-
-    histo.data = new_date;
-    histo.draw(1000);
 }
 
 
