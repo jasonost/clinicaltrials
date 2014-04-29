@@ -76,7 +76,7 @@ d3.select("#options")
 
 d3.select("#navigator")
     .style("height", navigatorHeight + "px")
-    .style("font-size", (navigatorHeight / 24) + "px");
+    .style("font-size", (navigatorHeight / 30) + "px");
 
 d3.select("#mainsection")
     .style("float", "left")
@@ -213,16 +213,46 @@ var click_buttons = d3.selectAll("#options .option_button")
 
 var timeselector = d3.select("#timeselector").append("svg")
     .attr("width", leftWidth + "px")
-    .attr("height", (optionsHeight / 2 - 3) + "px")
+    .attr("height", ((optionsHeight * .39) - 3) + "px")
     .append("g")
-    .attr("transform", "translate(0," + (optionsHeight / 12) + ")");
+    .attr("transform", "translate(0," + (optionsHeight / 24) + ")");
 
 var timeselector_barheight,
     timeselector_barwidth,
+    timeselector_brush,
     time_filter = [],
     timeselector_data = {},
     data,
     curdata;
+
+var resetbutton = d3.select("#resetbutton").append("svg")
+    .attr("width", leftWidth + "px")
+    .attr("height", (optionsHeight / 12) + "px");
+
+var resetbutton_button = resetbutton.append("g")
+    .attr("class", "reset_button")
+    .attr("width", (leftWidth / 3) + "px")
+    .attr("height", (optionsHeight / 12) + "px")
+    .attr("transform", "translate(" + (leftWidth / 3) + ",2)");
+resetbutton_button.append("rect")
+    .attr("width", (leftWidth / 3 - 4) + "px")
+    .attr("height", (optionsHeight / 12 - 4) + "px")
+    .style("stroke", "#444")
+    .style("stroke-width", "2px")
+    .style("fill", "crimson");
+resetbutton_button.append("text")
+    .attr("dy", (optionsHeight * .05) + "px")
+    .attr("dx", (leftWidth / 6) + "px")
+    .attr("text-anchor", "middle")
+    .style("fill", "#000")
+    .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
+    .style("font-weight", "700")
+    .style("font-size", (optionsHeight / 24) + "px")
+    .text("reset all");
+
+d3.select(".reset_button")
+    .selectAll("rect,text")
+    .on("click", resetAll);
 
 // make time selector in options box
 function makeTimeSelector() {
@@ -236,7 +266,7 @@ function makeTimeSelector() {
         temp_data.push(y);
     }
 
-    timeselector_barheight = optionsHeight / 3;
+    timeselector_barheight = optionsHeight * .28;
     timeselector_barwidth = leftWidth / temp_data.length;
 
     var bar_container = timeselector.append("g")
@@ -254,21 +284,21 @@ function makeTimeSelector() {
         .attr("height", 0)
         .style("fill", "rgb(229,150,54)");
 
-    var timeselector_brush = d3.svg.brush()
+    timeselector_brush = d3.svg.brush()
         .x(timeselector_x)
         .on("brushend", brushended);
 
     timeselector.append("line")
         .attr("x1", 0)
         .attr("x2", leftWidth)
-        .attr("y1", optionsHeight / 3)
-        .attr("y2", optionsHeight / 3)
+        .attr("y1", timeselector_barheight)
+        .attr("y2", timeselector_barheight)
         .attr("class", "axis")
         .style("stroke-width", "0.25px")
         .style("stroke", "#333");
 
     var timeselector_text = timeselector.append("g")
-        .attr("transform", "translate(0," + (optionsHeight * 9 / 24) + ")");
+        .attr("transform", "translate(0," + (timeselector_barheight + (optionsHeight / 24)) + ")");
     timeselector_text.append("text")
         .style("fill", "#000")
         .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
@@ -288,7 +318,7 @@ function makeTimeSelector() {
         .call(timeselector_brush.event);
 
     gBrush.selectAll("rect")
-        .attr("height", optionsHeight / 3);
+        .attr("height", timeselector_barheight);
 
     function brushended() {
         if (!d3.event.sourceEvent) return; // only transition after input
@@ -308,7 +338,6 @@ function makeTimeSelector() {
         var date_range = [parseInt(String(timeselector_brush.extent()[0]).slice(11,15)),parseInt(String(timeselector_brush.extent()[1]).slice(11,15))];
         time_filter[0] = date_range[0];
         time_filter[1] = date_range[1];
-        curdata = data;
         updateViz();
     }
 
@@ -359,6 +388,8 @@ var mesh,
     sponsor,
     stat,
     bubble_data = [],
+    cond_data = [],
+    inv_data = [],
     time_data = [],
     time_data_total = [],
     sponsor_data = [],
@@ -372,8 +403,9 @@ var mesh,
 
 // filter and display parameter placeholders
 var cond_filter = '',
-    intervention_filter = '',
+    intervention_filter = -1,
     filter_test,
+    filter_test_notime,
     charttitle = '',
     curcounts = '',
     curconds = 'All',
@@ -384,7 +416,8 @@ var cond_filter = '',
     values = "studies";
 
 // bubble chart parameters
-var bubble_width = centerWidth,
+var bubble_color = "steelblue",
+    bubble_width = centerWidth,
     bubble_height = mainHeight,
     padding = 3,
     maxRadius = 100,
@@ -464,19 +497,25 @@ function updateData(dataset) {
     writeFilter();
 
     // create dictionaries with raw counts
-    var bubble_dict = {},
+    var cond_dict = {},
         time_dict = {},
         sponsor_dict = {},
         status_dict = {},
         phase_dict = {},
         location_dict = {},
-        intervention_dict = {};
+        inv_dict = {};
     var cur_length = dataset.length;
     var istrue = 1==1;
+    for (var y=1998; y<2014; y++) {
+        timeselector_data[y] = {studies: 0, enrollment: 0};
+    }
+
     while (cur_length--) {
         if ( eval(filter_test) ) {
+
             var enrollment = dataset[cur_length]['en'];
-            // bubbles
+
+            // conditions
             var conds = d3.set(dataset[cur_length]['co']
                 .map(function(c) {
                     if ( level == 0 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
@@ -488,18 +527,40 @@ function updateData(dataset) {
                 .filter(function(t) { return t !== "undefined"});
             for (var c=0; c<conds.length; c++) {
                 var cond_term = reverse_mesh[conds[c]];
-                if ( !(cond_term in bubble_dict) ) {
-                    bubble_dict[cond_term] = {cond_id: conds[c], studies: 0, enrollment: 0};
+                if ( !(cond_term in cond_dict) ) {
+                    cond_dict[cond_term] = {cond_id: conds[c], studies: 0, enrollment: 0};
                 }
-                bubble_dict[cond_term].studies += 1;
-                bubble_dict[cond_term].enrollment += enrollment;
+                cond_dict[cond_term].studies += 1;
+                cond_dict[cond_term].enrollment += enrollment;
             }
+
+            // intervention
+            for (var v=0; v<dataset[cur_length]['iv'].length; v++) {
+                var iv_name = intervention[dataset[cur_length]['iv'][v]];
+                if ( !(iv_name in inv_dict) ) {
+                    inv_dict[iv_name] = {inv_id: dataset[cur_length]['iv'][v], studies: 0, enrollment: 0};
+                }
+                inv_dict[iv_name].studies += 1;
+                inv_dict[iv_name].enrollment += enrollment;
+            }
+
             // time
             if ( !(dataset[cur_length]['yr'] in time_dict) ) {
                 time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
             }
             time_dict[dataset[cur_length]['yr']].studies += 1;
             time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
+            if (+dataset[cur_length]['yr'] < 1999) {
+                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].enrollment += enrollment;
+            } else if (+dataset[cur_length]['yr'] > 2013) {
+                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].enrollment += enrollment;
+            } else {
+                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment;
+            }
+
             // sponsors
             var sponsor_name = sponsor[dataset[cur_length]['sp']];
             if ( !(sponsor_name in sponsor_dict) ) {
@@ -512,6 +573,7 @@ function updateData(dataset) {
                 sponsor_dict[sponsor_name]['no_industry'].studies += 1;
                 sponsor_dict[sponsor_name]['no_industry'].enrollment += enrollment;
             }
+
             // status
             var status_name = stat[dataset[cur_length]['st']];
             if ( !(status_name in status_dict) ) {
@@ -519,6 +581,7 @@ function updateData(dataset) {
             }
             status_dict[status_name].studies += 1;
             status_dict[status_name].enrollment += enrollment;
+
             // phase
             var phase_name = phase[dataset[cur_length]['ph']]
             if ( !(phase_name in phase_dict) ) {
@@ -526,6 +589,7 @@ function updateData(dataset) {
             }
             phase_dict[phase_name].studies += 1;
             phase_dict[phase_name].enrollment += enrollment;
+
             // location
             for (var l=0; l<dataset[cur_length]['lo'].length; l++) {
                 var loc_name = loc[dataset[cur_length]['lo'][l]];
@@ -535,25 +599,23 @@ function updateData(dataset) {
                 location_dict[loc_name].studies += 1;
                 location_dict[loc_name].enrollment += enrollment;
             }
-            // intervention
-            for (var v=0; v<dataset[cur_length]['iv'].length; v++) {
-                var iv_name = intervention[dataset[cur_length]['iv'][v]];
-                if ( !(iv_name in intervention_dict) ) {
-                    intervention_dict[iv_name] = {studies: 0, enrollment: 0};
-                }
-                intervention_dict[iv_name].studies += 1;
-                intervention_dict[iv_name].enrollment += enrollment;
+
+        } else if ( eval(filter_test_notime) ) {
+            if (+dataset[cur_length]['yr'] < 1999) {
+                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].enrollment += enrollment;
+            } else if (+dataset[cur_length]['yr'] > 2013) {
+                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].enrollment += enrollment;
+            } else {
+                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment;
             }
-        } else {
-            //curdata.splice(cur_length, 1);
         }
     }
 
     // translate dictionaries into lists of dictionaries
     var objkeys = Object.keys(time_dict);
-    for (var y=1998; y<2014; y++) {
-        timeselector_data[y] = {studies: 0, enrollment: 0};
-    }
     clearArray(time_data);
     for (var i=0; i<objkeys.length; i++) {
         time_data.push({
@@ -561,41 +623,27 @@ function updateData(dataset) {
             studies: time_dict[objkeys[i]].studies,
             enrollment: time_dict[objkeys[i]].enrollment
         });
-        if (+objkeys[i] < 1999) {
-            timeselector_data[1998].studies += time_dict[objkeys[i]].studies;
-            timeselector_data[1998].enrollment += time_dict[objkeys[i]].enrollment;
-        } else if (+objkeys[i] == 2014) {
-            timeselector_data[2013].studies += time_dict[objkeys[i]].studies;
-            timeselector_data[2013].enrollment += time_dict[objkeys[i]].enrollment;
-        } else {
-            timeselector_data[+objkeys[i]].studies += time_dict[objkeys[i]].studies;
-            timeselector_data[+objkeys[i]].enrollment += time_dict[objkeys[i]].enrollment;
-        }
     }
 
-    // get largest bubble value and scale all other values appropriately
-    var val_array = Object.keys(bubble_dict).map(function(key) {return bubble_dict[key][values];});
-    var maxval = d3.max(val_array);
-    var minval = d3.min(val_array);
-    var totalval = d3.sum(val_array);
-    var scale_factor = d3.min([d3.max([4, totalval / maxval]), 8]) * 0.8;
-    var maxsize = bubble_height / scale_factor;
-    var minsize = bubble_height / 80;
-    var bubble_scale = d3.scale.linear().domain([minval, maxval]).range([minsize, maxsize]);
-    var sum_size = d3.sum(val_array.map(function(c) {return 3.14159 * Math.pow(bubble_scale(c), 2);}));
-    var canv_size = bubble_height * bubble_width;
-    var size_scale = Math.pow((canv_size * 0.33) / sum_size, 0.5);
+    objkeys = Object.keys(cond_dict);
+    clearArray(cond_data);
+    for (var i=0; i<objkeys.length; i++) {
+        cond_data.push({
+            name: objkeys[i],
+            id: cond_dict[objkeys[i]].cond_id,
+            studies: cond_dict[objkeys[i]].studies,
+            enrollment: cond_dict[objkeys[i]].enrollment
+        });
+    }
 
-    var bubble_keys = Object.keys(bubble_dict);
-    clearArray(bubble_data);
-    for (i=0; i<bubble_keys.length; i++) {
-        var oldval = values == "studies" ? bubble_dict[bubble_keys[i]].studies : bubble_dict[bubble_keys[i]].enrollment;
-        bubble_data.push({
-          name: bubble_keys[i],
-          cond_id: bubble_dict[bubble_keys[i]].cond_id,
-          studies: bubble_dict[bubble_keys[i]].studies,
-          enrollment: bubble_dict[bubble_keys[i]].enrollment,
-          size: bubble_scale(oldval) * size_scale
+    objkeys = Object.keys(inv_dict);
+    clearArray(inv_data);
+    for (var i=0; i<objkeys.length; i++) {
+        inv_data.push({
+            name: objkeys[i],
+            id: inv_dict[objkeys[i]].inv_id,
+            studies: inv_dict[objkeys[i]].studies,
+            enrollment: inv_dict[objkeys[i]].enrollment
         });
     }
 
@@ -605,8 +653,10 @@ function writeFilter() {
 
     // write data filter test to identify records of interest 
     filter_test = '';
+    filter_test_notime = '';
     charttitle = 'Studies of ';
 
+    // conditions
     if ( cond_filter.length > 0 ) {
         filter_test = "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
         charttitle += reverse_mesh[cond_filter] + ' ';
@@ -631,18 +681,27 @@ function writeFilter() {
         curconds = 'All';
         charttitle += 'all conditions ';
     }
-    if ( intervention_filter.length > 0 ) {
+
+    // interventions
+    if ( intervention_filter >= 0 ) {
         if ( filter_test.length > 0 ) {
-            filter_test += " && dataset[cur_length]['iv'] == '" + intervention_filter + "'";
+            filter_test += " && dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") > 0";
         } else {
-            filter_test += "dataset[cur_length]['iv'] == '" + intervention_filter + "'";
+            filter_test += "dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") > 0";
         }
-        charttitle += 'using ' + intervention_filter + ' interventions';
-        curinv = intervention_filter;
+        charttitle += 'using ' + intervention[intervention_filter] + ' interventions';
+        curinv = intervention[intervention_filter];
     } else {
         curinv = 'All';
         charttitle += 'using any intervention';
     }
+
+    filter_test_notime = filter_test;
+    if (filter_test_notime.length == 0) {
+        filter_test_notime = "dataset[cur_length]['yr'] <= 2013";
+    }
+
+    // time
     if ( time_filter.length > 0 ) {
         var time_series = '';
         for (var t=+time_filter[0]; t<+time_filter[1]; t++ ) {
@@ -652,14 +711,23 @@ function writeFilter() {
                 time_series += t;
             }
         }
-        if ( filter_test.length > 0 ) {
-            filter_test += " && [" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
+        var time_filter_string = '';
+        if (time_filter[0] == 1998) {
+            time_filter_string = "(dataset[cur_length]['yr'] < 1998 || [" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0)"
         } else {
-            filter_test += "[" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
+            time_filter_string = "[" + time_series + "].indexOf(dataset[cur_length]['yr']) >= 0";
+        }
+        if ( filter_test.length > 0 ) {
+            filter_test += " && " + time_filter_string;
+        } else {
+            filter_test += time_filter_string;
         }
         var startyear = +time_filter[0];
         var endyear = +time_filter[1] - 1;
-        if (startyear == 1998) {
+        if (endyear == 1998) {
+            charttitle += ", 1998 or earlier";
+            curyears = "Pre-1999";
+        } else if (startyear == 1998) {
             charttitle += ", " + endyear + " or earlier";
             curyears = "Pre-1999 to " + endyear;
         } else {
@@ -703,17 +771,18 @@ function getCond(cond_list) {
     CHART DRAWING FUNCTIONS
 
 ****************************************************/
-var timeselector_scale;
+
 function updateTimeBars() {
     var newdata = Object.keys(timeselector_data).map(function(v) { return timeselector_data[v][values]; });
     var maxval = d3.max(newdata);
-    timeselector_scale = d3.scale.linear().domain([0,maxval]).range([0,timeselector_barheight]);
+    var timeselector_scale = d3.scale.linear().domain([0,maxval]).range([0,timeselector_barheight]);
     d3.select("#bar_container")
         .selectAll("rect")
         .data(newdata)
+        .transition()
+        .duration(500)
         .attr("transform", function(d, i) { return "translate(" + i * timeselector_barwidth + "," + (timeselector_barheight - timeselector_scale(d)) + ")"; })
         .attr("height", function(d) { return timeselector_scale(d); });
-
 }
 
 function updateViz() {
@@ -746,6 +815,37 @@ function updateText () {
 
 function makeBubble() {
 
+    bubble_color = showby == "cond" ? "steelblue" : "darksalmon";
+
+    // get largest bubble value and scale all other values appropriately
+    var temp_data = showby == "cond" ? cond_data : inv_data;
+    var val_array = [];
+    for (var b=0; b<temp_data.length; b++) {
+        val_array.push(temp_data[b][values]);
+    }
+    var maxval = d3.max(val_array);
+    var minval = d3.min(val_array);
+    var totalval = d3.sum(val_array);
+    var scale_factor = d3.min([d3.max([4, totalval / maxval]), 8]) * 0.8;
+    var maxsize = bubble_height / scale_factor;
+    var minsize = bubble_height / 80;
+    var bubble_scale = d3.scale.linear().domain([minval, maxval]).range([minsize, maxsize]);
+    var sum_size = d3.sum(val_array.map(function(c) {return 3.14159 * Math.pow(bubble_scale(c), 2);}));
+    var canv_size = bubble_height * bubble_width;
+    var size_scale = Math.pow((canv_size * 0.33) / sum_size, 0.5);
+
+    clearArray(bubble_data);
+    for (i=0; i<temp_data.length; i++) {
+        var oldval = temp_data[i][values];
+        bubble_data.push({
+          name: temp_data[i].name,
+          id: temp_data[i].id,
+          studies: temp_data[i].studies,
+          enrollment: temp_data[i].enrollment,
+          size: bubble_scale(oldval) * size_scale
+        });
+    }
+
     node = vis.selectAll(".node")
         .data(bubble_data);
 
@@ -761,7 +861,7 @@ function makeBubble() {
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
       .attr("r", function(d) {return d.size; })
-      .style("fill", "steelblue");
+      .style("fill", bubble_color);
 
     node.append("text")
         .attr("transform", function(d) { 
@@ -871,22 +971,6 @@ function clickButton(d, i) {
     var button_type = button_class.slice(7,13);
     var button_value = button_class.slice(14);
 
-    function highlightButton(butclass) {
-        d3.select("rect." + butclass)
-            .style("stroke-opacity", 1)
-            .style("fill", "#444");
-        d3.select("text." + butclass)
-            .style("fill", "#fff");
-    }
-
-    function lowlightButton(butclass) {
-        d3.select("rect." + butclass)
-            .style("stroke-opacity", 0)
-            .style("fill", "#ddd");
-        d3.select("text." + butclass)
-            .style("fill", "#000");
-    }
-
     var other_value;
     if ( button_type == 'showby' ) {
         showby = button_value;
@@ -907,6 +991,41 @@ function clickButton(d, i) {
     highlightButton('button_' + button_type + '_' + button_value);
     lowlightButton('button_' + button_type + '_' + other_value);
 
+    updateViz();
+    updateTimeBars();
+
+}
+
+function highlightButton(butclass) {
+    d3.select("rect." + butclass)
+        .style("stroke-opacity", 1)
+        .style("fill", "#444");
+    d3.select("text." + butclass)
+        .style("fill", "#fff");
+}
+
+function lowlightButton(butclass) {
+    d3.select("rect." + butclass)
+        .style("stroke-opacity", 0)
+        .style("fill", "#ddd");
+    d3.select("text." + butclass)
+        .style("fill", "#000");
+}
+
+function resetAll() {
+    cond_filter = '';
+    intervention_filter = -1;
+    time_filter = [];
+    level = 0;
+    showby = "cond";
+    values = "studies";
+    highlightButton("button_showby_cond");
+    highlightButton("button_sizeby_studies");
+    lowlightButton("button_showby_inv");
+    lowlightButton("button_sizeby_enrollment");
+    d3.select(".brush").call(timeselector_brush.clear());
+    updateViz();
+    updateTimeBars();
 }
 
 function mouseoverBubble(d, i) {
@@ -935,8 +1054,13 @@ function mouseoutBubble(d, i) {
 function clickBubble(d, i) {
 
     // udpate total variables
-    cond_filter = d.cond_id;
-    level += 1;
+    if (showby == "cond") {
+        cond_filter = d.id;
+        level += 1;
+    } else {
+        intervention_filter = d.id;
+    }
+    showby = "cond";
 
     updateViz();
     updateTimeBars();
