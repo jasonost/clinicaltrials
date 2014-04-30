@@ -95,16 +95,25 @@ d3.select("#bubbleviz")
     .style("width", centerWidth + "px")
     .style("height", mainHeight + "px")
     .style("float", "left");
-d3.selectAll("#timechart, #phasechart, #sponsorchart, #outcomechart, #locationchart")
-    .style("width", rightWidth + "px")
-    .style("height", ((mainHeight - (topMargin / 3)) / 5) + "px");
 d3.select("#timechart")
-    .style("margin-top", (topMargin / 3) + "px");
-d3.select(".tooltip")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.20) + "px");
+d3.select("#phasechart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.15) + "px");
+d3.select("#sponsorchart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.20) + "px");
+d3.select("#outcomechart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.15) + "px");
+d3.select("#locationchart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.30) + "px");
+d3.select("#tooltip")
     .style("font-size", tooltipFontSize + "px");
 
 // add selection buttons to options frame
-
 var buttons = d3.select("#buttons").append("svg")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 2 + 3) + "px");
@@ -211,20 +220,7 @@ var click_buttons = d3.selectAll("#options .option_button")
     .selectAll("rect,text")
     .on("click", clickButton);
 
-var timeselector = d3.select("#timeselector").append("svg")
-    .attr("width", leftWidth + "px")
-    .attr("height", ((optionsHeight * .39) - 3) + "px")
-    .append("g")
-    .attr("transform", "translate(0," + (optionsHeight / 24) + ")");
-
-var timeselector_barheight,
-    timeselector_barwidth,
-    timeselector_brush,
-    time_filter = [],
-    timeselector_data = {},
-    data,
-    curdata;
-
+// reset button
 var resetbutton = d3.select("#resetbutton").append("svg")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 12) + "px");
@@ -255,6 +251,20 @@ d3.select(".reset_button")
     .on("click", resetAll);
 
 // make time selector in options box
+var timeselector = d3.select("#timeselector").append("svg")
+    .attr("width", leftWidth + "px")
+    .attr("height", ((optionsHeight * .39) - 3) + "px")
+    .append("g")
+    .attr("transform", "translate(0," + (optionsHeight / 24) + ")");
+
+var timeselector_barheight,
+    timeselector_barwidth,
+    timeselector_brush,
+    time_filter = [],
+    timeselector_data = {},
+    data,
+    curdata;
+
 function makeTimeSelector() {
 
     var timeselector_x = d3.time.scale()
@@ -343,6 +353,90 @@ function makeTimeSelector() {
 
 }
 
+// draw map
+var map_chart_position = {
+    'na': {left: 0.19, top: 0.42},
+    'sa': {left: 0.28, top: 0.80},
+    'eu': {left: 0.48, top: 0.34},
+    'af': {left: 0.51, top: 0.71},
+    'as': {left: 0.70, top: 0.48},
+    'oc': {left: 0.80, top: 0.82}
+};
+var map_chart_height = (mainHeight * 0.30);
+
+var continent_dict = {
+    'North America': 'na',
+    'Latin America': 'sa',
+    'Europe': 'eu',
+    'Africa': 'af',
+    'Asia': 'as',
+    'Oceania': 'oc',
+    'Unknown': 'unk'
+};
+
+function drawMap(world) {
+
+    var projection = d3.geo.robinson().translate([0, 0]).scale(rightWidth / 2 / Math.PI);
+    var path = d3.geo.path().projection(projection);
+
+    var worldsvg = d3.select("#locationchart").append("svg")
+          .attr("width", rightWidth)
+          .attr("height", (mainHeight * 0.30));
+
+    var outterg = worldsvg.append("g")
+        .attr("transform", "translate(" + rightWidth / 2 + "," + (mainHeight * 0.30) * .6 + ")");
+
+    var g = outterg.append("g").attr("id", "innerg");
+
+    var countries = topojson.feature(world, world.objects.countries);
+
+    //feature collections only have type, id, and name so i would not sitck properties in there but i dont think its invalid!
+    //http://geojson.org/geojson-spec.html#introduction
+    var asia = {type: "FeatureCollection", name: "Asia", color: "#ffbb78", id:1, features: countries.features.filter(function(d) { return d.properties.continent=="Asia"; })};
+    var africa = {type: "FeatureCollection", name: "Africa", color: "#2ca02c", id:2, features: countries.features.filter(function(d) { return d.properties.continent=="Africa"; })};
+    var europe = {type: "FeatureCollection", name: "Europe", color: "#ff7f0e", id:3, features: countries.features.filter(function(d) { return d.properties.continent=="Europe"; })};
+    var na = {type: "FeatureCollection", name: "North America", color: "#1f77b4", id:4, features: countries.features.filter(function(d) { return d.properties.continent=="North America"; })};
+    var sa = {type: "FeatureCollection", name: "South America", color: "#d62728", id:5, features: countries.features.filter(function(d) { return d.properties.continent=="South America"; })};
+    var oceania = {type: "FeatureCollection", name: "Oceania", color: "#aec7e8", id:7, features: countries.features.filter(function(d) { return d.properties.continent=="Oceania"; })};
+    //skipped: Seven seas (open ocean) - only applies to French Southern and Antarctic Lands
+
+    var continents = [asia,africa,europe,na,sa,oceania];
+
+    var continent = g.selectAll(".continent").data(continents);
+
+    continent.enter().insert("path")
+      .attr("class", "continent")
+      .attr("d", path)
+      .style("fill", "#fff")
+      .style("stroke", "#555")
+      .style("stroke-width", 0.5);
+
+    Object.keys(map_chart_position).forEach(function(m) {
+        var loc_chart = worldsvg.append("g")
+            .attr("id", "locchart_" + m);
+        loc_chart.selectAll("rect")
+            .data([0,0])
+            .enter()
+            .append("rect")
+            .on("mouseover", mouseoverGeneral)
+            .on("mouseout", mouseoutGeneral)
+            .attr("transform", function(d, i) { return "translate(" + (rightWidth * (map_chart_position[m].left + 0.02 + (i * .04)))  + "," + (map_chart_height * map_chart_position[m].top) + ")"; })
+            .attr("width", rightWidth * 0.04)
+            .attr("height", 0)
+            .style("fill", function(d,i) { return i == 0 ? "rgb(229,150,54)" : "#222" });
+        loc_chart.append("line")
+            .attr("class", "locationaxis")
+            .attr("x1", rightWidth * map_chart_position[m].left)
+            .attr("x2", rightWidth * (map_chart_position[m].left + 0.12))
+            .attr("y1", map_chart_height * map_chart_position[m].top)
+            .attr("y2", map_chart_height * map_chart_position[m].top);
+    })
+
+    d3.selectAll(".locationaxis")
+        .style("stroke-width", "1px")
+        .style("stroke", "#333");
+
+}
 
 
 
@@ -377,7 +471,7 @@ var level_length = {
     10: 39,
     11: 43,
     12: 47
-}
+};
 
 // data placeholders
 var mesh,
@@ -475,20 +569,21 @@ d3.json("vizdata/all_data.json", function(error, json) {
     reverse_mesh['U'] = 'Unassigned';
 
     updateData(curdata);
-    time_data_total = time_data,
-    sponsor_data = sponsor_data_total,
-    status_data = status_data_total,
-    phase_data = phase_data_total,
-    location_data = location_data_total;
+    time_data_total = [].concat(time_data),
+    sponsor_data_total = [].concat(sponsor_data),
+    status_data_total = [].concat(status_data),
+    phase_data_total = [].concat(phase_data),
+    location_data_total = [].concat(location_data);
 
     updateText();
     makeTimeSelector();
     updateTimeBars();
     makeBubble();
-    /*
-    makeviewfinder();
-    histo = makehisto();
-    */
+
+    d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
+        drawMap(geojson);
+        updateLocationChart();
+    })
 });
 
 // procedure to update all the chart data objects
@@ -514,6 +609,7 @@ function updateData(dataset) {
         if ( eval(filter_test) ) {
 
             var enrollment = dataset[cur_length]['en'];
+            if ( enrollment == 'undefined' ) {console.log(dataset[cur_length]);}
 
             // conditions
             var conds = d3.set(dataset[cur_length]['co']
@@ -644,6 +740,48 @@ function updateData(dataset) {
             id: inv_dict[objkeys[i]].inv_id,
             studies: inv_dict[objkeys[i]].studies,
             enrollment: inv_dict[objkeys[i]].enrollment
+        });
+    }
+
+    objkeys = Object.keys(sponsor_dict);
+    clearArray(sponsor_data);
+    for (var i=0; i<objkeys.length; i++) {
+        sponsor_data.push({
+            name: objkeys[i],
+            studies_industry: sponsor_dict[objkeys[i]].industry.studies,
+            enrollment_industry: sponsor_dict[objkeys[i]].industry.enrollment,
+            studies_no_industry: sponsor_dict[objkeys[i]].no_industry.studies,
+            enrollment_no_industry: sponsor_dict[objkeys[i]].no_industry.enrollment
+        });
+    }
+
+    objkeys = Object.keys(status_dict);
+    clearArray(status_data);
+    for (var i=0; i<objkeys.length; i++) {
+        status_data.push({
+            name: objkeys[i],
+            studies: status_dict[objkeys[i]].studies,
+            enrollment: status_dict[objkeys[i]].enrollment
+        });
+    }
+
+    objkeys = Object.keys(phase_dict);
+    clearArray(phase_data);
+    for (var i=0; i<objkeys.length; i++) {
+        phase_data.push({
+            name: objkeys[i],
+            studies: phase_dict[objkeys[i]].studies,
+            enrollment: phase_dict[objkeys[i]].enrollment
+        });
+    }
+
+    objkeys = Object.keys(location_dict);
+    clearArray(location_data);
+    for (var i=0; i<objkeys.length; i++) {
+        location_data.push({
+            name: objkeys[i],
+            studies: location_dict[objkeys[i]].studies,
+            enrollment: location_dict[objkeys[i]].enrollment
         });
     }
 
@@ -790,6 +928,7 @@ function updateViz() {
     updateData(curdata);
     updateText();
     makeBubble();
+    updateLocationChart();
 }
 
 function updateText () {
@@ -884,71 +1023,72 @@ function makeBubble() {
     force.start()
 
 }
-/*
-//function for making histogram
-function makehisto() {
 
-    time_new = [];
-    time_data.forEach(function(d) {
-        if (parseInt(d.name)>1998 && parseInt(d.name)<2014) {
-            time_new.push({"years":parseInt(d.name), "studies": d.studies});
-        }
+function updateLocationChart() {
+
+    // get array of values and scale to max height
+    var maxheight = map_chart_height * 0.25;
+
+    var val_array = [],
+        cur_studies = [],
+        cur_enrollment = [];
+    location_data.forEach(function(m) { 
+        val_array.push(m[values]);
+        cur_studies.push(m.studies);
+        cur_enrollment.push(m.enrollment);
+    });
+    var maxval = d3.max(val_array);
+    var totalval = d3.sum(val_array);
+
+    var studies = [];
+
+
+    var val_array_total = [],
+        cur_studies_total = [],
+        cur_enrollment_total = [];
+    location_data_total.forEach(function(m) { 
+        val_array_total.push(m[values]);
+        cur_studies_total.push(m.studies);
+        cur_enrollment_total.push(m.enrollment);
+    });
+    var maxval_total = d3.max(val_array_total);
+    var totalval_total = d3.sum(val_array_total);
+
+    var maxpct = d3.max([maxval / totalval, maxval_total / totalval_total]);
+    var barscale = d3.scale.linear().domain([0,maxpct]).range([0,maxheight]);
+
+    location_data.forEach(function(m) { 
+        m.size = barscale(m[values] / totalval);
+        m.studies_total = d3.sum(cur_studies);
+        m.enrollment_total = d3.sum(cur_enrollment);
+        m.subset = 1; 
+    });
+    location_data_total.forEach(function(m) { 
+        m.size = barscale(m[values] / totalval_total);
+        m.studies_total = d3.sum(cur_studies_total);
+        m.enrollment_total = d3.sum(cur_enrollment_total);
+        m.subset = 0;
     });
 
-    // var maxY = d3.max(time_new.map(function(item) {return item.studies;}));
-
-    var myChart = new dimple.chart(histosvg, time_new);
-    myChart.setBounds('20%', '30%', '75%', '30%');
-    var x = myChart.addCategoryAxis("x", "years");
-    var y = myChart.addMeasureAxis("y", "studies");
-    // y.overrideMax = maxY;
-    myChart.addSeries("Studies", dimple.plot.bar);
-
-    myChart.draw(1500);
-    cleanAxis(y, 2);
-    return myChart;
-}
-*/
-function charge(d) {
-  return -Math.pow(d.size, 2.0) / 7;
-}
-
-function tick(e) {
-    node.each(collide(0.5));
-
-    node.selectAll("circle")
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-
-    node.selectAll("text")
-        .attr("transform", function(d) { return "translate(" + d.x + ")"; })
-        .attr("y", function(d) { 
-            var numlines = splitLines(d.name, 20).length;
-            return d.y - (numlines * (d.size / 6)); 
+    // rearrange total list to conform to current data list
+    var total_data = [];
+    location_data.forEach(function(m) {
+        location_data_total.forEach(function(m2) {
+            if (m.name == m2.name) { total_data.push(m2); }
         });
-
-}
-
-function collide(alpha) {
-  return function(d) {
-    bubble_data.forEach(function(d2) {
-      if(d != d2) {
-        var x = d.x - d2.x;
-        var y = d.y - d2.y;
-        var distance = Math.sqrt(x * x + y * y);
-
-        var minDistance = d.size + d2.size + padding;
-
-        if(distance < minDistance) {
-          var newDistance = ((distance - minDistance) / distance) * alpha;
-          d.x = d.x - (x * newDistance);
-          d.y = d.y - (y * newDistance);
-          d2.x = d2.x + (x * newDistance);
-          d2.y = d2.y + (y * newDistance);
-        }
-      }
     });
-  };
+
+    for (var c=0; c<location_data.length; c++) {
+        var contcode = continent_dict[location_data[c].name];
+        d3.select("#locchart_" + contcode)
+            .selectAll("rect")
+            .data([location_data[c],total_data[c]])
+            .transition()
+            .duration(500)
+            .attr("transform", function(d, i) { return "translate(" + (rightWidth * (map_chart_position[contcode].left + 0.02 + (i * .04)))  + "," + ((map_chart_height * (map_chart_position[contcode].top - 0.25)) + (maxheight - d.size)) + ")"; })
+            .attr("height", function(d) { return d.size; })
+            .style("opacity", 1);
+    }
 }
 
 
@@ -1020,12 +1160,30 @@ function resetAll() {
     showby = "cond";
     values = "studies";
     highlightButton("button_showby_cond");
-    highlightButton("button_sizeby_studies");
     lowlightButton("button_showby_inv");
+    highlightButton("button_sizeby_studies");
     lowlightButton("button_sizeby_enrollment");
     d3.select(".brush").call(timeselector_brush.clear());
     updateViz();
     updateTimeBars();
+}
+
+function mouseoverGeneral(d, i) {
+    var pct = d3.format("%");
+    var tooltext = "<span style='font-weight: bold; font-size: 120%'>" + d.name + " - ";
+    tooltext += d.subset == 1 ? "these studies" : "all studies";
+    tooltext += "</span><br/># of studies:&nbsp;" + addCommas(d.studies) + " (" + pct(d.studies/d.studies_total) + " of total)";
+    tooltext += "<br/># enrolled:&nbsp;" + addCommas(d.enrollment) + " (" + pct(d.enrollment/d.enrollment_total) + " of total)";
+    d3.select("#tooltip")
+        .style("visibility", "visible")
+        .html(tooltext)
+        .style("top", function () { return (d3.max([50,d3.event.pageY - 80]))+"px"})
+        .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
+}
+
+function mouseoutGeneral(d, i) {
+    d3.select("#tooltip")
+        .style("visibility", "hidden")
 }
 
 function mouseoverBubble(d, i) {
@@ -1034,7 +1192,7 @@ function mouseoverBubble(d, i) {
         .style("stroke", "#000")
         .style("stroke-width", "3px");
 
-    d3.select("#bubble-tooltip")
+    d3.select("#tooltip")
         .style("visibility", "visible")
         .html("<span style='font-weight: bold; font-size: 120%'>" + d.name + "</span><br/># of studies:&nbsp;" + addCommas(d.studies) + "<br/># enrolled:&nbsp;" + addCommas(d.enrollment))
         .style("top", function () { return (d3.max([50,d3.event.pageY - 80]))+"px"})
@@ -1047,8 +1205,7 @@ function mouseoutBubble(d, i) {
         .style("stroke", "#fff")
         .style("stroke-width", "0.5px");
 
-    d3.select("#bubble-tooltip")
-        .style("visibility", "hidden")
+    mouseoutGeneral(d, i);
 }
 
 function clickBubble(d, i) {
@@ -1061,6 +1218,8 @@ function clickBubble(d, i) {
         intervention_filter = d.id;
     }
     showby = "cond";
+    highlightButton("button_showby_cond");
+    lowlightButton("button_showby_inv");
 
     updateViz();
     updateTimeBars();
@@ -1068,7 +1227,7 @@ function clickBubble(d, i) {
 
 function disappearBubbles() {
     // disappear old bubbles and call function to replace them
-    d3.select("#bubble-tooltip")
+    d3.select("#tooltip")
         .style("visibility", "hidden");
 
     d3.selectAll(".node")
@@ -1177,3 +1336,47 @@ function clearArray(arr) {
          }
      }
  };
+
+function charge(d) {
+  return -Math.pow(d.size, 2.0) / 7;
+}
+
+function tick(e) {
+    node.each(collide(0.5));
+
+    node.selectAll("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+    node.selectAll("text")
+        .attr("transform", function(d) { return "translate(" + d.x + ")"; })
+        .attr("y", function(d) { 
+            var numlines = splitLines(d.name, 20).length;
+            return d.y - (numlines * (d.size / 6)); 
+        });
+
+}
+
+function collide(alpha) {
+  return function(d) {
+    bubble_data.forEach(function(d2) {
+      if(d != d2) {
+        var x = d.x - d2.x;
+        var y = d.y - d2.y;
+        var distance = Math.sqrt(x * x + y * y);
+
+        var minDistance = d.size + d2.size + padding;
+
+        if(distance < minDistance) {
+          var newDistance = ((distance - minDistance) / distance) * alpha;
+          d.x = d.x - (x * newDistance);
+          d.y = d.y - (y * newDistance);
+          d2.x = d2.x + (x * newDistance);
+          d2.y = d2.y + (y * newDistance);
+        }
+      }
+    });
+  };
+}
+
+

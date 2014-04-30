@@ -51,7 +51,7 @@ circle {
   stroke-width: .5px;
 }
 
-.tooltip {
+#tooltip {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
     font-weight: 400;
     color: white;
