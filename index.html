@@ -4,8 +4,9 @@
     <title>Clinical Trials Browser</title>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Roboto:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/main.css">
-    <script type="text/javascript" src="js/d3.v3.js"></script>
-    <script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/topojson.v1.min.js"></script>
+    <script type="text/javascript" src="js/d3.geo.projection.v0.min.js"></script>
     <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
 <body>
@@ -17,33 +18,60 @@
 
         <div id="sidebar">
             <div id="options" class="side-div">
-                options
-                <div id="chartFinder">
-                </div>
+              <div id="buttons">
+              </div>
+              <div id="timeselector">
+              </div>
+              <div id="resetbutton">
+              </div>
             </div>
 
             <div id="navigator" class="side-div">
-                navigator
+              <div id="studycount">
+                <p>Currently viewing <span id="numstudies" style="font-weight: bold"></span> studies
+                  with <span id="enrollpart" style="font-weight: bold"></span> enrolled participants.</p>
+              </div>
+              <p class="space"></p>
+              <div class="navigate">
+                <p style="font-weight: bold">Conditions</p>
+                <div id="navigate_conditions">
+                </div>
+              </div>
+              <p class="space"></p>
+              <div class="navigate">
+                <p style="font-weight: bold">Interventions</p>
+                <div id="navigate_interventions">
+                </div>
+              </div>
+              <p class="space"></p>
+              <div class="navigate">
+                <p style="font-weight: bold">Study years</p>
+                <div id="navigate_time">
+                </div>
+              </div>
             </div>
         </div>
 
         <div id="mainsection">
+          <div id="maintitle">
+          </div>
           <div id="bubbleviz">
           </div>
-          <div id="extracanvas">
+          <div id="timechart">
+          </div>
+          <div id="phasechart">
+          </div>
+          <div id="sponsorchart">
+          </div>
+          <div id="outcomechart">
+          </div>
+          <div id="locationchart">
           </div>
         </div>
 
-        <div id="dashboard">
-            dashboard
-            <div id="chartContainer">
-                <div id="chartHisto"></div>
-            </div>
-        </div>
+      <div id="tooltip">
+      </div>
 
-    </div>
-
-    <div id="bubble-tooltip" class="tooltip">
     </div>
 
     <script type="text/javascript" src="js/script.js"></script>
