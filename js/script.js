@@ -355,12 +355,12 @@ function makeTimeSelector() {
 
 // draw map
 var map_chart_position = {
-    'na': {left: 0.19, top: 0.42},
-    'sa': {left: 0.28, top: 0.80},
-    'eu': {left: 0.48, top: 0.34},
-    'af': {left: 0.51, top: 0.71},
-    'as': {left: 0.70, top: 0.48},
-    'oc': {left: 0.80, top: 0.82}
+    'na': {left: 0.19, top: 0.44},
+    'sa': {left: 0.28, top: 0.82},
+    'eu': {left: 0.48, top: 0.36},
+    'af': {left: 0.51, top: 0.73},
+    'as': {left: 0.70, top: 0.50},
+    'oc': {left: 0.80, top: 0.84}
 };
 var map_chart_height = (mainHeight * 0.30);
 
@@ -384,7 +384,7 @@ function drawMap(world) {
           .attr("height", (mainHeight * 0.30));
 
     var outterg = worldsvg.append("g")
-        .attr("transform", "translate(" + rightWidth / 2 + "," + (mainHeight * 0.30) * .6 + ")");
+        .attr("transform", "translate(" + rightWidth / 2 + "," + (mainHeight * 0.30) * .64 + ")");
 
     var g = outterg.append("g").attr("id", "innerg");
 
@@ -436,6 +436,15 @@ function drawMap(world) {
         .style("stroke-width", "1px")
         .style("stroke", "#333");
 
+    worldsvg.append("text")
+        .attr("class", "locationchart_title")
+        .attr("width", rightWidth)
+        .attr("height", mainHeight * 0.03)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", rightWidth * 0.032)
+        .html('% of Trials by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+
 }
 
 
@@ -472,6 +481,11 @@ var level_length = {
     11: 43,
     12: 47
 };
+
+var reverse_level = {};
+for (l in level_length) {
+    reverse_level[level_length[l]] = parseInt(l);
+}
 
 // data placeholders
 var mesh,
@@ -579,6 +593,7 @@ d3.json("vizdata/all_data.json", function(error, json) {
     makeTimeSelector();
     updateTimeBars();
     makeBubble();
+    drawTimeChart()
 
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
@@ -609,7 +624,7 @@ function updateData(dataset) {
         if ( eval(filter_test) ) {
 
             var enrollment = dataset[cur_length]['en'];
-            if ( enrollment == 'undefined' ) {console.log(dataset[cur_length]);}
+            if ( typeof enrollment == 'undefined' ) {console.log(dataset[cur_length]);}
 
             // conditions
             var conds = d3.set(dataset[cur_length]['co']
@@ -641,18 +656,28 @@ function updateData(dataset) {
             }
 
             // time
-            if ( !(dataset[cur_length]['yr'] in time_dict) ) {
-                time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
-            }
-            time_dict[dataset[cur_length]['yr']].studies += 1;
-            time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
             if (+dataset[cur_length]['yr'] < 1999) {
+                if ( !(1998 in time_dict) ) {
+                    time_dict[1998] = {studies: 0, enrollment: 0};
+                }
+                time_dict[1998].studies += 1;
+                time_dict[1998].enrollment += enrollment;
                 timeselector_data[1998].studies += 1;
                 timeselector_data[1998].enrollment += enrollment;
             } else if (+dataset[cur_length]['yr'] > 2013) {
+                if ( !(2013 in time_dict) ) {
+                    time_dict[2013] = {studies: 0, enrollment: 0};
+                }
+                time_dict[2013].studies += 1;
+                time_dict[2013].enrollment += enrollment;
                 timeselector_data[2013].studies += 1;
                 timeselector_data[2013].enrollment += enrollment;
             } else {
+                if ( !(dataset[cur_length]['yr'] in time_dict) ) {
+                    time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
+                }
+                time_dict[dataset[cur_length]['yr']].studies += 1;
+                time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
                 timeselector_data[+dataset[cur_length]['yr']].studies += 1;
                 timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment;
             }
@@ -716,6 +741,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         time_data.push({
             name: objkeys[i],
+            dateval: new Date(objkeys[i] + "-06-01"),
             studies: time_dict[objkeys[i]].studies,
             enrollment: time_dict[objkeys[i]].enrollment
         });
@@ -803,16 +829,14 @@ function writeFilter() {
         for (var c=0; c<condarray.length; c++) {
             if ( c == 0 ) {
                 thiscond = condarray[c];
-                curconds = reverse_mesh[thiscond.slice(0,1)] + '<br/>';
+                curconds = '<p class="condlist" id="condlist_Z">All</p>'
+                curconds += '<p class="condlist" id="condlist_' + thiscond.slice(0,1) + '" style="padding-left: 6px";>' + reverse_mesh[thiscond.slice(0,1)] + '</p>';
                 if ( condarray[c].length > 1 ) {
-                    curconds += '&nbsp;' + reverse_mesh[thiscond] + '<br/>';
+                curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: 12px;">' + reverse_mesh[thiscond] + '</p>';
                 }
             } else {
                 thiscond += "." + condarray[c];
-                curconds += Array(c+2).join('&nbsp;') + reverse_mesh[thiscond];
-                if ( c < condarray.length - 1 ) {
-                    curconds += '<br/>';
-                }
+                curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: ' + ((c+2) * 6) + 'px;">' + reverse_mesh[thiscond] + '</p>';
             }
         }
     } else {
@@ -823,12 +847,12 @@ function writeFilter() {
     // interventions
     if ( intervention_filter >= 0 ) {
         if ( filter_test.length > 0 ) {
-            filter_test += " && dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") > 0";
+            filter_test += " && dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") >= 0";
         } else {
-            filter_test += "dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") > 0";
+            filter_test += "dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") >= 0";
         }
         charttitle += 'using ' + intervention[intervention_filter] + ' interventions';
-        curinv = intervention[intervention_filter];
+        curinv = '<p>' + intervention[intervention_filter] + ' <span class="invlist">(clear)</span></p>';
     } else {
         curinv = 'All';
         charttitle += 'using any intervention';
@@ -928,6 +952,7 @@ function updateViz() {
     updateData(curdata);
     updateText();
     makeBubble();
+    updateTimeChart();
     updateLocationChart();
 }
 
@@ -950,6 +975,11 @@ function updateText () {
         .html(curinv);
     d3.select("#navigate_time")
         .html(curyears);
+
+    d3.selectAll(".condlist")
+        .on("click", clickCondition);
+    d3.selectAll(".invlist")
+        .on("click", clearIntervention);
 }
 
 function makeBubble() {
@@ -1089,9 +1119,246 @@ function updateLocationChart() {
             .attr("height", function(d) { return d.size; })
             .style("opacity", 1);
     }
+
+    var title_term = values == "studies" ? "% of Trials" : "% of Enrollment";
+    d3.selectAll(".locationchart_title")
+        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+
 }
 
+// timeline chart
+var timechart_x = d3.time.scale().range([0, rightWidth * 0.8]);
+var timechart_y = d3.scale.linear().range([(mainHeight * 0.135),0]);
+var timechart_y_total = d3.scale.linear().range([(mainHeight * 0.135),0]);
 
+var timechart_xAxis,
+    timechart_yAxis1,
+    timechart_yAxis2;
+
+function drawTimeChart() {
+
+    // set x axis domain
+    var valid_dates = [];
+    time_data.forEach(function(d) { valid_dates.push(d.dateval); });
+    var low_date = d3.min(valid_dates);
+    var hi_date = d3.max(valid_dates);
+    timechart_x.domain([low_date, hi_date]);
+
+    // set y axes domains
+    var valid_y = [];
+    time_data.forEach(function(d) { valid_y.push(d[values]); });
+    timechart_y.domain([0, d3.max(valid_y)]);
+    var valid_y_total = [];
+    time_data_total.forEach(function(d) { 
+        if (d.dateval >= low_date && d.dateval <= hi_date) { 
+            valid_y_total.push(d[values]);
+        }
+    });
+    timechart_y_total.domain([0, d3.max(valid_y_total)]);
+
+    timechart_xAxis = d3.svg.axis()
+        .scale(timechart_x)
+        .orient("bottom")
+        .tickSize(2);
+    timechart_yAxis1 = d3.svg.axis()
+        .scale(timechart_y)
+        .orient("left")
+        .tickFormat(d3.format(".2s"))
+        .tickSize(2);
+    timechart_yAxis2 = d3.svg.axis()
+        .scale(timechart_y_total)
+        .orient("right")
+        .tickFormat(d3.format(".2s"))
+        .tickSize(2);
+
+    var timechart_svg = d3.select("#timechart").append("svg")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.20))
+      .append("g")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.20))
+        .attr("class", "timechart_area");
+
+    timechart_svg.append("g")
+      .attr("class", "timechart_xaxis")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.17) + ")")
+      .style("stroke", "#000")
+      .style("fill", "none")
+      .call(timechart_xAxis)
+      .selectAll("text")
+      .style("font-size", rightWidth * 0.025);
+
+    timechart_svg.append("g")
+      .attr("class", "timechart_yaxis1")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")")
+      .call(timechart_yAxis1)
+      .selectAll("text")
+      .style("fill", "rgb(229,150,54)")
+      .style("font-size", rightWidth * 0.02);
+
+    timechart_svg.selectAll(".timechart_yaxis1 line, .timechart_yaxis1 path")
+      .style("fill", "none")
+      .style("stroke", "rgb(229,150,54)")
+      .style("stroke-width", "1px");
+
+    timechart_svg.append("g")
+      .attr("class", "timechart_yaxis2")
+      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (mainHeight * 0.035) + ")")
+      .call(timechart_yAxis2)
+      .selectAll("text")
+      .style("fill", "#222")
+      .style("font-size", rightWidth * 0.02);
+
+    timechart_svg.selectAll(".timechart_yaxis2 line, .timechart_yaxis2 path")
+      .style("fill", "none")
+      .style("stroke", "#222")
+      .style("stroke-width", "1px");
+
+    var timechart_line_total = d3.svg.line()
+        .interpolate("basis")
+        .x(function(d) { return timechart_x(d.dateval); })
+        .y(function(d) { return d3.max(timechart_y_total.range()); });
+
+    var line1 = timechart_svg.selectAll(".timeline1")
+      .data([0])
+      .enter().append("g")
+      .attr("class", "timeline1")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+
+    line1.append("path")
+      .attr("class", "timeline1_line")
+      .attr("d", function(d) { return timechart_line_total(time_data_total); })
+      .style("stroke", "#222")
+      .style("stroke-width", "1.5px")
+      .style("fill", "none");
+
+    var timechart_line = d3.svg.line()
+        .interpolate("basis")
+        .x(function(d) { return timechart_x(d.dateval); })
+        .y(function(d) { return d3.max(timechart_y.range()); });
+
+    var line2 = timechart_svg.selectAll(".timeline2")
+      .data([0])
+      .enter().append("g")
+      .attr("class", "timeline2")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+
+    line2.append("path")
+      .attr("class", "timeline2_line")
+      .attr("d", function(d) { return timechart_line(time_data); })
+      .style("stroke", "rgb(229,150,54)")
+      .style("stroke-width", "1.5px")
+      .style("fill", "none");
+
+    timechart_svg.append("text")
+        .attr("class", "timechart_title")
+        .attr("width", rightWidth)
+        .attr("height", mainHeight * 0.03)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", rightWidth * 0.032)
+        .html('Number of Trials by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+
+    updateTimeChart();
+
+}
+
+function updateTimeChart() {
+
+    // set x axis domain
+    var valid_dates = [];
+    time_data.forEach(function(d) { valid_dates.push(d.dateval); });
+    var low_date = d3.min(valid_dates);
+    var hi_date = d3.max(valid_dates);
+    timechart_x.domain([low_date, hi_date]);
+
+    // set y axes domains
+    var valid_y = [];
+    time_data.forEach(function(d) { valid_y.push(d[values]); });
+    timechart_y.domain([0, d3.max(valid_y)]);
+    var valid_y_total = [];
+    var time_data_total_temp = [];
+    time_data_total.forEach(function(d) { 
+        if (d.dateval >= low_date && d.dateval <= hi_date) { 
+            valid_y_total.push(d[values]);
+            time_data_total_temp.push(d);
+        }
+    });
+    timechart_y_total.domain([0, d3.max(valid_y_total)]);
+
+    d3.select(".timechart_xaxis")
+        .transition()
+        .duration(500)
+        .call(timechart_xAxis)
+        .selectAll("text")
+        .style("font-size", rightWidth * 0.03)
+        .each(function(d) {
+            if (d3.select(this).text() % 1 != 0) { this.remove(); }
+        });
+    d3.select(".timechart_yaxis1")
+        .transition()
+        .duration(500)
+        .call(timechart_yAxis1)
+        .selectAll("text")
+        .style("fill", "rgb(229,150,54)")
+        .style("font-size", rightWidth * 0.02)
+        .each(function(d, i) {
+            d3.select(this).style("visibility", "visible");
+            if (i % 2 == 0) { d3.select(this).style("visibility","hidden"); }
+        });
+    d3.select(".timechart_yaxis2")
+        .transition()
+        .duration(500)
+        .call(timechart_yAxis2)
+        .selectAll("text")
+        .style("fill", "#222")
+        .style("font-size", rightWidth * 0.02)
+        .each(function(d, i) {
+            d3.select(this).style("visibility", "visible");
+            if (i % 2 == 0) { d3.select(this).style("visibility","hidden"); }
+        });
+
+    var timechart_line_total = d3.svg.line()
+        .interpolate("basis")
+        .x(function(d) { return timechart_x(d.dateval); })
+        .y(function(d) { return timechart_y_total(d[values]); });
+
+    d3.selectAll(".timechart_area .timeline1 .timeline1_line")
+      .transition()
+      .duration(500)
+      .attr("d", function(d) { return timechart_line_total(time_data_total_temp); });
+
+    var timechart_line = d3.svg.line()
+        .interpolate("basis")
+        .x(function(d) { return timechart_x(d.dateval); })
+        .y(function(d) { return timechart_y(d[values]); });
+
+    d3.selectAll(".timechart_area .timeline2 .timeline2_line")
+      .transition()
+      .duration(500)
+      .attr("d", function(d) { return timechart_line(time_data); });
+
+    var title_term = values == "studies" ? "Number of Trials" : "Enrollment";
+    d3.selectAll(".timechart_title")
+        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+
+}
+
+/*
+d3.select("#timechart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.20) + "px");
+d3.select("#phasechart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.15) + "px");
+d3.select("#sponsorchart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.20) + "px");
+d3.select("#outcomechart")
+    .style("width", rightWidth + "px")
+    .style("height", (mainHeight * 0.15) + "px");
+
+*/
 
 
 
@@ -1168,12 +1435,26 @@ function resetAll() {
     updateTimeBars();
 }
 
+function clickCondition() {
+    var cond_selection = d3.select(this).attr("id").slice(9);
+    cond_filter = cond_selection == 'Z' ? '': cond_selection;
+    level = reverse_level[cond_filter.length] + 1 || 0;
+    updateViz();
+    updateTimeBars();
+}
+
+function clearIntervention() {
+    intervention_filter = -1;
+    updateViz();
+    updateTimeBars();
+}
+
 function mouseoverGeneral(d, i) {
     var pct = d3.format("%");
     var tooltext = "<span style='font-weight: bold; font-size: 120%'>" + d.name + " - ";
     tooltext += d.subset == 1 ? "these studies" : "all studies";
-    tooltext += "</span><br/># of studies:&nbsp;" + addCommas(d.studies) + " (" + pct(d.studies/d.studies_total) + " of total)";
-    tooltext += "<br/># enrolled:&nbsp;" + addCommas(d.enrollment) + " (" + pct(d.enrollment/d.enrollment_total) + " of total)";
+    tooltext += "</span><br/>% of studies: " + pct(d.studies/d.studies_total) + " (" + addCommas(d.studies) + ")";
+    tooltext += "<br/>% of enrolled: " + pct(d.enrollment/d.enrollment_total) + " (" + addCommas(d.enrollment) + ")";
     d3.select("#tooltip")
         .style("visibility", "visible")
         .html(tooltext)
