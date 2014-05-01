@@ -78,3 +78,11 @@ circle {
   color: steelblue;
   text-decoration:underline;
 }
+
+/* timeselector chart */
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .10;
+  shape-rendering: crispEdges;
+}
+
