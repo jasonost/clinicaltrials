@@ -76,7 +76,7 @@ d3.select("#options")
 
 d3.select("#navigator")
     .style("height", navigatorHeight + "px")
-    .style("font-size", (navigatorHeight / 30) + "px");
+    .style("font-size", (leftWidth * .06) + "px");
 
 d3.select("#mainsection")
     .style("float", "left")
@@ -121,10 +121,10 @@ var buttons = d3.select("#buttons").append("svg")
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (optionsHeight * (11/128)) + "px")
+    .attr("dy", (leftWidth * .085) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 16) + "px")
+    .style("font-size", (leftWidth * .065) + "px")
     .style("font-weight", "700")
     .text("Show bubbles as");
 var button_showby = buttons.append("g")
@@ -146,7 +146,7 @@ button_showby.append("text")
     .attr("text-anchor", "middle")
     .style("fill", "#fff")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 18) + "px")
+    .style("font-size", (leftWidth * .06) + "px")
     .text("conditions");
 button_showby.append("rect")
     .attr("class", "button_showby_inv")
@@ -164,16 +164,16 @@ button_showby.append("text")
     .attr("text-anchor", "middle")
     .style("fill", "#000")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 18) + "px")
+    .style("font-size", (leftWidth * .06) + "px")
     .text("interventions");
 
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (optionsHeight * (43/128)) + "px")
+    .attr("dy", (leftWidth * .085 + optionsHeight / 4) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 16) + "px")
+    .style("font-size", (leftWidth * .065) + "px")
     .style("font-weight", "700")
     .text("Count by");
 var button_sizeby = buttons.append("g")
@@ -195,7 +195,7 @@ button_sizeby.append("text")
     .attr("text-anchor", "middle")
     .style("fill", "#fff")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 18) + "px")
+    .style("font-size", (leftWidth * .06) + "px")
     .text("studies");
 button_sizeby.append("rect")
     .attr("class", "button_sizeby_enrollment")
@@ -213,7 +213,7 @@ button_sizeby.append("text")
     .attr("text-anchor", "middle")
     .style("fill", "#000")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
-    .style("font-size", (optionsHeight / 18) + "px")
+    .style("font-size", (leftWidth * .06) + "px")
     .text("enrollment");
 
 var click_buttons = d3.selectAll("#options .option_button")
@@ -243,7 +243,7 @@ resetbutton_button.append("text")
     .style("fill", "#000")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-weight", "700")
-    .style("font-size", (optionsHeight / 24) + "px")
+    .style("font-size", (leftWidth * .045) + "px")
     .text("reset all");
 
 d3.select(".reset_button")
@@ -443,7 +443,7 @@ function drawMap(world) {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('% of Trials by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+        .html('% of Trials by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
 
 }
 
@@ -852,7 +852,7 @@ function writeFilter() {
             filter_test += "dataset[cur_length]['iv'].indexOf(" + intervention_filter + ") >= 0";
         }
         charttitle += 'using ' + intervention[intervention_filter] + ' interventions';
-        curinv = '<p>' + intervention[intervention_filter] + ' <span class="invlist">(clear)</span></p>';
+        curinv = '<p>' + intervention[intervention_filter] + ' (<span class="invlist">clear</span>)</p>';
     } else {
         curinv = 'All';
         charttitle += 'using any intervention';
@@ -1035,6 +1035,7 @@ function makeBubble() {
     node.append("text")
         .attr("transform", function(d) { 
             return "translate(" + d.x + ")"; })
+        .attr("class", "bubble_label")
         .style("font-size", function(d) { return d.size / 4; })
         .style("opacity", function(d) { return d.size > 30 ? 1 : 0; })
         .each(function(d) {
@@ -1122,7 +1123,7 @@ function updateLocationChart() {
 
     var title_term = values == "studies" ? "% of Trials" : "% of Enrollment";
     d3.selectAll(".locationchart_title")
-        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
 
 }
 
@@ -1257,7 +1258,7 @@ function drawTimeChart() {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('Number of Trials by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+        .html('Number of Trials by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
 
     updateTimeChart();
 
@@ -1340,7 +1341,7 @@ function updateTimeChart() {
 
     var title_term = values == "studies" ? "Number of Trials" : "Enrollment";
     d3.selectAll(".timechart_title")
-        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Studies</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
 
 }
 

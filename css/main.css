@@ -51,6 +51,10 @@ circle {
   stroke-width: .5px;
 }
 
+.bubble_label {
+  cursor: pointer;
+}
+
 #tooltip {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
     font-weight: 400;
@@ -67,39 +71,10 @@ circle {
     pointer-events: none;
 }
 
-/* view finder */
+/* clickable text */
 
-#chartFinder svg {
-  display: block;
-  margin: auto;
+.condlist, .invlist {
+  cursor: pointer;
+  color: steelblue;
+  text-decoration:underline;
 }
-
-svg {
-  font: 10px sans-serif;
-}
-
-.area {
-  fill: steelblue;
-  clip-path: url(#clip);
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.brush .extent {
-  stroke: #fff;
-  fill-opacity: .125;
-  shape-rendering: crispEdges;
-}
-
-/* Histogram */
-
-#chartContainer svg {
-  display: block;
-  margin: auto;
-}
-
