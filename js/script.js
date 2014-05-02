@@ -593,7 +593,8 @@ d3.json("vizdata/all_data.json", function(error, json) {
     makeTimeSelector();
     updateTimeBars();
     makeBubble();
-    drawTimeChart()
+    drawTimeChart();
+    drawPhaseChart();
 
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
@@ -953,6 +954,7 @@ function updateViz() {
     updateText();
     makeBubble();
     updateTimeChart();
+    updatePhaseChart();
     updateLocationChart();
 }
 
@@ -1257,7 +1259,7 @@ function drawTimeChart() {
         .attr("height", mainHeight * 0.03)
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
-        .style("font-size", rightWidth * 0.032)
+        .style("font-size", rightWidth * 0.03)
         .html('Number of Trials by Year, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
 
     updateTimeChart();
@@ -1292,7 +1294,7 @@ function updateTimeChart() {
         .duration(500)
         .call(timechart_xAxis)
         .selectAll("text")
-        .style("font-size", rightWidth * 0.03)
+        .style("font-size", rightWidth * 0.025)
         .each(function(d) {
             if (d3.select(this).text() % 1 != 0) { this.remove(); }
         });
@@ -1345,10 +1347,223 @@ function updateTimeChart() {
 
 }
 
+// study phase chart
+var phases = ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "N/A"];
+var phase_colors = ["#ffffcc", "#c2e699", "#78c679", "#31a354", "#006837", "#bdbdbd"];
+var phasechart_x = d3.scale.linear().range([0, rightWidth * .8]),
+    phasechart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
+var phasechart_topbar_y = mainHeight * 0.045,
+    phasechart_bottombar_y = mainHeight * 0.08,
+    phasechart_barheight = mainHeight * 0.025;
+
+function drawPhaseChart() {
+
+    var phase_data_ordered = [];
+    var phase_data_values = 0;
+    phases.forEach(function(p) {
+        var done = 1;
+        phase_data.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = phase_data_values;
+                phase_data_ordered.push(p2);
+                phase_data_values += p2[values];
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+        }
+    });
+
+    var phase_data_total_ordered = [];
+    var phase_data_total_values = 0;
+    phases.forEach(function(p) {
+        var done = 1;
+        phase_data_total.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = phase_data_total_values;
+                phase_data_total_ordered.push(p2);
+                phase_data_total_values += p2[values];
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+        }
+    });
+
+    phasechart_x.domain([0, phase_data_values]);
+    phasechart_total_x.domain([0, phase_data_total_values]);
+
+    var phasechart_svg = d3.select("#phasechart").append("svg")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.15))
+      .append("g")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.15))
+        .attr("class", "phasechart_area");
+
+    var phasechart_bar1 = phasechart_svg.append("g")
+        .attr("class", "phasechart_bar1")
+        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_topbar_y + ")");
+
+    phasechart_bar1.selectAll(".phasechart_bar1_rect")
+        .data(phase_data_ordered)
+        .enter()
+        .append("rect")
+        .attr("class", "phasechart_bar1_rect")
+        .attr("x", function(d) { return phasechart_x(d.x0); })
+        .attr("y", 0)
+        .attr("width", 0)
+        .attr("height", phasechart_barheight)
+        .style("fill", function(d, i) { return phase_colors[i]; })
+        .style("opacity", 1);
+
+    var phasechart_bar2 = phasechart_svg.append("g")
+        .attr("class", "phasechart_bar2")
+        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_bottombar_y + ")");
+
+    phasechart_bar2.selectAll(".phasechart_bar2_rect")
+        .data(phase_data_total_ordered)
+        .enter()
+        .append("rect")
+        .attr("class", "phasechart_bar2_rect")
+        .attr("x", function(d) { return phasechart_total_x(d.x0); })
+        .attr("y", 0)
+        .attr("width", 0)
+        .attr("height", phasechart_barheight)
+        .style("fill", function(d, i) { return phase_colors[i]; })
+        .style("opacity", 1);
+
+    var phaselabel1 = phasechart_svg.append("text")
+        .attr("class", "phasechart_label1")
+        .attr("transform", "translate(0," + (phasechart_topbar_y + (rightWidth * 0.02)) + ")")
+        .style("text-anchor", "end")
+        .style("font-size", rightWidth * 0.025)
+        .style("fill", "rgb(229,150,54)")
+        .style("font-weight", "bold");
+
+    phaselabel1.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .text("Current");
+    phaselabel1.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .attr("dy", ".95em")
+        .text("Selection");
+
+    var phaselabel2 = phasechart_svg.append("text")
+        .attr("class", "phasechart_label2")
+        .attr("transform", "translate(0," + (phasechart_bottombar_y + (rightWidth * 0.02)) + ")")
+        .style("text-anchor", "end")
+        .style("font-size", rightWidth * 0.025)
+        .style("fill", "#222")
+        .style("font-weight", "bold");
+
+    phaselabel2.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .text("All");
+    phaselabel2.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .attr("dy", ".95em")
+        .text("Studies");
+
+    phasechart_svg.append("text")
+        .attr("class", "phasechart_title")
+        .attr("width", rightWidth)
+        .attr("height", mainHeight * 0.03)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", rightWidth * 0.03)
+        .html('Number of Trials by Phase, <tspan style="font-weight: bold; fill: rgb(229,150,54)">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: #222">All Studies</tspan>')
+
+    var phasechart_legend = phasechart_svg.append("g")
+        .attr("class", "phasechart_legend")
+        .attr("width", rightWidth * 0.9)
+        .attr("height", mainHeight * 0.03)
+        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (mainHeight * 0.12) + ")");
+
+    var legend_items = phasechart_legend.selectAll(".phasechart_legend_item")
+        .data(phases)
+        .enter()
+        .append("g")
+        .attr("class", "phasechart_legend_item")
+        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.15 * i) + ")"; });
+
+    legend_items.append("rect")
+        .attr("width", mainHeight * 0.017)
+        .attr("height", mainHeight * 0.017)
+        .style("fill", function(d, i) { return phase_colors[i]; });
+    legend_items.append("text")
+        .attr("x", mainHeight * 0.03)
+        .attr("y", rightWidth * 0.02)
+        .style("font-size", rightWidth * 0.02)
+        .text(function(d) { return d; });
+
+    updatePhaseChart();
+
+}
+
+function updatePhaseChart() {
+
+    var phase_data_ordered = [];
+    var phase_data_values = 0;
+    phases.forEach(function(p) {
+        var done = 1;
+        phase_data.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = phase_data_values;
+                phase_data_ordered.push(p2);
+                phase_data_values += p2[values];
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+        }
+    });
+
+    var phase_data_total_ordered = [];
+    var phase_data_total_values = 0;
+    phases.forEach(function(p) {
+        var done = 1;
+        phase_data_total.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = phase_data_total_values;
+                phase_data_total_ordered.push(p2);
+                phase_data_total_values += p2[values];
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+        }
+    });
+
+    phasechart_x.domain([0, phase_data_values]);
+    phasechart_total_x.domain([0, phase_data_total_values]);
+
+    d3.selectAll(".phasechart_bar1_rect")
+        .data(phase_data_ordered)
+        .transition()
+        .duration(500)
+        .attr("x", function(d) { return phasechart_x(d.x0); })
+        .attr("width", function(d) { return phasechart_x(d[values]); });
+
+    d3.selectAll(".phasechart_bar2_rect")
+        .data(phase_data_total_ordered)
+        .transition()
+        .duration(500)
+        .attr("x", function(d) { return phasechart_total_x(d.x0); })
+        .attr("width", function(d) { return phasechart_total_x(d[values]); });
+
+    console.log(phase_data_ordered);
+}
+
 /*
-d3.select("#timechart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
 d3.select("#phasechart")
     .style("width", rightWidth + "px")
     .style("height", (mainHeight * 0.15) + "px");
