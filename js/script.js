@@ -107,7 +107,7 @@ d3.select("#phasechart")
 d3.select("#sponsorchart")
     .style("width", rightWidth + "px")
     .style("height", (mainHeight * 0.20) + "px");
-d3.select("#outcomechart")
+d3.select("#statuschart")
     .style("width", rightWidth + "px")
     .style("height", (mainHeight * 0.15) + "px");
 d3.select("#locationchart")
@@ -575,7 +575,8 @@ d3.json("vizdata/all_data.json", function(error, json) {
     makeBubble();
     drawTimeChart();
     drawPhaseChart();
-    drawsponsorChart();
+    drawSponsorChart();
+    drawStatusChart();
 
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
@@ -937,6 +938,7 @@ function updateViz() {
     updateTimeChart();
     updatePhaseChart();
     updateSponsorChart();
+    updateStatusChart();
     updateLocationChart();
 }
 
@@ -1045,7 +1047,7 @@ function makeBubble() {
             return "translate(" + d.x + ")"; })
         .attr("class", "bubble_label")
         .style("font-size", function(d) { return d.size / 4; })
-        .style("opacity", function(d) { return d.size > 30 ? 1 : 0; })
+        .style("opacity", function(d) { return d.size >= 24 ? 1 : 0; })
         .each(function(d) {
             var strings = splitLines(d.name, 20);
             for (var s=0; s<strings.length; s++) {
@@ -1356,7 +1358,7 @@ function updateTimeChart() {
 
 // study phase chart
 var phases = ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "N/A"];
-var phase_colors = ["#ffffcc", "#c2e699", "#78c679", "#31a354", "#006837", "#bdbdbd"];
+var phase_colors = ["#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#bdbdbd"];
 var phasechart_x = d3.scale.linear().range([0, rightWidth * .8]),
     phasechart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
 var phasechart_topbar_y = mainHeight * 0.045,
@@ -1466,9 +1468,9 @@ function drawPhaseChart() {
 
     var phaselabel1 = phasechart_svg.append("text")
         .attr("class", "phasechart_label1")
-        .attr("transform", "translate(0," + (phasechart_topbar_y + (rightWidth * 0.02)) + ")")
+        .attr("transform", "translate(0," + (phasechart_topbar_y + (mainHeight * 0.013)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", rightWidth * 0.025)
+        .style("font-size", mainHeight * 0.0155)
         .style("fill", highlight_color)
         .style("font-weight", "bold");
 
@@ -1484,9 +1486,9 @@ function drawPhaseChart() {
 
     var phaselabel2 = phasechart_svg.append("text")
         .attr("class", "phasechart_label2")
-        .attr("transform", "translate(0," + (phasechart_bottombar_y + (rightWidth * 0.02)) + ")")
+        .attr("transform", "translate(0," + (phasechart_bottombar_y + (mainHeight * 0.013)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", rightWidth * 0.025)
+        .style("font-size", mainHeight * 0.0155)
         .style("fill", base_color)
         .style("font-weight", "bold");
 
@@ -1621,7 +1623,7 @@ var sponsorchart_y = d3.scale.linear().range([mainHeight*0.135, 0]);
 var sponsorchart_xAxis,
     sponsorchart_yAxis;
 
-function drawsponsorChart() {
+function drawSponsorChart() {
 
     // set y axis domain
     sponsorchart_y.domain([0, 0.3]);
@@ -1812,7 +1814,7 @@ function updateSponsorChart() {
         });
         if ( done == 1 ) {
             sponsor_data_ordered.push([
-                    { name: p2.name,
+                    { name: p,
                       studies: 0,
                       enrollment: 0,
                       industry: 0,
@@ -1820,7 +1822,7 @@ function updateSponsorChart() {
                       total_studies: 1,
                       total_enrollment: 1
                     },
-                    { name: p2.name,
+                    { name: p,
                       studies: 0,
                       enrollment: 0,
                       industry: 1,
@@ -1869,7 +1871,7 @@ function updateSponsorChart() {
         });
         if ( done == 1 ) {
             sponsor_data_total_ordered.push([
-                    { name: p2.name,
+                    { name: p,
                       studies: 0,
                       enrollment: 0,
                       industry: 0,
@@ -1877,7 +1879,7 @@ function updateSponsorChart() {
                       total_studies: 1,
                       total_enrollment: 1
                     },
-                    { name: p2.name,
+                    { name: p,
                       studies: 0,
                       enrollment: 0,
                       industry: 1,
@@ -1934,15 +1936,290 @@ function updateSponsorChart() {
 
 }
 
-/*
-d3.select("#sponsorchart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
-d3.select("#outcomechart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.15) + "px");
+// study status chart
+var statuses = [
+  "Not yet recruiting",
+  "Recruiting",
+  "Enrolling by invitation",
+  "Active, not recruiting",
+  "Completed",
+  "Terminated",
+  "Suspended",
+  "Withdrawn"
+];
+var status_colors = [
+  "#d9f0a3",
+  "#addd8e",
+  "#78c679",
+  "#41ab5d",
+  "#238443",
+  "#fc8d59",
+  "#ef6548",
+  "#d7301f"
+];
+var statuschart_x = d3.scale.linear().range([0, rightWidth * .8]),
+    statuschart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
+var statuschart_topbar_y = mainHeight * 0.04,
+    statuschart_bottombar_y = mainHeight * 0.075,
+    statuschart_barheight = mainHeight * 0.0225;
 
-*/
+function drawStatusChart() {
+
+    var status_data_ordered = [],
+        status_data_values = 0,
+        status_data_studies = 0,
+        status_data_enrollment = 0;
+    statuses.forEach(function(p) {
+        var done = 1;
+        status_data.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = status_data_values;
+                p2.subset = 1;
+                status_data_ordered.push(p2);
+                status_data_values += p2[values];
+                status_data_studies += p2.studies;
+                status_data_enrollment += p2.enrollment;
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+        }
+    });
+    status_data_ordered.forEach(function(d, i) { 
+        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].enrollment_total = status_data_enrollment;
+    });
+
+    var status_data_total_ordered = [],
+        status_data_total_values = 0
+        status_data_total_studies = 0,
+        status_data_total_enrollment = 0;
+    statuses.forEach(function(p) {
+        var done = 1;
+        status_data_total.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = status_data_total_values;
+                p2.subset = 0;
+                status_data_total_ordered.push(p2);
+                status_data_total_values += p2[values];
+                status_data_total_studies += p2.studies;
+                status_data_total_enrollment += p2.enrollment;
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+        }
+    });
+    status_data_total_ordered.forEach(function(d, i) { 
+        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
+    });
+
+    statuschart_x.domain([0, status_data_values]);
+    statuschart_total_x.domain([0, status_data_total_values]);
+
+    var statuschart_svg = d3.select("#statuschart").append("svg")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.15))
+      .append("g")
+        .attr("width", rightWidth)
+        .attr("height", (mainHeight * 0.15))
+        .attr("class", "statuschart_area");
+
+    var statuschart_bar1 = statuschart_svg.append("g")
+        .attr("class", "statuschart_bar1")
+        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_topbar_y + ")");
+
+    statuschart_bar1.selectAll(".statuschart_bar1_rect")
+        .data(status_data_ordered)
+        .enter()
+        .append("rect")
+        .attr("class", "statuschart_bar1_rect")
+        .attr("x", function(d) { return statuschart_x(d.x0); })
+        .attr("y", 0)
+        .attr("width", 0)
+        .attr("height", statuschart_barheight)
+        .style("fill", function(d, i) { return status_colors[i]; });
+
+    var statuschart_bar2 = statuschart_svg.append("g")
+        .attr("class", "statuschart_bar2")
+        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_bottombar_y + ")");
+
+    statuschart_bar2.selectAll(".statuschart_bar2_rect")
+        .data(status_data_total_ordered)
+        .enter()
+        .append("rect")
+        .attr("class", "statuschart_bar2_rect")
+        .attr("x", function(d) { return statuschart_total_x(d.x0); })
+        .attr("y", 0)
+        .attr("width", 0)
+        .attr("height", statuschart_barheight)
+        .style("fill", function(d, i) { return status_colors[i]; })
+        .style("opacity", 1);
+
+    d3.selectAll(".statuschart_bar1_rect, .statuschart_bar2_rect")
+        .on("mouseover", mouseoverGeneral)
+        .on("mouseout", mouseoutGeneral);
+
+    var statuslabel1 = statuschart_svg.append("text")
+        .attr("class", "statuschart_label1")
+        .attr("transform", "translate(0," + (statuschart_topbar_y + (mainHeight * 0.01)) + ")")
+        .style("text-anchor", "end")
+        .style("font-size", mainHeight * 0.013)
+        .style("fill", highlight_color)
+        .style("font-weight", "bold");
+
+    statuslabel1.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .text("Current");
+    statuslabel1.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .attr("dy", ".95em")
+        .text("Selection");
+
+    var statuslabel2 = statuschart_svg.append("text")
+        .attr("class", "statuschart_label2")
+        .attr("transform", "translate(0," + (statuschart_bottombar_y + (mainHeight * 0.01)) + ")")
+        .style("text-anchor", "end")
+        .style("font-size", mainHeight * 0.013)
+        .style("fill", base_color)
+        .style("font-weight", "bold");
+
+    statuslabel2.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .text("All");
+    statuslabel2.append("tspan")
+        .attr("text-anchor", "end")
+        .attr("x", rightWidth * 0.17)
+        .attr("dy", ".95em")
+        .text("Studies");
+
+    statuschart_svg.append("text")
+        .attr("class", "statuschart_title")
+        .attr("width", rightWidth)
+        .attr("height", mainHeight * 0.03)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", rightWidth * 0.03)
+        .html('Trials by Status')
+
+    var statuschart_legend = statuschart_svg.append("g")
+        .attr("class", "statuschart_legend")
+        .attr("width", rightWidth * 0.8)
+        .attr("height", mainHeight * 0.05)
+        .attr("transform", "translate(" + (rightWidth * 0.2) + "," + (mainHeight * 0.10) + ")");
+
+    var legend_items = statuschart_legend.selectAll(".statuschart_legend_item")
+        .data(statuses)
+        .enter()
+        .append("g")
+        .attr("class", "statuschart_legend_item")
+        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.16 * i) + ")"; });
+
+    legend_items.append("rect")
+        .attr("width", mainHeight * 0.012)
+        .attr("height", mainHeight * 0.012)
+        .attr("transform", function(d, i) { return "translate(" + (i >= 5 ? rightWidth * -0.80 : 0) + "," + (i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + ")"})
+        .style("fill", function(d, i) { return status_colors[i]; });
+    legend_items.append("text")
+        .attr("transform", function(d, i) { return "translate(" + ((i >= 5 ? rightWidth * -0.80 : 0) + (mainHeight * 0.015)) + "," + ((i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + (mainHeight * 0.010)) + ")"})
+        .style("font-size", rightWidth * 0.02)
+        .each(function(d) { 
+            var strings = splitLines(d, 15);
+            for (var s=0; s<strings.length; s++) {
+                d3.select(this).append("tspan")
+                    .attr("x", 0)
+                    .attr("dy", s == 0 ? 0 : "0.9em")
+                    .text(strings[s]);
+            }
+        });
+
+    updateStatusChart();
+
+}
+
+function updateStatusChart() {
+
+    var status_data_ordered = [],
+        status_data_values = 0,
+        status_data_studies = 0,
+        status_data_enrollment = 0;
+    statuses.forEach(function(p) {
+        var done = 1;
+        status_data.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = status_data_values;
+                p2.subset = 1;
+                status_data_ordered.push(p2);
+                status_data_values += p2[values];
+                status_data_studies += p2.studies;
+                status_data_enrollment += p2.enrollment;
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+        }
+    });
+    status_data_ordered.forEach(function(d, i) { 
+        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].enrollment_total = status_data_enrollment;
+    });
+
+    var status_data_total_ordered = [],
+        status_data_total_values = 0
+        status_data_total_studies = 0,
+        status_data_total_enrollment = 0;
+    statuses.forEach(function(p) {
+        var done = 1;
+        status_data_total.forEach(function(p2) {
+            if (p2.name == p) {
+                p2.x0 = status_data_total_values;
+                p2.subset = 0;
+                status_data_total_ordered.push(p2);
+                status_data_total_values += p2[values];
+                status_data_total_studies += p2.studies;
+                status_data_total_enrollment += p2.enrollment;
+                done = 0;
+            }
+        });
+        if ( done == 1 ) {
+            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+        }
+    });
+    status_data_total_ordered.forEach(function(d, i) { 
+        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
+    });
+
+    statuschart_x.domain([0, status_data_values]);
+    statuschart_total_x.domain([0, status_data_total_values]);
+
+    d3.selectAll(".statuschart_bar1_rect")
+        .data(status_data_ordered)
+        .transition()
+        .duration(500)
+        .attr("x", function(d) { return statuschart_x(d.x0); })
+        .attr("width", function(d) { return statuschart_x(d[values]); });
+
+    d3.selectAll(".statuschart_bar2_rect")
+        .data(status_data_total_ordered)
+        .transition()
+        .duration(500)
+        .attr("x", function(d) { return statuschart_total_x(d.x0); })
+        .attr("width", function(d) { return statuschart_total_x(d[values]); });
+
+    var title_term = values == "studies" ? "Trials" : "Enrollment";
+    d3.selectAll(".statuschart_title")
+        .html(title_term + ' by Status')
+
+}
+
 
 
 
@@ -2054,8 +2331,12 @@ function mouseoutGeneral(d, i) {
 function mouseoverSponsor(d, i) {
     var pct = d3.format("%");
     var tooltext = "<span style='font-weight: bold; font-size: 120%'>" + d.name;
-    if (d.name != "Industry") { console.log("ind"); tooltext += d.industry == 1 ? " (with industry)" : ""; }
-    tooltext += " - " + d.subset == 1 ? "selection" : "all studies";
+    if (d.name != "Industry" && d.industry == 1) {
+        tooltext += " (with industry) - ";
+    } else {
+        tooltext += " - ";
+    }
+    tooltext += d.subset == 1 ? "selection" : "all studies";
     tooltext += "</span><br/>" + pct(d.studies/d.studies_total) + " of studies (" + addCommas(d.studies) + ")<br/>";
     tooltext += pct(d.enrollment/d.enrollment_total) + " of enrollment (" + addCommas(d.enrollment) + ")<br/>";
     if (d.name != "Industry") {
@@ -2193,35 +2474,6 @@ function clearArray(arr) {
         arr.pop();
     };
 }
-
-// function for cleaning up y axis
-// from: http://stackoverflow.com/questions/23305230/how-do-you-reduce-the-number-of-y-axis-ticks-in-dimple-js
-// Pass in an axis object and an interval.
- var cleanAxis = function (axis, oneInEvery) {
-     // This should have been called after draw, otherwise do nothing
-     if (axis.shapes.length > 0) {
-         // Leave the first label
-         var del = false;
-         // If there is an interval set
-         if (oneInEvery > 1) {
-             // Operate on all the axis text
-             axis.shapes.selectAll("text")
-             .each(function (d) {
-                 // Remove all but the nth label
-                 if (del % oneInEvery !== 0) {
-                     this.remove();
-                     // Find the corresponding tick line and remove
-                     axis.shapes.selectAll("line").each(function (d2) {
-                         if (d === d2) {
-                             this.remove();
-                         }
-                     });
-                 }
-                 del += 1;
-             });
-         }
-     }
- };
 
 function charge(d) {
   return -Math.pow(d.size, 2.0) / 7;
