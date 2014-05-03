@@ -66,16 +66,16 @@ d3.select("#header")
     .style("padding-right", "3%");
 
 d3.select("#sidebar")
-    .style("float", "left");
-d3.selectAll(".side-div")
     .style("margin-top", topMargin + "px")
+    .style("float", "left")
+    .style("border-right", "2px solid")
+    .style("border-color", "#bdbdbd");
+d3.selectAll(".side-div")
     .style("padding", divPadding + "px")
-    .style("width", leftWidth + "px")
-    .style("border", borderWidth + "px solid")
-    .style("border-color", highlight_color)
-    .style("background-color", "#fff");
+    .style("width", leftWidth + "px");
 
 d3.select("#options")
+    .style("margin-top", topMargin + "px")
     .style("height", optionsHeight + "px");
 
 d3.select("#navigator")
@@ -90,11 +90,13 @@ d3.select("#mainsection")
 d3.selectAll("#mainsection div")
     .style("float", "left");
 d3.select("#maintitle")
-    .style("width", ((centerWidth * 2) + rightWidth) + "px")
+    .style("width", ((centerWidth * 2) + rightWidth - 8) + "px")
     .style("height", titleHeight + "px")
     .style("font-size", titleFontSize + "px")
+    .style("padding-left", "4px")
+    .style("padding-right", "4px")
     .style("vertical-align","middle")
-    .style("text-align", "center");
+    .style("text-align", "left");
 d3.select("#centersection")
     .style("float", "left")
     .style("width", (centerWidth * 2) + "px")
@@ -138,7 +140,7 @@ var buttons = d3.select("#buttons").append("svg")
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (leftWidth * .085) + "px")
+    .attr("dy", (leftWidth * .1) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .065) + "px")
@@ -187,17 +189,17 @@ button_showby.append("text")
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (leftWidth * .085 + optionsHeight / 4) + "px")
+    .attr("dy", (leftWidth * .1 + optionsHeight / 4) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .065) + "px")
     .style("font-weight", "700")
-    .text("Count by");
+    .text("Size by");
 var button_sizeby = buttons.append("g")
     .attr("class", "option_button")
     .attr("transform", "translate(0," + (optionsHeight * 3 / 8) + ")");
 button_sizeby.append("rect")
-    .attr("class", "button_sizeby_studies")
+    .attr("class", "button_sizeby_trials")
     .attr("width", (leftWidth / 2 - 6) + "px")
     .attr("x", "3px")
     .attr("height", (optionsHeight / 8) + "px")
@@ -206,14 +208,14 @@ button_sizeby.append("rect")
     .style("stroke-width", "3px")
     .style("fill", "#444");
 button_sizeby.append("text")
-    .attr("class", "button_sizeby_studies")
+    .attr("class", "button_sizeby_trials")
     .attr("dy", (optionsHeight * (11/128)) + "px")
     .attr("dx", (leftWidth / 4) + "px")
     .attr("text-anchor", "middle")
     .style("fill", "#fff")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .06) + "px")
-    .text("studies");
+    .text("trials");
 button_sizeby.append("rect")
     .attr("class", "button_sizeby_enrollment")
     .attr("x", (leftWidth / 2 + 3) + "px")
@@ -460,7 +462,7 @@ function drawMap(world) {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html('Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
 }
 
@@ -538,7 +540,7 @@ var cond_filter = '',
     curyears = 'Pre-1999 to 2013'
     level = 0,
     showby = "cond",
-    values = "studies";
+    values = "trials";
 
 
 
@@ -614,7 +616,7 @@ function updateData(dataset) {
     var cur_length = dataset.length;
     var istrue = 1==1;
     for (var y=1998; y<2014; y++) {
-        timeselector_data[y] = {studies: 0, enrollment: 0};
+        timeselector_data[y] = {trials: 0, enrollment: 0};
     }
 
     while (cur_length--) {
@@ -636,9 +638,9 @@ function updateData(dataset) {
             for (var c=0; c<conds.length; c++) {
                 var cond_term = reverse_mesh[conds[c]];
                 if ( !(cond_term in cond_dict) ) {
-                    cond_dict[cond_term] = {cond_id: conds[c], studies: 0, enrollment: 0};
+                    cond_dict[cond_term] = {cond_id: conds[c], trials: 0, enrollment: 0};
                 }
-                cond_dict[cond_term].studies += 1;
+                cond_dict[cond_term].trials += 1;
                 cond_dict[cond_term].enrollment += enrollment;
             }
 
@@ -646,87 +648,87 @@ function updateData(dataset) {
             for (var v=0; v<dataset[cur_length]['iv'].length; v++) {
                 var iv_name = intervention[dataset[cur_length]['iv'][v]];
                 if ( !(iv_name in inv_dict) ) {
-                    inv_dict[iv_name] = {inv_id: dataset[cur_length]['iv'][v], studies: 0, enrollment: 0};
+                    inv_dict[iv_name] = {inv_id: dataset[cur_length]['iv'][v], trials: 0, enrollment: 0};
                 }
-                inv_dict[iv_name].studies += 1;
+                inv_dict[iv_name].trials += 1;
                 inv_dict[iv_name].enrollment += enrollment;
             }
 
             // time
             if (+dataset[cur_length]['yr'] < 1999) {
                 if ( !(1998 in time_dict) ) {
-                    time_dict[1998] = {studies: 0, enrollment: 0};
+                    time_dict[1998] = {trials: 0, enrollment: 0};
                 }
-                time_dict[1998].studies += 1;
+                time_dict[1998].trials += 1;
                 time_dict[1998].enrollment += enrollment;
-                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].trials += 1;
                 timeselector_data[1998].enrollment += enrollment || 0;
             } else if (+dataset[cur_length]['yr'] > 2013) {
                 if ( !(2013 in time_dict) ) {
-                    time_dict[2013] = {studies: 0, enrollment: 0};
+                    time_dict[2013] = {trials: 0, enrollment: 0};
                 }
-                time_dict[2013].studies += 1;
+                time_dict[2013].trials += 1;
                 time_dict[2013].enrollment += enrollment;
-                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].trials += 1;
                 timeselector_data[2013].enrollment += enrollment || 0;
             } else {
                 if ( !(dataset[cur_length]['yr'] in time_dict) ) {
-                    time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
+                    time_dict[dataset[cur_length]['yr']] = {trials: 0, enrollment: 0};
                 }
-                time_dict[dataset[cur_length]['yr']].studies += 1;
+                time_dict[dataset[cur_length]['yr']].trials += 1;
                 time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
-                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].trials += 1;
                 timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment || 0;
             }
 
             // sponsors
             var sponsor_name = sponsor[dataset[cur_length]['sp']];
             if ( !(sponsor_name in sponsor_dict) ) {
-                sponsor_dict[sponsor_name] = {industry: {studies: 0, enrollment: 0}, no_industry: {studies: 0, enrollment: 0}};
+                sponsor_dict[sponsor_name] = {industry: {trials: 0, enrollment: 0}, no_industry: {trials: 0, enrollment: 0}};
             }
             if ( dataset[cur_length]['in'] == 1) {
-                sponsor_dict[sponsor_name]['industry'].studies += 1;
+                sponsor_dict[sponsor_name]['industry'].trials += 1;
                 sponsor_dict[sponsor_name]['industry'].enrollment += enrollment;
             } else {
-                sponsor_dict[sponsor_name]['no_industry'].studies += 1;
+                sponsor_dict[sponsor_name]['no_industry'].trials += 1;
                 sponsor_dict[sponsor_name]['no_industry'].enrollment += enrollment;
             }
 
             // status
             var status_name = stat[dataset[cur_length]['st']];
             if ( !(status_name in status_dict) ) {
-                status_dict[status_name] = {studies: 0, enrollment: 0};
+                status_dict[status_name] = {trials: 0, enrollment: 0};
             }
-            status_dict[status_name].studies += 1;
+            status_dict[status_name].trials += 1;
             status_dict[status_name].enrollment += enrollment;
 
             // phase
             var phase_name = phase[dataset[cur_length]['ph']]
             if ( !(phase_name in phase_dict) ) {
-                phase_dict[phase_name] = {studies: 0, enrollment: 0};
+                phase_dict[phase_name] = {trials: 0, enrollment: 0};
             }
-            phase_dict[phase_name].studies += 1;
+            phase_dict[phase_name].trials += 1;
             phase_dict[phase_name].enrollment += enrollment;
 
             // location
             for (var l=0; l<dataset[cur_length]['lo'].length; l++) {
                 var loc_name = loc[dataset[cur_length]['lo'][l]];
                 if ( !(loc_name in location_dict) ) {
-                    location_dict[loc_name] = {studies: 0, enrollment: 0};
+                    location_dict[loc_name] = {trials: 0, enrollment: 0};
                 }
-                location_dict[loc_name].studies += 1;
+                location_dict[loc_name].trials += 1;
                 location_dict[loc_name].enrollment += enrollment;
             }
 
         } else if ( eval(filter_test_notime) ) {
             if (+dataset[cur_length]['yr'] < 1999) {
-                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].trials += 1;
                 timeselector_data[1998].enrollment += enrollment || 0;
             } else if (+dataset[cur_length]['yr'] > 2013) {
-                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].trials += 1;
                 timeselector_data[2013].enrollment += enrollment || 0;
             } else {
-                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].trials += 1;
                 timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment || 0;
             }
         }
@@ -739,7 +741,7 @@ function updateData(dataset) {
         time_data.push({
             name: objkeys[i],
             dateval: new Date(objkeys[i] + "-06-01"),
-            studies: time_dict[objkeys[i]].studies,
+            trials: time_dict[objkeys[i]].trials,
             enrollment: time_dict[objkeys[i]].enrollment
         });
     }
@@ -750,7 +752,7 @@ function updateData(dataset) {
         cond_data.push({
             name: objkeys[i],
             id: cond_dict[objkeys[i]].cond_id,
-            studies: cond_dict[objkeys[i]].studies,
+            trials: cond_dict[objkeys[i]].trials,
             enrollment: cond_dict[objkeys[i]].enrollment
         });
     }
@@ -761,7 +763,7 @@ function updateData(dataset) {
         inv_data.push({
             name: objkeys[i],
             id: inv_dict[objkeys[i]].inv_id,
-            studies: inv_dict[objkeys[i]].studies,
+            trials: inv_dict[objkeys[i]].trials,
             enrollment: inv_dict[objkeys[i]].enrollment
         });
     }
@@ -771,9 +773,9 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         sponsor_data.push({
             name: objkeys[i],
-            studies_industry: sponsor_dict[objkeys[i]].industry.studies,
+            trials_industry: sponsor_dict[objkeys[i]].industry.trials,
             enrollment_industry: sponsor_dict[objkeys[i]].industry.enrollment,
-            studies_no_industry: sponsor_dict[objkeys[i]].no_industry.studies,
+            trials_no_industry: sponsor_dict[objkeys[i]].no_industry.trials,
             enrollment_no_industry: sponsor_dict[objkeys[i]].no_industry.enrollment
         });
     }
@@ -783,7 +785,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         status_data.push({
             name: objkeys[i],
-            studies: status_dict[objkeys[i]].studies,
+            trials: status_dict[objkeys[i]].trials,
             enrollment: status_dict[objkeys[i]].enrollment
         });
     }
@@ -793,7 +795,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         phase_data.push({
             name: objkeys[i],
-            studies: phase_dict[objkeys[i]].studies,
+            trials: phase_dict[objkeys[i]].trials,
             enrollment: phase_dict[objkeys[i]].enrollment
         });
     }
@@ -803,7 +805,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         location_data.push({
             name: objkeys[i],
-            studies: location_dict[objkeys[i]].studies,
+            trials: location_dict[objkeys[i]].trials,
             enrollment: location_dict[objkeys[i]].enrollment
         });
     }
@@ -815,7 +817,7 @@ function writeFilter() {
     // write data filter test to identify records of interest 
     filter_test = '';
     filter_test_notime = '';
-    charttitle = 'Studies of ';
+    charttitle = 'Registered trials studying ';
 
     // conditions
     if ( cond_filter.length > 0 ) {
@@ -959,14 +961,14 @@ function updateViz() {
 function updateText () {
     d3.select("#maintitle")
         .html("<p>" + charttitle + "</p");
-    var num_studies = 0;
+    var num_trials = 0;
     var num_enroll = 0;
     for (var t=0; t<time_data.length; t++) {
-        num_studies += time_data[t].studies;
+        num_trials += time_data[t].trials;
         num_enroll += time_data[t].enrollment;
     }
     d3.select("#numstudies")
-        .html(addCommas(num_studies));
+        .html(addCommas(num_trials));
     d3.select("#enrollpart")
         .html(addCommas(num_enroll));
     d3.select("#navigate_conditions")
@@ -1033,7 +1035,7 @@ function makeBubble() {
         bubble_data.push({
           name: temp_data[i].name,
           id: temp_data[i].id,
-          studies: temp_data[i].studies,
+          trials: temp_data[i].trials,
           enrollment: temp_data[i].enrollment,
           size: bubble_scale(oldval) * size_scale
         });
@@ -1085,25 +1087,25 @@ function updateLocationChart() {
     var maxheight = map_chart_height * 0.25;
 
     var val_array = [],
-        cur_studies = [],
+        cur_trials = [],
         cur_enrollment = [];
     location_data.forEach(function(m) { 
         val_array.push(m[values]);
-        cur_studies.push(m.studies);
+        cur_trials.push(m.trials);
         cur_enrollment.push(m.enrollment);
     });
     var maxval = d3.max(val_array);
     var totalval = d3.sum(val_array);
 
-    var studies = [];
+    var trials = [];
 
 
     var val_array_total = [],
-        cur_studies_total = [],
+        cur_trials_total = [],
         cur_enrollment_total = [];
     location_data_total.forEach(function(m) { 
         val_array_total.push(m[values]);
-        cur_studies_total.push(m.studies);
+        cur_trials_total.push(m.trials);
         cur_enrollment_total.push(m.enrollment);
     });
     var maxval_total = d3.max(val_array_total);
@@ -1114,13 +1116,13 @@ function updateLocationChart() {
 
     location_data.forEach(function(m) { 
         m.size = barscale(m[values] / totalval);
-        m.studies_total = d3.sum(cur_studies);
+        m.trials_total = d3.sum(cur_trials);
         m.enrollment_total = d3.sum(cur_enrollment);
         m.subset = 1; 
     });
     location_data_total.forEach(function(m) { 
         m.size = barscale(m[values] / totalval_total);
-        m.studies_total = d3.sum(cur_studies_total);
+        m.trials_total = d3.sum(cur_trials_total);
         m.enrollment_total = d3.sum(cur_enrollment_total);
         m.subset = 0;
     });
@@ -1145,9 +1147,9 @@ function updateLocationChart() {
             .style("opacity", 1);
     }
 
-    var title_term = values == "studies" ? "% of Trials" : "% of Enrollment";
+    var title_term = values == "trials" ? "Trials" : "Enrollment";
     d3.selectAll(".locationchart_title")
-        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
 }
 
@@ -1284,7 +1286,7 @@ function drawTimeChart() {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html('Trials by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
     updateTimeChart();
 
@@ -1365,9 +1367,9 @@ function updateTimeChart() {
       .duration(500)
       .attr("d", function(d) { return timechart_line(time_data); });
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
+    var title_term = values == "trials" ? "Trials" : "Enrollment";
     d3.selectAll(".timechart_title")
-        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
 }
 
@@ -1384,7 +1386,7 @@ function drawPhaseChart() {
 
     var phase_data_ordered = [],
         phase_data_values = 0,
-        phase_data_studies = 0,
+        phase_data_trials = 0,
         phase_data_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1394,23 +1396,23 @@ function drawPhaseChart() {
                 p2.subset = 1;
                 phase_data_ordered.push(p2);
                 phase_data_values += p2[values];
-                phase_data_studies += p2.studies;
+                phase_data_trials += p2.trials;
                 phase_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+            phase_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values});
         }
     });
     phase_data_ordered.forEach(function(d, i) { 
-        phase_data_ordered[i].studies_total = phase_data_studies;
+        phase_data_ordered[i].trials_total = phase_data_trials;
         phase_data_ordered[i].enrollment_total = phase_data_enrollment;
     });
 
     var phase_data_total_ordered = [],
         phase_data_total_values = 0
-        phase_data_total_studies = 0,
+        phase_data_total_trials = 0,
         phase_data_total_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1420,17 +1422,17 @@ function drawPhaseChart() {
                 p2.subset = 0;
                 phase_data_total_ordered.push(p2);
                 phase_data_total_values += p2[values];
-                phase_data_total_studies += p2.studies;
+                phase_data_total_trials += p2.trials;
                 phase_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+            phase_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values});
         }
     });
     phase_data_total_ordered.forEach(function(d, i) { 
-        phase_data_total_ordered[i].studies_total = phase_data_total_studies;
+        phase_data_total_ordered[i].trials_total = phase_data_total_trials;
         phase_data_total_ordered[i].enrollment_total = phase_data_total_enrollment;
     });
 
@@ -1515,7 +1517,7 @@ function drawPhaseChart() {
         .attr("text-anchor", "end")
         .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
-        .text("Studies");
+        .text("Trials");
 
     phasechart_svg.append("text")
         .attr("class", "phasechart_title")
@@ -1557,7 +1559,7 @@ function updatePhaseChart() {
 
     var phase_data_ordered = [],
         phase_data_values = 0,
-        phase_data_studies = 0,
+        phase_data_trials = 0,
         phase_data_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1567,23 +1569,23 @@ function updatePhaseChart() {
                 p2.subset = 1;
                 phase_data_ordered.push(p2);
                 phase_data_values += p2[values];
-                phase_data_studies += p2.studies;
+                phase_data_trials += p2.trials;
                 phase_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values, subset: 1});
+            phase_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values, subset: 1});
         }
     });
     phase_data_ordered.forEach(function(d, i) { 
-        phase_data_ordered[i].studies_total = phase_data_studies;
+        phase_data_ordered[i].trials_total = phase_data_trials;
         phase_data_ordered[i].enrollment_total = phase_data_enrollment;
     });
 
     var phase_data_total_ordered = [],
         phase_data_total_values = 0
-        phase_data_total_studies = 0,
+        phase_data_total_trials = 0,
         phase_data_total_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1593,17 +1595,17 @@ function updatePhaseChart() {
                 p2.subset = 0;
                 phase_data_total_ordered.push(p2);
                 phase_data_total_values += p2[values];
-                phase_data_total_studies += p2.studies;
+                phase_data_total_trials += p2.trials;
                 phase_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values, subset: 0});
+            phase_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values, subset: 0});
         }
     });
     phase_data_total_ordered.forEach(function(d, i) { 
-        phase_data_total_ordered[i].studies_total = phase_data_total_studies;
+        phase_data_total_ordered[i].trials_total = phase_data_total_trials;
         phase_data_total_ordered[i].enrollment_total = phase_data_total_enrollment;
     });
 
@@ -1624,7 +1626,7 @@ function updatePhaseChart() {
         .attr("x", function(d) { return phasechart_total_x(d.x0); })
         .attr("width", function(d) { return phasechart_total_x(d[values]); });
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
+    var title_term = values == "trials" ? "Trials" : "Enrollment";
     d3.selectAll(".phasechart_title")
         .html(title_term + ' by Study Phase')
 
@@ -1774,7 +1776,7 @@ function drawSponsorChart() {
         .attr("class", "sponsorchart_legendtext_top")
         .attr("transform", "translate(" + (rightWidth * .01) + "," + (sideHeight * 0.18) + ")");
     legend_text_top.selectAll("text")
-        .data(["selection","all studies"])
+        .data(["selection","all trials"])
         .enter()
         .append("text")
         .attr("transform", function(d, i) {return "translate(" + ((rightWidth * 0.04 * i) + (rightWidth * 0.01)) + ")rotate(-45)"; })
@@ -1791,11 +1793,11 @@ function updateSponsorChart() {
     // order data and set domain
     var sponsor_data_ordered = [],
         sponsor_data_values = [],
-        sponsor_data_studies = 0,
+        sponsor_data_trials = 0,
         sponsor_data_enrollment = 0,
         sponsor_data_total_ordered = [],
         sponsor_data_total_values = [],
-        sponsor_data_total_studies = 0,
+        sponsor_data_total_trials = 0,
         sponsor_data_total_enrollment = 0;
 
     sponsor_types.forEach(function(p) {
@@ -1804,25 +1806,25 @@ function updateSponsorChart() {
             if (p2.name == p) {
                 var out_array = [
                     { name: p2.name,
-                      studies: p2.studies_no_industry,
+                      trials: p2.trials_no_industry,
                       enrollment: p2.enrollment_no_industry,
                       industry: 0,
                       subset: 1,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     },
                     { name: p2.name,
-                      studies: p2.studies_industry,
+                      trials: p2.trials_industry,
                       enrollment: p2.enrollment_industry,
                       industry: 1,
                       subset: 1,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     }
                 ];
                 sponsor_data_ordered.push(out_array);
                 sponsor_data_values.push(p2[values + "_industry"] + p2[values + "_no_industry"]);
-                sponsor_data_studies += p2.studies_industry + p2.studies_no_industry;
+                sponsor_data_trials += p2.trials_industry + p2.trials_no_industry;
                 sponsor_data_enrollment += p2.enrollment_industry + p2.enrollment_no_industry;
                 done = 0;
             }
@@ -1830,19 +1832,19 @@ function updateSponsorChart() {
         if ( done == 1 ) {
             sponsor_data_ordered.push([
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 0,
                       subset: 1,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     },
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 1,
                       subset: 1,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     }
             ]);
@@ -1850,7 +1852,7 @@ function updateSponsorChart() {
     });
     sponsor_data_ordered.forEach(function(d, i) {
         sponsor_data_ordered[i].forEach(function(d2, i2) {
-            sponsor_data_ordered[i][i2].studies_total = sponsor_data_studies;
+            sponsor_data_ordered[i][i2].trials_total = sponsor_data_trials;
             sponsor_data_ordered[i][i2].enrollment_total = sponsor_data_enrollment;
         })
     })
@@ -1861,25 +1863,25 @@ function updateSponsorChart() {
             if (p2.name == p) {
                 var out_array = [
                     { name: p2.name,
-                      studies: p2.studies_no_industry,
+                      trials: p2.trials_no_industry,
                       enrollment: p2.enrollment_no_industry,
                       industry: 0,
                       subset: 0,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     },
                     { name: p2.name,
-                      studies: p2.studies_industry,
+                      trials: p2.trials_industry,
                       enrollment: p2.enrollment_industry,
                       industry: 1,
                       subset: 0,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     }
                 ];
                 sponsor_data_total_ordered.push(out_array);
                 sponsor_data_total_values.push(p2[values + "_industry"] + p2[values + "_no_industry"]);
-                sponsor_data_total_studies += p2.studies_industry + p2.studies_no_industry;
+                sponsor_data_total_trials += p2.trials_industry + p2.trials_no_industry;
                 sponsor_data_total_enrollment += p2.enrollment_industry + p2.enrollment_no_industry;
                 done = 0;
             }
@@ -1887,19 +1889,19 @@ function updateSponsorChart() {
         if ( done == 1 ) {
             sponsor_data_total_ordered.push([
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 0,
                       subset: 0,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     },
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 1,
                       subset: 0,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     }
             ]);
@@ -1907,7 +1909,7 @@ function updateSponsorChart() {
     });
     sponsor_data_total_ordered.forEach(function(d, i) {
         sponsor_data_total_ordered[i].forEach(function(d2, i2) {
-            sponsor_data_total_ordered[i][i2].studies_total = sponsor_data_total_studies;
+            sponsor_data_total_ordered[i][i2].trials_total = sponsor_data_total_trials;
             sponsor_data_total_ordered[i][i2].enrollment_total = sponsor_data_total_enrollment;
         })
     })
@@ -1944,7 +1946,7 @@ function updateSponsorChart() {
             .attr("height", function(d) { return sideHeight*0.75 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
     }
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
+    var title_term = values == "trials" ? "Trials" : "Enrollment";
     d3.selectAll(".sponsorchart_title")
         .html(title_term + ' by Lead Sponsor Type')
 
@@ -1982,7 +1984,7 @@ function drawStatusChart() {
 
     var status_data_ordered = [],
         status_data_values = 0,
-        status_data_studies = 0,
+        status_data_trials = 0,
         status_data_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -1992,23 +1994,23 @@ function drawStatusChart() {
                 p2.subset = 1;
                 status_data_ordered.push(p2);
                 status_data_values += p2[values];
-                status_data_studies += p2.studies;
+                status_data_trials += p2.trials;
                 status_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+            status_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 1});
         }
     });
     status_data_ordered.forEach(function(d, i) { 
-        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].trials_total = status_data_trials;
         status_data_ordered[i].enrollment_total = status_data_enrollment;
     });
 
     var status_data_total_ordered = [],
         status_data_total_values = 0
-        status_data_total_studies = 0,
+        status_data_total_trials = 0,
         status_data_total_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2018,17 +2020,17 @@ function drawStatusChart() {
                 p2.subset = 0;
                 status_data_total_ordered.push(p2);
                 status_data_total_values += p2[values];
-                status_data_total_studies += p2.studies;
+                status_data_total_trials += p2.trials;
                 status_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+            status_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 0});
         }
     });
     status_data_total_ordered.forEach(function(d, i) { 
-        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].trials_total = status_data_total_trials;
         status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
     });
 
@@ -2112,7 +2114,7 @@ function drawStatusChart() {
         .attr("text-anchor", "end")
         .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
-        .text("Studies");
+        .text("Trials");
 
     statuschart_svg.append("text")
         .attr("class", "statuschart_title")
@@ -2162,7 +2164,7 @@ function updateStatusChart() {
 
     var status_data_ordered = [],
         status_data_values = 0,
-        status_data_studies = 0,
+        status_data_trials = 0,
         status_data_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2172,23 +2174,23 @@ function updateStatusChart() {
                 p2.subset = 1;
                 status_data_ordered.push(p2);
                 status_data_values += p2[values];
-                status_data_studies += p2.studies;
+                status_data_trials += p2.trials;
                 status_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+            status_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 1});
         }
     });
     status_data_ordered.forEach(function(d, i) { 
-        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].trials_total = status_data_trials;
         status_data_ordered[i].enrollment_total = status_data_enrollment;
     });
 
     var status_data_total_ordered = [],
         status_data_total_values = 0
-        status_data_total_studies = 0,
+        status_data_total_trials = 0,
         status_data_total_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2198,17 +2200,17 @@ function updateStatusChart() {
                 p2.subset = 0;
                 status_data_total_ordered.push(p2);
                 status_data_total_values += p2[values];
-                status_data_total_studies += p2.studies;
+                status_data_total_trials += p2.trials;
                 status_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+            status_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 0});
         }
     });
     status_data_total_ordered.forEach(function(d, i) { 
-        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].trials_total = status_data_total_trials;
         status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
     });
 
@@ -2229,7 +2231,7 @@ function updateStatusChart() {
         .attr("x", function(d) { return statuschart_total_x(d.x0); })
         .attr("width", function(d) { return statuschart_total_x(d[values]); });
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
+    var title_term = values == "trials" ? "Trials" : "Enrollment";
     d3.selectAll(".statuschart_title")
         .html(title_term + ' by Status')
 
@@ -2264,10 +2266,10 @@ function clickButton(d, i) {
         }
     } else {
         values = button_value;
-        if ( button_value == 'studies' ) {
+        if ( button_value == 'trials' ) {
             other_value = 'enrollment';
         } else {
-            other_value = 'studies';
+            other_value = 'trials';
         }
     }
 
@@ -2301,10 +2303,10 @@ function resetAll() {
     time_filter = [];
     level = 0;
     showby = "cond";
-    values = "studies";
+    values = "trials";
     highlightButton("button_showby_cond");
     lowlightButton("button_showby_inv");
-    highlightButton("button_sizeby_studies");
+    highlightButton("button_sizeby_trials");
     lowlightButton("button_sizeby_enrollment");
     d3.select(".brush").call(timeselector_brush.clear());
     updateViz();
@@ -2328,8 +2330,8 @@ function clearIntervention() {
 function mouseoverGeneral(d, i) {
     var pct = d3.format("%");
     var tooltext = "<span style='font-weight: bold; font-size: 120%'>" + d.name + " - ";
-    tooltext += d.subset == 1 ? "selection" : "all studies";
-    tooltext += "</span><br/>" + pct(d.studies/d.studies_total) + " of studies (" + addCommas(d.studies) + ")<br/>";
+    tooltext += d.subset == 1 ? "selection" : "all trials";
+    tooltext += "</span><br/>" + pct(d.trials/d.trials_total) + " of trials (" + addCommas(d.trials) + ")<br/>";
     tooltext += pct(d.enrollment/d.enrollment_total) + " of enrollment (" + addCommas(d.enrollment) + ")";
     d3.select("#tooltip")
         .style("visibility", "visible")
@@ -2351,8 +2353,8 @@ function mouseoverSponsor(d, i) {
     } else {
         tooltext += " - ";
     }
-    tooltext += d.subset == 1 ? "selection" : "all studies";
-    tooltext += "</span><br/>" + pct(d.studies/d.studies_total) + " of studies (" + addCommas(d.studies) + ")<br/>";
+    tooltext += d.subset == 1 ? "selection" : "all trials";
+    tooltext += "</span><br/>" + pct(d.trials/d.trials_total) + " of trials (" + addCommas(d.trials) + ")<br/>";
     tooltext += pct(d.enrollment/d.enrollment_total) + " of enrollment (" + addCommas(d.enrollment) + ")<br/>";
     if (d.name != "Industry") {
         tooltext += '<p class="space"></p>';
@@ -2376,7 +2378,7 @@ function mouseoverBubble(d, i) {
 
     d3.select("#tooltip")
         .style("visibility", "visible")
-        .html("<span style='font-weight: bold; font-size: 120%'>" + d.name + "</span><br/>" + addCommas(d.studies) + " studies<br/>" + addCommas(d.enrollment) + " enrolled participants")
+        .html("<span style='font-weight: bold; font-size: 120%'>" + d.name + "</span><br/>" + addCommas(d.trials) + " trials<br/>" + addCommas(d.enrollment) + " enrolled participants")
         .style("top", function () { return (d3.max([50,d3.event.pageY - 80]))+"px"})
         .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
 }
