@@ -40,12 +40,13 @@ if (divPadding > 8) { divPadding = 8; }
 var leftWidth = 0.2 * windowWidth - (2 * divPadding) - (2 * borderWidth);
 if (leftWidth > 240 - (2 * divPadding) - (2 * borderWidth)) { leftWidth = 240 - (2 * divPadding) - (2 * borderWidth); }
 
-var rightWidth = 0.3 * windowWidth;
-if (rightWidth > 400) { rightWidth = 400; }
+var rightWidth = 0.4 * (windowWidth - leftWidth);
 
-var centerWidth = windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth;
+var centerWidth = (windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth) / 2;
 
 var mainHeight = windowHeight - headerHeight - topMargin - titleHeight;
+var sideHeight = mainHeight / 3;
+var bottomHeight = mainHeight / 4;
 var optionsHeight = ((mainHeight + titleHeight) * 0.4) - (2 * divPadding) - (2 * borderWidth);
 var navigatorHeight = (mainHeight + titleHeight) - optionsHeight - topMargin - (4 * divPadding) - (4 * borderWidth);
 
@@ -84,35 +85,48 @@ d3.select("#navigator")
 d3.select("#mainsection")
     .style("float", "left")
     .style("margin-top", topMargin + "px")
-    .style("width", (centerWidth + rightWidth) + "px")
+    .style("width", ((centerWidth * 2) + rightWidth) + "px")
     .style("height", (mainHeight + titleHeight) + "px");
 d3.selectAll("#mainsection div")
     .style("float", "left");
 d3.select("#maintitle")
-    .style("width", (centerWidth + rightWidth) + "px")
+    .style("width", ((centerWidth * 2) + rightWidth) + "px")
     .style("height", titleHeight + "px")
     .style("font-size", titleFontSize + "px")
     .style("vertical-align","middle")
     .style("text-align", "center");
+d3.select("#centersection")
+    .style("float", "left")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", mainHeight + "px");
 d3.select("#bubbleviz")
-    .style("width", centerWidth + "px")
-    .style("height", mainHeight + "px")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", (mainHeight - bottomHeight) + "px")
     .style("float", "left");
+d3.select("#bottomcharts")
+    .style("float", "left")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", bottomHeight + "px");
+d3.select("#phasechart")
+    .style("width", centerWidth + "px")
+    .style("height", bottomHeight + "px");
+d3.select("#statuschart")
+    .style("width", centerWidth + "px")
+    .style("height", bottomHeight + "px")
+    .style("float", "left");
+d3.select("#sidecharts")
+    .style("float", "left")
+    .style("width", rightWidth + "px")
+    .style("height", mainHeight + "px");
 d3.select("#timechart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
-d3.select("#phasechart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.15) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#sponsorchart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
-d3.select("#statuschart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.15) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#locationchart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.30) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#tooltip")
     .style("font-size", tooltipFontSize + "px");
 
@@ -365,7 +379,7 @@ var map_chart_position = {
     'as': {left: 0.70, top: 0.50},
     'oc': {left: 0.80, top: 0.84}
 };
-var map_chart_height = (mainHeight * 0.30);
+var map_chart_height = sideHeight;
 
 var continent_dict = {
     'North America': 'na',
@@ -384,10 +398,10 @@ function drawMap(world) {
 
     var worldsvg = d3.select("#locationchart").append("svg")
           .attr("width", rightWidth)
-          .attr("height", (mainHeight * 0.30));
+          .attr("height", sideHeight);
 
     var outterg = worldsvg.append("g")
-        .attr("transform", "translate(" + rightWidth / 2 + "," + (mainHeight * 0.30) * .64 + ")");
+        .attr("transform", "translate(" + rightWidth / 2 + "," + sideHeight * .64 + ")");
 
     var g = outterg.append("g").attr("id", "innerg");
 
@@ -446,7 +460,7 @@ function drawMap(world) {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('% of Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html('Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
 
 }
 
@@ -970,8 +984,8 @@ function updateText () {
 
 // bubble chart parameters
 var bubble_color = "steelblue",
-    bubble_width = centerWidth,
-    bubble_height = mainHeight,
+    bubble_width = centerWidth * 2,
+    bubble_height = mainHeight - bottomHeight,
     padding = 3,
     maxRadius = 100,
     color = d3.scale.category20c(),
@@ -1031,10 +1045,10 @@ function makeBubble() {
     node.enter()
       .append("g")
       .attr("class", "node")
+      .call(force.drag)
       .on("mouseover", mouseoverBubble)
       .on("mouseout", mouseoutBubble)
-      .on("click", clickBubble)
-      .call(force.drag);
+      .on("click", clickBubble);
 
     node.append("circle")
       .attr("cx", function(d) { return d.x; })
@@ -1046,7 +1060,7 @@ function makeBubble() {
         .attr("transform", function(d) { 
             return "translate(" + d.x + ")"; })
         .attr("class", "bubble_label")
-        .style("font-size", function(d) { return d.size / 4; })
+        .style("font-size", function(d) { return d.size * 0.28; })
         .style("opacity", function(d) { return d.size >= 24 ? 1 : 0; })
         .each(function(d) {
             var strings = splitLines(d.name, 20);
@@ -1139,8 +1153,8 @@ function updateLocationChart() {
 
 // timeline chart
 var timechart_x = d3.time.scale().range([0, rightWidth * 0.8]);
-var timechart_y = d3.scale.linear().range([(mainHeight * 0.135),0]);
-var timechart_y_total = d3.scale.linear().range([(mainHeight * 0.135),0]);
+var timechart_y = d3.scale.linear().range([(sideHeight * 0.75),0]);
+var timechart_y_total = d3.scale.linear().range([(sideHeight * 0.75),0]);
 
 var timechart_xAxis,
     timechart_yAxis1,
@@ -1159,6 +1173,7 @@ function drawTimeChart() {
     var valid_y = [];
     time_data.forEach(function(d) { valid_y.push(d[values]); });
     timechart_y.domain([0, d3.max(valid_y)]);
+
     var valid_y_total = [];
     time_data_total.forEach(function(d) { 
         if (d.dateval >= low_date && d.dateval <= hi_date) { 
@@ -1184,15 +1199,15 @@ function drawTimeChart() {
 
     var timechart_svg = d3.select("#timechart").append("svg")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
       .append("g")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
         .attr("class", "timechart_area");
 
     timechart_svg.append("g")
       .attr("class", "timechart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.17) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.85) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
@@ -1202,7 +1217,7 @@ function drawTimeChart() {
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")")
       .call(timechart_yAxis1)
       .selectAll("text")
       .style("fill", highlight_color)
@@ -1215,7 +1230,7 @@ function drawTimeChart() {
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis2")
-      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (sideHeight * 0.1) + ")")
       .call(timechart_yAxis2)
       .selectAll("text")
       .style("fill", base_color)
@@ -1235,7 +1250,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")");
 
     line1.append("path")
       .attr("class", "timeline1_line")
@@ -1253,7 +1268,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline2")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")");
 
     line2.append("path")
       .attr("class", "timeline2_line")
@@ -1265,8 +1280,8 @@ function drawTimeChart() {
     timechart_svg.append("text")
         .attr("class", "timechart_title")
         .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("height", sideHeight * 0.09)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
         .html('Trials by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
@@ -1359,11 +1374,11 @@ function updateTimeChart() {
 // study phase chart
 var phases = ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "N/A"];
 var phase_colors = ["#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#bdbdbd"];
-var phasechart_x = d3.scale.linear().range([0, rightWidth * .8]),
-    phasechart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
-var phasechart_topbar_y = mainHeight * 0.045,
-    phasechart_bottombar_y = mainHeight * 0.08,
-    phasechart_barheight = mainHeight * 0.025;
+var phasechart_x = d3.scale.linear().range([0, centerWidth * .8]),
+    phasechart_total_x = d3.scale.linear().range([0, centerWidth * .8]);
+var phasechart_topbar_y = bottomHeight * 0.2,
+    phasechart_bottombar_y = bottomHeight * 0.5,
+    phasechart_barheight = bottomHeight * 0.18;
 
 function drawPhaseChart() {
 
@@ -1423,16 +1438,16 @@ function drawPhaseChart() {
     phasechart_total_x.domain([0, phase_data_total_values]);
 
     var phasechart_svg = d3.select("#phasechart").append("svg")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
       .append("g")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
         .attr("class", "phasechart_area");
 
     var phasechart_bar1 = phasechart_svg.append("g")
         .attr("class", "phasechart_bar1")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_topbar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + phasechart_topbar_y + ")");
 
     phasechart_bar1.selectAll(".phasechart_bar1_rect")
         .data(phase_data_ordered)
@@ -1448,7 +1463,7 @@ function drawPhaseChart() {
 
     var phasechart_bar2 = phasechart_svg.append("g")
         .attr("class", "phasechart_bar2")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_bottombar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + phasechart_bottombar_y + ")");
 
     phasechart_bar2.selectAll(".phasechart_bar2_rect")
         .data(phase_data_total_ordered)
@@ -1468,70 +1483,70 @@ function drawPhaseChart() {
 
     var phaselabel1 = phasechart_svg.append("text")
         .attr("class", "phasechart_label1")
-        .attr("transform", "translate(0," + (phasechart_topbar_y + (mainHeight * 0.013)) + ")")
+        .attr("transform", "translate(0," + (phasechart_topbar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.0155)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", highlight_color)
         .style("font-weight", "bold");
 
     phaselabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("Current");
     phaselabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Selection");
 
     var phaselabel2 = phasechart_svg.append("text")
         .attr("class", "phasechart_label2")
-        .attr("transform", "translate(0," + (phasechart_bottombar_y + (mainHeight * 0.013)) + ")")
+        .attr("transform", "translate(0," + (phasechart_bottombar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.0155)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", base_color)
         .style("font-weight", "bold");
 
     phaselabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("All");
     phaselabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Studies");
 
     phasechart_svg.append("text")
         .attr("class", "phasechart_title")
-        .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight * 0.12)
+        .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
         .html('Trials by Study Phase')
 
     var phasechart_legend = phasechart_svg.append("g")
         .attr("class", "phasechart_legend")
-        .attr("width", rightWidth * 0.9)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (mainHeight * 0.12) + ")");
+        .attr("width", centerWidth * 0.95)
+        .attr("height", bottomHeight * 0.2)
+        .attr("transform", "translate(" + (centerWidth * 0.05) + "," + (bottomHeight * 0.8) + ")");
 
     var legend_items = phasechart_legend.selectAll(".phasechart_legend_item")
         .data(phases)
         .enter()
         .append("g")
         .attr("class", "phasechart_legend_item")
-        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.15 * i) + ")"; });
+        .attr("transform", function(d, i) { return "translate(" + (centerWidth * 0.17 * i) + ")"; });
 
     legend_items.append("rect")
-        .attr("width", mainHeight * 0.017)
-        .attr("height", mainHeight * 0.017)
+        .attr("width", bottomHeight * 0.07)
+        .attr("height", bottomHeight * 0.07)
         .style("fill", function(d, i) { return phase_colors[i]; });
     legend_items.append("text")
-        .attr("x", mainHeight * 0.03)
-        .attr("y", rightWidth * 0.02)
-        .style("font-size", rightWidth * 0.02)
+        .attr("x", bottomHeight * 0.083)
+        .attr("y", centerWidth * 0.027)
+        .style("font-size", centerWidth * 0.027)
         .text(function(d) { return d; });
 
     updatePhaseChart();
@@ -1617,8 +1632,8 @@ function updatePhaseChart() {
 
 // sponsor chart
 var sponsor_types = ["Academic", "Industry", "US Federal", "Other"];
-var sponsorchart_x = d3.scale.linear().domain([0, 4]).range([0, rightWidth * .6]);
-var sponsorchart_y = d3.scale.linear().range([mainHeight*0.135, 0]);
+var sponsorchart_x = d3.scale.linear().domain([0, 4]).range([0, rightWidth * .64]);
+var sponsorchart_y = d3.scale.linear().range([sideHeight*0.75, 0]);
 
 var sponsorchart_xAxis,
     sponsorchart_yAxis;
@@ -1642,15 +1657,15 @@ function drawSponsorChart() {
 
     var sponsorchart_svg = d3.select("#sponsorchart").append("svg")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
       .append("g")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
         .attr("class", "sponsorchart_area");
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_yaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
@@ -1660,7 +1675,7 @@ function drawSponsorChart() {
 
     var sponsorchart_bar1 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar1")
-        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (mainHeight * 0.035) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (sideHeight * 0.1) + ")");
 
     for (var b=1; b<5; b++) {
         var inner_g = sponsorchart_bar1.selectAll(".sponsorchart_bar1_rect" + b)
@@ -1668,13 +1683,13 @@ function drawSponsorChart() {
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar1_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.15 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.16 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.045)
+            .attr("width", rightWidth * 0.05)
             .attr("height", 0)
             .style("fill", highlight_color)
             .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
@@ -1684,7 +1699,7 @@ function drawSponsorChart() {
 
     var sponsorchart_bar2 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar2")
-        .attr("transform", "translate(" + (rightWidth * 0.175) + "," + (mainHeight * 0.035) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.18) + "," + (sideHeight * 0.1) + ")");
 
     for (var b=1; b<5; b++) {
         var inner_g = sponsorchart_bar2.selectAll(".sponsorchart_bar2_rect" + b)
@@ -1692,13 +1707,13 @@ function drawSponsorChart() {
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar2_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.15 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.16 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.045)
+            .attr("width", rightWidth * 0.05)
             .attr("height", 0)
             .style("fill", base_color)
             .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
@@ -1708,7 +1723,7 @@ function drawSponsorChart() {
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.17) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.85) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
@@ -1719,17 +1734,17 @@ function drawSponsorChart() {
     sponsorchart_svg.append("text")
         .attr("class", "sponsorchart_title")
         .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("height", sideHeight * 0.1)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
         .html('Trials by Lead Sponsor Type')
 
     var sponsorchart_legend = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_legend")
-        .attr("width", rightWidth * 0.25)
-        .attr("height", mainHeight * 0.1)
-        .attr("transform", "translate(" + (rightWidth * 0.75) + "," + (mainHeight * 0.04) + ")");
+        .attr("width", rightWidth * 0.24)
+        .attr("height", sideHeight * 0.3)
+        .attr("transform", "translate(" + (rightWidth * 0.76) + "," + (sideHeight * 0.2) + ")");
 
     var legend_boxes = sponsorchart_legend.selectAll(".sponsorchart_legend_box")
         .data([[0,0],[0,1],[1,0],[1,1]])
@@ -1737,7 +1752,7 @@ function drawSponsorChart() {
         .append("rect")
         .attr("class", "sponsorchart_legend_box")
         .attr("x", function(d) { return rightWidth * 0.04 * d[0]; })
-        .attr("y", function(d) { return (mainHeight * 0.07) + (rightWidth * 0.04 * d[1]); })
+        .attr("y", function(d) { return (sideHeight * 0.2) + (rightWidth * 0.04 * d[1]); })
         .attr("width", rightWidth * 0.03)
         .attr("height", rightWidth * 0.03)
         .style("fill", function(d) { return d[0] == 0 ? highlight_color : base_color; })
@@ -1745,7 +1760,7 @@ function drawSponsorChart() {
 
     var legend_text_right = sponsorchart_legend.append("g")
         .attr("class", "sponsorchart_legendtext_right")
-        .attr("transform", "translate(" + (rightWidth * .085) + "," + (mainHeight * 0.07) + ")");
+        .attr("transform", "translate(" + (rightWidth * .079) + "," + (sideHeight * 0.2) + ")");
     legend_text_right.selectAll("text")
         .data(["with Industry","no Industry"])
         .enter()
@@ -1757,7 +1772,7 @@ function drawSponsorChart() {
 
     var legend_text_top = sponsorchart_legend.append("g")
         .attr("class", "sponsorchart_legendtext_top")
-        .attr("transform", "translate(" + (rightWidth * .01) + "," + (mainHeight * 0.06) + ")");
+        .attr("transform", "translate(" + (rightWidth * .01) + "," + (sideHeight * 0.18) + ")");
     legend_text_top.selectAll("text")
         .data(["selection","all studies"])
         .enter()
@@ -1915,7 +1930,7 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_values)) })
-            .attr("height", function(d) { return mainHeight*0.135 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
+            .attr("height", function(d) { return sideHeight*0.75 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
     }
 
     for (var b=1; b<5; b++) {
@@ -1926,7 +1941,7 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_total_values)) })
-            .attr("height", function(d) { return mainHeight*0.135 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
+            .attr("height", function(d) { return sideHeight*0.75 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
     }
 
     var title_term = values == "studies" ? "Trials" : "Enrollment";
@@ -1957,11 +1972,11 @@ var status_colors = [
   "#ef6548",
   "#d7301f"
 ];
-var statuschart_x = d3.scale.linear().range([0, rightWidth * .8]),
-    statuschart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
-var statuschart_topbar_y = mainHeight * 0.04,
-    statuschart_bottombar_y = mainHeight * 0.075,
-    statuschart_barheight = mainHeight * 0.0225;
+var statuschart_x = d3.scale.linear().range([0, centerWidth * .8]),
+    statuschart_total_x = d3.scale.linear().range([0, centerWidth * .8]);
+var statuschart_topbar_y = bottomHeight * 0.2,
+    statuschart_bottombar_y = bottomHeight * 0.5,
+    statuschart_barheight = bottomHeight * 0.18;
 
 function drawStatusChart() {
 
@@ -2021,16 +2036,16 @@ function drawStatusChart() {
     statuschart_total_x.domain([0, status_data_total_values]);
 
     var statuschart_svg = d3.select("#statuschart").append("svg")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
       .append("g")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
         .attr("class", "statuschart_area");
 
     var statuschart_bar1 = statuschart_svg.append("g")
         .attr("class", "statuschart_bar1")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_topbar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + statuschart_topbar_y + ")");
 
     statuschart_bar1.selectAll(".statuschart_bar1_rect")
         .data(status_data_ordered)
@@ -2045,7 +2060,7 @@ function drawStatusChart() {
 
     var statuschart_bar2 = statuschart_svg.append("g")
         .attr("class", "statuschart_bar2")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_bottombar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + statuschart_bottombar_y + ")");
 
     statuschart_bar2.selectAll(".statuschart_bar2_rect")
         .data(status_data_total_ordered)
@@ -2065,76 +2080,76 @@ function drawStatusChart() {
 
     var statuslabel1 = statuschart_svg.append("text")
         .attr("class", "statuschart_label1")
-        .attr("transform", "translate(0," + (statuschart_topbar_y + (mainHeight * 0.01)) + ")")
+        .attr("transform", "translate(0," + (statuschart_topbar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.013)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", highlight_color)
         .style("font-weight", "bold");
 
     statuslabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("Current");
     statuslabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Selection");
 
     var statuslabel2 = statuschart_svg.append("text")
         .attr("class", "statuschart_label2")
-        .attr("transform", "translate(0," + (statuschart_bottombar_y + (mainHeight * 0.01)) + ")")
+        .attr("transform", "translate(0," + (statuschart_bottombar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.013)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", base_color)
         .style("font-weight", "bold");
 
     statuslabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("All");
     statuslabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Studies");
 
     statuschart_svg.append("text")
         .attr("class", "statuschart_title")
-        .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight * 0.12)
+        .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
         .html('Trials by Status')
 
     var statuschart_legend = statuschart_svg.append("g")
         .attr("class", "statuschart_legend")
-        .attr("width", rightWidth * 0.8)
-        .attr("height", mainHeight * 0.05)
-        .attr("transform", "translate(" + (rightWidth * 0.2) + "," + (mainHeight * 0.10) + ")");
+        .attr("width", centerWidth * 0.95)
+        .attr("height", bottomHeight * 0.25)
+        .attr("transform", "translate(" + (centerWidth * 0.05) + "," + (bottomHeight * 0.75) + ")");
 
     var legend_items = statuschart_legend.selectAll(".statuschart_legend_item")
         .data(statuses)
         .enter()
         .append("g")
         .attr("class", "statuschart_legend_item")
-        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.16 * i) + ")"; });
+        .attr("transform", function(d, i) { return "translate(" + (centerWidth * 0.195 * i) + ")"; });
 
     legend_items.append("rect")
-        .attr("width", mainHeight * 0.012)
-        .attr("height", mainHeight * 0.012)
-        .attr("transform", function(d, i) { return "translate(" + (i >= 5 ? rightWidth * -0.80 : 0) + "," + (i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + ")"})
+        .attr("width", bottomHeight * 0.07)
+        .attr("height", bottomHeight * 0.07)
+        .attr("transform", function(d, i) { return "translate(" + (i >= 5 ? centerWidth * -0.975 : 0) + "," + (i >= 5 ? bottomHeight * .13 : 0) + ")"})
         .style("fill", function(d, i) { return status_colors[i]; });
     legend_items.append("text")
-        .attr("transform", function(d, i) { return "translate(" + ((i >= 5 ? rightWidth * -0.80 : 0) + (mainHeight * 0.015)) + "," + ((i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + (mainHeight * 0.010)) + ")"})
-        .style("font-size", rightWidth * 0.02)
+        .attr("transform", function(d, i) { return "translate(" + ((i >= 5 ? centerWidth * -0.975 : 0) + (bottomHeight * .083)) + "," + ((i >= 5 ? bottomHeight * .13 : 0) + (centerWidth * 0.025)) + ")"})
+        .style("font-size", centerWidth * 0.025)
         .each(function(d) { 
-            var strings = splitLines(d, 15);
+            var strings = splitLines(d, 14);
             for (var s=0; s<strings.length; s++) {
                 d3.select(this).append("tspan")
                     .attr("x", 0)
-                    .attr("dy", s == 0 ? 0 : "0.9em")
+                    .attr("dy", s == 0 ? 0 : "0.92em")
                     .text(strings[s]);
             }
         });
