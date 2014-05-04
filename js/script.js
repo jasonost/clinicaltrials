@@ -532,6 +532,8 @@ var mesh,
 var cond_filter = '',
     intervention_filter = -1,
     filter_test,
+    search_string,
+    search_filter = 0,
     filter_test_notime,
     charttitle = '',
     curcounts = '',
@@ -817,12 +819,15 @@ function writeFilter() {
     // write data filter test to identify records of interest 
     filter_test = '';
     filter_test_notime = '';
+    search_string = 'http://clinicaltrials.gov/ct2/results?type=Intr';
+    search_filter = 0;
     charttitle = 'Registered trials studying ';
 
     // conditions
     if ( cond_filter.length > 0 ) {
         filter_test = "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
         charttitle += reverse_mesh[cond_filter] + ' ';
+        var search_string_cond = '';
         var thiscond = '';
         var condarray = cond_filter.split('.');
         for (var c=0; c<condarray.length; c++) {
@@ -832,11 +837,18 @@ function writeFilter() {
                 curconds += '<p class="condlist" id="condlist_' + thiscond.slice(0,1) + '" style="padding-left: 6px";>' + reverse_mesh[thiscond.slice(0,1)] + '</p>';
                 if ( condarray[c].length > 1 ) {
                 curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: 12px;">' + reverse_mesh[thiscond] + '</p>';
+                search_string_cond = reverse_mesh[thiscond].replace(/ /g, '+');
                 }
             } else {
                 thiscond += "." + condarray[c];
                 curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: ' + ((c+2) * 6) + 'px;">' + reverse_mesh[thiscond] + '</p>';
+                search_string_cond = reverse_mesh[thiscond].replace(/ /g, '+');
             }
+        }
+        console.log(search_string_cond);
+        if (search_string_cond.length > 0) {
+            search_string += '&cond="' + search_string_cond + '"';
+            search_filter = 1;
         }
     } else {
         curconds = 'All';
@@ -852,6 +864,8 @@ function writeFilter() {
         }
         charttitle += 'using ' + intervention[intervention_filter] + ' interventions';
         curinv = '<p>' + intervention[intervention_filter] + ' (<span class="invlist">clear</span>)</p>';
+        search_string += '&intr="' + intervention[intervention_filter].replace(/ /g, '+') + '"';
+        search_filter = 1;
     } else {
         curinv = 'All';
         charttitle += 'using any intervention';
@@ -982,6 +996,10 @@ function updateText () {
         .on("click", clickCondition);
     d3.selectAll(".invlist")
         .on("click", clearIntervention);
+
+    d3.select("#ctgovlink")
+        .html("<p><a href='" + search_string + "' target='_blank'>Search for" + (search_filter == 1 ? " similar " : " ") + "trials at clinicaltrials.gov</a></p>")
+        .style("text-align", "right");
 }
 
 // bubble chart parameters

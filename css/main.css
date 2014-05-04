@@ -73,7 +73,7 @@ circle {
 
 /* clickable text */
 
-.condlist, .invlist {
+.condlist, .invlist, a {
   cursor: pointer;
   color: steelblue;
   text-decoration:underline;
