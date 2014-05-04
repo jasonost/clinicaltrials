@@ -75,3 +75,60 @@ group by nct_id;
 
 create index location_mod_nct_id_idx on location_mod(nct_id);
 
+-- create continent lookup table
+
+create table location_continents_mod as
+select nct_id,
+  max(case when continent = 'Africa' then 1 else 0 end) location_africa,
+  max(case when continent = 'Europe' then 1 else 0 end) location_europe,
+  max(case when continent = 'Asia' then 1 else 0 end) location_asia,
+  max(case when continent = 'Latin America' then 1 else 0 end) location_latinamerica,
+  max(case when continent = 'Oceania' then 1 else 0 end) location_oceania,
+  max(case when continent = 'North America' then 1 else 0 end) location_northamerica
+from location_countries join country_continent using (country)
+group by nct_id;
+
+create index location_continents_mod_nct_id_idx on location_continents_mod(nct_id);
+
+-- create summary of number of officials per study
+
+create table overall_officials_mod as
+select nct_id, count(*) total_officials
+from overall_officials
+group by nct_id;
+
+create index overall_officials_mod_idx on overall_officials_mod(nct_id);
+
+-- create summary of facilities
+
+create table facilities_mod as
+select nct_id, count(*) total_facilities,
+  count(distinct country) facilities_countries,
+  count(distinct state) facilities_states
+from facilities
+group by nct_id;
+
+create index facilities_mod_idx on facilities_mod(nct_id);
+
+-- get safety issue information from outcome table
+
+create table study_outcome_mod as
+select nct_id, max(case when safety_issue = 'Yes' then 1 else 0 end) safety_issue
+from study_outcome
+group by nct_id;
+
+create index study_outcome_mod_idx on study_outcome_mod(nct_id);
+
+-- summarize number of conditions studied
+
+create table conditions_mod as
+select nct_id, count(*) total_conditions,
+  count(distinct substr(mesh_id,1,3)) total_conditions_main,
+  count(distinct substr(mesh_id,1,1)) total_conditions_top
+from condition_browse join mesh_thesaurus using (mesh_term)
+group by nct_id;
+
+create index conditions_mod_idx on conditions_mod(nct_id);
+
+
+
