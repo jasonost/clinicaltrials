@@ -53,7 +53,7 @@ var navigatorHeight = (mainHeight + titleHeight) - optionsHeight - topMargin - (
 d3.select("#wrapper")
     .style("height", windowHeight + "px")
     .style("width", windowWidth + "px")
-    .style("margin", "4px");
+    .style("padding", "4px");
 
 d3.select("#header")
     .style("font-size", headerFontSize + "px")
@@ -462,7 +462,7 @@ function drawMap(world) {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
+        .html('Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
 }
 
@@ -540,7 +540,7 @@ var cond_filter = '',
     curconds = 'All',
     curinv = 'All',
     curyears = 'Pre-1999 to 2013'
-    level = 0,
+    level = 1,
     showby = "cond",
     values = "trials";
 
@@ -599,6 +599,7 @@ d3.json("vizdata/all_data.json", function(error, json) {
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
         updateLocationChart();
+        //drawTutorial();
     })
 });
 
@@ -630,7 +631,7 @@ function updateData(dataset) {
             // conditions
             var conds = d3.set(dataset[cur_length]['co']
                 .map(function(c) {
-                    if ( level == 0 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
+                    if ( level == 1 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
                         return mesh[c]['id'].slice(0,level_length[level]);
                     }
                     return;
@@ -685,6 +686,7 @@ function updateData(dataset) {
 
             // sponsors
             var sponsor_name = sponsor[dataset[cur_length]['sp']];
+            if (sponsor_name == 'Academic') {sponsor_name='Other';}
             if ( !(sponsor_name in sponsor_dict) ) {
                 sponsor_dict[sponsor_name] = {industry: {trials: 0, enrollment: 0}, no_industry: {trials: 0, enrollment: 0}};
             }
@@ -845,7 +847,6 @@ function writeFilter() {
                 search_string_cond = reverse_mesh[thiscond].replace(/ /g, '+');
             }
         }
-        console.log(search_string_cond);
         if (search_string_cond.length > 0) {
             search_string += '&cond="' + search_string_cond + '"';
             search_filter = 1;
@@ -998,7 +999,7 @@ function updateText () {
         .on("click", clearIntervention);
 
     d3.select("#ctgovlink")
-        .html("<p><a href='" + search_string + "' target='_blank'>Search for" + (search_filter == 1 ? " similar " : " ") + "trials at clinicaltrials.gov</a></p>")
+        .html("<p><a href='" + search_string + "' target='_blank'>Search for" + (search_filter == 1 ? " similar " : " ") + "trials at clinicaltrials.gov (includes trials from all years)</a></p>")
         .style("text-align", "right");
 }
 
@@ -1024,7 +1025,8 @@ var force = d3.layout.force()
 var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
     .attr("height", bubble_height)
-    .attr("class", "bubble");
+    .attr("class", "bubble")
+    .on("click", function() {console.log("click!");});
 
 function makeBubble() {
 
@@ -1165,16 +1167,12 @@ function updateLocationChart() {
             .style("opacity", 1);
     }
 
-    var title_term = values == "trials" ? "Trials" : "Enrollment";
-    d3.selectAll(".locationchart_title")
-        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
-
 }
 
 // timeline chart
 var timechart_x = d3.time.scale().range([0, rightWidth * 0.8]);
-var timechart_y = d3.scale.linear().range([(sideHeight * 0.75),0]);
-var timechart_y_total = d3.scale.linear().range([(sideHeight * 0.75),0]);
+var timechart_y = d3.scale.linear().range([(sideHeight * 0.7),0]);
+var timechart_y_total = d3.scale.linear().range([(sideHeight * 0.7),0]);
 
 var timechart_xAxis,
     timechart_yAxis1,
@@ -1227,17 +1225,18 @@ function drawTimeChart() {
 
     timechart_svg.append("g")
       .attr("class", "timechart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.85) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.82) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(timechart_xAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.025);
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")")
       .call(timechart_yAxis1)
       .selectAll("text")
       .style("fill", highlight_color)
@@ -1250,7 +1249,7 @@ function drawTimeChart() {
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis2")
-      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (sideHeight * 0.1) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (sideHeight * 0.12) + ")")
       .call(timechart_yAxis2)
       .selectAll("text")
       .style("fill", base_color)
@@ -1270,7 +1269,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")");
 
     line1.append("path")
       .attr("class", "timeline1_line")
@@ -1288,7 +1287,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline2")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")");
 
     line2.append("path")
       .attr("class", "timeline2_line")
@@ -1304,7 +1303,15 @@ function drawTimeChart() {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
+        .html('Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
+
+    timechart_svg.append("text")
+        .attr("class", "timechart_specialtext")
+        .attr("width", rightWidth * 0.25)
+        .attr("height", sideHeight * 0.05)
+        .attr("transform", "translate(" + (rightWidth * 0.75) + "," + (sideHeight * 0.95) + ")")
+        .style("font-size", rightWidth * 0.02)
+        .html('* 2013 has partial data')
 
     updateTimeChart();
 
@@ -1340,7 +1347,11 @@ function updateTimeChart() {
         .selectAll("text")
         .style("font-size", rightWidth * 0.025)
         .each(function(d) {
-            if (d3.select(this).text() % 1 != 0) { this.remove(); }
+            if (d3.select(this).text() == 2013) {
+                d3.select(this).text("2013*");
+            } else if (d3.select(this).text() % 1 != 0) {
+                this.remove();
+            }
         });
     d3.select(".timechart_yaxis1")
         .transition()
@@ -1385,9 +1396,8 @@ function updateTimeChart() {
       .duration(500)
       .attr("d", function(d) { return timechart_line(time_data); });
 
-    var title_term = values == "trials" ? "Trials" : "Enrollment";
-    d3.selectAll(".timechart_title")
-        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
+    d3.select(".timechart_specialtext")
+        .style("visibility", hi_date >= new Date(2013,1,1) ? "visible" : "hidden");
 
 }
 
@@ -1544,7 +1554,7 @@ function drawPhaseChart() {
         .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Study Phase')
+        .html('Phase')
 
     var phasechart_legend = phasechart_svg.append("g")
         .attr("class", "phasechart_legend")
@@ -1644,16 +1654,12 @@ function updatePhaseChart() {
         .attr("x", function(d) { return phasechart_total_x(d.x0); })
         .attr("width", function(d) { return phasechart_total_x(d[values]); });
 
-    var title_term = values == "trials" ? "Trials" : "Enrollment";
-    d3.selectAll(".phasechart_title")
-        .html(title_term + ' by Study Phase')
-
 }
 
 // sponsor chart
-var sponsor_types = ["Academic", "Industry", "US Federal", "Other"];
-var sponsorchart_x = d3.scale.linear().domain([0, 4]).range([0, rightWidth * .64]);
-var sponsorchart_y = d3.scale.linear().range([sideHeight*0.75, 0]);
+var sponsor_types = ["US Federal", "Industry", "Other"];
+var sponsorchart_x = d3.scale.linear().domain([0, 3]).range([0, rightWidth * .66]);
+var sponsorchart_y = d3.scale.linear().range([sideHeight*0.7, 0]);
 
 var sponsorchart_xAxis,
     sponsorchart_yAxis;
@@ -1666,9 +1672,9 @@ function drawSponsorChart() {
     sponsorchart_xAxis = d3.svg.axis()
         .scale(sponsorchart_x)
         .orient("bottom")
-        .tickValues([0.5, 1.5, 2.5, 3.5])
+        .tickValues([0.5, 1.5, 2.5])
         .tickSize(2)
-        .tickFormat(function(d, i) { return sponsor_types[i]; });
+        .tickFormat(function(d, i) { return sponsor_types[i] == "Other" ? "Academic/Other" : sponsor_types[i]; });
     sponsorchart_yAxis = d3.svg.axis()
         .scale(sponsorchart_y)
         .orient("left")
@@ -1685,70 +1691,72 @@ function drawSponsorChart() {
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_yaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.1) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.13) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(sponsorchart_yAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.02);
 
     var sponsorchart_bar1 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar1")
-        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (sideHeight * 0.1) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.14) + "," + (sideHeight * 0.13) + ")");
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar1.selectAll(".sponsorchart_bar1_rect" + b)
             .data([0])
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar1_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.16 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.05)
+            .attr("width", rightWidth * 0.07)
             .attr("height", 0)
             .style("fill", highlight_color)
-            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
+            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
             .on("mouseout", mouseoutGeneral);
     }
 
     var sponsorchart_bar2 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar2")
-        .attr("transform", "translate(" + (rightWidth * 0.18) + "," + (sideHeight * 0.1) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.21) + "," + (sideHeight * 0.13) + ")");
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar2.selectAll(".sponsorchart_bar2_rect" + b)
             .data([0])
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar2_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.16 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.05)
+            .attr("width", rightWidth * 0.07)
             .attr("height", 0)
             .style("fill", base_color)
-            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
+            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
             .on("mouseout", mouseoutGeneral);
     }
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.85) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.83) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(sponsorchart_xAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.025);
 
     sponsorchart_svg.append("text")
@@ -1758,13 +1766,13 @@ function drawSponsorChart() {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Lead Sponsor Type')
+        .html('Lead Sponsor Type')
 
     var sponsorchart_legend = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_legend")
-        .attr("width", rightWidth * 0.24)
+        .attr("width", rightWidth * 0.22)
         .attr("height", sideHeight * 0.3)
-        .attr("transform", "translate(" + (rightWidth * 0.76) + "," + (sideHeight * 0.2) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.78) + "," + (sideHeight * 0.2) + ")");
 
     var legend_boxes = sponsorchart_legend.selectAll(".sponsorchart_legend_box")
         .data([[0,0],[0,1],[1,0],[1,1]])
@@ -1776,7 +1784,7 @@ function drawSponsorChart() {
         .attr("width", rightWidth * 0.03)
         .attr("height", rightWidth * 0.03)
         .style("fill", function(d) { return d[0] == 0 ? highlight_color : base_color; })
-        .style("opacity", function(d) { return d[1] == 0 ? 0.6 : 1; });
+        .style("opacity", function(d) { return d[1] == 0 ? 0.5 : 1; });
 
     var legend_text_right = sponsorchart_legend.append("g")
         .attr("class", "sponsorchart_legendtext_right")
@@ -1942,7 +1950,7 @@ function updateSponsorChart() {
         .selectAll("text")
         .style("font-size", rightWidth * 0.02);
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = d3.selectAll(".sponsorchart_bar1_rect" + b);
         inner_g.selectAll("rect")
             .data(sponsor_data_ordered[b-1])
@@ -1950,10 +1958,10 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_values)) })
-            .attr("height", function(d) { return sideHeight*0.75 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
+            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
     }
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = d3.selectAll(".sponsorchart_bar2_rect" + b);
         inner_g.selectAll("rect")
             .data(sponsor_data_total_ordered[b-1])
@@ -1961,13 +1969,8 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_total_values)) })
-            .attr("height", function(d) { return sideHeight*0.75 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
+            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
     }
-
-    var title_term = values == "trials" ? "Trials" : "Enrollment";
-    d3.selectAll(".sponsorchart_title")
-        .html(title_term + ' by Lead Sponsor Type')
-
 
 }
 
@@ -2141,7 +2144,7 @@ function drawStatusChart() {
         .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Status')
+        .html('Status')
 
     var statuschart_legend = statuschart_svg.append("g")
         .attr("class", "statuschart_legend")
@@ -2249,10 +2252,6 @@ function updateStatusChart() {
         .attr("x", function(d) { return statuschart_total_x(d.x0); })
         .attr("width", function(d) { return statuschart_total_x(d[values]); });
 
-    var title_term = values == "trials" ? "Trials" : "Enrollment";
-    d3.selectAll(".statuschart_title")
-        .html(title_term + ' by Status')
-
 }
 
 
@@ -2319,7 +2318,7 @@ function resetAll() {
     cond_filter = '';
     intervention_filter = -1;
     time_filter = [];
-    level = 0;
+    level = 1;
     showby = "cond";
     values = "trials";
     highlightButton("button_showby_cond");
@@ -2334,7 +2333,7 @@ function resetAll() {
 function clickCondition() {
     var cond_selection = d3.select(this).attr("id").slice(9);
     cond_filter = cond_selection == 'Z' ? '': cond_selection;
-    level = reverse_level[cond_filter.length] + 1 || 0;
+    level = reverse_level[cond_filter.length] + 1 || 1;
     updateViz();
     updateTimeBars();
 }
@@ -2551,5 +2550,73 @@ function collide(alpha) {
     });
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    TUTORIAL WINDOW
+
+****************************************************/
+
+function drawTutorial() {
+
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+
+    var tutorial = d3.select("#tutorial")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight);
+
+    var tutorialscreen = tutorial.append("svg")
+        .attr("class", "tutorialscreen")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight)
+        .append("g");
+
+    tutorialscreen.append("rect")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight)
+        .style("fill", "#000")
+        .style("opacity", 0.5);
+
+    tutorialscreen.append("text")
+        .attr("transform", "translate(" + windowWidth / 2 + "," + (windowHeight / 2 + 12) + ")")
+        .style("font-size", "24")
+        .style("font-weight", "700")
+        .style("stroke", "#fff")
+        .style("text-anchor", "middle")
+        .text("clear this")
+        .on("click", removeTutorial);
+}
+
+function removeTutorial() {
+    d3.selectAll(".tutorialscreen").remove();
+}
+
+
+
+
+
+
+
+
+
 
 
