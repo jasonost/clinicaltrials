@@ -7,6 +7,7 @@
 // setting css for elements
 var highlight_color = "rgb(229,150,5)";
 var highlight_color_xtra = "rgb(235,160,56)";
+var highlight_color_xtra2 = "rgb(242,183,64)";
 var base_color = "#222";
 
 var windowHeight = window.innerHeight - 8;
@@ -59,12 +60,19 @@ d3.select("#wrapper")
 d3.select("#header")
     .style("font-size", headerFontSize + "px")
     .style("letter-spacing", headerFontSpacing + "px")
-    .style("width", "96%")
+    .style("width", windowWidth * 0.99)
     .style("height", headerHeight + "px")
     .style("vertical-align","middle")
     .style("background-color", "rgb(68,68,68)")
-    .style("padding-left", "1%")
-    .style("padding-right", "3%");
+    .style("padding-left", "1%");
+
+d3.select("#main-title")
+    .style("width", windowWidth * 0.49 + "px")
+    .style("height", headerHeight + "px");
+
+d3.select("#headerbuttons")
+    .style("width", windowWidth * 0.5 + "px")
+    .style("height", headerHeight + "px");
 
 d3.select("#sidebar")
     .style("margin-top", topMargin + "px")
@@ -2596,7 +2604,7 @@ function drawTutorial() {
 
     var windowHeight = window.innerHeight;
     var windowWidth = window.innerWidth;
-    console.log(windowHeight,windowWidth);
+
     var tutorial = d3.select("#tutorial")
         .attr("width", windowWidth)
         .attr("height", windowHeight);
@@ -2608,33 +2616,37 @@ function drawTutorial() {
         .append("g");
 
     tutorialscreen.append("rect")
+        .attr("class", "tutorialitem")
         .attr("width", windowWidth)
         .attr("height", windowHeight)
         .style("fill", "#000")
         .style("opacity", 0.6);
 
     var navbox = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(5," + (headerHeight + topMargin) + ")");
 
     navbox.append("rect")
+        .attr("class", "tutorialitem")
         .attr("width", leftWidth * 1.05)
         .attr("height", navigatorHeight * .65)
         .attr("rx", 8)
         .attr("ry", 8)
         .style("stroke", highlight_color_xtra)
-        .style("stroke-width", "4px")
+        .style("stroke-width", "2px")
         .style("fill", "#888")
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
     var navtext = navbox.append("text")
+        .attr("class", "tutorialitem")
         .attr("width", leftWidth * .8)
         .attr("height", navigatorHeight * 0.45)
         .attr("transform", "translate(0," + (navigatorHeight * 0.15) + ")")
-        .style("stroke", highlight_color)
-        .style("fill", highlight_color_xtra)
+        .style("stroke", highlight_color_xtra2)
+        .style("fill", highlight_color_xtra2)
         .style("font-size", mainHeight * 0.03)
-        .style("font-weight", "700");
+        .style("font-weight", "400");
 
     var strings = splitLines("This area contains a description of your current selection", 18);
     for (var s=0; s<strings.length; s++) {
@@ -2646,27 +2658,30 @@ function drawTutorial() {
     }
 
     var optbox = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(5," + (windowHeight - optionsHeight - 10) + ")");
 
     optbox.append("rect")
+        .attr("class", "tutorialitem")
         .attr("width", leftWidth * 1.05)
         .attr("height", optionsHeight)
         .attr("rx", 8)
         .attr("ry", 8)
         .style("stroke", highlight_color_xtra)
-        .style("stroke-width", "4px")
+        .style("stroke-width", "2px")
         .style("fill", "#888")
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
     var opttext = optbox.append("text")
+        .attr("class", "tutorialitem")
         .attr("width", leftWidth * 0.8)
         .attr("height", optionsHeight * 0.8)
         .attr("transform", "translate(0," + (optionsHeight * 0.1) + ")")
-        .style("stroke", highlight_color)
-        .style("fill", highlight_color_xtra)
+        .style("stroke", highlight_color_xtra2)
+        .style("fill", highlight_color_xtra2)
         .style("font-size", mainHeight * 0.03)
-        .style("font-weight", "700");
+        .style("font-weight", "400");
 
     var strings = splitLines("These are tools you can use to change the display or filter trials by time", 18);
     for (var s=0; s<strings.length; s++) {
@@ -2678,9 +2693,11 @@ function drawTutorial() {
     }
 
     var bubblecircle = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(" + (leftWidth * 1.1) + "," + (headerHeight + titleHeight) + ")");
 
     bubblecircle.append("circle")
+        .attr("class", "tutorialitem")
         .attr("r", (mainHeight - bottomHeight) * 0.51)
         .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.53) + ")")
         .style("stroke", highlight_color_xtra)
@@ -2690,15 +2707,16 @@ function drawTutorial() {
         .style("stroke-opacity", 1);
 
     var bubbletext = bubblecircle.append("text")
+        .attr("class", "tutorialitem")
         .attr("width", centerWidth * 1.5)
         .attr("height", centerWidth * 1.5)
         .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.4) + ")")
-        .style("stroke", highlight_color)
-        .style("fill", highlight_color_xtra)
+        .style("stroke", highlight_color_xtra2)
+        .style("fill", highlight_color_xtra2)
         .style("font-size", mainHeight * 0.03)
-        .style("font-weight", "700");
+        .style("font-weight", "400");
 
-    var strings = splitLines("The bubbles represent the trials studying each condition, or using each intervention, depending on your selection in the lower left", 31);
+    var strings = splitLines("These bubbles represent the number of trials or enrolled patients being studied for each condition, depending on your selections on the lower left", 31);
     for (var s=0; s<strings.length; s++) {
         bubbletext.append("tspan")
             .attr("x", 0)
@@ -2707,21 +2725,59 @@ function drawTutorial() {
             .text(strings[s]);
     }
 
+    var chartbox = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
+        .attr("transform", "translate(" + (leftWidth * 1.1 + centerWidth * 2) + "," + (headerHeight + topMargin + titleHeight) + ")");
+
+    chartbox.append("rect")
+        .attr("class", "tutorialitem")
+        .attr("width", rightWidth)
+        .attr("height", sideHeight)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("stroke", highlight_color_xtra)
+        .style("stroke-width", "2px")
+        .style("fill", "#888")
+        .style("fill-opacity", 0.55)
+        .style("stroke-opacity", 1);
+
+    var charttext = chartbox.append("text")
+        .attr("class", "tutorialitem")
+        .attr("width", rightWidth * 0.8)
+        .attr("height", sideHeight * 0.8)
+        .attr("transform", "translate(0," + (sideHeight * 0.1) + ")")
+        .style("stroke", highlight_color_xtra2)
+        .style("fill", highlight_color_xtra2)
+        .style("font-size", mainHeight * 0.03)
+        .style("font-weight", "400");
+
+    var strings = splitLines("This chart and others along the side and bottom compare the distribution of your current selection to the distribution of all trials. This line chart has two y-axes: the left is your current selection, and the right is all trials.", 40);
+    for (var s=0; s<strings.length; s++) {
+        charttext.append("tspan")
+            .attr("x", rightWidth * 0.5)
+            .attr("dy", "1.35em")
+            .attr("text-anchor", "middle")
+            .text(strings[s]);
+    }
+
     var closetutorial = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(" + (windowWidth * 0.34) + "," + (windowHeight * 0.85) + ")")
         .attr("class", "got_it");
 
     closetutorial.append("rect")
+        .attr("class", "tutorialitem")
         .attr("width", windowWidth * 0.22)
         .attr("height", windowWidth * 0.05)
         .attr("rx", 8)
         .attr("ry", 8)
         .style("fill", highlight_color)
         .style("stroke", "#ccc")
-        .style("stroke-width", "3px")
+        .style("stroke-width", "2px")
         .style("stroke-opacity", .4);
 
     closetutorial.append("text")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(" + (windowWidth * 0.11) + "," + (windowWidth * 0.032) + ")")
         .style("font-size", windowWidth * 0.025)
         .style("font-weight", "700")
@@ -2732,11 +2788,13 @@ function drawTutorial() {
         .on("click", removeTutorial);
 
     var closeicon = tutorialscreen.append("g")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(" + (windowWidth * 0.98) + "," + (windowWidth * 0.02) + ")")
         .attr("class", "got_it")
         .on("click", removeTutorial);
 
     closeicon.append("circle")
+        .attr("class", "tutorialitem")
         .attr("r", 12)
         .attr("x", 12)
         .attr("y", 12)
@@ -2747,6 +2805,7 @@ function drawTutorial() {
         .style("stroke-opacity", 0.9)
 
     closeicon.append("text")
+        .attr("class", "tutorialitem")
         .attr("transform", "translate(0,6)")
         .style("text-anchor", "middle")
         .style("font-family", "sans-serif")
@@ -2758,6 +2817,37 @@ function drawTutorial() {
 }
 
 function removeTutorial() {
-    d3.selectAll(".tutorialscreen").remove();
+    d3.selectAll(".tutorialitem")
+        .transition()
+        .duration(500)
+        .attr("transform", "translate(" + (windowWidth * 0.95) + "," + (windowHeight * 0.05) + ")")
+        .attr("width", 0)
+        .attr("height", 0)
+        .attr("opacity", 0)
+        .each("end", function() {
+            d3.selectAll(".tutorialscreen").remove();
+        });
+    var tutorialbutton = d3.select("#headerbuttons").append("svg")
+        .attr("class", "tutorialbutton")
+        .attr("width", windowWidth * 0.5)
+        .attr("height", headerHeight)
+        .append("g")
+        .attr("transform", "translate(" + windowWidth * 0.43 + "," + headerHeight * 0.2 + ")");
+    tutorialbutton.append("rect")
+        .attr("width", windowWidth * .05)
+        .attr("height", headerHeight * 0.6)
+        .style("fill", "#666");
+    tutorialbutton.append("text")
+        .attr("transform", "translate(" + windowWidth * 0.025 + "," + headerHeight * .4 + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", headerHeight * 0.3)
+        .style("font-style", "normal")
+        .style("font-weight", "400")
+        .style("stroke", "#ddd")
+        .style("fill", "#ddd")
+        .text("help");
+    tutorialbutton.on("click", function() {
+        drawTutorial();
+        d3.selectAll(".tutorialbutton").remove();
+    });
 }
-
