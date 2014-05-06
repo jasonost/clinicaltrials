@@ -62,7 +62,7 @@ circle {
   stroke-width: .5px;
 }
 
-.bubble_label, .option_button, .got_it, .node, .tutorialbutton {
+.bubble_label, .option_button, .got_it, .node, .tutorialbutton, .reset_button {
   cursor: pointer;
 }
 
