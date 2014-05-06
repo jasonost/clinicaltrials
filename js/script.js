@@ -1035,8 +1035,20 @@ var force = d3.layout.force()
 var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
     .attr("height", bubble_height)
-    .attr("class", "bubble")
-    .on("click", function() {console.log("click!");});
+    .attr("class", "bubble");
+
+var visrect = vis.append("rect")
+    .attr("width", bubble_width)
+    .attr("height", bubble_height)
+    .style("opacity", 0)
+    .on("click", function() {
+        if (level > 1) {
+            cond_filter = level == 2 ? "" : cond_filter.slice(0,level_length[level-2]);
+            level -= 1;
+            updateViz();
+            updateTimeBars();
+        }
+    });
 
 function makeBubble() {
 
