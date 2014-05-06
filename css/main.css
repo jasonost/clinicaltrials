@@ -32,6 +32,10 @@ body {
   margin-bottom: 0.7em;
 }
 
+#tutorial {
+  position: absolute;
+}
+
 #header {
     color: rgb(255,153,0);
     text-align: left;
@@ -51,7 +55,7 @@ circle {
   stroke-width: .5px;
 }
 
-.bubble_label {
+.bubble_label, .option_button {
   cursor: pointer;
 }
 
@@ -73,7 +77,7 @@ circle {
 
 /* clickable text */
 
-.condlist, .invlist {
+.condlist, .invlist, a {
   cursor: pointer;
   color: steelblue;
   text-decoration:underline;

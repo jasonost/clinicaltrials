@@ -40,19 +40,20 @@ if (divPadding > 8) { divPadding = 8; }
 var leftWidth = 0.2 * windowWidth - (2 * divPadding) - (2 * borderWidth);
 if (leftWidth > 240 - (2 * divPadding) - (2 * borderWidth)) { leftWidth = 240 - (2 * divPadding) - (2 * borderWidth); }
 
-var rightWidth = 0.3 * windowWidth;
-if (rightWidth > 400) { rightWidth = 400; }
+var rightWidth = 0.4 * (windowWidth - leftWidth);
 
-var centerWidth = windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth;
+var centerWidth = (windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth) / 2;
 
 var mainHeight = windowHeight - headerHeight - topMargin - titleHeight;
+var sideHeight = mainHeight / 3;
+var bottomHeight = mainHeight / 4;
 var optionsHeight = ((mainHeight + titleHeight) * 0.4) - (2 * divPadding) - (2 * borderWidth);
 var navigatorHeight = (mainHeight + titleHeight) - optionsHeight - topMargin - (4 * divPadding) - (4 * borderWidth);
 
 d3.select("#wrapper")
     .style("height", windowHeight + "px")
     .style("width", windowWidth + "px")
-    .style("margin", "4px");
+    .style("padding", "4px");
 
 d3.select("#header")
     .style("font-size", headerFontSize + "px")
@@ -65,16 +66,16 @@ d3.select("#header")
     .style("padding-right", "3%");
 
 d3.select("#sidebar")
-    .style("float", "left");
-d3.selectAll(".side-div")
     .style("margin-top", topMargin + "px")
+    .style("float", "left")
+    .style("border-right", "2px solid")
+    .style("border-color", "#bdbdbd");
+d3.selectAll(".side-div")
     .style("padding", divPadding + "px")
-    .style("width", leftWidth + "px")
-    .style("border", borderWidth + "px solid")
-    .style("border-color", highlight_color)
-    .style("background-color", "#fff");
+    .style("width", leftWidth + "px");
 
 d3.select("#options")
+    .style("margin-top", topMargin + "px")
     .style("height", optionsHeight + "px");
 
 d3.select("#navigator")
@@ -84,35 +85,50 @@ d3.select("#navigator")
 d3.select("#mainsection")
     .style("float", "left")
     .style("margin-top", topMargin + "px")
-    .style("width", (centerWidth + rightWidth) + "px")
+    .style("width", ((centerWidth * 2) + rightWidth) + "px")
     .style("height", (mainHeight + titleHeight) + "px");
 d3.selectAll("#mainsection div")
     .style("float", "left");
 d3.select("#maintitle")
-    .style("width", (centerWidth + rightWidth) + "px")
+    .style("width", ((centerWidth * 2) + rightWidth - 8) + "px")
     .style("height", titleHeight + "px")
     .style("font-size", titleFontSize + "px")
+    .style("padding-left", "4px")
+    .style("padding-right", "4px")
     .style("vertical-align","middle")
-    .style("text-align", "center");
+    .style("text-align", "left");
+d3.select("#centersection")
+    .style("float", "left")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", mainHeight + "px");
 d3.select("#bubbleviz")
-    .style("width", centerWidth + "px")
-    .style("height", mainHeight + "px")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", (mainHeight - bottomHeight) + "px")
     .style("float", "left");
+d3.select("#bottomcharts")
+    .style("float", "left")
+    .style("width", (centerWidth * 2) + "px")
+    .style("height", bottomHeight + "px");
+d3.select("#phasechart")
+    .style("width", centerWidth + "px")
+    .style("height", bottomHeight + "px");
+d3.select("#statuschart")
+    .style("width", centerWidth + "px")
+    .style("height", bottomHeight + "px")
+    .style("float", "left");
+d3.select("#sidecharts")
+    .style("float", "left")
+    .style("width", rightWidth + "px")
+    .style("height", mainHeight + "px");
 d3.select("#timechart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
-d3.select("#phasechart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.15) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#sponsorchart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.20) + "px");
-d3.select("#statuschart")
-    .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.15) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#locationchart")
     .style("width", rightWidth + "px")
-    .style("height", (mainHeight * 0.30) + "px");
+    .style("height", sideHeight + "px");
 d3.select("#tooltip")
     .style("font-size", tooltipFontSize + "px");
 
@@ -124,7 +140,7 @@ var buttons = d3.select("#buttons").append("svg")
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (leftWidth * .085) + "px")
+    .attr("dy", (leftWidth * .1) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .065) + "px")
@@ -173,17 +189,17 @@ button_showby.append("text")
 buttons.append("text")
     .attr("width", leftWidth + "px")
     .attr("height", (optionsHeight / 8) + "px")
-    .attr("dy", (leftWidth * .085 + optionsHeight / 4) + "px")
+    .attr("dy", (leftWidth * .1 + optionsHeight / 4) + "px")
     .attr("dx", (leftWidth / 32) + "px")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .065) + "px")
     .style("font-weight", "700")
-    .text("Count by");
+    .text("Size by");
 var button_sizeby = buttons.append("g")
     .attr("class", "option_button")
     .attr("transform", "translate(0," + (optionsHeight * 3 / 8) + ")");
 button_sizeby.append("rect")
-    .attr("class", "button_sizeby_studies")
+    .attr("class", "button_sizeby_trials")
     .attr("width", (leftWidth / 2 - 6) + "px")
     .attr("x", "3px")
     .attr("height", (optionsHeight / 8) + "px")
@@ -192,14 +208,14 @@ button_sizeby.append("rect")
     .style("stroke-width", "3px")
     .style("fill", "#444");
 button_sizeby.append("text")
-    .attr("class", "button_sizeby_studies")
+    .attr("class", "button_sizeby_trials")
     .attr("dy", (optionsHeight * (11/128)) + "px")
     .attr("dx", (leftWidth / 4) + "px")
     .attr("text-anchor", "middle")
     .style("fill", "#fff")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .06) + "px")
-    .text("studies");
+    .text("trials");
 button_sizeby.append("rect")
     .attr("class", "button_sizeby_enrollment")
     .attr("x", (leftWidth / 2 + 3) + "px")
@@ -365,7 +381,7 @@ var map_chart_position = {
     'as': {left: 0.70, top: 0.50},
     'oc': {left: 0.80, top: 0.84}
 };
-var map_chart_height = (mainHeight * 0.30);
+var map_chart_height = sideHeight;
 
 var continent_dict = {
     'North America': 'na',
@@ -384,10 +400,10 @@ function drawMap(world) {
 
     var worldsvg = d3.select("#locationchart").append("svg")
           .attr("width", rightWidth)
-          .attr("height", (mainHeight * 0.30));
+          .attr("height", sideHeight);
 
     var outterg = worldsvg.append("g")
-        .attr("transform", "translate(" + rightWidth / 2 + "," + (mainHeight * 0.30) * .64 + ")");
+        .attr("transform", "translate(" + rightWidth / 2 + "," + sideHeight * .64 + ")");
 
     var g = outterg.append("g").attr("id", "innerg");
 
@@ -446,7 +462,7 @@ function drawMap(world) {
         .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.032)
-        .html('% of Trials by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html('Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
 
 }
 
@@ -516,15 +532,17 @@ var mesh,
 var cond_filter = '',
     intervention_filter = -1,
     filter_test,
+    search_string,
+    search_filter = 0,
     filter_test_notime,
     charttitle = '',
     curcounts = '',
     curconds = 'All',
     curinv = 'All',
     curyears = 'Pre-1999 to 2013'
-    level = 0,
+    level = 1,
     showby = "cond",
-    values = "studies";
+    values = "trials";
 
 
 
@@ -581,6 +599,7 @@ d3.json("vizdata/all_data.json", function(error, json) {
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
         updateLocationChart();
+        //drawTutorial();
     })
 });
 
@@ -600,7 +619,7 @@ function updateData(dataset) {
     var cur_length = dataset.length;
     var istrue = 1==1;
     for (var y=1998; y<2014; y++) {
-        timeselector_data[y] = {studies: 0, enrollment: 0};
+        timeselector_data[y] = {trials: 0, enrollment: 0};
     }
 
     while (cur_length--) {
@@ -612,7 +631,7 @@ function updateData(dataset) {
             // conditions
             var conds = d3.set(dataset[cur_length]['co']
                 .map(function(c) {
-                    if ( level == 0 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
+                    if ( level == 1 || cond_filter == mesh[c]['id'].slice(0,level_length[level - 1]) ) {
                         return mesh[c]['id'].slice(0,level_length[level]);
                     }
                     return;
@@ -622,9 +641,9 @@ function updateData(dataset) {
             for (var c=0; c<conds.length; c++) {
                 var cond_term = reverse_mesh[conds[c]];
                 if ( !(cond_term in cond_dict) ) {
-                    cond_dict[cond_term] = {cond_id: conds[c], studies: 0, enrollment: 0};
+                    cond_dict[cond_term] = {cond_id: conds[c], trials: 0, enrollment: 0};
                 }
-                cond_dict[cond_term].studies += 1;
+                cond_dict[cond_term].trials += 1;
                 cond_dict[cond_term].enrollment += enrollment;
             }
 
@@ -632,87 +651,88 @@ function updateData(dataset) {
             for (var v=0; v<dataset[cur_length]['iv'].length; v++) {
                 var iv_name = intervention[dataset[cur_length]['iv'][v]];
                 if ( !(iv_name in inv_dict) ) {
-                    inv_dict[iv_name] = {inv_id: dataset[cur_length]['iv'][v], studies: 0, enrollment: 0};
+                    inv_dict[iv_name] = {inv_id: dataset[cur_length]['iv'][v], trials: 0, enrollment: 0};
                 }
-                inv_dict[iv_name].studies += 1;
+                inv_dict[iv_name].trials += 1;
                 inv_dict[iv_name].enrollment += enrollment;
             }
 
             // time
             if (+dataset[cur_length]['yr'] < 1999) {
                 if ( !(1998 in time_dict) ) {
-                    time_dict[1998] = {studies: 0, enrollment: 0};
+                    time_dict[1998] = {trials: 0, enrollment: 0};
                 }
-                time_dict[1998].studies += 1;
+                time_dict[1998].trials += 1;
                 time_dict[1998].enrollment += enrollment;
-                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].trials += 1;
                 timeselector_data[1998].enrollment += enrollment || 0;
             } else if (+dataset[cur_length]['yr'] > 2013) {
                 if ( !(2013 in time_dict) ) {
-                    time_dict[2013] = {studies: 0, enrollment: 0};
+                    time_dict[2013] = {trials: 0, enrollment: 0};
                 }
-                time_dict[2013].studies += 1;
+                time_dict[2013].trials += 1;
                 time_dict[2013].enrollment += enrollment;
-                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].trials += 1;
                 timeselector_data[2013].enrollment += enrollment || 0;
             } else {
                 if ( !(dataset[cur_length]['yr'] in time_dict) ) {
-                    time_dict[dataset[cur_length]['yr']] = {studies: 0, enrollment: 0};
+                    time_dict[dataset[cur_length]['yr']] = {trials: 0, enrollment: 0};
                 }
-                time_dict[dataset[cur_length]['yr']].studies += 1;
+                time_dict[dataset[cur_length]['yr']].trials += 1;
                 time_dict[dataset[cur_length]['yr']].enrollment += enrollment;
-                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].trials += 1;
                 timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment || 0;
             }
 
             // sponsors
             var sponsor_name = sponsor[dataset[cur_length]['sp']];
+            if (sponsor_name == 'Academic') {sponsor_name='Other';}
             if ( !(sponsor_name in sponsor_dict) ) {
-                sponsor_dict[sponsor_name] = {industry: {studies: 0, enrollment: 0}, no_industry: {studies: 0, enrollment: 0}};
+                sponsor_dict[sponsor_name] = {industry: {trials: 0, enrollment: 0}, no_industry: {trials: 0, enrollment: 0}};
             }
             if ( dataset[cur_length]['in'] == 1) {
-                sponsor_dict[sponsor_name]['industry'].studies += 1;
+                sponsor_dict[sponsor_name]['industry'].trials += 1;
                 sponsor_dict[sponsor_name]['industry'].enrollment += enrollment;
             } else {
-                sponsor_dict[sponsor_name]['no_industry'].studies += 1;
+                sponsor_dict[sponsor_name]['no_industry'].trials += 1;
                 sponsor_dict[sponsor_name]['no_industry'].enrollment += enrollment;
             }
 
             // status
             var status_name = stat[dataset[cur_length]['st']];
             if ( !(status_name in status_dict) ) {
-                status_dict[status_name] = {studies: 0, enrollment: 0};
+                status_dict[status_name] = {trials: 0, enrollment: 0};
             }
-            status_dict[status_name].studies += 1;
+            status_dict[status_name].trials += 1;
             status_dict[status_name].enrollment += enrollment;
 
             // phase
             var phase_name = phase[dataset[cur_length]['ph']]
             if ( !(phase_name in phase_dict) ) {
-                phase_dict[phase_name] = {studies: 0, enrollment: 0};
+                phase_dict[phase_name] = {trials: 0, enrollment: 0};
             }
-            phase_dict[phase_name].studies += 1;
+            phase_dict[phase_name].trials += 1;
             phase_dict[phase_name].enrollment += enrollment;
 
             // location
             for (var l=0; l<dataset[cur_length]['lo'].length; l++) {
                 var loc_name = loc[dataset[cur_length]['lo'][l]];
                 if ( !(loc_name in location_dict) ) {
-                    location_dict[loc_name] = {studies: 0, enrollment: 0};
+                    location_dict[loc_name] = {trials: 0, enrollment: 0};
                 }
-                location_dict[loc_name].studies += 1;
+                location_dict[loc_name].trials += 1;
                 location_dict[loc_name].enrollment += enrollment;
             }
 
         } else if ( eval(filter_test_notime) ) {
             if (+dataset[cur_length]['yr'] < 1999) {
-                timeselector_data[1998].studies += 1;
+                timeselector_data[1998].trials += 1;
                 timeselector_data[1998].enrollment += enrollment || 0;
             } else if (+dataset[cur_length]['yr'] > 2013) {
-                timeselector_data[2013].studies += 1;
+                timeselector_data[2013].trials += 1;
                 timeselector_data[2013].enrollment += enrollment || 0;
             } else {
-                timeselector_data[+dataset[cur_length]['yr']].studies += 1;
+                timeselector_data[+dataset[cur_length]['yr']].trials += 1;
                 timeselector_data[+dataset[cur_length]['yr']].enrollment += enrollment || 0;
             }
         }
@@ -725,7 +745,7 @@ function updateData(dataset) {
         time_data.push({
             name: objkeys[i],
             dateval: new Date(objkeys[i] + "-06-01"),
-            studies: time_dict[objkeys[i]].studies,
+            trials: time_dict[objkeys[i]].trials,
             enrollment: time_dict[objkeys[i]].enrollment
         });
     }
@@ -736,7 +756,7 @@ function updateData(dataset) {
         cond_data.push({
             name: objkeys[i],
             id: cond_dict[objkeys[i]].cond_id,
-            studies: cond_dict[objkeys[i]].studies,
+            trials: cond_dict[objkeys[i]].trials,
             enrollment: cond_dict[objkeys[i]].enrollment
         });
     }
@@ -747,7 +767,7 @@ function updateData(dataset) {
         inv_data.push({
             name: objkeys[i],
             id: inv_dict[objkeys[i]].inv_id,
-            studies: inv_dict[objkeys[i]].studies,
+            trials: inv_dict[objkeys[i]].trials,
             enrollment: inv_dict[objkeys[i]].enrollment
         });
     }
@@ -757,9 +777,9 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         sponsor_data.push({
             name: objkeys[i],
-            studies_industry: sponsor_dict[objkeys[i]].industry.studies,
+            trials_industry: sponsor_dict[objkeys[i]].industry.trials,
             enrollment_industry: sponsor_dict[objkeys[i]].industry.enrollment,
-            studies_no_industry: sponsor_dict[objkeys[i]].no_industry.studies,
+            trials_no_industry: sponsor_dict[objkeys[i]].no_industry.trials,
             enrollment_no_industry: sponsor_dict[objkeys[i]].no_industry.enrollment
         });
     }
@@ -769,7 +789,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         status_data.push({
             name: objkeys[i],
-            studies: status_dict[objkeys[i]].studies,
+            trials: status_dict[objkeys[i]].trials,
             enrollment: status_dict[objkeys[i]].enrollment
         });
     }
@@ -779,7 +799,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         phase_data.push({
             name: objkeys[i],
-            studies: phase_dict[objkeys[i]].studies,
+            trials: phase_dict[objkeys[i]].trials,
             enrollment: phase_dict[objkeys[i]].enrollment
         });
     }
@@ -789,7 +809,7 @@ function updateData(dataset) {
     for (var i=0; i<objkeys.length; i++) {
         location_data.push({
             name: objkeys[i],
-            studies: location_dict[objkeys[i]].studies,
+            trials: location_dict[objkeys[i]].trials,
             enrollment: location_dict[objkeys[i]].enrollment
         });
     }
@@ -801,12 +821,15 @@ function writeFilter() {
     // write data filter test to identify records of interest 
     filter_test = '';
     filter_test_notime = '';
-    charttitle = 'Studies of ';
+    search_string = 'http://clinicaltrials.gov/ct2/results?type=Intr';
+    search_filter = 0;
+    charttitle = 'Registered trials studying ';
 
     // conditions
     if ( cond_filter.length > 0 ) {
         filter_test = "getCond(dataset[cur_length]['co']).has('" + cond_filter + "') > 0";
         charttitle += reverse_mesh[cond_filter] + ' ';
+        var search_string_cond = '';
         var thiscond = '';
         var condarray = cond_filter.split('.');
         for (var c=0; c<condarray.length; c++) {
@@ -816,11 +839,17 @@ function writeFilter() {
                 curconds += '<p class="condlist" id="condlist_' + thiscond.slice(0,1) + '" style="padding-left: 6px";>' + reverse_mesh[thiscond.slice(0,1)] + '</p>';
                 if ( condarray[c].length > 1 ) {
                 curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: 12px;">' + reverse_mesh[thiscond] + '</p>';
+                search_string_cond = reverse_mesh[thiscond].replace(/ /g, '+');
                 }
             } else {
                 thiscond += "." + condarray[c];
                 curconds += '<p class="condlist" id="condlist_' + thiscond + '" style="padding-left: ' + ((c+2) * 6) + 'px;">' + reverse_mesh[thiscond] + '</p>';
+                search_string_cond = reverse_mesh[thiscond].replace(/ /g, '+');
             }
+        }
+        if (search_string_cond.length > 0) {
+            search_string += '&cond="' + search_string_cond + '"';
+            search_filter = 1;
         }
     } else {
         curconds = 'All';
@@ -836,6 +865,8 @@ function writeFilter() {
         }
         charttitle += 'using ' + intervention[intervention_filter] + ' interventions';
         curinv = '<p>' + intervention[intervention_filter] + ' (<span class="invlist">clear</span>)</p>';
+        search_string += '&intr="' + intervention[intervention_filter].replace(/ /g, '+') + '"';
+        search_filter = 1;
     } else {
         curinv = 'All';
         charttitle += 'using any intervention';
@@ -945,14 +976,14 @@ function updateViz() {
 function updateText () {
     d3.select("#maintitle")
         .html("<p>" + charttitle + "</p");
-    var num_studies = 0;
+    var num_trials = 0;
     var num_enroll = 0;
     for (var t=0; t<time_data.length; t++) {
-        num_studies += time_data[t].studies;
+        num_trials += time_data[t].trials;
         num_enroll += time_data[t].enrollment;
     }
     d3.select("#numstudies")
-        .html(addCommas(num_studies));
+        .html(addCommas(num_trials));
     d3.select("#enrollpart")
         .html(addCommas(num_enroll));
     d3.select("#navigate_conditions")
@@ -966,12 +997,16 @@ function updateText () {
         .on("click", clickCondition);
     d3.selectAll(".invlist")
         .on("click", clearIntervention);
+
+    d3.select("#ctgovlink")
+        .html("<p><a href='" + search_string + "' target='_blank'>Search for" + (search_filter == 1 ? " similar " : " ") + "trials at clinicaltrials.gov (includes trials from all years)</a></p>")
+        .style("text-align", "right");
 }
 
 // bubble chart parameters
 var bubble_color = "steelblue",
-    bubble_width = centerWidth,
-    bubble_height = mainHeight,
+    bubble_width = centerWidth * 2,
+    bubble_height = mainHeight - bottomHeight,
     padding = 3,
     maxRadius = 100,
     color = d3.scale.category20c(),
@@ -990,7 +1025,8 @@ var force = d3.layout.force()
 var vis = d3.select("#bubbleviz").append("svg")
     .attr("width", bubble_width)
     .attr("height", bubble_height)
-    .attr("class", "bubble");
+    .attr("class", "bubble")
+    .on("click", function() {console.log("click!");});
 
 function makeBubble() {
 
@@ -1019,7 +1055,7 @@ function makeBubble() {
         bubble_data.push({
           name: temp_data[i].name,
           id: temp_data[i].id,
-          studies: temp_data[i].studies,
+          trials: temp_data[i].trials,
           enrollment: temp_data[i].enrollment,
           size: bubble_scale(oldval) * size_scale
         });
@@ -1031,10 +1067,10 @@ function makeBubble() {
     node.enter()
       .append("g")
       .attr("class", "node")
+      .call(force.drag)
       .on("mouseover", mouseoverBubble)
       .on("mouseout", mouseoutBubble)
-      .on("click", clickBubble)
-      .call(force.drag);
+      .on("click", clickBubble);
 
     node.append("circle")
       .attr("cx", function(d) { return d.x; })
@@ -1046,7 +1082,7 @@ function makeBubble() {
         .attr("transform", function(d) { 
             return "translate(" + d.x + ")"; })
         .attr("class", "bubble_label")
-        .style("font-size", function(d) { return d.size / 4; })
+        .style("font-size", function(d) { return d.size * 0.28; })
         .style("opacity", function(d) { return d.size >= 24 ? 1 : 0; })
         .each(function(d) {
             var strings = splitLines(d.name, 20);
@@ -1071,25 +1107,25 @@ function updateLocationChart() {
     var maxheight = map_chart_height * 0.25;
 
     var val_array = [],
-        cur_studies = [],
+        cur_trials = [],
         cur_enrollment = [];
     location_data.forEach(function(m) { 
         val_array.push(m[values]);
-        cur_studies.push(m.studies);
+        cur_trials.push(m.trials);
         cur_enrollment.push(m.enrollment);
     });
     var maxval = d3.max(val_array);
     var totalval = d3.sum(val_array);
 
-    var studies = [];
+    var trials = [];
 
 
     var val_array_total = [],
-        cur_studies_total = [],
+        cur_trials_total = [],
         cur_enrollment_total = [];
     location_data_total.forEach(function(m) { 
         val_array_total.push(m[values]);
-        cur_studies_total.push(m.studies);
+        cur_trials_total.push(m.trials);
         cur_enrollment_total.push(m.enrollment);
     });
     var maxval_total = d3.max(val_array_total);
@@ -1100,13 +1136,13 @@ function updateLocationChart() {
 
     location_data.forEach(function(m) { 
         m.size = barscale(m[values] / totalval);
-        m.studies_total = d3.sum(cur_studies);
+        m.trials_total = d3.sum(cur_trials);
         m.enrollment_total = d3.sum(cur_enrollment);
         m.subset = 1; 
     });
     location_data_total.forEach(function(m) { 
         m.size = barscale(m[values] / totalval_total);
-        m.studies_total = d3.sum(cur_studies_total);
+        m.trials_total = d3.sum(cur_trials_total);
         m.enrollment_total = d3.sum(cur_enrollment_total);
         m.subset = 0;
     });
@@ -1131,16 +1167,12 @@ function updateLocationChart() {
             .style("opacity", 1);
     }
 
-    var title_term = values == "studies" ? "% of Trials" : "% of Enrollment";
-    d3.selectAll(".locationchart_title")
-        .html(title_term + ' by Location, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
-
 }
 
 // timeline chart
 var timechart_x = d3.time.scale().range([0, rightWidth * 0.8]);
-var timechart_y = d3.scale.linear().range([(mainHeight * 0.135),0]);
-var timechart_y_total = d3.scale.linear().range([(mainHeight * 0.135),0]);
+var timechart_y = d3.scale.linear().range([(sideHeight * 0.7),0]);
+var timechart_y_total = d3.scale.linear().range([(sideHeight * 0.7),0]);
 
 var timechart_xAxis,
     timechart_yAxis1,
@@ -1159,6 +1191,7 @@ function drawTimeChart() {
     var valid_y = [];
     time_data.forEach(function(d) { valid_y.push(d[values]); });
     timechart_y.domain([0, d3.max(valid_y)]);
+
     var valid_y_total = [];
     time_data_total.forEach(function(d) { 
         if (d.dateval >= low_date && d.dateval <= hi_date) { 
@@ -1184,25 +1217,26 @@ function drawTimeChart() {
 
     var timechart_svg = d3.select("#timechart").append("svg")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
       .append("g")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
         .attr("class", "timechart_area");
 
     timechart_svg.append("g")
       .attr("class", "timechart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.17) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.82) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(timechart_xAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.025);
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")")
       .call(timechart_yAxis1)
       .selectAll("text")
       .style("fill", highlight_color)
@@ -1215,7 +1249,7 @@ function drawTimeChart() {
 
     timechart_svg.append("g")
       .attr("class", "timechart_yaxis2")
-      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.90) + "," + (sideHeight * 0.12) + ")")
       .call(timechart_yAxis2)
       .selectAll("text")
       .style("fill", base_color)
@@ -1235,7 +1269,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline1")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")");
 
     line1.append("path")
       .attr("class", "timeline1_line")
@@ -1253,7 +1287,7 @@ function drawTimeChart() {
       .data([0])
       .enter().append("g")
       .attr("class", "timeline2")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")");
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.12) + ")");
 
     line2.append("path")
       .attr("class", "timeline2_line")
@@ -1265,11 +1299,19 @@ function drawTimeChart() {
     timechart_svg.append("text")
         .attr("class", "timechart_title")
         .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("height", sideHeight * 0.09)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+        .html('Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Trials</tspan>')
+
+    timechart_svg.append("text")
+        .attr("class", "timechart_specialtext")
+        .attr("width", rightWidth * 0.25)
+        .attr("height", sideHeight * 0.05)
+        .attr("transform", "translate(" + (rightWidth * 0.75) + "," + (sideHeight * 0.95) + ")")
+        .style("font-size", rightWidth * 0.02)
+        .html('* 2013 has partial data')
 
     updateTimeChart();
 
@@ -1305,7 +1347,11 @@ function updateTimeChart() {
         .selectAll("text")
         .style("font-size", rightWidth * 0.025)
         .each(function(d) {
-            if (d3.select(this).text() % 1 != 0) { this.remove(); }
+            if (d3.select(this).text() == 2013) {
+                d3.select(this).text("2013*");
+            } else if (d3.select(this).text() % 1 != 0) {
+                this.remove();
+            }
         });
     d3.select(".timechart_yaxis1")
         .transition()
@@ -1350,26 +1396,25 @@ function updateTimeChart() {
       .duration(500)
       .attr("d", function(d) { return timechart_line(time_data); });
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
-    d3.selectAll(".timechart_title")
-        .html(title_term + ' by Year, <tspan style="font-weight: bold; fill: ' + highlight_color +'">Current Selection</tspan> vs. <tspan style="font-weight: bold; fill: ' + base_color + '">All Studies</tspan>')
+    d3.select(".timechart_specialtext")
+        .style("visibility", hi_date >= new Date(2013,1,1) ? "visible" : "hidden");
 
 }
 
 // study phase chart
 var phases = ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "N/A"];
 var phase_colors = ["#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#bdbdbd"];
-var phasechart_x = d3.scale.linear().range([0, rightWidth * .8]),
-    phasechart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
-var phasechart_topbar_y = mainHeight * 0.045,
-    phasechart_bottombar_y = mainHeight * 0.08,
-    phasechart_barheight = mainHeight * 0.025;
+var phasechart_x = d3.scale.linear().range([0, centerWidth * .8]),
+    phasechart_total_x = d3.scale.linear().range([0, centerWidth * .8]);
+var phasechart_topbar_y = bottomHeight * 0.2,
+    phasechart_bottombar_y = bottomHeight * 0.5,
+    phasechart_barheight = bottomHeight * 0.18;
 
 function drawPhaseChart() {
 
     var phase_data_ordered = [],
         phase_data_values = 0,
-        phase_data_studies = 0,
+        phase_data_trials = 0,
         phase_data_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1379,23 +1424,23 @@ function drawPhaseChart() {
                 p2.subset = 1;
                 phase_data_ordered.push(p2);
                 phase_data_values += p2[values];
-                phase_data_studies += p2.studies;
+                phase_data_trials += p2.trials;
                 phase_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+            phase_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values});
         }
     });
     phase_data_ordered.forEach(function(d, i) { 
-        phase_data_ordered[i].studies_total = phase_data_studies;
+        phase_data_ordered[i].trials_total = phase_data_trials;
         phase_data_ordered[i].enrollment_total = phase_data_enrollment;
     });
 
     var phase_data_total_ordered = [],
         phase_data_total_values = 0
-        phase_data_total_studies = 0,
+        phase_data_total_trials = 0,
         phase_data_total_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1405,17 +1450,17 @@ function drawPhaseChart() {
                 p2.subset = 0;
                 phase_data_total_ordered.push(p2);
                 phase_data_total_values += p2[values];
-                phase_data_total_studies += p2.studies;
+                phase_data_total_trials += p2.trials;
                 phase_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values});
+            phase_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values});
         }
     });
     phase_data_total_ordered.forEach(function(d, i) { 
-        phase_data_total_ordered[i].studies_total = phase_data_total_studies;
+        phase_data_total_ordered[i].trials_total = phase_data_total_trials;
         phase_data_total_ordered[i].enrollment_total = phase_data_total_enrollment;
     });
 
@@ -1423,16 +1468,16 @@ function drawPhaseChart() {
     phasechart_total_x.domain([0, phase_data_total_values]);
 
     var phasechart_svg = d3.select("#phasechart").append("svg")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
       .append("g")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
         .attr("class", "phasechart_area");
 
     var phasechart_bar1 = phasechart_svg.append("g")
         .attr("class", "phasechart_bar1")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_topbar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + phasechart_topbar_y + ")");
 
     phasechart_bar1.selectAll(".phasechart_bar1_rect")
         .data(phase_data_ordered)
@@ -1448,7 +1493,7 @@ function drawPhaseChart() {
 
     var phasechart_bar2 = phasechart_svg.append("g")
         .attr("class", "phasechart_bar2")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + phasechart_bottombar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + phasechart_bottombar_y + ")");
 
     phasechart_bar2.selectAll(".phasechart_bar2_rect")
         .data(phase_data_total_ordered)
@@ -1468,70 +1513,70 @@ function drawPhaseChart() {
 
     var phaselabel1 = phasechart_svg.append("text")
         .attr("class", "phasechart_label1")
-        .attr("transform", "translate(0," + (phasechart_topbar_y + (mainHeight * 0.013)) + ")")
+        .attr("transform", "translate(0," + (phasechart_topbar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.0155)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", highlight_color)
         .style("font-weight", "bold");
 
     phaselabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("Current");
     phaselabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Selection");
 
     var phaselabel2 = phasechart_svg.append("text")
         .attr("class", "phasechart_label2")
-        .attr("transform", "translate(0," + (phasechart_bottombar_y + (mainHeight * 0.013)) + ")")
+        .attr("transform", "translate(0," + (phasechart_bottombar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.0155)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", base_color)
         .style("font-weight", "bold");
 
     phaselabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("All");
     phaselabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
-        .text("Studies");
+        .text("Trials");
 
     phasechart_svg.append("text")
         .attr("class", "phasechart_title")
-        .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight * 0.12)
+        .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Study Phase')
+        .html('Phase')
 
     var phasechart_legend = phasechart_svg.append("g")
         .attr("class", "phasechart_legend")
-        .attr("width", rightWidth * 0.9)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (mainHeight * 0.12) + ")");
+        .attr("width", centerWidth * 0.95)
+        .attr("height", bottomHeight * 0.2)
+        .attr("transform", "translate(" + (centerWidth * 0.05) + "," + (bottomHeight * 0.8) + ")");
 
     var legend_items = phasechart_legend.selectAll(".phasechart_legend_item")
         .data(phases)
         .enter()
         .append("g")
         .attr("class", "phasechart_legend_item")
-        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.15 * i) + ")"; });
+        .attr("transform", function(d, i) { return "translate(" + (centerWidth * 0.17 * i) + ")"; });
 
     legend_items.append("rect")
-        .attr("width", mainHeight * 0.017)
-        .attr("height", mainHeight * 0.017)
+        .attr("width", bottomHeight * 0.07)
+        .attr("height", bottomHeight * 0.07)
         .style("fill", function(d, i) { return phase_colors[i]; });
     legend_items.append("text")
-        .attr("x", mainHeight * 0.03)
-        .attr("y", rightWidth * 0.02)
-        .style("font-size", rightWidth * 0.02)
+        .attr("x", bottomHeight * 0.083)
+        .attr("y", centerWidth * 0.027)
+        .style("font-size", centerWidth * 0.027)
         .text(function(d) { return d; });
 
     updatePhaseChart();
@@ -1542,7 +1587,7 @@ function updatePhaseChart() {
 
     var phase_data_ordered = [],
         phase_data_values = 0,
-        phase_data_studies = 0,
+        phase_data_trials = 0,
         phase_data_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1552,23 +1597,23 @@ function updatePhaseChart() {
                 p2.subset = 1;
                 phase_data_ordered.push(p2);
                 phase_data_values += p2[values];
-                phase_data_studies += p2.studies;
+                phase_data_trials += p2.trials;
                 phase_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values, subset: 1});
+            phase_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values, subset: 1});
         }
     });
     phase_data_ordered.forEach(function(d, i) { 
-        phase_data_ordered[i].studies_total = phase_data_studies;
+        phase_data_ordered[i].trials_total = phase_data_trials;
         phase_data_ordered[i].enrollment_total = phase_data_enrollment;
     });
 
     var phase_data_total_ordered = [],
         phase_data_total_values = 0
-        phase_data_total_studies = 0,
+        phase_data_total_trials = 0,
         phase_data_total_enrollment = 0;
     phases.forEach(function(p) {
         var done = 1;
@@ -1578,17 +1623,17 @@ function updatePhaseChart() {
                 p2.subset = 0;
                 phase_data_total_ordered.push(p2);
                 phase_data_total_values += p2[values];
-                phase_data_total_studies += p2.studies;
+                phase_data_total_trials += p2.trials;
                 phase_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            phase_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: phase_data_values, subset: 0});
+            phase_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: phase_data_values, subset: 0});
         }
     });
     phase_data_total_ordered.forEach(function(d, i) { 
-        phase_data_total_ordered[i].studies_total = phase_data_total_studies;
+        phase_data_total_ordered[i].trials_total = phase_data_total_trials;
         phase_data_total_ordered[i].enrollment_total = phase_data_total_enrollment;
     });
 
@@ -1609,16 +1654,12 @@ function updatePhaseChart() {
         .attr("x", function(d) { return phasechart_total_x(d.x0); })
         .attr("width", function(d) { return phasechart_total_x(d[values]); });
 
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
-    d3.selectAll(".phasechart_title")
-        .html(title_term + ' by Study Phase')
-
 }
 
 // sponsor chart
-var sponsor_types = ["Academic", "Industry", "US Federal", "Other"];
-var sponsorchart_x = d3.scale.linear().domain([0, 4]).range([0, rightWidth * .6]);
-var sponsorchart_y = d3.scale.linear().range([mainHeight*0.135, 0]);
+var sponsor_types = ["US Federal", "Industry", "Other"];
+var sponsorchart_x = d3.scale.linear().domain([0, 3]).range([0, rightWidth * .66]);
+var sponsorchart_y = d3.scale.linear().range([sideHeight*0.7, 0]);
 
 var sponsorchart_xAxis,
     sponsorchart_yAxis;
@@ -1631,9 +1672,9 @@ function drawSponsorChart() {
     sponsorchart_xAxis = d3.svg.axis()
         .scale(sponsorchart_x)
         .orient("bottom")
-        .tickValues([0.5, 1.5, 2.5, 3.5])
+        .tickValues([0.5, 1.5, 2.5])
         .tickSize(2)
-        .tickFormat(function(d, i) { return sponsor_types[i]; });
+        .tickFormat(function(d, i) { return sponsor_types[i] == "Other" ? "Academic/Other" : sponsor_types[i]; });
     sponsorchart_yAxis = d3.svg.axis()
         .scale(sponsorchart_y)
         .orient("left")
@@ -1642,94 +1683,96 @@ function drawSponsorChart() {
 
     var sponsorchart_svg = d3.select("#sponsorchart").append("svg")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
       .append("g")
         .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.20))
+        .attr("height", sideHeight)
         .attr("class", "sponsorchart_area");
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_yaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.035) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.13) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(sponsorchart_yAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.02);
 
     var sponsorchart_bar1 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar1")
-        .attr("transform", "translate(" + (rightWidth * 0.13) + "," + (mainHeight * 0.035) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.14) + "," + (sideHeight * 0.13) + ")");
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar1.selectAll(".sponsorchart_bar1_rect" + b)
             .data([0])
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar1_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.15 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.045)
+            .attr("width", rightWidth * 0.07)
             .attr("height", 0)
             .style("fill", highlight_color)
-            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
+            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
             .on("mouseout", mouseoutGeneral);
     }
 
     var sponsorchart_bar2 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar2")
-        .attr("transform", "translate(" + (rightWidth * 0.175) + "," + (mainHeight * 0.035) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.21) + "," + (sideHeight * 0.13) + ")");
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar2.selectAll(".sponsorchart_bar2_rect" + b)
             .data([0])
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar2_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.15 * (b-1)) + ")");
+            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
             .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.045)
+            .attr("width", rightWidth * 0.07)
             .attr("height", 0)
             .style("fill", base_color)
-            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.7; })
+            .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
             .on("mouseout", mouseoutGeneral);
     }
 
     sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (mainHeight * 0.17) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.83) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(sponsorchart_xAxis)
       .selectAll("text")
+      .style("fill", "#000")
       .style("font-size", rightWidth * 0.025);
 
     sponsorchart_svg.append("text")
         .attr("class", "sponsorchart_title")
         .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("height", sideHeight * 0.1)
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Lead Sponsor Type')
+        .html('Lead Sponsor Type')
 
     var sponsorchart_legend = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_legend")
-        .attr("width", rightWidth * 0.25)
-        .attr("height", mainHeight * 0.1)
-        .attr("transform", "translate(" + (rightWidth * 0.75) + "," + (mainHeight * 0.04) + ")");
+        .attr("width", rightWidth * 0.22)
+        .attr("height", sideHeight * 0.3)
+        .attr("transform", "translate(" + (rightWidth * 0.78) + "," + (sideHeight * 0.2) + ")");
 
     var legend_boxes = sponsorchart_legend.selectAll(".sponsorchart_legend_box")
         .data([[0,0],[0,1],[1,0],[1,1]])
@@ -1737,15 +1780,15 @@ function drawSponsorChart() {
         .append("rect")
         .attr("class", "sponsorchart_legend_box")
         .attr("x", function(d) { return rightWidth * 0.04 * d[0]; })
-        .attr("y", function(d) { return (mainHeight * 0.07) + (rightWidth * 0.04 * d[1]); })
+        .attr("y", function(d) { return (sideHeight * 0.2) + (rightWidth * 0.04 * d[1]); })
         .attr("width", rightWidth * 0.03)
         .attr("height", rightWidth * 0.03)
         .style("fill", function(d) { return d[0] == 0 ? highlight_color : base_color; })
-        .style("opacity", function(d) { return d[1] == 0 ? 0.6 : 1; });
+        .style("opacity", function(d) { return d[1] == 0 ? 0.5 : 1; });
 
     var legend_text_right = sponsorchart_legend.append("g")
         .attr("class", "sponsorchart_legendtext_right")
-        .attr("transform", "translate(" + (rightWidth * .085) + "," + (mainHeight * 0.07) + ")");
+        .attr("transform", "translate(" + (rightWidth * .079) + "," + (sideHeight * 0.2) + ")");
     legend_text_right.selectAll("text")
         .data(["with Industry","no Industry"])
         .enter()
@@ -1757,9 +1800,9 @@ function drawSponsorChart() {
 
     var legend_text_top = sponsorchart_legend.append("g")
         .attr("class", "sponsorchart_legendtext_top")
-        .attr("transform", "translate(" + (rightWidth * .01) + "," + (mainHeight * 0.06) + ")");
+        .attr("transform", "translate(" + (rightWidth * .01) + "," + (sideHeight * 0.18) + ")");
     legend_text_top.selectAll("text")
-        .data(["selection","all studies"])
+        .data(["selection","all trials"])
         .enter()
         .append("text")
         .attr("transform", function(d, i) {return "translate(" + ((rightWidth * 0.04 * i) + (rightWidth * 0.01)) + ")rotate(-45)"; })
@@ -1776,11 +1819,11 @@ function updateSponsorChart() {
     // order data and set domain
     var sponsor_data_ordered = [],
         sponsor_data_values = [],
-        sponsor_data_studies = 0,
+        sponsor_data_trials = 0,
         sponsor_data_enrollment = 0,
         sponsor_data_total_ordered = [],
         sponsor_data_total_values = [],
-        sponsor_data_total_studies = 0,
+        sponsor_data_total_trials = 0,
         sponsor_data_total_enrollment = 0;
 
     sponsor_types.forEach(function(p) {
@@ -1789,25 +1832,25 @@ function updateSponsorChart() {
             if (p2.name == p) {
                 var out_array = [
                     { name: p2.name,
-                      studies: p2.studies_no_industry,
+                      trials: p2.trials_no_industry,
                       enrollment: p2.enrollment_no_industry,
                       industry: 0,
                       subset: 1,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     },
                     { name: p2.name,
-                      studies: p2.studies_industry,
+                      trials: p2.trials_industry,
                       enrollment: p2.enrollment_industry,
                       industry: 1,
                       subset: 1,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     }
                 ];
                 sponsor_data_ordered.push(out_array);
                 sponsor_data_values.push(p2[values + "_industry"] + p2[values + "_no_industry"]);
-                sponsor_data_studies += p2.studies_industry + p2.studies_no_industry;
+                sponsor_data_trials += p2.trials_industry + p2.trials_no_industry;
                 sponsor_data_enrollment += p2.enrollment_industry + p2.enrollment_no_industry;
                 done = 0;
             }
@@ -1815,19 +1858,19 @@ function updateSponsorChart() {
         if ( done == 1 ) {
             sponsor_data_ordered.push([
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 0,
                       subset: 1,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     },
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 1,
                       subset: 1,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     }
             ]);
@@ -1835,7 +1878,7 @@ function updateSponsorChart() {
     });
     sponsor_data_ordered.forEach(function(d, i) {
         sponsor_data_ordered[i].forEach(function(d2, i2) {
-            sponsor_data_ordered[i][i2].studies_total = sponsor_data_studies;
+            sponsor_data_ordered[i][i2].trials_total = sponsor_data_trials;
             sponsor_data_ordered[i][i2].enrollment_total = sponsor_data_enrollment;
         })
     })
@@ -1846,25 +1889,25 @@ function updateSponsorChart() {
             if (p2.name == p) {
                 var out_array = [
                     { name: p2.name,
-                      studies: p2.studies_no_industry,
+                      trials: p2.trials_no_industry,
                       enrollment: p2.enrollment_no_industry,
                       industry: 0,
                       subset: 0,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     },
                     { name: p2.name,
-                      studies: p2.studies_industry,
+                      trials: p2.trials_industry,
                       enrollment: p2.enrollment_industry,
                       industry: 1,
                       subset: 0,
-                      total_studies: p2.studies_no_industry + p2.studies_industry,
+                      total_trials: p2.trials_no_industry + p2.trials_industry,
                       total_enrollment: p2.enrollment_no_industry + p2.enrollment_industry
                     }
                 ];
                 sponsor_data_total_ordered.push(out_array);
                 sponsor_data_total_values.push(p2[values + "_industry"] + p2[values + "_no_industry"]);
-                sponsor_data_total_studies += p2.studies_industry + p2.studies_no_industry;
+                sponsor_data_total_trials += p2.trials_industry + p2.trials_no_industry;
                 sponsor_data_total_enrollment += p2.enrollment_industry + p2.enrollment_no_industry;
                 done = 0;
             }
@@ -1872,19 +1915,19 @@ function updateSponsorChart() {
         if ( done == 1 ) {
             sponsor_data_total_ordered.push([
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 0,
                       subset: 0,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     },
                     { name: p,
-                      studies: 0,
+                      trials: 0,
                       enrollment: 0,
                       industry: 1,
                       subset: 0,
-                      total_studies: 1,
+                      total_trials: 1,
                       total_enrollment: 1
                     }
             ]);
@@ -1892,7 +1935,7 @@ function updateSponsorChart() {
     });
     sponsor_data_total_ordered.forEach(function(d, i) {
         sponsor_data_total_ordered[i].forEach(function(d2, i2) {
-            sponsor_data_total_ordered[i][i2].studies_total = sponsor_data_total_studies;
+            sponsor_data_total_ordered[i][i2].trials_total = sponsor_data_total_trials;
             sponsor_data_total_ordered[i][i2].enrollment_total = sponsor_data_total_enrollment;
         })
     })
@@ -1907,7 +1950,7 @@ function updateSponsorChart() {
         .selectAll("text")
         .style("font-size", rightWidth * 0.02);
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = d3.selectAll(".sponsorchart_bar1_rect" + b);
         inner_g.selectAll("rect")
             .data(sponsor_data_ordered[b-1])
@@ -1915,10 +1958,10 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_values)) })
-            .attr("height", function(d) { return mainHeight*0.135 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
+            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
     }
 
-    for (var b=1; b<5; b++) {
+    for (var b=1; b<4; b++) {
         var inner_g = d3.selectAll(".sponsorchart_bar2_rect" + b);
         inner_g.selectAll("rect")
             .data(sponsor_data_total_ordered[b-1])
@@ -1926,13 +1969,8 @@ function updateSponsorChart() {
             .duration(500)
             .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)) :
                                                         sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_total_values)) })
-            .attr("height", function(d) { return mainHeight*0.135 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
+            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
     }
-
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
-    d3.selectAll(".sponsorchart_title")
-        .html(title_term + ' by Lead Sponsor Type')
-
 
 }
 
@@ -1957,17 +1995,17 @@ var status_colors = [
   "#ef6548",
   "#d7301f"
 ];
-var statuschart_x = d3.scale.linear().range([0, rightWidth * .8]),
-    statuschart_total_x = d3.scale.linear().range([0, rightWidth * .8]);
-var statuschart_topbar_y = mainHeight * 0.04,
-    statuschart_bottombar_y = mainHeight * 0.075,
-    statuschart_barheight = mainHeight * 0.0225;
+var statuschart_x = d3.scale.linear().range([0, centerWidth * .8]),
+    statuschart_total_x = d3.scale.linear().range([0, centerWidth * .8]);
+var statuschart_topbar_y = bottomHeight * 0.2,
+    statuschart_bottombar_y = bottomHeight * 0.5,
+    statuschart_barheight = bottomHeight * 0.18;
 
 function drawStatusChart() {
 
     var status_data_ordered = [],
         status_data_values = 0,
-        status_data_studies = 0,
+        status_data_trials = 0,
         status_data_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -1977,23 +2015,23 @@ function drawStatusChart() {
                 p2.subset = 1;
                 status_data_ordered.push(p2);
                 status_data_values += p2[values];
-                status_data_studies += p2.studies;
+                status_data_trials += p2.trials;
                 status_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+            status_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 1});
         }
     });
     status_data_ordered.forEach(function(d, i) { 
-        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].trials_total = status_data_trials;
         status_data_ordered[i].enrollment_total = status_data_enrollment;
     });
 
     var status_data_total_ordered = [],
         status_data_total_values = 0
-        status_data_total_studies = 0,
+        status_data_total_trials = 0,
         status_data_total_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2003,17 +2041,17 @@ function drawStatusChart() {
                 p2.subset = 0;
                 status_data_total_ordered.push(p2);
                 status_data_total_values += p2[values];
-                status_data_total_studies += p2.studies;
+                status_data_total_trials += p2.trials;
                 status_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+            status_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 0});
         }
     });
     status_data_total_ordered.forEach(function(d, i) { 
-        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].trials_total = status_data_total_trials;
         status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
     });
 
@@ -2021,16 +2059,16 @@ function drawStatusChart() {
     statuschart_total_x.domain([0, status_data_total_values]);
 
     var statuschart_svg = d3.select("#statuschart").append("svg")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
       .append("g")
-        .attr("width", rightWidth)
-        .attr("height", (mainHeight * 0.15))
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight)
         .attr("class", "statuschart_area");
 
     var statuschart_bar1 = statuschart_svg.append("g")
         .attr("class", "statuschart_bar1")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_topbar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + statuschart_topbar_y + ")");
 
     statuschart_bar1.selectAll(".statuschart_bar1_rect")
         .data(status_data_ordered)
@@ -2045,7 +2083,7 @@ function drawStatusChart() {
 
     var statuschart_bar2 = statuschart_svg.append("g")
         .attr("class", "statuschart_bar2")
-        .attr("transform", "translate(" + rightWidth * 0.18 + "," + statuschart_bottombar_y + ")");
+        .attr("transform", "translate(" + centerWidth * 0.18 + "," + statuschart_bottombar_y + ")");
 
     statuschart_bar2.selectAll(".statuschart_bar2_rect")
         .data(status_data_total_ordered)
@@ -2065,76 +2103,76 @@ function drawStatusChart() {
 
     var statuslabel1 = statuschart_svg.append("text")
         .attr("class", "statuschart_label1")
-        .attr("transform", "translate(0," + (statuschart_topbar_y + (mainHeight * 0.01)) + ")")
+        .attr("transform", "translate(0," + (statuschart_topbar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.013)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", highlight_color)
         .style("font-weight", "bold");
 
     statuslabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("Current");
     statuslabel1.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
         .text("Selection");
 
     var statuslabel2 = statuschart_svg.append("text")
         .attr("class", "statuschart_label2")
-        .attr("transform", "translate(0," + (statuschart_bottombar_y + (mainHeight * 0.01)) + ")")
+        .attr("transform", "translate(0," + (statuschart_bottombar_y + (bottomHeight * 0.07)) + ")")
         .style("text-anchor", "end")
-        .style("font-size", mainHeight * 0.013)
+        .style("font-size", bottomHeight * 0.07)
         .style("fill", base_color)
         .style("font-weight", "bold");
 
     statuslabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .text("All");
     statuslabel2.append("tspan")
         .attr("text-anchor", "end")
-        .attr("x", rightWidth * 0.17)
+        .attr("x", centerWidth * 0.17)
         .attr("dy", ".95em")
-        .text("Studies");
+        .text("Trials");
 
     statuschart_svg.append("text")
         .attr("class", "statuschart_title")
-        .attr("width", rightWidth)
-        .attr("height", mainHeight * 0.03)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (mainHeight * 0.03) + ")")
+        .attr("width", centerWidth)
+        .attr("height", bottomHeight * 0.12)
+        .attr("transform", "translate(" + (centerWidth / 2) + "," + (bottomHeight * 0.12) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
-        .html('Trials by Status')
+        .html('Status')
 
     var statuschart_legend = statuschart_svg.append("g")
         .attr("class", "statuschart_legend")
-        .attr("width", rightWidth * 0.8)
-        .attr("height", mainHeight * 0.05)
-        .attr("transform", "translate(" + (rightWidth * 0.2) + "," + (mainHeight * 0.10) + ")");
+        .attr("width", centerWidth * 0.95)
+        .attr("height", bottomHeight * 0.25)
+        .attr("transform", "translate(" + (centerWidth * 0.05) + "," + (bottomHeight * 0.75) + ")");
 
     var legend_items = statuschart_legend.selectAll(".statuschart_legend_item")
         .data(statuses)
         .enter()
         .append("g")
         .attr("class", "statuschart_legend_item")
-        .attr("transform", function(d, i) { return "translate(" + (rightWidth * 0.16 * i) + ")"; });
+        .attr("transform", function(d, i) { return "translate(" + (centerWidth * 0.195 * i) + ")"; });
 
     legend_items.append("rect")
-        .attr("width", mainHeight * 0.012)
-        .attr("height", mainHeight * 0.012)
-        .attr("transform", function(d, i) { return "translate(" + (i >= 5 ? rightWidth * -0.80 : 0) + "," + (i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + ")"})
+        .attr("width", bottomHeight * 0.07)
+        .attr("height", bottomHeight * 0.07)
+        .attr("transform", function(d, i) { return "translate(" + (i >= 5 ? centerWidth * -0.975 : 0) + "," + (i >= 5 ? bottomHeight * .13 : 0) + ")"})
         .style("fill", function(d, i) { return status_colors[i]; });
     legend_items.append("text")
-        .attr("transform", function(d, i) { return "translate(" + ((i >= 5 ? rightWidth * -0.80 : 0) + (mainHeight * 0.015)) + "," + ((i >= 5 ? mainHeight * 0.036 : mainHeight * 0.006) + (mainHeight * 0.010)) + ")"})
-        .style("font-size", rightWidth * 0.02)
+        .attr("transform", function(d, i) { return "translate(" + ((i >= 5 ? centerWidth * -0.975 : 0) + (bottomHeight * .083)) + "," + ((i >= 5 ? bottomHeight * .13 : 0) + (centerWidth * 0.025)) + ")"})
+        .style("font-size", centerWidth * 0.025)
         .each(function(d) { 
-            var strings = splitLines(d, 15);
+            var strings = splitLines(d, 14);
             for (var s=0; s<strings.length; s++) {
                 d3.select(this).append("tspan")
                     .attr("x", 0)
-                    .attr("dy", s == 0 ? 0 : "0.9em")
+                    .attr("dy", s == 0 ? 0 : "0.92em")
                     .text(strings[s]);
             }
         });
@@ -2147,7 +2185,7 @@ function updateStatusChart() {
 
     var status_data_ordered = [],
         status_data_values = 0,
-        status_data_studies = 0,
+        status_data_trials = 0,
         status_data_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2157,23 +2195,23 @@ function updateStatusChart() {
                 p2.subset = 1;
                 status_data_ordered.push(p2);
                 status_data_values += p2[values];
-                status_data_studies += p2.studies;
+                status_data_trials += p2.trials;
                 status_data_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 1});
+            status_data_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 1});
         }
     });
     status_data_ordered.forEach(function(d, i) { 
-        status_data_ordered[i].studies_total = status_data_studies;
+        status_data_ordered[i].trials_total = status_data_trials;
         status_data_ordered[i].enrollment_total = status_data_enrollment;
     });
 
     var status_data_total_ordered = [],
         status_data_total_values = 0
-        status_data_total_studies = 0,
+        status_data_total_trials = 0,
         status_data_total_enrollment = 0;
     statuses.forEach(function(p) {
         var done = 1;
@@ -2183,17 +2221,17 @@ function updateStatusChart() {
                 p2.subset = 0;
                 status_data_total_ordered.push(p2);
                 status_data_total_values += p2[values];
-                status_data_total_studies += p2.studies;
+                status_data_total_trials += p2.trials;
                 status_data_total_enrollment += p2.enrollment;
                 done = 0;
             }
         });
         if ( done == 1 ) {
-            status_data_total_ordered.push({name: p, studies: 0, enrollment: 0, x0: status_data_values, subset: 0});
+            status_data_total_ordered.push({name: p, trials: 0, enrollment: 0, x0: status_data_values, subset: 0});
         }
     });
     status_data_total_ordered.forEach(function(d, i) { 
-        status_data_total_ordered[i].studies_total = status_data_total_studies;
+        status_data_total_ordered[i].trials_total = status_data_total_trials;
         status_data_total_ordered[i].enrollment_total = status_data_total_enrollment;
     });
 
@@ -2213,10 +2251,6 @@ function updateStatusChart() {
         .duration(500)
         .attr("x", function(d) { return statuschart_total_x(d.x0); })
         .attr("width", function(d) { return statuschart_total_x(d[values]); });
-
-    var title_term = values == "studies" ? "Trials" : "Enrollment";
-    d3.selectAll(".statuschart_title")
-        .html(title_term + ' by Status')
 
 }
 
@@ -2249,10 +2283,10 @@ function clickButton(d, i) {
         }
     } else {
         values = button_value;
-        if ( button_value == 'studies' ) {
+        if ( button_value == 'trials' ) {
             other_value = 'enrollment';
         } else {
-            other_value = 'studies';
+            other_value = 'trials';
         }
     }
 
@@ -2284,12 +2318,12 @@ function resetAll() {
     cond_filter = '';
     intervention_filter = -1;
     time_filter = [];
-    level = 0;
+    level = 1;
     showby = "cond";
-    values = "studies";
+    values = "trials";
     highlightButton("button_showby_cond");
     lowlightButton("button_showby_inv");
-    highlightButton("button_sizeby_studies");
+    highlightButton("button_sizeby_trials");
     lowlightButton("button_sizeby_enrollment");
     d3.select(".brush").call(timeselector_brush.clear());
     updateViz();
@@ -2299,7 +2333,7 @@ function resetAll() {
 function clickCondition() {
     var cond_selection = d3.select(this).attr("id").slice(9);
     cond_filter = cond_selection == 'Z' ? '': cond_selection;
-    level = reverse_level[cond_filter.length] + 1 || 0;
+    level = reverse_level[cond_filter.length] + 1 || 1;
     updateViz();
     updateTimeBars();
 }
@@ -2313,8 +2347,8 @@ function clearIntervention() {
 function mouseoverGeneral(d, i) {
     var pct = d3.format("%");
     var tooltext = "<span style='font-weight: bold; font-size: 120%'>" + d.name + " - ";
-    tooltext += d.subset == 1 ? "selection" : "all studies";
-    tooltext += "</span><br/>" + pct(d.studies/d.studies_total) + " of studies (" + addCommas(d.studies) + ")<br/>";
+    tooltext += d.subset == 1 ? "selection" : "all trials";
+    tooltext += "</span><br/>" + pct(d.trials/d.trials_total) + " of trials (" + addCommas(d.trials) + ")<br/>";
     tooltext += pct(d.enrollment/d.enrollment_total) + " of enrollment (" + addCommas(d.enrollment) + ")";
     d3.select("#tooltip")
         .style("visibility", "visible")
@@ -2336,8 +2370,8 @@ function mouseoverSponsor(d, i) {
     } else {
         tooltext += " - ";
     }
-    tooltext += d.subset == 1 ? "selection" : "all studies";
-    tooltext += "</span><br/>" + pct(d.studies/d.studies_total) + " of studies (" + addCommas(d.studies) + ")<br/>";
+    tooltext += d.subset == 1 ? "selection" : "all trials";
+    tooltext += "</span><br/>" + pct(d.trials/d.trials_total) + " of trials (" + addCommas(d.trials) + ")<br/>";
     tooltext += pct(d.enrollment/d.enrollment_total) + " of enrollment (" + addCommas(d.enrollment) + ")<br/>";
     if (d.name != "Industry") {
         tooltext += '<p class="space"></p>';
@@ -2361,7 +2395,7 @@ function mouseoverBubble(d, i) {
 
     d3.select("#tooltip")
         .style("visibility", "visible")
-        .html("<span style='font-weight: bold; font-size: 120%'>" + d.name + "</span><br/>" + addCommas(d.studies) + " studies<br/>" + addCommas(d.enrollment) + " enrolled participants")
+        .html("<span style='font-weight: bold; font-size: 120%'>" + d.name + "</span><br/>" + addCommas(d.trials) + " trials<br/>" + addCommas(d.enrollment) + " enrolled participants")
         .style("top", function () { return (d3.max([50,d3.event.pageY - 80]))+"px"})
         .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
 }
@@ -2516,5 +2550,73 @@ function collide(alpha) {
     });
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+
+    TUTORIAL WINDOW
+
+****************************************************/
+
+function drawTutorial() {
+
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+
+    var tutorial = d3.select("#tutorial")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight);
+
+    var tutorialscreen = tutorial.append("svg")
+        .attr("class", "tutorialscreen")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight)
+        .append("g");
+
+    tutorialscreen.append("rect")
+        .attr("width", windowWidth)
+        .attr("height", windowHeight)
+        .style("fill", "#000")
+        .style("opacity", 0.5);
+
+    tutorialscreen.append("text")
+        .attr("transform", "translate(" + windowWidth / 2 + "," + (windowHeight / 2 + 12) + ")")
+        .style("font-size", "24")
+        .style("font-weight", "700")
+        .style("stroke", "#fff")
+        .style("text-anchor", "middle")
+        .text("clear this")
+        .on("click", removeTutorial);
+}
+
+function removeTutorial() {
+    d3.selectAll(".tutorialscreen").remove();
+}
+
+
+
+
+
+
+
+
+
 
 
