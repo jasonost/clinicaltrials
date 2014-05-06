@@ -55,7 +55,7 @@ circle {
   stroke-width: .5px;
 }
 
-.bubble_label, .option_button {
+.bubble_label, .option_button, .got_it {
   cursor: pointer;
 }
 

@@ -6,6 +6,7 @@
 
 // setting css for elements
 var highlight_color = "rgb(229,150,5)";
+var highlight_color_xtra = "rgb(235,160,56)";
 var base_color = "#222";
 
 var windowHeight = window.innerHeight - 8;
@@ -274,7 +275,9 @@ var timeselector = d3.select("#timeselector").append("svg")
     .attr("width", leftWidth + "px")
     .attr("height", ((optionsHeight * .39) - 3) + "px")
     .append("g")
-    .attr("transform", "translate(0," + (optionsHeight / 24) + ")");
+    .attr("transform", "translate(0," + (optionsHeight / 24) + ")")
+    .on("mouseover", mouseoverTimeSelector)
+    .on("mouseout", mouseoutTimeSelector);
 
 var timeselector_barheight,
     timeselector_barwidth,
@@ -599,7 +602,7 @@ d3.json("vizdata/all_data.json", function(error, json) {
     d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
         updateLocationChart();
-        //drawTutorial();
+        drawTutorial();
     })
 });
 
@@ -1009,7 +1012,6 @@ var bubble_color = "steelblue",
     bubble_height = mainHeight - bottomHeight,
     padding = 3,
     maxRadius = 100,
-    color = d3.scale.category20c(),
     node,
     node_text,
     link,
@@ -1085,7 +1087,7 @@ function makeBubble() {
         .style("font-size", function(d) { return d.size * 0.28; })
         .style("opacity", function(d) { return d.size >= 24 ? 1 : 0; })
         .each(function(d) {
-            var strings = splitLines(d.name, 20);
+            var strings = splitLines(d.name, 14);
             for (var s=0; s<strings.length; s++) {
                 d3.select(this).append("tspan")
                     .attr("x", 0)
@@ -2387,6 +2389,21 @@ function mouseoverSponsor(d, i) {
         .style("left", function () { return (d3.max([0,d3.event.pageX - 80]))+"px";});
 }
 
+function mouseoverTimeSelector(d, i) {
+    offsets = document.getElementById("timeselector").getBoundingClientRect();
+    d3.select("#tooltip")
+        .style("visibility", "visible")
+        .html("<span style='font-weight: bold; font-size: 120%'>Click and drag to select a time range.</span>")
+        .style("top", (offsets.top -30) +"px")
+        .style("left", offsets.left +"px");
+}
+
+//mouseout tool tip for tree
+function mouseoutTimeSelector(d, i) {
+    d3.select("#tooltip")
+        .style("visibility", "hidden");
+}
+
 function mouseoverBubble(d, i) {
     d3.select(this)
         .select("circle")
@@ -2523,8 +2540,8 @@ function tick(e) {
     node.selectAll("text")
         .attr("transform", function(d) { return "translate(" + d.x + ")"; })
         .attr("y", function(d) { 
-            var numlines = splitLines(d.name, 20).length;
-            return d.y - (numlines * (d.size / 6)); 
+            var numlines = splitLines(d.name, 14).length;
+            return d.y - (numlines * (d.size * .18)); 
         });
 
 }
@@ -2579,7 +2596,7 @@ function drawTutorial() {
 
     var windowHeight = window.innerHeight;
     var windowWidth = window.innerWidth;
-
+    console.log(windowHeight,windowWidth);
     var tutorial = d3.select("#tutorial")
         .attr("width", windowWidth)
         .attr("height", windowHeight);
@@ -2594,29 +2611,153 @@ function drawTutorial() {
         .attr("width", windowWidth)
         .attr("height", windowHeight)
         .style("fill", "#000")
-        .style("opacity", 0.5);
+        .style("opacity", 0.6);
 
-    tutorialscreen.append("text")
-        .attr("transform", "translate(" + windowWidth / 2 + "," + (windowHeight / 2 + 12) + ")")
-        .style("font-size", "24")
+    var navbox = tutorialscreen.append("g")
+        .attr("transform", "translate(5," + (headerHeight + topMargin) + ")");
+
+    navbox.append("rect")
+        .attr("width", leftWidth * 1.05)
+        .attr("height", navigatorHeight * .65)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("stroke", highlight_color_xtra)
+        .style("stroke-width", "4px")
+        .style("fill", "#888")
+        .style("fill-opacity", 0.55)
+        .style("stroke-opacity", 1);
+
+    var navtext = navbox.append("text")
+        .attr("width", leftWidth * .8)
+        .attr("height", navigatorHeight * 0.45)
+        .attr("transform", "translate(0," + (navigatorHeight * 0.15) + ")")
+        .style("stroke", highlight_color)
+        .style("fill", highlight_color_xtra)
+        .style("font-size", mainHeight * 0.03)
+        .style("font-weight", "700");
+
+    var strings = splitLines("This area contains a description of your current selection", 18);
+    for (var s=0; s<strings.length; s++) {
+        navtext.append("tspan")
+            .attr("x", leftWidth * 0.5)
+            .attr("dy", "1.35em")
+            .attr("text-anchor", "middle")
+            .text(strings[s]);
+    }
+
+    var optbox = tutorialscreen.append("g")
+        .attr("transform", "translate(5," + (windowHeight - optionsHeight - 10) + ")");
+
+    optbox.append("rect")
+        .attr("width", leftWidth * 1.05)
+        .attr("height", optionsHeight)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("stroke", highlight_color_xtra)
+        .style("stroke-width", "4px")
+        .style("fill", "#888")
+        .style("fill-opacity", 0.55)
+        .style("stroke-opacity", 1);
+
+    var opttext = optbox.append("text")
+        .attr("width", leftWidth * 0.8)
+        .attr("height", optionsHeight * 0.8)
+        .attr("transform", "translate(0," + (optionsHeight * 0.1) + ")")
+        .style("stroke", highlight_color)
+        .style("fill", highlight_color_xtra)
+        .style("font-size", mainHeight * 0.03)
+        .style("font-weight", "700");
+
+    var strings = splitLines("These are tools you can use to change the display or filter trials by time", 18);
+    for (var s=0; s<strings.length; s++) {
+        opttext.append("tspan")
+            .attr("x", leftWidth * 0.5)
+            .attr("dy", "1.35em")
+            .attr("text-anchor", "middle")
+            .text(strings[s]);
+    }
+
+    var bubblecircle = tutorialscreen.append("g")
+        .attr("transform", "translate(" + (leftWidth * 1.1) + "," + (headerHeight + titleHeight) + ")");
+
+    bubblecircle.append("circle")
+        .attr("r", (mainHeight - bottomHeight) * 0.51)
+        .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.53) + ")")
+        .style("stroke", highlight_color_xtra)
+        .style("stroke-width", "2px")
+        .style("fill", "#888")
+        .style("fill-opacity", 0.55)
+        .style("stroke-opacity", 1);
+
+    var bubbletext = bubblecircle.append("text")
+        .attr("width", centerWidth * 1.5)
+        .attr("height", centerWidth * 1.5)
+        .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.4) + ")")
+        .style("stroke", highlight_color)
+        .style("fill", highlight_color_xtra)
+        .style("font-size", mainHeight * 0.03)
+        .style("font-weight", "700");
+
+    var strings = splitLines("The bubbles represent the trials studying each condition, or using each intervention, depending on your selection in the lower left", 31);
+    for (var s=0; s<strings.length; s++) {
+        bubbletext.append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1.35em")
+            .attr("text-anchor", "middle")
+            .text(strings[s]);
+    }
+
+    var closetutorial = tutorialscreen.append("g")
+        .attr("transform", "translate(" + (windowWidth * 0.34) + "," + (windowHeight * 0.85) + ")")
+        .attr("class", "got_it");
+
+    closetutorial.append("rect")
+        .attr("width", windowWidth * 0.22)
+        .attr("height", windowWidth * 0.05)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("fill", highlight_color)
+        .style("stroke", "#ccc")
+        .style("stroke-width", "3px")
+        .style("stroke-opacity", .4);
+
+    closetutorial.append("text")
+        .attr("transform", "translate(" + (windowWidth * 0.11) + "," + (windowWidth * 0.032) + ")")
+        .style("font-size", windowWidth * 0.025)
         .style("font-weight", "700")
-        .style("stroke", "#fff")
+        .style("stroke", "#eee")
+        .style("fill", "#eee")
         .style("text-anchor", "middle")
-        .text("clear this")
+        .text("Got it, let's go!")
         .on("click", removeTutorial);
+
+    var closeicon = tutorialscreen.append("g")
+        .attr("transform", "translate(" + (windowWidth * 0.98) + "," + (windowWidth * 0.02) + ")")
+        .attr("class", "got_it")
+        .on("click", removeTutorial);
+
+    closeicon.append("circle")
+        .attr("r", 12)
+        .attr("x", 12)
+        .attr("y", 12)
+        .style("fill", "#000")
+        .style("fill-opacity", 0.7)
+        .style("stroke", "#bbb")
+        .style("stroke-width", "2px")
+        .style("stroke-opacity", 0.9)
+
+    closeicon.append("text")
+        .attr("transform", "translate(0,6)")
+        .style("text-anchor", "middle")
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("stroke", "#bbb")
+        .style("fill", "#bbb")
+        .text("X");
+
 }
 
 function removeTutorial() {
     d3.selectAll(".tutorialscreen").remove();
 }
-
-
-
-
-
-
-
-
-
-
 
