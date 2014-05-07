@@ -21,6 +21,20 @@ group by i.nct_id;
 
 create index interventions_complex_mod_nct_id_idx on interventions_complex_mod(nct_id);
 
+-- full account of (non-placebo/control) interventions for each study
+create table interventions_full_mod as
+select nct_id,
+  max(case when intervention_type = 'Drug' then 1 else 0 end) intervention_drug,
+  max(case when intervention_type = 'Procedure' then 1 else 0 end) intervention_procedure,
+  max(case when intervention_type = 'Behavioral' then 1 else 0 end) intervention_behavior,
+  max(case when intervention_type = 'Device' then 1 else 0 end) intervention_device,
+  max(case when intervention_type = 'Biological' then 1 else 0 end) intervention_biological,
+  max(case when intervention_type = 'Dietary Supplement' then 1 else 0 end) intervention_supplement
+from interventions
+group by nct_id;
+
+create index interventions_full_mod_nct_id_idx on interventions_full_mod(nct_id);
+
 -- create modification of sponsors to pull out universities from "other"
 create table sponsors_univ as
 select nct_id, sponsor_type, agency, 
