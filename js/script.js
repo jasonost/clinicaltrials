@@ -40,9 +40,10 @@ var divPadding = 0.01 * windowHeight;
 if (divPadding > 8) { divPadding = 8; }
 
 var leftWidth = 0.2 * windowWidth - (2 * divPadding) - (2 * borderWidth);
-if (leftWidth > 240 - (2 * divPadding) - (2 * borderWidth)) { leftWidth = 240 - (2 * divPadding) - (2 * borderWidth); }
+if (leftWidth > 400 - (2 * divPadding) - (2 * borderWidth)) { leftWidth = 400 - (2 * divPadding) - (2 * borderWidth); }
 
 var rightWidth = 0.4 * (windowWidth - leftWidth);
+if (rightWidth > 800) { rightWidth = 800; }
 
 var centerWidth = (windowWidth - (leftWidth + (2 * divPadding) + (2 * borderWidth)) - rightWidth) / 2;
 
@@ -2612,6 +2613,9 @@ function collide(alpha) {
 
 ****************************************************/
 
+var info_background = "#444";
+var info_fontsize = leftWidth * 0.07;
+
 function drawTutorial() {
 
     var windowHeight = window.innerHeight;
@@ -2646,7 +2650,7 @@ function drawTutorial() {
         .attr("ry", 8)
         .style("stroke", highlight_color_xtra)
         .style("stroke-width", "2px")
-        .style("fill", "#888")
+        .style("fill", info_background)
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
@@ -2657,7 +2661,7 @@ function drawTutorial() {
         .attr("transform", "translate(0," + (navigatorHeight * 0.15) + ")")
         .style("stroke", highlight_color_xtra2)
         .style("fill", highlight_color_xtra2)
-        .style("font-size", mainHeight * 0.03)
+        .style("font-size", info_fontsize)
         .style("font-weight", "400");
 
     var strings = splitLines("This area contains a description of your current selection", 18);
@@ -2681,7 +2685,7 @@ function drawTutorial() {
         .attr("ry", 8)
         .style("stroke", highlight_color_xtra)
         .style("stroke-width", "2px")
-        .style("fill", "#888")
+        .style("fill", info_background)
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
@@ -2692,7 +2696,7 @@ function drawTutorial() {
         .attr("transform", "translate(0," + (optionsHeight * 0.1) + ")")
         .style("stroke", highlight_color_xtra2)
         .style("fill", highlight_color_xtra2)
-        .style("font-size", mainHeight * 0.03)
+        .style("font-size", info_fontsize)
         .style("font-weight", "400");
 
     var strings = splitLines("These are tools you can use to change the display or filter trials by time", 18);
@@ -2714,7 +2718,7 @@ function drawTutorial() {
         .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.53) + ")")
         .style("stroke", highlight_color_xtra)
         .style("stroke-width", "2px")
-        .style("fill", "#888")
+        .style("fill", info_background)
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
@@ -2725,7 +2729,7 @@ function drawTutorial() {
         .attr("transform", "translate(" + centerWidth + "," + ((mainHeight - bottomHeight) * 0.4) + ")")
         .style("stroke", highlight_color_xtra2)
         .style("fill", highlight_color_xtra2)
-        .style("font-size", mainHeight * 0.03)
+        .style("font-size", info_fontsize)
         .style("font-weight", "400");
 
     var strings = splitLines("These bubbles represent the number of trials or enrolled patients being studied for each condition, depending on your selections on the lower left", 31);
@@ -2749,7 +2753,7 @@ function drawTutorial() {
         .attr("ry", 8)
         .style("stroke", highlight_color_xtra)
         .style("stroke-width", "2px")
-        .style("fill", "#888")
+        .style("fill", info_background)
         .style("fill-opacity", 0.55)
         .style("stroke-opacity", 1);
 
@@ -2760,7 +2764,7 @@ function drawTutorial() {
         .attr("transform", "translate(0," + (sideHeight * 0.1) + ")")
         .style("stroke", highlight_color_xtra2)
         .style("fill", highlight_color_xtra2)
-        .style("font-size", mainHeight * 0.03)
+        .style("font-size", info_fontsize)
         .style("font-weight", "400");
 
     var strings = splitLines("This chart and others along the side and bottom compare the distribution of your current selection to the distribution of all trials. This line chart has two y-axes: the left is your current selection, and the right is all trials.", 40);
