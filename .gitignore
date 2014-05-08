@@ -60,3 +60,5 @@ connect.py
 # data
 *.json
 
+
+*.pickle

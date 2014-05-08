@@ -203,7 +203,7 @@ buttons.append("text")
     .style("font-family", "'Roboto', Helvetica, Arial, sans-serif")
     .style("font-size", (leftWidth * .065) + "px")
     .style("font-weight", "700")
-    .text("Size by");
+    .text("Size everything by");
 var button_sizeby = buttons.append("g")
     .attr("class", "option_button")
     .attr("transform", "translate(0," + (optionsHeight * 3 / 8) + ")");
@@ -1679,9 +1679,9 @@ function updatePhaseChart() {
 }
 
 // sponsor chart
-var sponsor_types = ["US Federal", "Industry", "Other"];
-var sponsorchart_x = d3.scale.linear().domain([0, 3]).range([0, rightWidth * .66]);
-var sponsorchart_y = d3.scale.linear().range([sideHeight*0.7, 0]);
+var sponsor_types = ["Other", "Industry", "US Federal"];
+var sponsorchart_y = d3.scale.linear().domain([0, 3]).range([sideHeight*0.6, 0]);
+var sponsorchart_x = d3.scale.linear().range([0, rightWidth * .7]);
 
 var sponsorchart_xAxis,
     sponsorchart_yAxis;
@@ -1689,17 +1689,17 @@ var sponsorchart_xAxis,
 function drawSponsorChart() {
 
     // set y axis domain
-    sponsorchart_y.domain([0, 0.3]);
+    sponsorchart_x.domain([0, 0.3]);
 
-    sponsorchart_xAxis = d3.svg.axis()
-        .scale(sponsorchart_x)
-        .orient("bottom")
-        .tickValues([0.5, 1.5, 2.5])
-        .tickSize(2)
-        .tickFormat(function(d, i) { return sponsor_types[i] == "Other" ? "Academic/Other" : sponsor_types[i]; });
     sponsorchart_yAxis = d3.svg.axis()
         .scale(sponsorchart_y)
         .orient("left")
+        .tickValues([0.5, 1.5, 2.5])
+        .tickSize(2)
+        .tickFormat(function(d, i) { return sponsor_types[i] == "Other" ? "Academic/Other" : sponsor_types[i]; });
+    sponsorchart_xAxis = d3.svg.axis()
+        .scale(sponsorchart_x)
+        .orient("bottom")
         .tickFormat(d3.format("%"))
         .tickSize(2);
 
@@ -1711,20 +1711,9 @@ function drawSponsorChart() {
         .attr("height", sideHeight)
         .attr("class", "sponsorchart_area");
 
-    sponsorchart_svg.append("g")
-      .attr("class", "sponsorchart_yaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.13) + ")")
-      .style("stroke", "#000")
-      .style("stroke-width", "1px")
-      .style("fill", "none")
-      .call(sponsorchart_yAxis)
-      .selectAll("text")
-      .style("fill", "#000")
-      .style("font-size", rightWidth * 0.02);
-
     var sponsorchart_bar1 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar1")
-        .attr("transform", "translate(" + (rightWidth * 0.14) + "," + (sideHeight * 0.13) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.25) + "," + (sideHeight * 0.25) + ")");
 
     for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar1.selectAll(".sponsorchart_bar1_rect" + b)
@@ -1732,14 +1721,14 @@ function drawSponsorChart() {
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar1_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
+            .attr("transform", "translate(0," + (sideHeight * (0.03 + 0.2 * (b-1))) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
-            .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.07)
-            .attr("height", 0)
+
+            .attr("width", 0)
+            .attr("height", sideHeight * 0.07)
             .style("fill", highlight_color)
             .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
@@ -1748,7 +1737,7 @@ function drawSponsorChart() {
 
     var sponsorchart_bar2 = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_bar2")
-        .attr("transform", "translate(" + (rightWidth * 0.21) + "," + (sideHeight * 0.13) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.25) + "," + (sideHeight * 0.25) + ")");
 
     for (var b=1; b<4; b++) {
         var inner_g = sponsorchart_bar2.selectAll(".sponsorchart_bar2_rect" + b)
@@ -1756,14 +1745,13 @@ function drawSponsorChart() {
             .enter()
             .append("g")
             .attr("class", "sponsorchart_bar2_rect" + b)
-            .attr("transform", "translate(" + (rightWidth * 0.22 * (b-1)) + ")");
+            .attr("transform", "translate(0," + (sideHeight * (0.1 + 0.2 * (b-1))) + ")");
         inner_g.selectAll("rect")
             .data([0,0])
             .enter()
             .append("rect")
-            .attr("y", function(d, i) { return sponsorchart_y(0); })
-            .attr("width", rightWidth * 0.07)
-            .attr("height", 0)
+            .attr("width", 0)
+            .attr("height", sideHeight * 0.07)
             .style("fill", base_color)
             .style("opacity", function(d, i) { return i == 0 ? 1 : 0.5; })
             .on("mouseover", mouseoverSponsor)
@@ -1771,15 +1759,27 @@ function drawSponsorChart() {
     }
 
     sponsorchart_svg.append("g")
+      .attr("class", "sponsorchart_yaxis")
+      .attr("transform", "translate(" + (rightWidth * 0.25) + "," + (sideHeight * 0.25) + ")")
+      .style("stroke", "#000")
+      .style("stroke-width", "1px")
+      .style("fill", "none")
+      .call(sponsorchart_yAxis)
+      .selectAll("text")
+      .style("fill", "#000")
+      .style("font-size", rightWidth * 0.025)
+      .style("text-align", "right");
+
+    sponsorchart_svg.append("g")
       .attr("class", "sponsorchart_xaxis")
-      .attr("transform", "translate(" + (rightWidth * 0.1) + "," + (sideHeight * 0.83) + ")")
+      .attr("transform", "translate(" + (rightWidth * 0.25) + "," + (sideHeight * 0.85) + ")")
       .style("stroke", "#000")
       .style("stroke-width", "1px")
       .style("fill", "none")
       .call(sponsorchart_xAxis)
       .selectAll("text")
       .style("fill", "#000")
-      .style("font-size", rightWidth * 0.025);
+      .style("font-size", rightWidth * 0.02);
 
     sponsorchart_svg.append("text")
         .attr("class", "sponsorchart_title")
@@ -1793,8 +1793,8 @@ function drawSponsorChart() {
     var sponsorchart_legend = sponsorchart_svg.append("g")
         .attr("class", "sponsorchart_legend")
         .attr("width", rightWidth * 0.22)
-        .attr("height", sideHeight * 0.3)
-        .attr("transform", "translate(" + (rightWidth * 0.78) + "," + (sideHeight * 0.2) + ")");
+        .attr("height", sideHeight * 0.25)
+        .attr("transform", "translate(" + (rightWidth * 0.78) + ")");
 
     var legend_boxes = sponsorchart_legend.selectAll(".sponsorchart_legend_box")
         .data([[0,0],[0,1],[1,0],[1,1]])
@@ -1831,6 +1831,8 @@ function drawSponsorChart() {
         .style("font-size", rightWidth * 0.022)
         .style("text-anchor", "start")
         .text(function(d) { return d; });
+
+    sponsor_types.reverse();
 
     updateSponsorChart();
 
@@ -1963,12 +1965,12 @@ function updateSponsorChart() {
     })
 
     // set y axis domain
-    sponsorchart_y.domain([0, d3.max([d3.max(sponsor_data_values) / d3.sum(sponsor_data_values), d3.max(sponsor_data_total_values) / d3.sum(sponsor_data_total_values)])]);
+    sponsorchart_x.domain([0, d3.max([d3.max(sponsor_data_values) / d3.sum(sponsor_data_values), d3.max(sponsor_data_total_values) / d3.sum(sponsor_data_total_values)])]);
 
-    d3.select(".sponsorchart_yaxis")
+    d3.select(".sponsorchart_xaxis")
         .transition()
         .duration(500)
-        .call(sponsorchart_yAxis)
+        .call(sponsorchart_xAxis)
         .selectAll("text")
         .style("font-size", rightWidth * 0.02);
 
@@ -1978,9 +1980,8 @@ function updateSponsorChart() {
             .data(sponsor_data_ordered[b-1])
             .transition()
             .duration(500)
-            .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_values)) :
-                                                        sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_values)) })
-            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_values)); });
+            .attr("x", function(d, i) { return i == 0 ? 0 : sponsorchart_x((d['total_' + values] - d[values])/ d3.sum(sponsor_data_values)) })
+            .attr("width", function(d) { return sponsorchart_x(d[values] / d3.sum(sponsor_data_values)); });
     }
 
     for (var b=1; b<4; b++) {
@@ -1989,9 +1990,8 @@ function updateSponsorChart() {
             .data(sponsor_data_total_ordered[b-1])
             .transition()
             .duration(500)
-            .attr("y", function(d, i) { return i == 0 ? sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)) :
-                                                        sponsorchart_y(d['total_' + values] / d3.sum(sponsor_data_total_values)) })
-            .attr("height", function(d) { return sideHeight*0.7 - sponsorchart_y(d[values] / d3.sum(sponsor_data_total_values)); });
+            .attr("x", function(d, i) { return i == 0 ? 0 : sponsorchart_x((d['total_' + values] - d[values])/ d3.sum(sponsor_data_total_values)) })
+            .attr("width", function(d) { return sponsorchart_x(d[values] / d3.sum(sponsor_data_total_values)); });
     }
 
 }
