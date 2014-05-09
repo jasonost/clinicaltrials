@@ -1011,7 +1011,7 @@ function updateText () {
         .on("click", clearIntervention);
 
     d3.select("#ctgovlink")
-        .html("<p><a href='" + search_string + "' target='_blank'>Search for" + (search_filter == 1 ? " similar " : " ") + "trials at clinicaltrials.gov (includes trials from all years)</a></p>")
+        .html("<p><a href='" + search_string + "' target='_blank'>Search for similar trials at clinicaltrials.gov (includes trials from all years)</a></p>")
         .style("text-align", "right");
 }
 
@@ -1067,7 +1067,7 @@ function makeBubble() {
     var scale_factor = d3.min([d3.max([4, totalval / maxval]), 8]) * 0.8;
     var maxsize = bubble_height / scale_factor;
     var minsize = bubble_height / 80;
-    var bubble_scale = d3.scale.linear().domain([minval, maxval]).range([minsize, maxsize]);
+    var bubble_scale = d3.scale.linear().domain([1, maxval]).range([minsize, maxsize]);
     var sum_size = d3.sum(val_array.map(function(c) {return 3.14159 * Math.pow(bubble_scale(c), 2);}));
     var canv_size = bubble_height * bubble_width;
     var size_scale = Math.pow((canv_size * 0.33) / sum_size, 0.5);
@@ -1786,7 +1786,7 @@ function drawSponsorChart() {
         .attr("class", "sponsorchart_title")
         .attr("width", rightWidth)
         .attr("height", sideHeight * 0.1)
-        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.08) + ")")
+        .attr("transform", "translate(" + (rightWidth / 2) + "," + (sideHeight * 0.2) + ")")
         .style("text-anchor", "middle")
         .style("font-size", rightWidth * 0.03)
         .html('Lead Sponsor Type')
@@ -1795,7 +1795,7 @@ function drawSponsorChart() {
         .attr("class", "sponsorchart_legend")
         .attr("width", rightWidth * 0.22)
         .attr("height", sideHeight * 0.25)
-        .attr("transform", "translate(" + (rightWidth * 0.78) + ")");
+        .attr("transform", "translate(" + (rightWidth * 0.78) + "," + (sideHeight * 0.05) + ")");
 
     var legend_boxes = sponsorchart_legend.selectAll(".sponsorchart_legend_box")
         .data([[0,0],[0,1],[1,0],[1,1]])
