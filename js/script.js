@@ -90,7 +90,7 @@ d3.select("#options")
 
 d3.select("#navigator")
     .style("height", navigatorHeight + "px")
-    .style("font-size", (leftWidth * .06) + "px");
+    .style("font-size", (leftWidth * 0.05) + "px");
 
 d3.select("#mainsection")
     .style("float", "left")
@@ -2747,7 +2747,7 @@ function drawTutorial() {
 
     chartbox.append("rect")
         .attr("class", "tutorialitem")
-        .attr("width", rightWidth)
+        .attr("width", rightWidth * .95)
         .attr("height", sideHeight)
         .attr("rx", 8)
         .attr("ry", 8)
