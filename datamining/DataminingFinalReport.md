@@ -1,5 +1,6 @@
-### Clinical Trials Data Mining
-##### Final Project Summary
+### Clinical Trials Data Mining Project Summary
+by Jason Ost
+
 
 #### Background
 
@@ -14,34 +15,34 @@ Currently there are over 160,000 trials in the registry, which is structured to 
 I used the clinical trials registry data to perform two separate but related data mining analyses, the results of which are described later in this report:
 
 * __Clustering conditions.__ Trials study one or more conditions, such as a disease or disorder, and there are nearly 40,000 unique conditions being studied in registered trials. In order to reduce the dimensionality of these conditions, I sought to cluster them according to how frequently they were studied in combination. I hoped the clusters would highlight interesting patterns of conditions that are studied together, add information to a predictive model (see below), or simply offer a smaller, more understandable set of condition categories.
-* __Predicting outcomes.__ The registry provides information about each trial's status or outcome, so I also attempted to build a model that predicts whether a trial completes. It is important to note that incompletion of a trial can be an optimal outcome in some cases, such as when a trial is halted because it is unethical to give the control group a placebo given the effectiveness of the treatment. Nonetheless, there is likely some utility in understanding the factors that suggest a trial will run to completion.
+* __Predicting outcomes.__ The registry provides information about each trial's status or outcome, so I also attempted to build a model that predicts whether a trial completes. It is important to note that incompletion of a trial can be an optimal outcome in some cases, such as when a trial is halted because it is unethical to "treat" the control group with a placebo given the effectiveness of the treatment. Nonetheless, there is some utility in understanding the factors associated with a trial running to completion.
 
 #### Tools and resources
 
 The data for this project came from the [Clinical Trials Transformation Initiative](http://www.ctti-clinicaltrials.org), which prepares an annual data extract of the NIH registry called the Aggregate Analysis of ClinicalTrials.gov, or [AACT](http://www.ctti-clinicaltrials.org/what-we-do/analysis-dissemination/state-clinical-trials/aact-database).
 
-I loaded this data into a MySQL database and conducted exploratory data analysis using SQL queries and Tableau. I used [IPython](http://ipython.org/) notebooks running Python 2.7.6 with [pandas](http://pandas.pydata.org/) and [scikit-learn](http://scikit-learn.org/) for the data manipulation and data mining tasks.
+I loaded this data into a MySQL database and conducted exploratory data analysis using SQL queries and Tableau. I used [IPython](http://ipython.org/) notebooks running Python 2.7.6 with [pandas](http://pandas.pydata.org/) and [scikit-learn](http://scikit-learn.org/) for the data manipulation and data mining tasks. The relevant SQL queries, and IPython notebooks are in the clustering and prediction subfolders of this repository.
 
 #### Results
 
 ##### Clustering conditions
 
-Approximately 30% of trials study more than one condition; on average these multiple-condition trials study 3.1 conditions. My intention was to calculate the Jaccard distance between each pair of conditions, and then use the [DBSCAN](http://en.wikipedia.org/wiki/DBSCAN) clustering algorithm to cluster the conditions based on a matrix of these pair-wise distances.
+Approximately 30% of trials study more than one condition; on average these multiple-condition trials study 3.1 conditions. My intention was to calculate the Jaccard distance between each pair of conditions, comparing the number of trials studying both conditions to the number of trials studying one or the other condition. I used the [DBSCAN](http://en.wikipedia.org/wiki/DBSCAN) clustering algorithm to cluster the conditions based on a matrix of these pair-wise distances.
 
 My original intention to cluster the individual conditions proved untenable for a few reasons:
 * condition names could be misspelled or include extra characters that would prevent an exact match with the canonical condition name
-* there were simply too many unique conditions, so the Jaccard distances were often zero
+* there were simply too many unique conditions, so the Jaccard distances were often one (i.e., no overlapping trials between the pair of conditions)
 * I am not a medical expert and could not evaluate whether a cluster of scientifically-named conditions was reasonable
 
-Helpfully, the NIH and/or trial investigators have classified conditions for over 130,000 trials in the registry according to the [Medical Subject Headings](http://www.nlm.nih.gov/mesh/) (MeSH) polyhierarchy. This reduces the number of distinct conditions to 3,335, but that suffered from the same problems. I thus took advantage of the hierarchical nature of MeSH terms, and translated each condition to its top descriptor-level ancestor. (To be technical, this is the first level below the subcategory, with tree numbers such as "C04.697" and "F03.550".) This produced 204 higher-level condition categories.
+Helpfully, the NIH and/or trial investigators have classified conditions for over 130,000 trials in the registry according to the [Medical Subject Headings](http://www.nlm.nih.gov/mesh/) (MeSH) polyhierarchy. This reduces the number of distinct conditions to 3,335, but that continued to suffer from the same problems. I thus took advantage of the hierarchical nature of MeSH terms, and translated each condition to its top descriptor-level ancestor. (To be technical, this is the first level below the subcategory, with tree numbers such as "C04.697" and "F03.550".) This produced 204 higher-level condition categories.
 
-The Jaccard distances among these condition categories were more reasonable, although still the distances tended to be clustered near 1. To spread them out for the clustering process, I took the log of the Jaccard similarity (1 - distance) and multiplied by -1. 
+The Jaccard distances among these condition categories were more reasonable, although the distances still tended to be clustered near 1. To spread them out for the clustering process, I took the log of the Jaccard similarity (1 - distance) and multiplied by -1. 
 
-I had never used DBSCAN before, so I tried a number of combinations of the minimum cluster size and epsilon parameters. To judge the outcome of each clustering exercise, I calculated the number of clusters, the share of instances in any cluster, the maximum and average cluster size, and the [silhouette coefficient](http://en.wikipedia.org/wiki/Silhouette_(clustering)). This indicated that there existed a few well-defined clusters when the minimum cluster size and epsilon parameters were relatively high, and as those parameters decreased, the number of clusters increased (and average size decreased), but the silhouette coefficient indicated they were highly indistinct.
+I had never used DBSCAN before, so I tried a number of combinations of the minimum cluster size and epsilon parameters. To judge the outcome of each clustering exercise, I calculated the number of clusters, the share of instances in any cluster, the maximum and average cluster size, and the [silhouette coefficient](http://en.wikipedia.org/wiki/Silhouette_(clustering)). This analysis found that there existed a few well-defined clusters when the minimum cluster size and epsilon parameters were relatively high, and as those parameters decreased, the number of clusters increased (and average size decreased), but the silhouette coefficient indicated they were highly indistinct.
 
 As such, I developed an algorithm that would iteratively lower the minimum cluster size and epsilon parameters, picking off well-defined and reasonably sized clusters as it went. Once a cluster was defined, those instances were removed from the dataset to reduce interference with later clusters.
 
-The result was 39 clusters representing 78% of the condition categories. The clusters range from 2 to 14 condition categories, with an average of 4.7 condition categories, and their silhouette coefficient was relatively high considering the number of smaller clusters. The condition categories in each cluster are listed below, followed by the list of condition categories that were left unclustered.
+The final result was 39 clusters representing 78% of the condition categories. The clusters range from 2 to 14 condition categories, with an average of 4.7 condition categories per cluster, and their silhouette coefficient was relatively high considering the number of smaller clusters. The condition categories in each cluster are listed below, followed by the list of condition categories that were left unclustered.
 
 | Cluster members |
 | --------------- |
@@ -95,13 +96,13 @@ To test this proposition, as well as understand the main drivers of whether a tr
 
 I extracted a number of features from the AACT database to use as [independent variables](prediction/dataset.sql) in the model: trial length; trial [phase](http://clinicaltrials.gov/ct2/about-studies/glossary#phase); trial [type](http://clinicaltrials.gov/ct2/about-studies/glossary#study-type); number of groups and [arms](http://clinicaltrials.gov/ct2/about-studies/glossary#arm); age, gender, and health status eligibility requirements for trial participants; whether the trial is regulated by the FDA or has known safety issues; what type of institution funded the trial; the location and number of facilities used in the trial; details of the trial design and interventions tested; the number of conditions studied; and the conditions clusters from the previous analysis.
 
-I converted all nominal variables into a series of 1/0 dummy variables, and all continuous variables were top-coded if necessary to remove extreme outliers, then standardized to have a mean of zero and standard deviation of one. All missing elements were then replaced with zero. I tested whether it was better to standardize continuous variables globally or within the target categories (complete/incomplete), and standardizing within target category provided slightly higher predictive accuracy on a holdout sample.
+I converted all nominal variables into a series of dummy variables; continuous variables were top-coded if necessary to remove extreme outliers, then standardized to have a mean of zero and standard deviation of one. All missing elements were then replaced with zero. I tested whether it was better to standardize continuous variables globally or within the target categories (complete/incomplete trial), and standardizing within target category provided slightly higher predictive accuracy on a holdout sample.
 
 At first I tried using [support vector machines](http://en.wikipedia.org/wiki/Support_vector_machine) (SVM), testing various kernel functions and judging each model's predictive power using a ROC curve generated from a 20% holdout test set. The [results](prediction/SVM_ROCcurves.png) indicated that the radial basis function kernel performs best, with an area under the curve of 0.67, but unfortunately the nature of SVM made it difficult to understand which features were the most significant drivers of trial completion.
 
 I then built a [logistic regression](http://en.wikipedia.org/wiki/Logistic_regression) model and used scikit-learn's [recursive feature elimination](http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html) method to rank the variables by importance. Using just 20 of the 90 features in the complete model gave equivalent accuracy as determined by area under the ROC curve generated from the 20% test set; this logistic model provides accuracy that is roughly equivalent to the linear SVM model. Nine out of those top 20 variables were clusters of conditions from the previous exercise, indicating that these clusters provide more than just dimensionality reduction, they are also analytically useful.
 
-The 20 variables in the final logistic regression model are listed below, and also illustrated in a [chart](prediction/logit_coeff_chart.png):
+The 20 variables in the final logistic regression model are listed below in order of importance, and also illustrated in a [chart](prediction/logit_coeff_chart.png). A positive coefficient is associated with a trial completing, while a negative coefficient is associated with incompletion.
 
 | Independent Variable | Standardized Coefficient |
 | -------------------- | ------------------------ |
@@ -125,5 +126,13 @@ The 20 variables in the final logistic regression model are listed below, and al
 | Intervention: device | -0.666337 |
 | Observation design: [cohort](http://clinicaltrials.gov/ct2/about-studies/glossary#observational-study-model) | 0.37761 |
 | Masking design: [open label](http://clinicaltrials.gov/ct2/about-studies/glossary#open-label) | -0.592197 |
+
+Although the predictive accuracy of this model is reasonable, with area under the ROC curve of 0.62, the fact that most trials (~87%) complete means it has an extremely high false negative rate. Viewed from a more optimistic perspective, the false positive rate is quite low, so the model rarely predicts a trial will complete when it actually does not. The confusion matrix below shows the final logistic regression model's performance on all completed or terminated/suspended/withdrawn trials that were not in the training set.
+
+|       | Predicted Complete | Predicted Incomplete |       |
+| ----- | ------------------ | -------------------- | ----- |
+| __Actual Complete__ | 40,902 | 23,787 | TP = 63% |
+| __Actual Incomplete__ | 879 | 1,360 | TN = 61% |
+|       | FP = 2% | FN = 95% |     |
 
 
