@@ -1,8 +1,8 @@
-### Clinical Trials Data Mining Project Summary
+# Clinical Trials Data Mining Project Summary
 by Jason Ost
 
 
-#### Background
+## Background
 
 Clinical studies include interventional and observational studies of human subjects in order to increase medical knowledge. Interventional studies, also known as clinical trials, test the effect of a specific drug, device, procedure, or behavior change, typically in comparison to some known treatment or a placebo (i.e., no treatment or intervention).
 
@@ -10,22 +10,22 @@ In 2013, the National Institutes of Health (NIH) granted $2.9B for research and 
 
 Currently there are over 160,000 trials in the registry, which is structured to collect detailed information regarding study design, institutional characteristics, and study outcome and results. Although investigators are beginning to analyze the database, its size and scale have led to an incomplete understanding of the current clinical trials landscape. Investigators have explored overall trends and some have focused on specific specialties or diseases, but these have all been superficial descriptive analyses that have not necessarily led to new insights.
 
-#### Goals and objectives
+## Goals and objectives
 
 I used the clinical trials registry data to perform two separate but related data mining analyses, the results of which are described later in this report:
 
 * __Clustering conditions.__ Trials study one or more conditions, such as a disease or disorder, and there are nearly 40,000 unique conditions being studied in registered trials. In order to reduce the dimensionality of these conditions, I sought to cluster them according to how frequently they were studied in combination. I hoped the clusters would highlight interesting patterns of conditions that are studied together, add information to a predictive model (see below), or simply offer a smaller, more understandable set of condition categories.
 * __Predicting outcomes.__ The registry provides information about each trial's status or outcome, so I also attempted to build a model that predicts whether a trial completes. It is important to note that incompletion of a trial can be an optimal outcome in some cases, such as when a trial is halted because it is unethical to "treat" the control group with a placebo given the effectiveness of the treatment. Nonetheless, there is some utility in understanding the factors associated with a trial running to completion.
 
-#### Tools and resources
+## Tools and resources
 
 The data for this project came from the [Clinical Trials Transformation Initiative](http://www.ctti-clinicaltrials.org), which prepares an annual data extract of the NIH registry called the Aggregate Analysis of ClinicalTrials.gov, or [AACT](http://www.ctti-clinicaltrials.org/what-we-do/analysis-dissemination/state-clinical-trials/aact-database).
 
 I loaded this data into a MySQL database and conducted exploratory data analysis using SQL queries and Tableau. I used [IPython](http://ipython.org/) notebooks running Python 2.7.6 with [pandas](http://pandas.pydata.org/) and [scikit-learn](http://scikit-learn.org/) for the data manipulation and data mining tasks. The relevant SQL queries, and IPython notebooks are in the clustering and prediction subfolders of this repository.
 
-#### Results
+## Results
 
-##### Clustering conditions
+### Clustering conditions
 
 Approximately 30% of trials study more than one condition; on average these multiple-condition trials study 3.1 conditions. My intention was to calculate the Jaccard distance between each pair of conditions, comparing the number of trials studying both conditions to the number of trials studying one or the other condition. I used the [DBSCAN](http://en.wikipedia.org/wiki/DBSCAN) clustering algorithm to cluster the conditions based on a matrix of these pair-wise distances.
 
@@ -88,7 +88,7 @@ The final result was 39 clusters representing 78% of the condition categories. T
 
 __Unclustered conditions__: Adrenal Gland Diseases, Cardiovascular Diseases, Cartilage Diseases, Cell Physiological Processes, Chronobiology Disorders, Cysts, Digestive System Abnormalities, Digestive System Diseases, Digestive System Fistula, Dislocations, Eating Disorders, Eyelid Diseases, Fatigue Syndrome, Chronic, Genetic Diseases, Inborn, Graft vs Host Disease, Immune System Diseases, Impulse Control Disorders, Lacerations, Liver Diseases, Musculoskeletal Diseases, Neoplasms, Neoplastic Cells, Circulating, Nervous System Neoplasms, Opportunistic Infections, Paraneoplastic Syndromes, Parathyroid Diseases, Peritoneal Diseases, Pharmacological Phenomena, Pleural Diseases, Precancerous Conditions, Pregnancy Complications, Neoplastic, Reproductive Physiological Phenomena, Respiration Disorders, Respiratory Physiological Phenomena, Respiratory Tract Diseases, Sexual and Gender Disorders, Skin Diseases, Sleep Disorders, Sprains and Strains, Tennis Elbow, Thoracic Injuries, Thyroid Diseases, Urogenital Abnormalities, Wound Infection
 
-##### Predicting outcomes
+### Predicting outcomes
 
 To my non-expert eye, these clusters look reasonable and offer useful dimensionality reduction of a complex set of data. But how useful are they analytically?
 
@@ -130,7 +130,7 @@ The 20 variables in the final logistic regression model are listed below in orde
 Although the predictive accuracy of this model is reasonable, with area under the ROC curve of 0.62, the fact that most trials (~87%) complete means it has an extremely high false negative rate. Viewed from a more optimistic perspective, the false positive rate is quite low, so the model rarely predicts a trial will complete when it actually does not. The confusion matrix below shows the final logistic regression model's performance on all completed or terminated/suspended/withdrawn trials that were not in the training set.
 
 |       | Predicted Complete | Predicted Incomplete |       |
-| ----- | ------------------ | -------------------- | ----- |
+| ----- | :----------------: | :------------------: | ----- |
 | __Actual Complete__ | 40,902 | 23,787 | TP = 63% |
 | __Actual Incomplete__ | 879 | 1,360 | TN = 61% |
 |       | FP = 2% | FN = 95% |     |
