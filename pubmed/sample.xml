@@ -1,0 +1,7458 @@
+<?xml version="1.0"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2014//EN" "http://www.ncbi.nlm.nih.gov/corehtml/query/DTD/pubmed_140101.dtd">
+<pubmedarticleset>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    24095299
+   </pmid>
+   <datecreated>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     01
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2013
+    </year>
+    <month>
+     12
+    </month>
+    <day>
+     27
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2014
+    </year>
+    <month>
+     08
+    </month>
+    <day>
+     18
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1474-5488
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       14
+      </volume>
+      <issue>
+       12
+      </issue>
+      <pubdate>
+       <year>
+        2013
+       </year>
+       <month>
+        Nov
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      The Lancet. Oncology
+     </title>
+     <isoabbreviation>
+      Lancet Oncol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Two schedules of etirinotecan pegol (NKTR-102) in patients with previously treated metastatic breast cancer: a randomised phase 2 study.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      1216-25
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1016/S1470-2045(13)70429-7
+    </elocationid>
+    <elocationid eidtype="pii" validyn="Y">
+     S1470-2045(13)70429-7
+    </elocationid>
+    <abstract>
+     <abstracttext label="BACKGROUND" nlmcategory="BACKGROUND">
+      New therapeutic options are needed for patients with heavily pretreated breast cancer. Etirinotecan pegol is a long-acting topoisomerase-I inhibitor designed to provide prolonged tumour-cell exposure to SN38, the active metabolite. We aimed to assess the efficacy and safety of two etirinotecan pegol dosing schedules in patients with previously treated metastatic breast cancer to determine an optimum dosing schedule for phase 3 trials.
+     </abstracttext>
+     <abstracttext label="METHODS" nlmcategory="METHODS">
+      In this randomised, two-stage, open-label phase 2 trial, we recruited patients aged 18 years or older who had received taxane therapy and undergone two or fewer previous chemotherapy regimens for metastatic breast cancer, with an Eastern Cooperative Oncology Group performance status of 0 or 1, from 18 sites in three countries. Eligible patients were randomly assigned (1:1) to etirinotecan pegol 145 mg/m(2) every 14 days or every 21 days. The primary endpoint was the proportion of patients with a confirmed objective response as defined by Response Evaluation Criteria in Solid Tumors version 1.0, analysed by intention to treat. Safety was assessed in all patients who received at least one dose of study drug.
+     </abstracttext>
+     <abstracttext label="FINDINGS" nlmcategory="RESULTS">
+      70 patients (35 in each group) were randomly assigned to treatment between Feb 17, 2009 and April 13, 2010. Of the 70 patients, 20 (29%; 95% CI 18·4-40·6) achieved an objective response (two [3%] had a complete response and 18 [26%] had a partial response). Ten patients on the 14-day schedule achieved an objective response (29%; 95% CI 14·6-46·3; eight partial responses, two complete responses) as did ten on the 21-day schedule (29%; 95% CI 14·6-46·3; all partial responses). The most common grade 3 or worse adverse events were delayed diarrhoea (seven [20%] of 35 patients on the 14-day schedule vs eight [23%] of 35 patients on the 21-day schedule), fatigue (five [14%] vs three [9%]), neutropenia (four [11%] vs four [11%]), and dehydration (three [9%] vs four [11%]); 14 [20%] patients discontinued treatment because of drug-related toxicity. There were two possible drug-related deaths (acute renal failure and septic shock) in the 14-day group; other drug-related serious adverse events reported by more than one patient included ten [14%] patients with diarrhoea (six [17%] patients on the 14-day schedule vs four [11%] on the 21-day schedule), six [9%] with dehydration (two [6%] vs four [11%]), two [3%] with nausea (two [6%] vs none), and two [3%] with vomiting (two [6%] vs none).
+     </abstracttext>
+     <abstracttext label="INTERPRETATION" nlmcategory="CONCLUSIONS">
+      On the basis of the overall clinical data, pharmacokinetics, and tolerability profile, etirinotecan pegol 145 mg/m(2) every 21 days has been selected for a phase 3 trial against treatment of physician's choice in patients with advanced breast cancer.
+     </abstracttext>
+     <copyrightinformation>
+      Copyright © 2013 Elsevier Ltd. All rights reserved.
+     </copyrightinformation>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Awada
+      </lastname>
+      <forename>
+       Ahmad
+      </forename>
+      <initials>
+       A
+      </initials>
+      <affiliation>
+       Institut Jules Bordet, Université Libre de Bruxelles, Brussels, Belgium. Electronic address: ahmad.awada@bordet.be.
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Garcia
+      </lastname>
+      <forename>
+       Agustin A
+      </forename>
+      <initials>
+       AA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Chan
+      </lastname>
+      <forename>
+       Stephen
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Jerusalem
+      </lastname>
+      <forename>
+       Guy H M
+      </forename>
+      <initials>
+       GH
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Coleman
+      </lastname>
+      <forename>
+       Robert E
+      </forename>
+      <initials>
+       RE
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Huizing
+      </lastname>
+      <forename>
+       Manon T
+      </forename>
+      <initials>
+       MT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Mehdi
+      </lastname>
+      <forename>
+       Aminder
+      </forename>
+      <initials>
+       A
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       O'Reilly
+      </lastname>
+      <forename>
+       Sue M
+      </forename>
+      <initials>
+       SM
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Barrett-Lee
+      </lastname>
+      <forename>
+       Peter J
+      </forename>
+      <initials>
+       PJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Cocquyt
+      </lastname>
+      <forename>
+       Veronique
+      </forename>
+      <initials>
+       V
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Sideras
+      </lastname>
+      <forename>
+       Kostandinos
+      </forename>
+      <initials>
+       K
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Young
+      </lastname>
+      <forename>
+       David E
+      </forename>
+      <initials>
+       DE
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Zhao
+      </lastname>
+      <forename>
+       Carol
+      </forename>
+      <initials>
+       C
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Chia
+      </lastname>
+      <forename>
+       Yen Lin
+      </forename>
+      <initials>
+       YL
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hoch
+      </lastname>
+      <forename>
+       Ute
+      </forename>
+      <initials>
+       U
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hannah
+      </lastname>
+      <forename>
+       Alison L
+      </forename>
+      <initials>
+       AL
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Perez
+      </lastname>
+      <forename>
+       Edith A
+      </forename>
+      <initials>
+       EA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <collectivename>
+       NKTR-102 Study Group
+      </collectivename>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <databanklist completeyn="Y">
+     <databank>
+      <databankname>
+       ClinicalTrials.gov
+      </databankname>
+      <accessionnumberlist>
+       <accessionnumber>
+        NCT00802945
+       </accessionnumber>
+      </accessionnumberlist>
+     </databank>
+    </databanklist>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Comparative Study
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Randomized Controlled Trial
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2013
+     </year>
+     <month>
+      10
+     </month>
+     <day>
+      04
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     England
+    </country>
+    <medlineta>
+     Lancet Oncol
+    </medlineta>
+    <nlmuniqueid>
+     100957246
+    </nlmuniqueid>
+    <issnlinking>
+     1470-2045
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Heterocyclic Compounds with 4 or More Rings
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Polyethylene Glycols
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Topoisomerase I Inhibitors
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      etirinotecan pegol
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      7673326042
+     </registrynumber>
+     <nameofsubstance>
+      irinotecan
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      XT3Z54Z28A
+     </registrynumber>
+     <nameofsubstance>
+      Camptothecin
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <commentscorrectionslist>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      Lancet Oncol. 2013 Nov;14(12):1149-51
+     </refsource>
+     <pmid version="1">
+      24095297
+     </pmid>
+    </commentscorrections>
+   </commentscorrectionslist>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged, 80 and over
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Breast Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      mortality
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      secondary
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Camptothecin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      analogs &amp; derivatives
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Drug Administration Schedule
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N" type="Geographic">
+      Europe
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Heterocyclic Compounds with 4 or More Rings
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Intention to Treat Analysis
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Kaplan-Meier Estimate
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Polyethylene Glycols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Time Factors
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Topoisomerase I Inhibitors
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N" type="Geographic">
+      United States
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2013
+     </year>
+     <month>
+      10
+     </month>
+     <day>
+      4
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2013
+     </year>
+     <month>
+      10
+     </month>
+     <day>
+      8
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2013
+     </year>
+     <month>
+      10
+     </month>
+     <day>
+      8
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2013
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      29
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     S1470-2045(13)70429-7
+    </articleid>
+    <articleid idtype="doi">
+     10.1016/S1470-2045(13)70429-7
+    </articleid>
+    <articleid idtype="pubmed">
+     24095299
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    23605883
+   </pmid>
+   <datecreated>
+    <year>
+     2013
+    </year>
+    <month>
+     07
+    </month>
+    <day>
+     02
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2013
+    </year>
+    <month>
+     09
+    </month>
+    <day>
+     16
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1097-0142
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       119
+      </volume>
+      <issue>
+       14
+      </issue>
+      <pubdate>
+       <year>
+        2013
+       </year>
+       <month>
+        Jul
+       </month>
+       <day>
+        15
+       </day>
+      </pubdate>
+     </journalissue>
+     <title>
+      Cancer
+     </title>
+     <isoabbreviation>
+      Cancer
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Axitinib and/or bevacizumab with modified FOLFOX-6 as first-line therapy for metastatic colorectal cancer: a randomized phase 2 study.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      2555-63
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1002/cncr.28112
+    </elocationid>
+    <abstract>
+     <abstracttext label="BACKGROUND" nlmcategory="BACKGROUND">
+      In this multicenter, open-label, randomized phase 2 trial, the authors evaluated the vascular endothelial growth factor receptor inhibitor axitinib, bevacizumab, or both in combination with chemotherapy as first-line treatment of metastatic colorectal cancer (mCRC).
+     </abstracttext>
+     <abstracttext label="METHODS" nlmcategory="METHODS">
+      Patients with previously untreated mCRC were randomized 1:1:1 to receive continuous axitinib 5 mg twice daily, bevacizumab 5 mg/kg every 2 weeks, or axitinib 5 mg twice daily plus bevacizumab 2 mg/kg every 2 weeks, each in combination with modified 5-fluorouracil/leucovorin/oxaliplatin (FOLFOX-6). The primary endpoint was the objective response rate (ORR).
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      In all, 126 patients were enrolled from August 2007 to September 2008. The ORR was numerically inferior in the axitinib arm (n = 42) versus the bevacizumab arm (n = 43; 28.6% vs 48.8%; 1-sided P = .97). Progression-free survival (PFS) (11.0 months vs 15.9 months; 1-sided P = .57) and overall survival (OS) (18.1 months vs 21.6 months; 1-sided P = .69) also were numerically inferior in the axitinib arm. Similarly, efficacy endpoints for the axitinib/bevacizumab arm (n = 41) were numerically inferior (ORR, 39%; PFS, 12.5 months; OS, 19.7 months). The patients who received axitinib had fewer treatment cycles compared with other arms. Common all-grade adverse events across all 3 treatment arms were fatigue, diarrhea, and nausea (all ≥49%). Hypertension and headache were more frequent in the patients who received axitinib. Patients in the bevacizumab arm had the longest treatment exposures and the highest rates of peripheral neuropathy.
+     </abstracttext>
+     <abstracttext label="CONCLUSIONS" nlmcategory="CONCLUSIONS">
+      Neither the addition of continuous axitinib nor the axitinib/bevacizumab combination to FOLFOX-6 improved ORR, PFS, or OS compared with bevacizumab as first-line treatment of mCRC.
+     </abstracttext>
+     <copyrightinformation>
+      © 2013 American Cancer Society.
+     </copyrightinformation>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Infante
+      </lastname>
+      <forename>
+       Jeffrey R
+      </forename>
+      <initials>
+       JR
+      </initials>
+      <affiliation>
+       Sarah Cannon Research Institute/Tennessee Oncology, PLLC, Nashville, Tennessee, USA. jinfante@tnonc.com
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Reid
+      </lastname>
+      <forename>
+       Tony R
+      </forename>
+      <initials>
+       TR
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Cohn
+      </lastname>
+      <forename>
+       Allen L
+      </forename>
+      <initials>
+       AL
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Edenfield
+      </lastname>
+      <forename>
+       William J
+      </forename>
+      <initials>
+       WJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Cescon
+      </lastname>
+      <forename>
+       Terrence P
+      </forename>
+      <initials>
+       TP
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Malik
+      </lastname>
+      <forename>
+       Imtiaz A
+      </forename>
+      <initials>
+       IA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Rado
+      </lastname>
+      <forename>
+       Thomas A
+      </forename>
+      <initials>
+       TA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       McGee
+      </lastname>
+      <forename>
+       Philip J
+      </forename>
+      <initials>
+       PJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Richards
+      </lastname>
+      <forename>
+       Donald A
+      </forename>
+      <initials>
+       DA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Tarazi
+      </lastname>
+      <forename>
+       Jamal
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Rosbrook
+      </lastname>
+      <forename>
+       Brad
+      </forename>
+      <initials>
+       B
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kim
+      </lastname>
+      <forename>
+       Sinil
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Cartwright
+      </lastname>
+      <forename>
+       Thomas H
+      </forename>
+      <initials>
+       TH
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Randomized Controlled Trial
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2013
+     </year>
+     <month>
+      04
+     </month>
+     <day>
+      19
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Cancer
+    </medlineta>
+    <nlmuniqueid>
+     0374236
+    </nlmuniqueid>
+    <issnlinking>
+     0008-543X
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antibodies, Monoclonal, Humanized
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Imidazoles
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Indazoles
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Organoplatinum Compounds
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      2S9ZZM9Q9V
+     </registrynumber>
+     <nameofsubstance>
+      bevacizumab
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      C9LVQ0YUXG
+     </registrynumber>
+     <nameofsubstance>
+      axitinib
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      Q573I9DVLP
+     </registrynumber>
+     <nameofsubstance>
+      Leucovorin
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      U3P01618RT
+     </registrynumber>
+     <nameofsubstance>
+      Fluorouracil
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <supplmeshlist>
+    <supplmeshname type="Protocol">
+     Folfox protocol
+    </supplmeshname>
+   </supplmeshlist>
+   <citationsubset>
+    AIM
+   </citationsubset>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antibodies, Monoclonal, Humanized
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Colorectal Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      mortality
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Drug Administration Schedule
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Fluorouracil
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Imidazoles
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Indazoles
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Infusions, Intravenous
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Injections, Intravenous
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Kaplan-Meier Estimate
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Leucovorin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Organoplatinum Compounds
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+   <keywordlist owner="NOTNLM">
+    <keyword majortopicyn="N">
+     FOLFOX
+    </keyword>
+    <keyword majortopicyn="N">
+     axitinib
+    </keyword>
+    <keyword majortopicyn="N">
+     bevacizumab
+    </keyword>
+    <keyword majortopicyn="N">
+     colorectal cancer
+    </keyword>
+   </keywordlist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="received">
+     <year>
+      2012
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      15
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="revised">
+     <year>
+      2013
+     </year>
+     <month>
+      2
+     </month>
+     <day>
+      12
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="accepted">
+     <year>
+      2013
+     </year>
+     <month>
+      2
+     </month>
+     <day>
+      19
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2013
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      19
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2013
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      23
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2013
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      23
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2013
+     </year>
+     <month>
+      9
+     </month>
+     <day>
+      17
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pubmed">
+     23605883
+    </articleid>
+    <articleid idtype="doi">
+     10.1002/cncr.28112
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    23330343
+   </pmid>
+   <datecreated>
+    <year>
+     2013
+    </year>
+    <month>
+     01
+    </month>
+    <day>
+     21
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2013
+    </year>
+    <month>
+     04
+    </month>
+    <day>
+     16
+    </day>
+   </datecompleted>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Print">
+      0890-9091
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       26
+      </volume>
+      <issue>
+       11
+      </issue>
+      <pubdate>
+       <year>
+        2012
+       </year>
+       <month>
+        Nov
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Oncology (Williston Park, N.Y.)
+     </title>
+     <isoabbreviation>
+      Oncology (Williston Park, N.Y.)
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Molecular targeting in cancer therapy: can we fulfill the promise?
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      1040, 1042
+     </medlinepgn>
+    </pagination>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+      <affiliation>
+       Norton Cancer Institute, Louisville, Kentucky, USA.
+      </affiliation>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Comment
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Oncology (Williston Park)
+    </medlineta>
+    <nlmuniqueid>
+     8712059
+    </nlmuniqueid>
+    <issnlinking>
+     0890-9091
+    </issnlinking>
+   </medlinejournalinfo>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <commentscorrectionslist>
+    <commentscorrections reftype="CommentOn">
+     <refsource>
+      Oncology (Williston Park). 2012 Nov;26(11):1021-30, 1035
+     </refsource>
+     <pmid version="1">
+      23330341
+     </pmid>
+    </commentscorrections>
+   </commentscorrectionslist>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2013
+     </year>
+     <month>
+      1
+     </month>
+     <day>
+      22
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2013
+     </year>
+     <month>
+      1
+     </month>
+     <day>
+      22
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2013
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      17
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pubmed">
+     23330343
+    </articleid>
+    <articleid idtype="pii">
+     168638
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    23136196
+   </pmid>
+   <datecreated>
+    <year>
+     2013
+    </year>
+    <month>
+     01
+    </month>
+    <day>
+     04
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2013
+    </year>
+    <month>
+     06
+    </month>
+    <day>
+     18
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2014
+    </year>
+    <month>
+     08
+    </month>
+    <day>
+     05
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Print">
+      1078-0432
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       19
+      </volume>
+      <issue>
+       1
+      </issue>
+      <pubdate>
+       <year>
+        2013
+       </year>
+       <month>
+        Jan
+       </month>
+       <day>
+        1
+       </day>
+      </pubdate>
+     </journalissue>
+     <title>
+      Clinical cancer research : an official journal of the American Association for Cancer Research
+     </title>
+     <isoabbreviation>
+      Clin. Cancer Res.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     A multicenter, phase I, dose-escalation study to assess the safety, tolerability, and pharmacokinetics of etirinotecan pegol in patients with refractory solid tumors.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      268-78
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1158/1078-0432.CCR-12-1201
+    </elocationid>
+    <abstract>
+     <abstracttext label="PURPOSE" nlmcategory="OBJECTIVE">
+      This study was designed to establish the maximum tolerated dose (MTD) and to evaluate tolerability, pharmacokinetics, and antitumor activity of etirinotecan pegol.
+     </abstracttext>
+     <abstracttext label="EXPERIMENTAL DESIGN" nlmcategory="METHODS">
+      Patients with refractory solid malignancies were enrolled and assigned to escalating-dose cohorts. Patients received 1 infusion of etirinotecan pegol weekly 3 times every 4 weeks (w × 3q4w), or every 14 days (q14d), or every 21 days (q21d), with MTD as the primary end point using a standard 3 + 3 design.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      Seventy-six patients were entered onto 3 dosing schedules (58-245 mg/m(2)). The MTD was 115 mg/m(2) for the w × 3q4w schedule and 145 mg/m(2) for both the q14d and q21d schedules. Most adverse events related to study drug were gastrointestinal disorders and were more frequent at higher doses of etirinotecan pegol. Late onset diarrhea was observed in some patients, the frequency of which generally correlated with dose density. Cholinergic diarrhea commonly seen with irinotecan treatment did not occur in patients treated with etirinotecan pegol. Etirinotecan pegol administration resulted in sustained and controlled systemic exposure to SN-38, which had a mean half-life of approximately 50 days. Overall, the pharmacokinetics of etirinotecan pegol are predictable and do not require complex dosing adjustments. Confirmed partial responses were observed in 8 patients with breast, colon, lung (small and squamous cell), bladder, cervical, and neuroendocrine cancer.
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      Etirinotecan pegol showed substantial antitumor activity in patients with various solid tumors and a somewhat different safety profile compared with the irinotecan historical profile. The MTD recommended for phase II clinical trials is 145 mg/m(2) q14d or q21d.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Jameson
+      </lastname>
+      <forename>
+       Gayle S
+      </forename>
+      <initials>
+       GS
+      </initials>
+      <affiliation>
+       Virginia G. Piper Cancer Center at Scottsdale Healthcare (VGPCC)/TGen, Scottsdale, AZ, USA. gjameson@shc.org
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Weiss
+      </lastname>
+      <forename>
+       Glen J
+      </forename>
+      <initials>
+       GJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Alemany
+      </lastname>
+      <forename>
+       Carlos
+      </forename>
+      <initials>
+       C
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Anthony
+      </lastname>
+      <forename>
+       Stephen
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Basche
+      </lastname>
+      <forename>
+       Michele
+      </forename>
+      <initials>
+       M
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Ramanathan
+      </lastname>
+      <forename>
+       Ramesh K
+      </forename>
+      <initials>
+       RK
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Borad
+      </lastname>
+      <forename>
+       Mitesh J
+      </forename>
+      <initials>
+       MJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Tibes
+      </lastname>
+      <forename>
+       Raoul
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Cohn
+      </lastname>
+      <forename>
+       Allen
+      </forename>
+      <initials>
+       A
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hinshaw
+      </lastname>
+      <forename>
+       Ioana
+      </forename>
+      <initials>
+       I
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Jotte
+      </lastname>
+      <forename>
+       Robert
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Rosen
+      </lastname>
+      <forename>
+       Lee S
+      </forename>
+      <initials>
+       LS
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hoch
+      </lastname>
+      <forename>
+       Ute
+      </forename>
+      <initials>
+       U
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Eldon
+      </lastname>
+      <forename>
+       Michael A
+      </forename>
+      <initials>
+       MA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Medve
+      </lastname>
+      <forename>
+       Robert
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Schroeder
+      </lastname>
+      <forename>
+       Katrina
+      </forename>
+      <initials>
+       K
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       White
+      </lastname>
+      <forename>
+       Erica
+      </forename>
+      <initials>
+       E
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Von Hoff
+      </lastname>
+      <forename>
+       Daniel D
+      </forename>
+      <initials>
+       DD
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <grantlist completeyn="Y">
+     <grant>
+      <grantid>
+       K12 CA090628
+      </grantid>
+      <acronym>
+       CA
+      </acronym>
+      <agency>
+       NCI NIH HHS
+      </agency>
+      <country>
+       United States
+      </country>
+     </grant>
+    </grantlist>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase I
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2012
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      07
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Clin Cancer Res
+    </medlineta>
+    <nlmuniqueid>
+     9502500
+    </nlmuniqueid>
+    <issnlinking>
+     1078-0432
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antineoplastic Agents
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Heterocyclic Compounds with 4 or More Rings
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Polyethylene Glycols
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Topoisomerase I Inhibitors
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      etirinotecan pegol
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <commentscorrectionslist>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Clin Oncol. 2002 Aug 1;20(15):3293-301
+     </refsource>
+     <pmid version="1">
+      12149304
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Ann Oncol. 2004 Aug;15(8):1296
+     </refsource>
+     <pmid version="1">
+      15277273
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Clin Cancer Res. 2000 Sep;6(9):3451-8
+     </refsource>
+     <pmid version="1">
+      10999728
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Natl Cancer Inst. 2000 Feb 2;92(3):205-16
+     </refsource>
+     <pmid version="1">
+      10655437
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Cancer Chemother Pharmacol. 1995;36(5):393-403
+     </refsource>
+     <pmid version="1">
+      7634381
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Science. 2010 Nov 5;330(6005):831-5
+     </refsource>
+     <pmid version="1">
+      21051639
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Nat Rev Cancer. 2006 Oct;6(10):789-802
+     </refsource>
+     <pmid version="1">
+      16990856
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Eur J Cancer. 1999 Mar;35(3):371-9
+     </refsource>
+     <pmid version="1">
+      10448285
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Cancer. 1999 Feb 15;85(4):786-95
+     </refsource>
+     <pmid version="1">
+      10091755
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Ann Oncol. 1997 Sep;8(9):837-55
+     </refsource>
+     <pmid version="1">
+      9358934
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Natl Cancer Inst. 1997 Aug 6;89(15):1138-47
+     </refsource>
+     <pmid version="1">
+      9262252
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Eur J Cancer. 1996;32A Suppl 3:S13-7
+     </refsource>
+     <pmid version="1">
+      8943660
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Eur J Cancer. 1996;32A Suppl 3:S9-12
+     </refsource>
+     <pmid version="1">
+      8943659
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Semin Oncol. 1996 Feb;23(1 Suppl 3):21-6
+     </refsource>
+     <pmid version="1">
+      8633249
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Clin Oncol. 1995 Jan;13(1):210-21
+     </refsource>
+     <pmid version="1">
+      7799022
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Natl Cancer Inst. 1994 Mar 16;86(6):446-9
+     </refsource>
+     <pmid version="1">
+      8120919
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Cancer. 1993 Sep 1;72(5):1543-6
+     </refsource>
+     <pmid version="1">
+      8348489
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Natl Cancer Inst. 1992 Dec 2;84(23):1816-20
+     </refsource>
+     <pmid version="1">
+      1331485
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Gan To Kagaku Ryoho. 1990 Jan;17(1):121-30
+     </refsource>
+     <pmid version="1">
+      2297233
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Clin Oncol. 2004 Nov 1;22(21):4410-7
+     </refsource>
+     <pmid version="1">
+      15514383
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      J Support Oncol. 2003 May-Jun;1(1):35-46; discussion 38-41, 45-6
+     </refsource>
+     <pmid version="1">
+      15352641
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Expert Rev Anticancer Ther. 2003 Oct;3(5):587-93
+     </refsource>
+     <pmid version="1">
+      14599083
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Clin Pharmacol Ther. 2002 Sep;72(3):265-75
+     </refsource>
+     <pmid version="1">
+      12235447
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="Cites">
+     <refsource>
+      Clin Cancer Res. 2001 May;7(5):1136-41
+     </refsource>
+     <pmid version="1">
+      11350876
+     </pmid>
+    </commentscorrections>
+   </commentscorrectionslist>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged, 80 and over
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Agents
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Drug Administration Schedule
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Heterocyclic Compounds with 4 or More Rings
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Polyethylene Glycols
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Topoisomerase I Inhibitors
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pharmacokinetics
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+   <otherid source="NLM">
+    NIHMS606559
+   </otherid>
+   <otherid source="NLM">
+    PMC4104496
+   </otherid>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2012
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      7
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2012
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      5
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2012
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      9
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2012
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      9
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2013
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      19
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     1078-0432.CCR-12-1201
+    </articleid>
+    <articleid idtype="doi">
+     10.1158/1078-0432.CCR-12-1201
+    </articleid>
+    <articleid idtype="pubmed">
+     23136196
+    </articleid>
+    <articleid idtype="pmc">
+     PMC4104496
+    </articleid>
+    <articleid idtype="mid">
+     NIHMS606559
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    21680048
+   </pmid>
+   <datecreated>
+    <year>
+     2011
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     14
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2012
+    </year>
+    <month>
+     03
+    </month>
+    <day>
+     06
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1872-8332
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       74
+      </volume>
+      <issue>
+       3
+      </issue>
+      <pubdate>
+       <year>
+        2011
+       </year>
+       <month>
+        Dec
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Lung cancer (Amsterdam, Netherlands)
+     </title>
+     <isoabbreviation>
+      Lung Cancer
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Phase II study of sunitinib as maintenance therapy in patients with locally advanced or metastatic non-small cell lung cancer.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      474-80
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1016/j.lungcan.2011.05.004
+    </elocationid>
+    <abstract>
+     <abstracttext>
+      This open-label, phase II study evaluated the antitumor activity and safety of sunitinib monotherapy as maintenance treatment following first-line chemotherapy in patients with locally advanced or metastatic non-small cell lung cancer (NSCLC). Following treatment with standard doublet chemotherapy (paclitaxel and carboplatin), patients received oral sunitinib (starting dose 50mg/day) in 6-week cycles (Schedule 4/2: 4 weeks on treatment, 2 weeks off treatment) until disease progression, unacceptable toxicity or withdrawal of consent. The primary endpoint was probability of survival at 1 year ≥55%. Of 84 patients who received first-line chemotherapy, 66 (79%) received sunitinib maintenance therapy (median sunitinib cycles started: 2 [range 1-20]). Probability of survival at 1 year was 40.5% (95% confidence interval [CI]: 29.8, 51.0). Median overall survival was 10.4 months (95% CI: 8.0, 12.2). The objective response rate was 27.4% (95% CI: 18.2, 38.2). The most frequently reported all-causality adverse events of any grade during sunitinib maintenance therapy were fatigue/asthenia (55%), diarrhea (36%), and nausea (32%). These data suggest that maintenance therapy may have value in NSCLC, although the primary endpoint of the study was not met.
+     </abstracttext>
+     <copyrightinformation>
+      Copyright © 2011. Published by Elsevier Ireland Ltd.
+     </copyrightinformation>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Gervais
+      </lastname>
+      <forename>
+       Radj
+      </forename>
+      <initials>
+       R
+      </initials>
+      <affiliation>
+       Centre François Baclesse, Caen, France.
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hainsworth
+      </lastname>
+      <forename>
+       John D
+      </forename>
+      <initials>
+       JD
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Blais
+      </lastname>
+      <forename>
+       Normand
+      </forename>
+      <initials>
+       N
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Besse
+      </lastname>
+      <forename>
+       Benjamin
+      </forename>
+      <initials>
+       B
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Laskin
+      </lastname>
+      <forename>
+       Janessa
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lipton
+      </lastname>
+      <forename>
+       Allan
+      </forename>
+      <initials>
+       A
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Albain
+      </lastname>
+      <forename>
+       Kathy S
+      </forename>
+      <initials>
+       KS
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Masters
+      </lastname>
+      <forename>
+       Gregory A
+      </forename>
+      <initials>
+       GA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Natale
+      </lastname>
+      <forename>
+       Ronald B
+      </forename>
+      <initials>
+       RB
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Selaru
+      </lastname>
+      <forename>
+       Paulina
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kim
+      </lastname>
+      <forename>
+       Sindy T
+      </forename>
+      <initials>
+       ST
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Chao
+      </lastname>
+      <forename>
+       Richard C
+      </forename>
+      <initials>
+       RC
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Page
+      </lastname>
+      <forename>
+       Ray D
+      </forename>
+      <initials>
+       RD
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2011
+     </year>
+     <month>
+      06
+     </month>
+     <day>
+      15
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     Ireland
+    </country>
+    <medlineta>
+     Lung Cancer
+    </medlineta>
+    <nlmuniqueid>
+     8800805
+    </nlmuniqueid>
+    <issnlinking>
+     0169-5002
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Indoles
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Pyrroles
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      sunitinib
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      33069-62-4
+     </registrynumber>
+     <nameofsubstance>
+      Paclitaxel
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      BG3F62OND5
+     </registrynumber>
+     <nameofsubstance>
+      Carboplatin
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged, 80 and over
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Carboplatin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Carcinoma, Non-Small-Cell Lung
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      mortality
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      physiopathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Disease Progression
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Follow-Up Studies
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Indoles
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Lung Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      mortality
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      physiopathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Maintenance Chemotherapy
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasm Metastasis
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Paclitaxel
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Pyrroles
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Survival Analysis
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="received">
+     <year>
+      2011
+     </year>
+     <month>
+      1
+     </month>
+     <day>
+      6
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="revised">
+     <year>
+      2011
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      15
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="accepted">
+     <year>
+      2011
+     </year>
+     <month>
+      5
+     </month>
+     <day>
+      1
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2011
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      15
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2011
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      18
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2011
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      18
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2012
+     </year>
+     <month>
+      3
+     </month>
+     <day>
+      7
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     S0169-5002(11)00271-6
+    </articleid>
+    <articleid idtype="doi">
+     10.1016/j.lungcan.2011.05.004
+    </articleid>
+    <articleid idtype="pubmed">
+     21680048
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="Publisher">
+   <pmid version="1">
+    19996201
+   </pmid>
+   <datecreated>
+    <year>
+     2009
+    </year>
+    <month>
+     12
+    </month>
+    <day>
+     16
+    </day>
+   </datecreated>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1078-0432
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       15
+      </volume>
+      <issue>
+       24
+      </issue>
+      <pubdate>
+       <year>
+        2009
+       </year>
+       <month>
+        Dec
+       </month>
+       <day>
+        15
+       </day>
+      </pubdate>
+     </journalissue>
+     <title>
+      Clinical cancer research : an official journal of the American Association for Cancer Research
+     </title>
+     <isoabbreviation>
+      Clin. Cancer Res.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Biomarkers Predict p53 Gene Therapy Efficacy in Recurrent Squamous Cell Carcinoma of the Head and Neck.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      7719-7725
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext>
+      PURPOSE: Most recurrent squamous cell carcinomas of the head and neck have a dysfunctional p53 tumor suppressor pathway contributing to treatment resistance. We hypothesized that tumor p53 biomarkers may predict the efficacy of normal p53 delivered by gene therapy in these patients. EXPERIMENTAL DESIGN: Tumor p53 biomarkers were evaluated in 116 patients, including 29 treated with methotrexate in a phase III randomized controlled trial. Profiles favorable for p53 gene therapy efficacy were hypothesized to have either normal p53 gene sequences or low-level p53 protein expression, whereas unfavorable p53 inhibitor profiles were predicted to have high-level expression of mutated p53 that can inhibit normal p53 protein function. RESULTS: A statistically significant increase in tumor responses was observed for patients with favorable p53 efficacy profiles compared with those with unfavorable p53 inhibitor profiles [phase I/II trials: favorable (34 of 46, 74%) versus unfavorable (1 of 5, 20%), P = 0.0290; phase III trial: favorable (17 of 24, 71%) versus unfavorable (2 of 11, 18%), P = 0.0088]. In the phase III trial, there was statistically significant increased time to progression (TTP) and survival following p53 gene therapy in patients with favorable p53 profiles compared with unfavorable p53 inhibitor profiles (median TTP, 2.7 months versus 1.4 months, P = 0.0121; median survival, 7.2 months versus 2.7 months, P &lt; 0.0001). In contrast, the biomarker profiles predictive of p53 gene therapy efficacy did not predict methotrexate response, TTP, or survival outcomes. CONCLUSIONS: These results indicate that tumor p53 biomarker profiles may predict p53 gene therapy efficacy in recurrent squamous cell carcinoma of the head and neck. (Clin Cancer Res 2009;15(24):7719-25).
+     </abstracttext>
+    </abstract>
+    <authorlist>
+     <author>
+      <lastname>
+       Nemunaitis
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+      <affiliation>
+       Authors' Affiliations: Mary Crowley Cancer Research Centers, Dallas, Texas; The University of Texas M.D. Anderson Cancer Center; Introgen Therapeutics, Houston, Texas; St. Luke's Cancer Center, Bethlehem, Pennsylvania; WJB Dorn Veterans Affairs Medical Center, Columbia, South Carolina; Emory University School of Medicine, Atlanta, Georgia; University of Louisville, Louisville, Kentucky; Wayne State University, Detroit, Michigan; Hospital General Universitario Vall d' Hebron, Barcelona, Spain; Vanderbilt-Ingram Cancer Center, Nashville, Tennessee; University of Illinois, Chicago, Illinois; IARC, Lyon, France; and University of Miami Sylvester Cancer Center, Miami, Florida.
+      </affiliation>
+     </author>
+     <author>
+      <lastname>
+       Clayman
+      </lastname>
+      <forename>
+       Gary
+      </forename>
+      <initials>
+       G
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Agarwala
+      </lastname>
+      <forename>
+       Sanjiv S
+      </forename>
+      <initials>
+       SS
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Hrushesky
+      </lastname>
+      <forename>
+       William
+      </forename>
+      <initials>
+       W
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Wells
+      </lastname>
+      <forename>
+       James R
+      </forename>
+      <initials>
+       JR
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Moore
+      </lastname>
+      <forename>
+       Charles
+      </forename>
+      <initials>
+       C
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Yoo
+      </lastname>
+      <forename>
+       George
+      </forename>
+      <initials>
+       G
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Baselga
+      </lastname>
+      <forename>
+       Jose
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Murphy
+      </lastname>
+      <forename>
+       Barbara A
+      </forename>
+      <initials>
+       BA
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Menander
+      </lastname>
+      <forename>
+       Kerstin A
+      </forename>
+      <initials>
+       KA
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Licato
+      </lastname>
+      <forename>
+       Laura L
+      </forename>
+      <initials>
+       LL
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Chada
+      </lastname>
+      <forename>
+       Sunil
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Gibbons
+      </lastname>
+      <forename>
+       Robert D
+      </forename>
+      <initials>
+       RD
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Olivier
+      </lastname>
+      <forename>
+       Magali
+      </forename>
+      <initials>
+       M
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Hainaut
+      </lastname>
+      <forename>
+       Pierre
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Roth
+      </lastname>
+      <forename>
+       Jack A
+      </forename>
+      <initials>
+       JA
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Sobol
+      </lastname>
+      <forename>
+       Robert E
+      </forename>
+      <initials>
+       RE
+      </initials>
+     </author>
+     <author>
+      <lastname>
+       Goodwin
+      </lastname>
+      <forename>
+       W Jarrard
+      </forename>
+      <initials>
+       WJ
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     ENG
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      JOURNAL ARTICLE
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <medlineta>
+     Clin Cancer Res
+    </medlineta>
+    <nlmuniqueid>
+     9502500
+    </nlmuniqueid>
+    <issnlinking>
+     1078-0432
+    </issnlinking>
+   </medlinejournalinfo>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2009
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      8
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2009
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      10
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2009
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      10
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2009
+     </year>
+     <month>
+      12
+     </month>
+     <day>
+      10
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     1078-0432.CCR-09-1044
+    </articleid>
+    <articleid idtype="doi">
+     10.1158/1078-0432.CCR-09-1044
+    </articleid>
+    <articleid idtype="pubmed">
+     19996201
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    19687729
+   </pmid>
+   <datecreated>
+    <year>
+     2010
+    </year>
+    <month>
+     04
+    </month>
+    <day>
+     08
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2010
+    </year>
+    <month>
+     04
+    </month>
+    <day>
+     29
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Electronic">
+      1537-453X
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       33
+      </volume>
+      <issue>
+       2
+      </issue>
+      <pubdate>
+       <year>
+        2010
+       </year>
+       <month>
+        Apr
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      American journal of clinical oncology
+     </title>
+     <isoabbreviation>
+      Am. J. Clin. Oncol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     A phase 2 trial of glufosfamide in combination with gemcitabine in chemotherapy-naive pancreatic adenocarcinoma.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      111-6
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1097/COC.0b013e3181979204
+    </elocationid>
+    <abstract>
+     <abstracttext label="OBJECTIVES" nlmcategory="OBJECTIVE">
+      A dose-escalation study of glufosfamide plus gemcitabine showed that the combination could be administered safely at full doses. The purpose of this phase II study was to evaluate the safety and efficacy of this combination in chemotherapy-naive pancreatic adenocarcinoma.
+     </abstracttext>
+     <abstracttext label="METHODS" nlmcategory="METHODS">
+      Eligible patients had metastatic and/or locally advanced pancreatic adenocarcinoma, Karnofsky performance status &gt;or=70, creatinine clearance (CrCL) &gt;or=60 mL/min, and acceptable organ function. Patients received glufosfamide 4500 mg/m intravenous on day 1 and gemcitabine 1000 mg/m intravenous on Days 1, 8, and 15 of every 28-day cycle. The primary end point was response rate.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      Twenty-nine patients were enrolled; 14 male, median age 58 years. Twenty-three (79%) patients had distant metastases. Median cycles on treatment was 4 (range: 1-18+). Of 28, 5 (18%; 95% CI: 6%-37%) patients had a confirmed partial response (median duration: 8.4 months) and 1 had an unconfirmed partial response. Eleven patients (39%) had stable disease. Median progression-free survival was 3.7 months, median overall survival was 6 months, and 1-year survival was 32%. Grade 3/4 neutropenia occurred in 23 (79%) patients and grade 3/4 thrombocytopenia in 10 (34%) patients. The CrCL fell below 60 mL/min in 10 of 27 (37%) patients. Renal failure occurred in 4 patients. Decrease in CrCL was correlated with glufosfamide and isophosphoramide mustard pharmacokinetic area under the curve.
+     </abstracttext>
+     <abstracttext label="CONCLUSIONS" nlmcategory="CONCLUSIONS">
+      The combination of glufosfamide plus gemcitabine is active in pancreatic cancer; however, hematologic and renal toxicity were pronounced. Alternative dosing of glufosfamide plus gemcitabine should be explored.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Chiorean
+      </lastname>
+      <forename>
+       Elena G
+      </forename>
+      <initials>
+       EG
+      </initials>
+      <affiliation>
+       Indiana University Melvin and Bren Simon Cancer Center, Indianapolis, IN 46202, USA. gchiorea@iupui.edu
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Dragovich
+      </lastname>
+      <forename>
+       Tomislav
+      </forename>
+      <initials>
+       T
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Barrios
+      </lastname>
+      <forename>
+       Carlos H
+      </forename>
+      <initials>
+       CH
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Gorini
+      </lastname>
+      <forename>
+       Carlos F
+      </forename>
+      <initials>
+       CF
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Langmuir
+      </lastname>
+      <forename>
+       Virginia K
+      </forename>
+      <initials>
+       VK
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kroll
+      </lastname>
+      <forename>
+       Stewart
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Jung
+      </lastname>
+      <forename>
+       Donald T
+      </forename>
+      <initials>
+       DT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Tidmarsh
+      </lastname>
+      <forename>
+       George T
+      </forename>
+      <initials>
+       GT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Loehrer
+      </lastname>
+      <forename>
+       Patrick J
+      </forename>
+      <initials>
+       PJ
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Am J Clin Oncol
+    </medlineta>
+    <nlmuniqueid>
+     8207754
+    </nlmuniqueid>
+    <issnlinking>
+     0277-3732
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Phosphoramide Mustards
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      beta-D-glucosylisophosphoramide mustard
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0W860991D6
+     </registrynumber>
+     <nameofsubstance>
+      Deoxycytidine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      B76N6SBZ8R
+     </registrynumber>
+     <nameofsubstance>
+      gemcitabine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      IY9XDZ35W2
+     </registrynumber>
+     <nameofsubstance>
+      Glucose
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      UM20QQM95Y
+     </registrynumber>
+     <nameofsubstance>
+      Ifosfamide
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adenocarcinoma
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      secondary
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Deoxycytidine
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Glucose
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Ifosfamide
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasm Staging
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Pancreatic Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Phosphoramide Mustards
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Safety
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Survival Rate
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2009
+     </year>
+     <month>
+      8
+     </month>
+     <day>
+      19
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2009
+     </year>
+     <month>
+      8
+     </month>
+     <day>
+      19
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2010
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      30
+     </day>
+     <hour>
+      6
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="doi">
+     10.1097/COC.0b013e3181979204
+    </articleid>
+    <articleid idtype="pubmed">
+     19687729
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    18650156
+   </pmid>
+   <datecreated>
+    <year>
+     2008
+    </year>
+    <month>
+     07
+    </month>
+    <day>
+     24
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2008
+    </year>
+    <month>
+     08
+    </month>
+    <day>
+     05
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Print">
+      1526-8209
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       8
+      </volume>
+      <issue>
+       3
+      </issue>
+      <pubdate>
+       <year>
+        2008
+       </year>
+       <month>
+        Jun
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Clinical breast cancer
+     </title>
+     <isoabbreviation>
+      Clin. Breast Cancer
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Gemcitabine/epirubicin/paclitaxel as neoadjuvant chemotherapy in locally advanced breast cancer: a phase II trial of the NSABP Foundation Research Group.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      257-63
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.3816/CBC.2008.n.029
+    </elocationid>
+    <abstract>
+     <abstracttext label="BACKGROUND" nlmcategory="BACKGROUND">
+      This phase II protocol of neoadjuvant chemotherapy with gemcitabine/epirubicin/paclitaxel (GET) was designed to determine the pathologic complete response (pCR) rate in the breast, clinical response rate, disease-free survival, and overall survival at 2 years as well as toxicity in patients with locally advanced breast cancer. This trial also evaluated the feasibility of tissue collection for gene-expression profiling.
+     </abstracttext>
+     <abstracttext label="PATIENTS AND METHODS" nlmcategory="METHODS">
+      Seventy-six women with stage IIB, IIIA, and IIIB breast cancer were entered into this trial. Patients received a maximum of 6 cycles of neoadjuvant GET chemotherapy every 21 days (gemcitabine 1000 mg/m2 intravenously [i.v.] on days 1 and 4, epirubicin 90 mg/m2 i.v. bolus on day 1, and paclitaxel 175 mg/m2 i.v. on day 1). After chemotherapy, patients underwent surgery and were assessed for pathologic response.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      The pCR rate among the 74 patients evaluable for efficacy was 23% (95% CI, 14%-34.2%). Adverse events among the 76 patients evaluable for toxicity included anemia requiring transfusion (14.5%), infection with grade 3/4 neutropenia (10.5%), febrile neutropenia (7.9%), and platelet transfusion (6.6%). Infectious complications occurred in 24 patients (31.6%), of whom 18.4% were in the setting of neutropenia. High-quality RNA and successful probe synthesis were obtained from all pretreatment core biopsy specimens that contained tumor cells (n=66; 88%).
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      Neoadjuvant GET chemotherapy is an active regimen but with substantial toxicity. Tissue collection for gene-expression profiling is feasible in a multi-institutional setting.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+      <affiliation>
+       National Surgical Adjuvant Breast and Bowel Project Operations Office and Biostatistical Center, Philadelphia, PA, USA.
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Wilson
+      </lastname>
+      <forename>
+       John W
+      </forename>
+      <initials>
+       JW
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Rastogi
+      </lastname>
+      <forename>
+       Priya
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lembersky
+      </lastname>
+      <forename>
+       Barry C
+      </forename>
+      <initials>
+       BC
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Tseng
+      </lastname>
+      <forename>
+       George C
+      </forename>
+      <initials>
+       GC
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Song
+      </lastname>
+      <forename>
+       Young K
+      </forename>
+      <initials>
+       YK
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kim
+      </lastname>
+      <forename>
+       Wanseop
+      </forename>
+      <initials>
+       W
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Robidoux
+      </lastname>
+      <forename>
+       André
+      </forename>
+      <initials>
+       A
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Raymond
+      </lastname>
+      <forename>
+       Jane M
+      </forename>
+      <initials>
+       JM
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kardinal
+      </lastname>
+      <forename>
+       Carl G
+      </forename>
+      <initials>
+       CG
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Shalaby
+      </lastname>
+      <forename>
+       Ibrahim A
+      </forename>
+      <initials>
+       IA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Ansari
+      </lastname>
+      <forename>
+       Rafat
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Paik
+      </lastname>
+      <forename>
+       Soonmyung
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Geyer
+      </lastname>
+      <forename>
+       Charles E
+      </forename>
+      <initials>
+       CE
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Wolmark
+      </lastname>
+      <forename>
+       Norman
+      </forename>
+      <initials>
+       N
+      </initials>
+     </author>
+     <author validyn="Y">
+      <collectivename>
+       NSABP Foundation Research Group
+      </collectivename>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Clin Breast Cancer
+    </medlineta>
+    <nlmuniqueid>
+     100898731
+    </nlmuniqueid>
+    <issnlinking>
+     1526-8209
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0W860991D6
+     </registrynumber>
+     <nameofsubstance>
+      Deoxycytidine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      33069-62-4
+     </registrynumber>
+     <nameofsubstance>
+      Paclitaxel
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      3Z8479ZZ5X
+     </registrynumber>
+     <nameofsubstance>
+      Epirubicin
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      B76N6SBZ8R
+     </registrynumber>
+     <nameofsubstance>
+      gemcitabine
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Breast Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      metabolism
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      mortality
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Deoxycytidine
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Epirubicin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Gene Expression Profiling
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoadjuvant Therapy
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Paclitaxel
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Patient Compliance
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2008
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      25
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2008
+     </year>
+     <month>
+      8
+     </month>
+     <day>
+      6
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2008
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      25
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     3165379144089628
+    </articleid>
+    <articleid idtype="doi">
+     10.3816/CBC.2008.n.029
+    </articleid>
+    <articleid idtype="pubmed">
+     18650156
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    18391564
+   </pmid>
+   <datecreated>
+    <year>
+     2008
+    </year>
+    <month>
+     08
+    </month>
+    <day>
+     05
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2008
+    </year>
+    <month>
+     10
+    </month>
+    <day>
+     17
+    </day>
+   </datecompleted>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1421-9700
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       13
+      </volume>
+      <issue>
+       5
+      </issue>
+      <pubdate>
+       <year>
+        2008
+       </year>
+      </pubdate>
+     </journalissue>
+     <title>
+      Audiology &amp; neuro-otology
+     </title>
+     <isoabbreviation>
+      Audiol. Neurootol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Testing the diagnostic value of electrical ear canal stimulation in cochlear implant candidates by functional magnetic resonance imaging.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      281-92
+     </medlinepgn>
+    </pagination>
+    <elocationid eidtype="doi" validyn="Y">
+     10.1159/000124276
+    </elocationid>
+    <abstract>
+     <abstracttext>
+      Prior to cochlear implant (CI) surgery in children, the integrity of the auditory pathway is sometimes assessed by electrical ear canal stimulation (ECS). However, the evaluation of reactions as auditory is subjective. To test the prognostic value of ECS, functional magnetic resonance imaging (fMRI) was performed during ECS vicariously in 18 adult CI candidates. Activation of the primary auditory cortex was detected in 9 of 16 cases when auditory sensations during ECS occurred, and tended to be more bilaterally distributed in CI candidates than in normal-hearing controls. ECS sensations only tended to correlate with fMRI activations. However, solely frequency discrimination during electrical stimulation predicted CI outcome, but neither other auditory sensations nor fMRI activations did so satisfactorily, which limits the diagnostic value of these measures. Instead, preoperative residual hearing (nonamplified and amplified) was a robust predictor for CI benefit.
+     </abstracttext>
+     <copyrightinformation>
+      Copyright 2008 S. Karger AG, Basel.
+     </copyrightinformation>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Neumann
+      </lastname>
+      <forename>
+       Katrin
+      </forename>
+      <initials>
+       K
+      </initials>
+      <affiliation>
+       Clinic of Phoniatry and Pediatric Audiology, University of Frankfurt/Main, Frankfurt/Main, Germany. Katrin.Neumann@em.uni-frankfurt.de
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Preibisch
+      </lastname>
+      <forename>
+       Christine
+      </forename>
+      <initials>
+       C
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Spreer
+      </lastname>
+      <forename>
+       Joachim
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Raab
+      </lastname>
+      <forename>
+       Peter
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Euler
+      </lastname>
+      <forename>
+       Harald A
+      </forename>
+      <initials>
+       HA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lanfermann
+      </lastname>
+      <forename>
+       Heinrich
+      </forename>
+      <initials>
+       H
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Helbig
+      </lastname>
+      <forename>
+       Silke
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kiefer
+      </lastname>
+      <forename>
+       Jan
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Controlled Clinical Trial
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2008
+     </year>
+     <month>
+      04
+     </month>
+     <day>
+      07
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     Switzerland
+    </country>
+    <medlineta>
+     Audiol Neurootol
+    </medlineta>
+    <nlmuniqueid>
+     9606930
+    </nlmuniqueid>
+    <issnlinking>
+     1420-3030
+    </issnlinking>
+   </medlinejournalinfo>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Audiometry
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Auditory Perception
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Cochlear Implants
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Deafness
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      diagnosis
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      surgery
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Ear Canal
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Electric Stimulation
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      methods
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Electrodiagnosis
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      methods
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Functional Laterality
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Hearing
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Magnetic Resonance Imaging
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      methods
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Preoperative Care
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="received">
+     <year>
+      2007
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      22
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="accepted">
+     <year>
+      2007
+     </year>
+     <month>
+      11
+     </month>
+     <day>
+      28
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2008
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      07
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2008
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      9
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2008
+     </year>
+     <month>
+      10
+     </month>
+     <day>
+      18
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2008
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      9
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     000124276
+    </articleid>
+    <articleid idtype="doi">
+     10.1159/000124276
+    </articleid>
+    <articleid idtype="pubmed">
+     18391564
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    17661038
+   </pmid>
+   <datecreated>
+    <year>
+     2008
+    </year>
+    <month>
+     03
+    </month>
+    <day>
+     20
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2008
+    </year>
+    <month>
+     06
+    </month>
+    <day>
+     19
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Print">
+      0344-5704
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       61
+      </volume>
+      <issue>
+       6
+      </issue>
+      <pubdate>
+       <year>
+        2008
+       </year>
+       <month>
+        May
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Cancer chemotherapy and pharmacology
+     </title>
+     <isoabbreviation>
+      Cancer Chemother. Pharmacol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     A Phase 1 dose-escalation trial of glufosfamide in combination with gemcitabine in solid tumors including pancreatic adenocarcinoma.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      1019-26
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext label="PURPOSE" nlmcategory="OBJECTIVE">
+      To evaluate safety and pharmacokinetics and to establish the maximum tolerated dose of glufosfamide when administered in combination with gemcitabine in advanced solid tumors.
+     </abstracttext>
+     <abstracttext label="METHODS" nlmcategory="METHODS">
+      This Phase 1 dose-escalation study evaluated the combination of glufosfamide + gemcitabine in patients with advanced solid tumors. Cohorts of three to six patients were treated with glufosfamide doses from 1,500 to 4,500 mg/m(2) i.v. over 4 h on Day 1 and gemcitabine 1,000 mg/m(2) i.v. over 30 min on Days 1, 8 and 15 of every 28-day cycle. Detailed PK sampling was performed on days 1 and 8 of the first two cycles.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      Nineteen patients were enrolled. Two patients had dose-limiting toxicity: Grade 3 fatigue at 2,500 mg/m(2) and Grade 4 thrombocytopenia at 4,500 mg/m(2). Five patients completed six cycles and one patient remained on study for ten cycles. Two patients discontinued for adverse events. Grade 3/4 neutropenia and thrombocytopenia occurred in seven patients and five patients, respectively. The CrCL fell below 60 mL/min in two patients. There was one unconfirmed partial response and 10 of 19 (52.6%) patients had stable disease or better at 8 weeks and three patients had continuing stable disease at 24 weeks. Pharmacokinetic analyses suggest no interaction between glufosfamide and gemcitabine.
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      Phase I data indicate that full dose glufosfamide (4,500 mg/m(2)) can be given safely in combination with gemcitabine. A Phase II study in patients with pancreatic adenocarcinoma is ongoing.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Chiorean
+      </lastname>
+      <forename>
+       E Gabriela
+      </forename>
+      <initials>
+       EG
+      </initials>
+      <affiliation>
+       Indiana University Cancer Center, 535 Barnhill Drive, Room 414, Indianapolis, IN 46202, USA. gchiorea@iupui.edu
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Dragovich
+      </lastname>
+      <forename>
+       Tomislav
+      </forename>
+      <initials>
+       T
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Langmuir
+      </lastname>
+      <forename>
+       Virginia K
+      </forename>
+      <initials>
+       VK
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Kroll
+      </lastname>
+      <forename>
+       Stewart
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Jung
+      </lastname>
+      <forename>
+       Donald T
+      </forename>
+      <initials>
+       DT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Colowick
+      </lastname>
+      <forename>
+       Alan B
+      </forename>
+      <initials>
+       AB
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Tidmarsh
+      </lastname>
+      <forename>
+       George F
+      </forename>
+      <initials>
+       GF
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Loehrer
+      </lastname>
+      <forename>
+       Patrick J
+      </forename>
+      <initials>
+       PJ
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase I
+     </publicationtype>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2007
+     </year>
+     <month>
+      07
+     </month>
+     <day>
+      28
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     Germany
+    </country>
+    <medlineta>
+     Cancer Chemother Pharmacol
+    </medlineta>
+    <nlmuniqueid>
+     7806519
+    </nlmuniqueid>
+    <issnlinking>
+     0344-5704
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antimetabolites, Antineoplastic
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antineoplastic Agents
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Phosphoramide Mustards
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      beta-D-glucosylisophosphoramide mustard
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0W860991D6
+     </registrynumber>
+     <nameofsubstance>
+      Deoxycytidine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      B76N6SBZ8R
+     </registrynumber>
+     <nameofsubstance>
+      gemcitabine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      IY9XDZ35W2
+     </registrynumber>
+     <nameofsubstance>
+      Glucose
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      UM20QQM95Y
+     </registrynumber>
+     <nameofsubstance>
+      Ifosfamide
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adenocarcinoma
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antimetabolites, Antineoplastic
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Agents
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Area Under Curve
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Deoxycytidine
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Glucose
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Half-Life
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Hematologic Diseases
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      chemically induced
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      epidemiology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Ifosfamide
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Pancreatic Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Phosphoramide Mustards
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="received">
+     <year>
+      2007
+     </year>
+     <month>
+      3
+     </month>
+     <day>
+      28
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="accepted">
+     <year>
+      2007
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      10
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2007
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      28
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2007
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      31
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2008
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      20
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2007
+     </year>
+     <month>
+      7
+     </month>
+     <day>
+      31
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="doi">
+     10.1007/s00280-007-0559-8
+    </articleid>
+    <articleid idtype="pubmed">
+     17661038
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    17452677
+   </pmid>
+   <datecreated>
+    <year>
+     2007
+    </year>
+    <month>
+     05
+    </month>
+    <day>
+     21
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2007
+    </year>
+    <month>
+     06
+    </month>
+    <day>
+     08
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Electronic">
+      1527-7755
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       25
+      </volume>
+      <issue>
+       15
+      </issue>
+      <pubdate>
+       <year>
+        2007
+       </year>
+       <month>
+        May
+       </month>
+       <day>
+        20
+       </day>
+      </pubdate>
+     </journalissue>
+     <title>
+      Journal of clinical oncology : official journal of the American Society of Clinical Oncology
+     </title>
+     <isoabbreviation>
+      J. Clin. Oncol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Erlotinib plus gemcitabine compared with gemcitabine alone in patients with advanced pancreatic cancer: a phase III trial of the National Cancer Institute of Canada Clinical Trials Group.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      1960-6
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext label="PURPOSE" nlmcategory="OBJECTIVE">
+      Patients with advanced pancreatic cancer have a poor prognosis and there have been no improvements in survival since the introduction of gemcitabine in 1996. Pancreatic tumors often overexpress human epidermal growth factor receptor type 1 (HER1/EGFR) and this is associated with a worse prognosis. We studied the effects of adding the HER1/EGFR-targeted agent erlotinib to gemcitabine in patients with unresectable, locally advanced, or metastatic pancreatic cancer.
+     </abstracttext>
+     <abstracttext label="PATIENTS AND METHODS" nlmcategory="METHODS">
+      Patients were randomly assigned 1:1 to receive standard gemcitabine plus erlotinib (100 or 150 mg/d orally) or gemcitabine plus placebo in a double-blind, international phase III trial. The primary end point was overall survival.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      A total of 569 patients were randomly assigned. Overall survival based on an intent-to-treat analysis was significantly prolonged on the erlotinib/gemcitabine arm with a hazard ratio (HR) of 0.82 (95% CI, 0.69 to 0.99; P = .038, adjusted for stratification factors; median 6.24 months v 5.91 months). One-year survival was also greater with erlotinib plus gemcitabine (23% v 17%; P = .023). Progression-free survival was significantly longer with erlotinib plus gemcitabine with an estimated HR of 0.77 (95% CI, 0.64 to 0.92; P = .004). Objective response rates were not significantly different between the arms, although more patients on erlotinib had disease stabilization. There was a higher incidence of some adverse events with erlotinib plus gemcitabine, but most were grade 1 or 2.
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      To our knowledge, this randomized phase III trial is the first to demonstrate statistically significantly improved survival in advanced pancreatic cancer by adding any agent to gemcitabine. The recommended dose of erlotinib with gemcitabine for this indication is 100 mg/d.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Moore
+      </lastname>
+      <forename>
+       Malcolm J
+      </forename>
+      <initials>
+       MJ
+      </initials>
+      <affiliation>
+       Division of Medical Oncology, Princess Margaret Hospital, Toronto, Canada. malcolm.moore@uhn.on.ca
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Goldstein
+      </lastname>
+      <forename>
+       David
+      </forename>
+      <initials>
+       D
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Figer
+      </lastname>
+      <forename>
+       Arie
+      </forename>
+      <initials>
+       A
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hecht
+      </lastname>
+      <forename>
+       Joel R
+      </forename>
+      <initials>
+       JR
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Gallinger
+      </lastname>
+      <forename>
+       Steven
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Au
+      </lastname>
+      <forename>
+       Heather J
+      </forename>
+      <initials>
+       HJ
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Murawa
+      </lastname>
+      <forename>
+       Pawel
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Walde
+      </lastname>
+      <forename>
+       David
+      </forename>
+      <initials>
+       D
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Wolff
+      </lastname>
+      <forename>
+       Robert A
+      </forename>
+      <initials>
+       RA
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Campos
+      </lastname>
+      <forename>
+       Daniel
+      </forename>
+      <initials>
+       D
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lim
+      </lastname>
+      <forename>
+       Robert
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Ding
+      </lastname>
+      <forename>
+       Keyue
+      </forename>
+      <initials>
+       K
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Clark
+      </lastname>
+      <forename>
+       Gary
+      </forename>
+      <initials>
+       G
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Voskoglou-Nomikos
+      </lastname>
+      <forename>
+       Theodora
+      </forename>
+      <initials>
+       T
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Ptasynski
+      </lastname>
+      <forename>
+       Mieke
+      </forename>
+      <initials>
+       M
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Parulekar
+      </lastname>
+      <forename>
+       Wendy
+      </forename>
+      <initials>
+       W
+      </initials>
+     </author>
+     <author validyn="Y">
+      <collectivename>
+       National Cancer Institute of Canada Clinical Trials Group
+      </collectivename>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase III
+     </publicationtype>
+     <publicationtype>
+      Comparative Study
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Randomized Controlled Trial
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2007
+     </year>
+     <month>
+      04
+     </month>
+     <day>
+      23
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     J Clin Oncol
+    </medlineta>
+    <nlmuniqueid>
+     8309333
+    </nlmuniqueid>
+    <issnlinking>
+     0732-183X
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Placebos
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Quinazolines
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0W860991D6
+     </registrynumber>
+     <nameofsubstance>
+      Deoxycytidine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      B76N6SBZ8R
+     </registrynumber>
+     <nameofsubstance>
+      gemcitabine
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      J4T82NDH7E
+     </registrynumber>
+     <nameofsubstance>
+      erlotinib
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <commentscorrectionslist>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      J Clin Oncol. 2007 May 20;25(15):1949-52
+     </refsource>
+     <pmid version="1">
+      17452675
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      J Clin Oncol. 2007 Sep 20;25(27):4320-1; author reply 4321-2
+     </refsource>
+     <pmid version="1">
+      17878488
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      J Clin Oncol. 2007 Oct 1;25(28):4506-7; author reply 4508
+     </refsource>
+     <pmid version="1">
+      17906218
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      Nat Clin Pract Oncol. 2007 Dec;4(12):686-7
+     </refsource>
+     <pmid version="1">
+      17895874
+     </pmid>
+    </commentscorrections>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      J Clin Oncol. 2007 Dec 20;25(36):5836-7
+     </refsource>
+     <pmid version="1">
+      18089885
+     </pmid>
+    </commentscorrections>
+   </commentscorrectionslist>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adenocarcinoma
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      secondary
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged, 80 and over
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Deoxycytidine
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Double-Blind Method
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      International Agencies
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Pancreatic Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Placebos
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Prognosis
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Quinazolines
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Survival Rate
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2007
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      23
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2007
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      25
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2007
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      9
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2007
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      25
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     JCO.2006.07.9525
+    </articleid>
+    <articleid idtype="doi">
+     10.1200/JCO.2006.07.9525
+    </articleid>
+    <articleid idtype="pubmed">
+     17452677
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    17409987
+   </pmid>
+   <datecreated>
+    <year>
+     2007
+    </year>
+    <month>
+     04
+    </month>
+    <day>
+     05
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2007
+    </year>
+    <month>
+     05
+    </month>
+    <day>
+     01
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Electronic">
+      1556-1380
+     </issn>
+     <journalissue citedmedium="Internet">
+      <volume>
+       1
+      </volume>
+      <issue>
+       9
+      </issue>
+      <pubdate>
+       <year>
+        2006
+       </year>
+       <month>
+        Nov
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Journal of thoracic oncology : official publication of the International Association for the Study of Lung Cancer
+     </title>
+     <isoabbreviation>
+      J Thorac Oncol
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     A phase I evaluation of oral CI-1033 in combination with paclitaxel and carboplatin as first-line chemotherapy in patients with advanced non-small cell lung cancer.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      1010-9
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext label="PURPOSE" nlmcategory="OBJECTIVE">
+      In the United States, lung cancer represents the third most common cancer, causing the most cancer-related deaths, with treatment advances minimally affecting 5-year survivals. Erb-B family receptor elevations are found in many non-small cell lung cancer tumors, making this receptor family a drug target with potential for improving survival.
+     </abstracttext>
+     <abstracttext label="DESIGN" nlmcategory="METHODS">
+      Chemotherapy-naive patients with advanced non-small cell lung cancer were enrolled who had at least one elevated tumor-expressed member of the erb-B family receptors. This dose-finding, multicenter, open-label, phase I study combined chemotherapy with paclitaxel and carboplatin, adding the tyrosine kinase inhibitor CI-1033. Patients were evaluated for toxicity, response, survival, and pharmacokinetics.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      All 39 patients enrolled were assessable for safety and efficacy. Dose-limiting toxicities (diarrhea, rash, asthenia, and hypotension) occurred at the 200- and 150-mg dose levels of CI-1033; the maximum tolerated dose was 100 mg. Most toxicities were mild to moderate. Pharmacokinetics studies showed that paclitaxel levels were unaffected by CI-1033 and that CI-1033 plasma concentrations were consistent with historical controls. Ten patients (25.6%) achieved partial responses and another 11 (28.2%) had stable disease. In the recommended phase II dose cohort (n = 23), six patients (26%) had partial responses and six (26%) had stable disease. Median survival time was 12.4 months; median progression-free survival was 5.1 months.
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      Paclitaxel-carboplatin, combined with CI-1033 at 100 mg/day, was safe and well tolerated. Efficacy and survival results were comparable to those of similar studies in advanced non-small cell lung cancer and therefore warrant additional phase II testing.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Chiappori
+      </lastname>
+      <forename>
+       Alberto A
+      </forename>
+      <initials>
+       AA
+      </initials>
+      <affiliation>
+       H. Lee Moffitt Cancer Center and Research Institute, Tampa, FL 33612, USA. chiappaa@moffitt.usf.edu
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Ellis
+      </lastname>
+      <forename>
+       Peter M
+      </forename>
+      <initials>
+       PM
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John Turner
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Bitran
+      </lastname>
+      <forename>
+       Jacob David
+      </forename>
+      <initials>
+       JD
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Eiseman
+      </lastname>
+      <forename>
+       Irene
+      </forename>
+      <initials>
+       I
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lovalvo
+      </lastname>
+      <forename>
+       Jennifer
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Burnett
+      </lastname>
+      <forename>
+       Diana
+      </forename>
+      <initials>
+       D
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Olson
+      </lastname>
+      <forename>
+       Stephen
+      </forename>
+      <initials>
+       S
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Lenehan
+      </lastname>
+      <forename>
+       Peter
+      </forename>
+      <initials>
+       P
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Zinner
+      </lastname>
+      <forename>
+       Ralph Goldman
+      </forename>
+      <initials>
+       RG
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial, Phase I
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Multicenter Study
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     J Thorac Oncol
+    </medlineta>
+    <nlmuniqueid>
+     101274235
+    </nlmuniqueid>
+    <issnlinking>
+     1556-0864
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Morpholines
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      33069-62-4
+     </registrynumber>
+     <nameofsubstance>
+      Paclitaxel
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      BG3F62OND5
+     </registrynumber>
+     <nameofsubstance>
+      Carboplatin
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      C78W1K5ASF
+     </registrynumber>
+     <nameofsubstance>
+      Canertinib
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Administration, Oral
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Adult
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Carboplatin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Carcinoma, Non-Small-Cell Lung
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      mortality
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Confidence Intervals
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Dose-Response Relationship, Drug
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Drug Administration Schedule
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Evaluation Studies as Topic
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Lung Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      mortality
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Maximum Tolerated Dose
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Middle Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Morpholines
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasm Invasiveness
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      pathology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neoplasm Staging
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Neutropenia
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      chemically induced
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      epidemiology
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Odds Ratio
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Paclitaxel
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      adverse effects
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Patient Selection
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Probability
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Prognosis
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Risk Assessment
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Single-Blind Method
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Survival Analysis
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N" type="Geographic">
+      United States
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2007
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      6
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2007
+     </year>
+     <month>
+      5
+     </month>
+     <day>
+      2
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2007
+     </year>
+     <month>
+      4
+     </month>
+     <day>
+      6
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     01243894-200611000-00015
+    </articleid>
+    <articleid idtype="pubmed">
+     17409987
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    16649703
+   </pmid>
+   <datecreated>
+    <year>
+     2006
+    </year>
+    <month>
+     05
+    </month>
+    <day>
+     02
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2006
+    </year>
+    <month>
+     06
+    </month>
+    <day>
+     01
+    </day>
+   </datecompleted>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Print">
+      0017-8012
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       84
+      </volume>
+      <issue>
+       5
+      </issue>
+      <pubdate>
+       <year>
+        2006
+       </year>
+       <month>
+        May
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Harvard business review
+     </title>
+     <isoabbreviation>
+      Harv Bus Rev
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     The five messages leaders must manage.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      114-23, 158
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext>
+      If you want to know why so many organizations sink into chaos, look no further than their leaders' mouths. Over and over, leaders present grand, overarching-yet fuzzy-notions of where they think the company is going. They assume everyone shares their definitions of"vision;" "accountability," and "results". The result is often sloppy behavior and misalignment that can cost a company dearly. Effective communication is a leader's most critical tool for doing the essential job of leadership: inspiring the organization to take responsibility for creating a better future. Five topics wield extraordinary influence within a company: organizational structure and hierarchy, financial results, the leader's sense of his or her job, time management, and corporate culture. Properly defined, disseminated, and controlled, these topics give the leader opportunities for increased accountability and substantially better performance. For example, one CEO always keeps communications about hierarchy admirably brief and to the point. When he realized he needed to realign internal resources, he told the staff: "I'm changing the structure of resources so that we can execute more effectively." After unveiling a new organization chart, he said, "It's 10:45. You have until noon to be annoyed, should that be your reaction. At noon, pizza will be served. At one o'clock, we go to work in our new positions." The most effective leaders ask themselves, "What needs to happen today to get where we want to go? What vague belief or notion can I clarify or debunk?" A CEO who communicates precisely to ten direct reports, each of whom communicates with equal precision to 40 other employees, aligns the organization's commitment and energy with a well-understood vision of the firm's real goals and opportunities.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+      <affiliation>
+       VSP Capital, San Francisco, USA. johnhamm@mac.com
+      </affiliation>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Harv Bus Rev
+    </medlineta>
+    <nlmuniqueid>
+     9875796
+    </nlmuniqueid>
+    <issnlinking>
+     0017-8012
+    </issnlinking>
+   </medlinejournalinfo>
+   <citationsubset>
+    H
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Commerce
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      organization &amp; administration
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Communication
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Financial Management
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Leadership
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Organizational Culture
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Organizational Objectives
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N" type="Geographic">
+      United States
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2006
+     </year>
+     <month>
+      5
+     </month>
+     <day>
+      3
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2006
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      2
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2006
+     </year>
+     <month>
+      5
+     </month>
+     <day>
+      3
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pubmed">
+     16649703
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    15738537
+   </pmid>
+   <datecreated>
+    <year>
+     2005
+    </year>
+    <month>
+     05
+    </month>
+    <day>
+     30
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2005
+    </year>
+    <month>
+     06
+    </month>
+    <day>
+     28
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2013
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     21
+    </day>
+   </daterevised>
+   <article pubmodel="Print-Electronic">
+    <journal>
+     <issn issntype="Print">
+      0732-183X
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       23
+      </volume>
+      <issue>
+       16
+      </issue>
+      <pubdate>
+       <year>
+        2005
+       </year>
+       <month>
+        Jun
+       </month>
+       <day>
+        1
+       </day>
+      </pubdate>
+     </journalissue>
+     <title>
+      Journal of clinical oncology : official journal of the American Society of Clinical Oncology
+     </title>
+     <isoabbreviation>
+      J. Clin. Oncol.
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Addition of bevacizumab to bolus fluorouracil and leucovorin in first-line metastatic colorectal cancer: results of a randomized phase II trial.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      3697-705
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext label="PURPOSE" nlmcategory="OBJECTIVE">
+      Bevacizumab, a monoclonal antibody against vascular endothelial growth factor, increases survival when combined with irinotecan-based chemotherapy in first-line treatment of metastatic colorectal cancer (CRC). This randomized, phase II trial compared bevacizumab plus fluorouracil and leucovorin (FU/LV) versus placebo plus FU/LV as first-line therapy in patients considered nonoptimal candidates for first-line irinotecan.
+     </abstracttext>
+     <abstracttext label="PATIENTS AND METHODS" nlmcategory="METHODS">
+      Patients had metastatic CRC and one of the following characteristics: age &gt; or = 65 years, Eastern Cooperative Oncology Group performance status 1 or 2, serum albumin &lt; or = 3.5 g/dL, or prior abdominal/pelvic radiotherapy. Patients were randomly assigned to FU/LV/placebo (n = 105) or FU/LV/bevacizumab (n = 104). The primary end point was overall survival. Secondary end points were progression-free survival, response rate, response duration, and quality of life. Safety was also assessed.
+     </abstracttext>
+     <abstracttext label="RESULTS" nlmcategory="RESULTS">
+      Median survival was 16.6 months for the FU/LV/bevacizumab group and 12.9 months for the FU/LV/placebo group (hazard ratio, 0.79; P = .16). Median progression-free survival was 9.2 months (FU/LV/bevacizumab) and 5.5 months (FU/LV/placebo); hazard ratio was 0.50; P = .0002. Response rates were 26.0% (FU/LV/bevacizumab) and 15.2% (FU/LV/placebo) (P = .055); duration of response was 9.2 months (FU/LV/bevacizumab) and 6.8 months (FU/LV/placebo); hazard ratio was 0.42; P = .088. Grade 3 hypertension was more common with bevacizumab treatment (16% v 3%) but was controlled with oral medication and did not cause study drug discontinuation.
+     </abstracttext>
+     <abstracttext label="CONCLUSION" nlmcategory="CONCLUSIONS">
+      Addition of bevacizumab to FU/LV as first-line therapy in CRC patients who were not considered optimal candidates for first-line irinotecan treatment provided clinically significant patient benefit, including statistically significant improvement in progression-free survival.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Kabbinavar
+      </lastname>
+      <forename>
+       Fairooz F
+      </forename>
+      <initials>
+       FF
+      </initials>
+      <affiliation>
+       Division of Hematology/Oncology, UCLA School of Medicine, 10945 LeConte Ave, Suite 2338J, Los Angeles, CA 90095-7187, USA. fkabbina@mednet.ucla.edu
+      </affiliation>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Schulz
+      </lastname>
+      <forename>
+       Joseph
+      </forename>
+      <initials>
+       J
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       McCleod
+      </lastname>
+      <forename>
+       Michael
+      </forename>
+      <initials>
+       M
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Patel
+      </lastname>
+      <forename>
+       Taral
+      </forename>
+      <initials>
+       T
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John T
+      </forename>
+      <initials>
+       JT
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Hecht
+      </lastname>
+      <forename>
+       J Randolph
+      </forename>
+      <initials>
+       JR
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Mass
+      </lastname>
+      <forename>
+       Robert
+      </forename>
+      <initials>
+       R
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Perrou
+      </lastname>
+      <forename>
+       Brent
+      </forename>
+      <initials>
+       B
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Nelson
+      </lastname>
+      <forename>
+       Betty
+      </forename>
+      <initials>
+       B
+      </initials>
+     </author>
+     <author validyn="Y">
+      <lastname>
+       Novotny
+      </lastname>
+      <forename>
+       William F
+      </forename>
+      <initials>
+       WF
+      </initials>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Clinical Trial
+     </publicationtype>
+     <publicationtype>
+      Clinical Trial, Phase II
+     </publicationtype>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+     <publicationtype>
+      Randomized Controlled Trial
+     </publicationtype>
+     <publicationtype>
+      Research Support, Non-U.S. Gov't
+     </publicationtype>
+    </publicationtypelist>
+    <articledate datetype="Electronic">
+     <year>
+      2005
+     </year>
+     <month>
+      02
+     </month>
+     <day>
+      28
+     </day>
+    </articledate>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     J Clin Oncol
+    </medlineta>
+    <nlmuniqueid>
+     8309333
+    </nlmuniqueid>
+    <issnlinking>
+     0732-183X
+    </issnlinking>
+   </medlinejournalinfo>
+   <chemicallist>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antibodies, Monoclonal
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Antibodies, Monoclonal, Humanized
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Placebos
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      0
+     </registrynumber>
+     <nameofsubstance>
+      Vascular Endothelial Growth Factor A
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      2S9ZZM9Q9V
+     </registrynumber>
+     <nameofsubstance>
+      bevacizumab
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      7673326042
+     </registrynumber>
+     <nameofsubstance>
+      irinotecan
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      Q573I9DVLP
+     </registrynumber>
+     <nameofsubstance>
+      Leucovorin
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      U3P01618RT
+     </registrynumber>
+     <nameofsubstance>
+      Fluorouracil
+     </nameofsubstance>
+    </chemical>
+    <chemical>
+     <registrynumber>
+      XT3Z54Z28A
+     </registrynumber>
+     <nameofsubstance>
+      Camptothecin
+     </nameofsubstance>
+    </chemical>
+   </chemicallist>
+   <citationsubset>
+    IM
+   </citationsubset>
+   <commentscorrectionslist>
+    <commentscorrections reftype="CommentIn">
+     <refsource>
+      J Clin Oncol. 2006 Jan 20;24(3):528-9; author reply 529-30
+     </refsource>
+     <pmid version="1">
+      16421433
+     </pmid>
+    </commentscorrections>
+   </commentscorrectionslist>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Aged
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antibodies, Monoclonal
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antibodies, Monoclonal, Humanized
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Antineoplastic Combined Chemotherapy Protocols
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      therapeutic use
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Camptothecin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      analogs &amp; derivatives
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Colorectal Neoplasms
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      drug therapy
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      secondary
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Combined Modality Therapy
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Disease-Free Survival
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Female
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Fluorouracil
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Leucovorin
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      administration &amp; dosage
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Male
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Placebos
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Quality of Life
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Safety
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Survival Rate
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Treatment Outcome
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Vascular Endothelial Growth Factor A
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      antagonists &amp; inhibitors
+     </qualifiername>
+     <qualifiername majortopicyn="N">
+      immunology
+     </qualifiername>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="aheadofprint">
+     <year>
+      2005
+     </year>
+     <month>
+      2
+     </month>
+     <day>
+      28
+     </day>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2005
+     </year>
+     <month>
+      3
+     </month>
+     <day>
+      2
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2005
+     </year>
+     <month>
+      6
+     </month>
+     <day>
+      29
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2005
+     </year>
+     <month>
+      3
+     </month>
+     <day>
+      2
+     </day>
+     <hour>
+      9
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pii">
+     JCO.2005.05.112
+    </articleid>
+    <articleid idtype="doi">
+     10.1200/JCO.2005.05.112
+    </articleid>
+    <articleid idtype="pubmed">
+     15738537
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+ <pubmedarticle>
+  <medlinecitation owner="NLM" status="MEDLINE">
+   <pmid version="1">
+    12510543
+   </pmid>
+   <datecreated>
+    <year>
+     2003
+    </year>
+    <month>
+     01
+    </month>
+    <day>
+     03
+    </day>
+   </datecreated>
+   <datecompleted>
+    <year>
+     2003
+    </year>
+    <month>
+     01
+    </month>
+    <day>
+     31
+    </day>
+   </datecompleted>
+   <daterevised>
+    <year>
+     2004
+    </year>
+    <month>
+     11
+    </month>
+    <day>
+     17
+    </day>
+   </daterevised>
+   <article pubmodel="Print">
+    <journal>
+     <issn issntype="Print">
+      0017-8012
+     </issn>
+     <journalissue citedmedium="Print">
+      <volume>
+       80
+      </volume>
+      <issue>
+       12
+      </issue>
+      <pubdate>
+       <year>
+        2002
+       </year>
+       <month>
+        Dec
+       </month>
+      </pubdate>
+     </journalissue>
+     <title>
+      Harvard business review
+     </title>
+     <isoabbreviation>
+      Harv Bus Rev
+     </isoabbreviation>
+    </journal>
+    <articletitle>
+     Why entrepreneurs don't scale.
+    </articletitle>
+    <pagination>
+     <medlinepgn>
+      110-5, 134
+     </medlinepgn>
+    </pagination>
+    <abstract>
+     <abstracttext>
+      It's well known that many executives who excel at starting businesses or projects fizzle out--in other words, they fail to "scale"--as their ventures grow. But the reasons have remained fuzzy. In this article, leadership coach John Hamm identifies four management tendencies that work for small-company or business-unit leaders but become Achilles' heels as those individuals try to run larger organizations. The first tendency is loyalty to comrades. In entrepreneurial mode, you need to lead as though you're in charge of a combat unit on the wrong side of enemy lines. But blind loyalty can become a liability in managing a complex organization. The second tendency, task orientation, is critical in driving toward a big product launch, but excessive attention to detail can cause a large organization to lose sight of its long-term goals. The third tendency, single-mindedness, is important in a visionary unleashing a revolutionary product or service on the world but can limit the company's potential as it grows. And the fourth tendency, working in isolation, is fine for the brilliant scientist focused on an ingenious idea. But it's disastrous for a leader whose expanding organization increasingly relies on many other people. Leaders who scale deal honestly with problems and quickly weed out nonperformers. They see past distractions and establish strategic priorities. They learn how to deal effectively with diverse employees, customers, and external constituencies. And, most important, they make the company's continuing health and welfare their top concern.
+     </abstracttext>
+    </abstract>
+    <authorlist completeyn="Y">
+     <author validyn="Y">
+      <lastname>
+       Hamm
+      </lastname>
+      <forename>
+       John
+      </forename>
+      <initials>
+       J
+      </initials>
+      <affiliation>
+       Redpoint Ventures, Menlo Park, California, USA. jhamm@redpoint.com
+      </affiliation>
+     </author>
+    </authorlist>
+    <language>
+     eng
+    </language>
+    <publicationtypelist>
+     <publicationtype>
+      Journal Article
+     </publicationtype>
+    </publicationtypelist>
+   </article>
+   <medlinejournalinfo>
+    <country>
+     United States
+    </country>
+    <medlineta>
+     Harv Bus Rev
+    </medlineta>
+    <nlmuniqueid>
+     9875796
+    </nlmuniqueid>
+    <issnlinking>
+     0017-8012
+    </issnlinking>
+   </medlinejournalinfo>
+   <citationsubset>
+    H
+   </citationsubset>
+   <meshheadinglist>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Administrative Personnel
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Entrepreneurship
+     </descriptorname>
+     <qualifiername majortopicyn="N">
+      economics
+     </qualifiername>
+     <qualifiername majortopicyn="Y">
+      organization &amp; administration
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Humans
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Internet
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="Y">
+      Leadership
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Marketing
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Organizational Innovation
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Personnel Loyalty
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Personnel Management
+     </descriptorname>
+     <qualifiername majortopicyn="Y">
+      methods
+     </qualifiername>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Planning Techniques
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Problem Solving
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N">
+      Product Line Management
+     </descriptorname>
+    </meshheading>
+    <meshheading>
+     <descriptorname majortopicyn="N" type="Geographic">
+      United States
+     </descriptorname>
+    </meshheading>
+   </meshheadinglist>
+  </medlinecitation>
+  <pubmeddata>
+   <history>
+    <pubmedpubdate pubstatus="pubmed">
+     <year>
+      2003
+     </year>
+     <month>
+      1
+     </month>
+     <day>
+      4
+     </day>
+     <hour>
+      4
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="medline">
+     <year>
+      2003
+     </year>
+     <month>
+      2
+     </month>
+     <day>
+      1
+     </day>
+     <hour>
+      4
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+    <pubmedpubdate pubstatus="entrez">
+     <year>
+      2003
+     </year>
+     <month>
+      1
+     </month>
+     <day>
+      4
+     </day>
+     <hour>
+      4
+     </hour>
+     <minute>
+      0
+     </minute>
+    </pubmedpubdate>
+   </history>
+   <publicationstatus>
+    ppublish
+   </publicationstatus>
+   <articleidlist>
+    <articleid idtype="pubmed">
+     12510543
+    </articleid>
+   </articleidlist>
+  </pubmeddata>
+ </pubmedarticle>
+</pubmedarticleset>
+
