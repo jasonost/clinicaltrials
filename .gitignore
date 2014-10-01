@@ -58,6 +58,7 @@ docs/_build/
 connect.py
 
 # data
+data/
 *.json
 *.pickle
 
