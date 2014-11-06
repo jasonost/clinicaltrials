@@ -60,6 +60,6 @@ connect.py
 # data
 *.json
 *.pickle
-
+data/
 
 *.pickle
