@@ -3,11 +3,11 @@
     <meta charset="UTF-8" />
     <title>Clinical Trials Browser</title>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Roboto:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/main.css">
-    <script type="text/javascript" src="js/d3.v3.min.js"></script>
-    <script type="text/javascript" src="js/topojson.v1.min.js"></script>
-    <script type="text/javascript" src="js/d3.geo.projection.v0.min.js"></script>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/browser.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/topojson.v1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/d3.geo.projection.v0.min.js') }}"></script>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon.png') }}">
 </head>
 <body>
     <div id="tutorial">
@@ -88,7 +88,7 @@
 
     </div>
 
-    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/browser_viz.js') }}"></script>
 
 </body>
 </html>

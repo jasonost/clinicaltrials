@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clincial Trial Search</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Style -->
+    <link href="{{ url_for('static', filename='js/jquery-ui/jquery-ui.css') }}" rel="stylesheet"
+    >
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <div id='index' class='wrapper container'>
+        <header id='main-search' class='container'>
+        <div class='page-header row'>
+            <div class='col-md-6'>
+            <h2>Trial Search</h2>
+                    <form class="search form-inline" role="form">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <label class="sr-only" for="search-text">Condition and Institution Search</label>
+                          <div class="input-group-addon">
+                            <span class='glyphicon glyphicon-search'></span>
+                          </div>
+                          <input type="text" class="form-control" id="search-text" placeholder="Search by condition or institution.">
+                  <div class="btn btn-primary input-group-addon">
+                    Search
+                  </div>
+                        </div>
+                      </div>
+                    </form>
+            </div>
+        </div>
+        </header>
+        <section class='container'>
+        <h2>Institution Search</h2>
+
+        <div class='row'>
+          <div class='top-institutions col-md-4'>
+            <div class='overflow'>
+              <ul class='list-group'>
+                <li  class='list-group-item row'>
+                  <a id='institution-017j69' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/en/thumb/6/69/Northwestern_University_Seal.svg/1030px-Northwestern_University_Seal.svg.png' alt='Northwestern University Logo'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Northwestern University</h3>
+                      <p class='institution-location text-muted'>Chicago, IL
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-0gvbw' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/hi/f/f8/Pfizer_logo.svg.png'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Pfizer</h3>
+                      <p class='institution-location text-muted'>Brooklyn, NY
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-08w_vc' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://swog.org/visitors/newsletters/2009/11/images/swog-qa.gif'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Pediatric Oncology Group</h3>
+                      <p class='institution-location text-muted'>Bethesda, MD
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-03r820' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='https://pbs.twimg.com/profile_images/217632023/Twitter_Logo_v2.jpg'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Amgen</h3>
+                      <p class='institution-location text-muted'>Thousand Oaks, CA
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-04_5j9k' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img src='http://www.greenwaysfornashville.org/events/sm_files/vanderbilt%20logo2.jpg'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Vanderbilt-Ingram Cancer Center</h3>
+                      <p class='institution-location text-muted'>Nashville, TN
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div> <!-- end .top-institutions -->
+          
+          <div class='col-md-8'>
+            <div class="panel panel-default">
+              <div class="panel-heading">Showing all institutions.</div>
+              <div id="map" class="panel-body">
+                Panel content
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </section>
+
+    {% include 'footer.html' %}
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+  </body>
+</html>

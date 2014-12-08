@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clincial Trial Search::Condition::Lung Cancer</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/condition.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <div id='condition-D008175' class='condition wrapper'>
+      <section class='container'>
+        <div class='row'>
+          <header class='page-header col-md-12'>
+            <h1>Lung Cancer 
+              <small>Lung Neoplasms</small>
+              <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="Medical Subject Heading Term (MeSH)">?</button>
+            </h1>
+            <div class='meta row'>
+              <div class='summary col-md-6'>
+                <p class='small'>
+                  <span class='key'>Summary: </span>
+                  Lung cancer is one of the most common cancers in the world. It is a leading cause of cancer death in men and women in the United States. Cigarette smoking causes most lung cancers. The more cigarettes you smoke per day and the earlier you started smoking, the greater your risk of lung cancer. High levels of pollution, radiation and asbestos exposure may also increase risk.</p>
+              </div>
+              <div class='symptoms col-md-6'>
+                <p class='small'>
+                  <span class='key'>Synonyms: </span>
+                  <span class='synonym inline-list-item'>Lung Neoplasm</span>
+                  <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IIIA</span>
+                  <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IIIB</span>
+                  <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IV</span>
+                </p>
+              </div>
+            </div> <!-- end .condition-meta.row -->
+          </header>
+        </div> <!-- end row -->
+      </section>
+      <section class='container'>
+        <div class='row'>
+          <div class='active-trials col-md-8'>
+            <h2>Active Trials <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="Trials with Active and Recruiting Status">?</button></h2>
+            <div class='overflow'>
+              <div id='trial-NCT01574300' class='trial block-list-item'>
+                <h3 class='h4'>
+                  <a href='http://clinicaltrials.gov/ct2/show/NCT01574300?term=lung+cancer&state1=NA%3AUS%3ACA&rank=3' target='_blank'>
+                  Collaborative Advanced Stage Tissue Lung Cancer (CASTLE) Network
+                  </a>
+                </h3>
+                <div class='people-place row'>
+                  <div class='institute col-md-6'>
+                    <p class='small'>
+                    <a class='text-info' href="{{ url_for('institution') }}">Northwestern University</a></p>
+                  </div>
+                  <div class='researcher col-md-6'>
+                    <p class='small text-muted'>Leora Horn, MD</p>
+                  </div>
+                </div> <!-- end .people-place -->
+                <div class='conditions-interventions row'>
+                  <div class='col-md-12'>
+                    <p class='conditions-list'>
+                      <span class='key'>Conditions: </span>
+                      <a class='condition inline-list-item text-info' href='#'>Non-small Cell Lung Cancer Metastatic</a>
+                      <a class='condition inline-list-item text-info' href='#'>Small Cell Lung Carcinoma</a>
+                    </p>
+                    <p class='intervention-list'>
+                      <span class='key'>Interventions: </span>
+                      <a class='intervention inline-list-item text-info' href='#'>Other: therapeutic interventions</a>
+                    </p>
+                  </div>
+                </div> <!-- end .conditions-interventions -->
+              </div> <!-- end #trial-NCT01574300 -->
+              <div id='trial-NCT00920010' class='trial block-list-item'>
+                <h3 class='h4'>
+                  <a href='http://clinicaltrials.gov/ct2/show/NCT00920010?term=lung+cancer&state1=NA%3AUS%3ACA&rank=5'>
+                  S9925: Collecting and Storing Samples From Patients With Lung Cancer
+                  </a>
+                </h3>
+                <div class='people-place row'>
+                  <div class='institute col-md-6'>
+                    <p class='small'>
+                    <a class='text-info' href="{{ url_for('institution') }}">Southwest Oncology Group</a></p>
+                  </div>
+                  <div class='researcher col-md-6'></div>
+                </div>
+                <div class='conditions-interventions row'>
+                  <div class='col-md-12'>
+                    <p class='conditions-list'>
+                      <span class='key'>Conditions: </span>
+                      <a class='condition inline-list-item text-info' href='#'>Lung Cancer</a>
+                    </p>
+                    <p class='intervention-list'>
+                      <span class='key'>Interventions: </span>
+                      <a class='intervention inline-list-item text-info' href='#'>Other: biologic sample preservation procedure</a>
+                    </p>
+                  </div>
+                </div>
+              </div> <!-- end .NCT00920010 -->
+              <div id='trial-NCT00858364' class='trial block-list-item'>
+                <h3 class='h4'>
+                  <a href='http://clinicaltrials.gov/ct2/show/NCT00858364?term=lung+cancer&state1=NA%3AUS%3ACA&rank=11'>
+                  Anemia Treatment for Advanced Non-Small Cell Lung Cancer (NSCLC) Patients Receiving Chemotherapy
+                  </a>
+                </h3>
+                <div class='people-place row'>
+                  <div class='institute col-md-6'>
+                    <p class='small'>
+                    <a class='text-info' href="{{ url_for('institution') }}">Amgen</a></p>
+                  </div>
+                  <div class='researcher col-md-6'></div>
+                </div>
+                <div class='conditions-interventions row'>
+                  <div class='col-md-12'>
+                    <p class='conditions-list'>
+                      <span class='key'>Conditions: </span>
+                      <a class='condition inline-list-item text-info' href='#'>Non-Small Cell Lung Cancer</a>
+                      <a class='condition inline-list-item text-info' href='#'>Anemia</a>
+                      <a class='condition inline-list-item text-info' href='#'>Cancer</a>
+                      <a class='condition inline-list-item text-info' href='#'>Lung Cancer</a>
+                    </p>
+                    <p class='intervention-list'>
+                      <span class='key'>Interventions: </span>
+                      <a class='intervention inline-list-item text-info' href='#'>Drug: darbepoetin alfa 
+                      500 mcg Q3W</a>
+                    </p>
+                  </div>
+                </div>
+              </div> <!-- end .NCT00858364 -->
+              <div id='trial-NCT00932451' class='trial block-list-item'>
+                <h3 class='h4'>
+                  <a href='http://clinicaltrials.gov/ct2/show/NCT00932451?term=lung+cancer&state1=NA%3AUS%3ACA&rank=12'>
+                  An Investigational Drug, PF-02341066, Is Being Studied In Patients With Advanced Non-Small Cell Lung Cancer With A Specific Gene Profile Involving The Anaplastic Lymphoma Kinase (ALK) Gene
+                  </a>
+                </h3>
+                <div class='people-place row'>
+                  <div class='institute col-md-6'>
+                    <p class='small'>
+                    <a class='text-info' href="{{ url_for('institution') }}">Pfizer</a></p>
+                  </div>
+                  <div class='researcher col-md-6'></div>
+                </div>
+                <div class='conditions-interventions row'>
+                  <div class='col-md-12'>
+                    <p class='conditions-list'>
+                      <span class='key'>Conditions: </span>
+                      <a class='condition inline-list-item text-info' href='#'>Carcinoma</a>
+                      <a class='condition inline-list-item text-info' href='#'>Non-Small-Cell Lung</a>
+                    </p>
+                    <p class='intervention-list'>
+                      <span class='key'>Interventions: </span>
+                      <a class='intervention inline-list-item text-info' href='#'>Drug: PF-02341066</a>
+                    </p>
+                  </div>
+                </div>
+              </div> <!-- end .NCT00932451 -->
+            </div>
+          </div> <!-- end .active-trials -->
+          <div class='top-institutions col-md-4'>
+            <h2>Top Institutions</h2>
+            <div class='overflow'>
+              <ul class='list-group'>
+                <li  class='list-group-item row'>
+                  <a id='institution-017j69' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/en/thumb/6/69/Northwestern_University_Seal.svg/1030px-Northwestern_University_Seal.svg.png' alt='Northwestern University Logo'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Northwestern University</h3>
+                      <p class='institution-location text-muted'>Chicago, IL
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-0gvbw' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/hi/f/f8/Pfizer_logo.svg.png'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Pfizer</h3>
+                      <p class='institution-location text-muted'>Brooklyn, NY
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-08w_vc' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='http://swog.org/visitors/newsletters/2009/11/images/swog-qa.gif'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Pediatric Oncology Group</h3>
+                      <p class='institution-location text-muted'>Bethesda, MD
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-03r820' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img class='img-rounded' src='https://pbs.twimg.com/profile_images/217632023/Twitter_Logo_v2.jpg'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Amgen</h3>
+                      <p class='institution-location text-muted'>Thousand Oaks, CA
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+                <li  class='list-group-item row'>
+                  <a id='institution-04_5j9k' class='institution' href="{{ url_for('institution') }}">
+                   <div class='institution-logo col-md-3'>
+                        <img src='http://www.greenwaysfornashville.org/events/sm_files/vanderbilt%20logo2.jpg'/>
+                    </div> <!-- end .institution-logo -->
+                    <div class='institution-location caption col-md-9'>
+                      <h3 class='institution-name h4'>Vanderbilt-Ingram Cancer Center</h3>
+                      <p class='institution-location text-muted'>Nashville, TN
+                        <span class='rating'>
+                          <span class='glyphicon glyphicon-star'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                          <span class='glyphicon glyphicon-star-empty'></span>
+                        </span>
+                      </p>
+                    </div> <!-- end .institution-logo -->
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div> <!-- end .top-institutions -->
+        <div> 
+      </section>
+    </div>
+    
+    {% include 'footer.html' %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
