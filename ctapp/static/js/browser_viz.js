@@ -573,7 +573,7 @@ var cond_filter = '',
 ****************************************************/
 
 // load data
-d3.json("vizdata/all_data.json", function(error, json) {
+d3.json("static/assets/all_data.json", function(error, json) {
     if (error) return console.warn(error);
 
     data = curdata = json.studies;
@@ -608,7 +608,7 @@ d3.json("vizdata/all_data.json", function(error, json) {
     drawSponsorChart();
     drawStatusChart();
 
-    d3.json("vizdata/continent-geogame-110m.json", function(error, geojson) {
+    d3.json("static/assets/continent-geogame-110m.json", function(error, geojson) {
         drawMap(geojson);
         updateLocationChart();
         drawTutorial();

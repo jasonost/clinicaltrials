@@ -1,0 +1,32 @@
+.search.form-inline,
+.search.form-inline .form-group,
+.search.form-inline .form-group .input-group{
+	width: 100%;
+}
+
+.search.form-inline{
+	margin-bottom: 1.43em;
+}
+
+.search.form-inline .form-group .input-group,
+.search.form-inline .form-group .input-group input[type=text]{
+	height: 40px;
+}
+
+.btn.input-group-addon{
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+}
+
+.ui-autocomplete-category{
+	font-weight: bold;
+}
+
+#map { 
+	height: 400px;
+}
+
+.leaflet-popup{
+	cursor: pointer;
+}
