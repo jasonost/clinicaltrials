@@ -3,26 +3,27 @@
   <header class='page-header container'>
     <div class='row'>
       <div class='col-md-12'>
-        <h1>Lung Cancer 
-          <small>Lung Neoplasms</small>
-          <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="Medical Subject Heading Term (MeSH)">?</button>
+        <h1>{ cond_name } 
+          <small>{ cond_name_mesh }</small>
+          <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="{ cond_name_mesh_info }">?</button>
         </h1>
       </div>
     </div>
     <div class='row'>
-      <div class='summary col-md-6'>
-        <p class='small'>
-          <span class='key'>Summary: </span>
-          Lung cancer is one of the most common cancers in the world. It is a leading cause of cancer death in men and women in the United States. Cigarette smoking causes most lung cancers. The more cigarettes you smoke per day and the earlier you started smoking, the greater your risk of lung cancer. High levels of pollution, radiation and asbestos exposure may also increase risk.</p>
-      </div>
-      <div class='symptoms col-md-6'>
-        <p class='small'>
-          <span class='key'>Synonyms: </span>
+      <div class='symptoms small col-md-12'>
+        <h2 class='h4'>Synonyms</h2>
+        <p>
           <span class='synonym inline-list-item'>Lung Neoplasm</span>
           <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IIIA</span>
           <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IIIB</span>
           <span class='synonym inline-list-item'>Carcinoma Non-small Cell Lung Cancer Stage IV</span>
         </p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='summary small col-md-12'>
+          <h2 class='h4'>Summary</h2>
+          { inst_summary }
       </div>
     </div>
   </header>

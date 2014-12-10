@@ -3,27 +3,26 @@
   <header class='page-header container'>
   	<div class='row'>
       <div class='institution-logo col-md-1'>
-        <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/en/thumb/6/69/Northwestern_University_Seal.svg/1030px-Northwestern_University_Seal.svg.png' alt='Northwestern University Logo'/>
+        <img class='img-rounded' src="{{ url_for('static', filename = 'assets/images/favicon.png') }}" alt="{ inst_name } Logo"/>
         </div> <!-- end .institution-logo -->
         <div class='institution-location caption col-md-11'>
-          <h1 class='institution-name'>Northwestern University
-          	<br><small>Chicago, IL
+          <h1 class='institution-name'>{ inst_name }
+          	<br><small>{ inst_loc }
             <span class='rating'>
               <span class='glyphicon glyphicon-star'></span>
               <span class='glyphicon glyphicon-star'></span>
               <span class='glyphicon glyphicon-star'></span>
               <span class='glyphicon glyphicon-star'></span>
               <span class='glyphicon glyphicon-star-empty'></span>
-              <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="This rating is based on our imagination at this point.">?</button>
+              <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title=" { inst_rating_info }">?</button>
             </span></small>
           </h1>
         </div> <!-- end .institution-location -->
     </div> <!-- end .row -->
     <div class='meta row'>
-      <div class='summary col-md-12'>
-        <p class='small'>
-          <span class='key'>Summary: </span>
-          Northwestern University is a private research university with campuses in Evanston and Chicago in Illinois, United States. Northwestern has 12 undergraduate, graduate, and professional schools offering 124 undergraduate degrees and 145 graduate and professional degrees. Northwestern was founded in 1851 by John Evans, for whom Evanston is named, and eight other lawyers, businessmen and Methodist leaders to serve the people of a region that had once been known as the Northwest Territory. Instruction began in 1855; women were admitted in 1869. Today, the main campus is a 240-acre parcel in Evanston, along the shores of Lake Michigan. The university's law and medical schools are located on a 25-acre campus in Chicago's Streeterville neighborhood. In 2008, the University opened a campus in Education City, Doha, Qatar with programs in journalism and communication. Today, Northwestern University ranks as one of the leading research institutions in the world especially in the physical and life sciences. In academic year 2010–2011, Northwestern enrolled 8,397 undergraduate and 7,870 graduate and professional students.</p>
+      <div class='summary small col-md-12'>        
+        <span class='key'>Summary: </span>
+        { inst_summary }
       </div>
     </div> <!-- end .meta.row -->
   </header>
