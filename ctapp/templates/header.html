@@ -1,10 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clincial Trial Search::Condition::Lung Cancer</title>
+
+    <!-- GLOBAL -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <!-- INDEX -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+      <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+    <!-- CONDITION PAGE -->
+    <link href="{{ url_for('static', filename='css/condition.css') }}" rel="
+    stylesheet">
+    <!-- INSTITUTION PAGE -->
+    <link href="{{ url_for('static', filename='css/institution.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid wrapper">
         <div class="navbar-header row">
-          <a class="navbar-brand col-md-1" href="{{ url_for('home') }}">
+          <a class="navbar-brand col-xs-2 col-sm-1 col-md-1" href="{{ url_for('home') }}">
             <img alt="Brand" src="http://foodwallpaper.info/wp-content/uploads/2014/06/health-care-symbol-png.png">
           </a>
-          <h1 class='site-name col-md-11'><a href="{{ url_for('home') }}">Clinical Trial Search</a></h1>
+          <h1 class='site-name col-xs-10 col-sm-11 col-md-11'><a href="{{ url_for('home') }}">Clinical Trial Search</a></h1>
         </div>
       </div>
     </nav>

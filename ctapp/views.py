@@ -20,4 +20,3 @@ def institution():
 @app.route('/condition')
 def condition():
     return flask.render_template('condition.html')
-

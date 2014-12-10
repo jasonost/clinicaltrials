@@ -30,3 +30,14 @@
 .leaflet-popup{
 	cursor: pointer;
 }
+
+@media (max-width: 992px) {
+	.institution .institution-logo{
+		display: none;
+	}
+}
+@media (max-width: 768px){
+	.index .institution-list .overflow{
+		display: none;
+	}
+}
