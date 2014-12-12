@@ -2,7 +2,7 @@ function loadJSON(callback) {
 
   var xobj = new XMLHttpRequest();
       xobj.overrideMimeType("application/json");
-            xobj.open('GET', 'clinicaltrials/static/assets/typeahead.json', true); // Replace 'my_data' with the path to your file
+            xobj.open('GET', 'static/js/typeahead.json', true); // Replace 'my_data' with the path to your file
             xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
           // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -30,7 +30,6 @@ $(function() {
     loadJSON(function(response) {
         // Parse JSON string into object
         var data = JSON.parse(response);
-
       $( "#search-text" ).catcomplete({
           delay: 0,
           source: data,
@@ -38,10 +37,10 @@ $(function() {
             minLength:2,
             select: function(event, ui) {
                 if(ui.item.category == "Institution"){
-                    window.location = "http://groups.ischool.berkeley.edu/clinicaltrials/institution?inst=";
+                    window.location = "institution?inst="+ui.item.inst_id;
                 }
                 else if(ui.item.category == "Condition"){
-                    window.location = "http://groups.ischool.berkeley.edu/clinicaltrials/condition?cond=";
+                    window.location = "condition?cond="+ui.item.cond_id;
                 }
             }
       });
