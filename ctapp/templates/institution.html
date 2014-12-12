@@ -1,10 +1,9 @@
 {% include 'header.html' %}
-{{ inst_data }}
-<div id='institution-017j69' class='institution wrapper'>
+<div id='institution-{{ inst_id }}' class='institution wrapper'>
   <header class='page-header container'>
   	<div class='row'>
       <div class='institution-logo col-md-1'>
-        <img class='img-rounded' src="{{ url_for('static', filename = 'assets/images/favicon.png') }}" alt="{ inst_name } Logo"/>
+        <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
         </div> <!-- end .institution-logo -->
         <div class='institution-location caption col-md-11'>
           <h1 class='institution-name'>{{ inst_name }}
@@ -42,5 +41,5 @@
       {% include 'publications_list.html' %}
     </div> <!-- end .row -->
   </section>
-</div> <!-- end #institution-017j69 -->
+</div> <!-- end #institution-id -->
 {% include 'footer.html' %}

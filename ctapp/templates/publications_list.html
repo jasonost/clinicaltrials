@@ -1,77 +1,30 @@
 <div class='publications col-xs-8 col-sm-8 col-md-8'>
-  <h2>Recent Publications</h2>
-  <div class='overflow'>
-    <div id='publication-25464086' class='publication block-list-item'>
-      <h3 class='h4'>
-        <a href='http://www.ncbi.nlm.nih.gov/pubmed/25464086' target='_blank'>
-        Predict the glass transition temperature and plasticization of β-cyclodextrin/water binary system by molecular dynamics simulation.
-        </a>
-      </h3>
-      <p> <span class='key'>Authors: </span>
-          <span class='author inline-list-item'>Zhou G</span>
-          <span class='author inline-list-item'>Zhao T</span>
-          <span class='author inline-list-item'>Wan J</span>
-          <span class='author inline-list-item'>Liu C</span>
-          <span class='author inline-list-item'>Liu W</span>
-          <span class='author inline-list-item'>Wang R.</span>
-      </p>
-      <p class='small text-muted'>
-        Carbohydr Res. 2014 Nov 4;401C:89-95. doi: 10.1016/j.carres.2014.10.026. [Epub ahead of print]
-      </p>
-      <p class='small text-muted'>
-        PMID: 25464086 [PubMed - as supplied by publisher]
-      </p>
-    </div> <!-- end #publication-25464086 -->
-    <div id='publication-25464005' class='publication block-list-item'>
-      <h3 class='h4'>
-        <a href='http://www.ncbi.nlm.nih.gov/pubmed/25464005' target='_blank'>
-        Concordance between Patient Self-Reports and Claims Data on Clinical Diagnoses, Medication Use, and Health System Utilization in Taiwan.
-        </a>
-      </h3>
-      <p> <span class='key'>Authors: </span>
-        <span class='author inline-list-item'>Wu CS</span>
-        <span class='author inline-list-item'>Lai MS</span>
-        <span class='author inline-list-item'>Gau SS</span>
-        <span class='author inline-list-item'>Wang SC</span>
-        <span class='author inline-list-item'>Tsai HJ.</span>
-      </p>
-      <p class='small text-muted'>
-        PLoS One. 2014 Dec 2;9(12):e112257. doi: 10.1371/journal.pone.0112257. eCollection 2014.
-      </p>
-      <p class='small text-muted'>
-        PMID: 25464005 [PubMed - as supplied by publisher]
-      </p>
-    </div> <!-- end #publication-25464005 -->
-    <div id='publication-25463993' class='publication block-list-item'>
-      <h3 class='h4'>
-        <a href='http://www.ncbi.nlm.nih.gov/pubmed/25463993' target='_blank'>
-        The Prostate Health Index (phi) Selectively Identifies Clinically-Significant Prostate Cancer.
-        </a>
-      </h3>
-      <p> <span class='key'>Authors: </span>
-          <span class='author inline-list-item'>Loeb S</span>
-          <span class='author inline-list-item'>Sanda MG</span>
-          <span class='author inline-list-item'>Broyles DL</span>
-          <span class='author inline-list-item'>Shin SS</span>
-          <span class='author inline-list-item'>Bangma CH</span>
-          <span class='author inline-list-item'>Wei JT</span>
-          <span class='author inline-list-item'>Partin AW</span>
-          <span class='author inline-list-item'>Klee GG</span>
-          <span class='author inline-list-item'>Slawin KM</span>
-          <span class='author inline-list-item'>Marks LS</span>
-          <span class='author inline-list-item'>van Schaik RH</span>
-          <span class='author inline-list-item'>Chan DW</span>
-          <span class='author inline-list-item'>Sokoll LJ</span>
-          <span class='author inline-list-item'>Cruz AB</span>
-          <span class='author inline-list-item'>Mizrahi IA</span>
-          <span class='author inline-list-item'>Catalona WJ.</span>
-      </p>
-      <p class='small text-muted'>
-        J Urol. 2014 Nov 15. pii: S0022-5347(14)04900-3. doi: 10.1016/j.juro.2014.10.121. [Epub ahead of print]
-      </p>
-      <p class='small text-muted'>
-        PMID: 25463993 [PubMed - as supplied by publisher]
-      </p>
-    </div> <!-- end #publication-25463993 -->
-  </div>
+  {% if inst_pubs %}
+    <h2>Recent Publications</h2>
+    <div class='overflow'>
+      {% for publication in inst_pubs %}
+        <div id='publication-{{ publication.pubmed_id }}' class='publication block-list-item'>
+          <h3 class='h4'>
+            <a href='http://www.ncbi.nlm.nih.gov/pubmed/{{ publication.pubmed_id }}' target='_blank'>
+            {{ publication.pub_title }}
+            </a>
+            <small><i class='glyphicon glyphicon-new-window'></i></small>
+          </h3>
+          {% if publication.pub_authors %}
+            <p> <span class='key'>Authors: </span>
+            {% for author in publication.pub_authors %}
+              <span class='author inline-list-item'>{{ author }}</span>
+            {% endfor %}
+            </p>
+          {% endif %}
+          <p class='small text-muted'>
+            DOI: {{ publication.pub_doi }}
+          </p>
+          <p class='small text-muted'>
+            PMID: {{ publication.pubmed_id }} [PubMed - as supplied by publisher]
+          </p>
+        </div> <!-- end #publication-pubmed_id -->
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
