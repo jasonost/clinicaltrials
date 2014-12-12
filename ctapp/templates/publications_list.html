@@ -1,6 +1,6 @@
 <div class='publications col-xs-8 col-sm-8 col-md-8'>
+  <h2>Recent Publications</h2>
   {% if inst_pubs %}
-    <h2>Recent Publications</h2>
     <div class='overflow'>
       {% for publication in inst_pubs %}
         <div id='publication-{{ publication.pubmed_id }}' class='publication block-list-item'>
@@ -25,6 +25,8 @@
           </p>
         </div> <!-- end #publication-pubmed_id -->
       {% endfor %}
-    </div>
+    </div> <!-- end .overflow -->
+    {% else %}
+    <h3 class='text-muted'>No researchers for {{ inst_name }}</h3>
   {% endif %}
 </div>

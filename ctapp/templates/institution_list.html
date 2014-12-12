@@ -6,7 +6,9 @@
 	{% endif %}
   <div class='overflow'>
     <ul class='list-group'>
-      {% include 'institution_list_single.html' %}
+    	{% for institution in institution_list %}
+	      {% include 'institution_list_single.html' %}
+    	{% endfor %}
     </ul>
   </div>
 </div> <!-- end .institution-list -->

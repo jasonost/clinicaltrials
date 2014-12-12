@@ -9,15 +9,17 @@
         </h1>
       </div>
     </div>
-    <div class='row'>
-      <div class='symptoms small col-md-12'>
-        <h2 class='h4'>Synonyms</h2>
-        <p>
-          {% for synonym in cond_synonyms %}
-            <span class='synonym inline-list-item'>{{ synonym }}</span>
-          {% endfor %}
-        </p>
-      </div>
+    <div class='row'>      
+      {% if cond_synonyms %}
+        <div class='synonyms-list small col-md-12'>
+          <h2 class='h4'>Synonyms</h2>
+          <p>
+            {% for synonym in cond_synonyms %}
+              <span class='synonym inline-list-item'>{{ synonym }}</span>
+            {% endfor %}
+          </p>
+        </div>
+      {% endif %}
     </div>
     <div class='row'>
       <div class='summary small col-md-12'>

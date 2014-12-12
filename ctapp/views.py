@@ -50,14 +50,14 @@ def condition():
     params = request.args
     if 'cond' in params:
         db = mongo_connect(mongoip)
-        cond_data = db.conditions.find_one({'cond_id': str(params['cond'])})
+        cond_data = db.conditions.find_one({'cond_id': int(params['cond'])})
         return flask.render_template('condition.html', 
                                     cond_name=cond_data['cond_name'],
                                     cond_name_mesh=cond_data['cond_name_mesh'],
                                     cond_summary=cond_data['cond_summary'],
                                     cond_synonyms=cond_data['cond_synonyms'],
                                     trials_active=cond_data['cond_trials_active'],
-                                    cond_inst_top=cond_data['cond_inst_top'],
+                                    institution_list=cond_data['cond_inst_top'],
                                     cond_name_mesh_info=cond_name_mesh_info
                                     )
     else:

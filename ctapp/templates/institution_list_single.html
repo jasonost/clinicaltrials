@@ -1,11 +1,18 @@
 <li  class='list-group-item row'>
-  <a id='institution-017j69' class='institution' href="{{ url_for('institution') }}">
-   <div class='institution-logo col-md-3'>
-      <img class='img-rounded' src="{{ url_for('static', filename = 'assets/images/favicon.png') }}" alt="{ inst_name } Logo"/>
+  <a id='institution-{{institution.inst_id}}' class='institution' href="/institution?inst={{ institution.inst_id }}">
+
+  {% if institution.inst_img %}
+    <div class='institution-logo col-md-3'>
+      <img class='img-rounded' src="{{ institution.inst_img }}" alt="{{ institution.inst_name }} Logo"/>
     </div> <!-- end .institution-logo -->
     <div class='institution-location caption col-xs-12 col-sm-12 col-md-9'>
-      <h3 class='institution-name h4'>{ inst_name }</h3>
-      <p class='institution-location text-muted'>{ inst_loc }</p>
+  {% else %}
+    <div class='institution-location caption col-xs-12 col-sm-12 col-md-12'>
+  {% endif %}
+
+    
+      <h3 class='institution-name h4'>{{ institution.inst_name }}</h3>
+      <p class='institution-location text-muted'>{{ institution.inst_loc }}</p>
       <p class='rating'>
         <span class='glyphicon glyphicon-star'></span>
         <span class='glyphicon glyphicon-star'></span>
