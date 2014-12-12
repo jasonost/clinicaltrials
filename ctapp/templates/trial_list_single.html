@@ -1,28 +1,29 @@
-<div id='trial-######' class='trial block-list-item'>
+<div id='trial-{{trial.trial_id}}' class='trial block-list-item'>
   <h3 class='h4'>
-    <a href='http://clinicaltrials.gov/ct2/show/NCT01574300?term=lung+cancer&state1=NA%3AUS%3ACA&rank=3' target='_blank'>
-    Collaborative Advanced Stage Tissue Lung Cancer (CASTLE) Network
+    <a href='http://clinicaltrials.gov/ct2/show/{{ trial.trial_id }}' target='_blank'>
+    {{ trial.trial_title }}
     </a>
   </h3>
   <div class='people-place row'>
     <div class='institute col-md-6'>
-      <p class='small'>
-      <a class='text-info' href="{{ url_for('institution') }}">Northwestern University</a></p>
-    </div>
-    <div class='researcher col-md-6'>
-      <p class='small text-muted'>Leora Horn, MD</p>
+      <p class='small'>{{ trial.trial_sponsor }}</p>
     </div>
   </div> <!-- end .people-place -->
   <div class='conditions-interventions row'>
     <div class='col-md-12'>
       <p class='conditions-list'>
         <span class='key'>Conditions: </span>
-        <a class='condition inline-list-item text-info' href='#'>Non-small Cell Lung Cancer Metastatic</a>
-        <a class='condition inline-list-item text-info' href='#'>Small Cell Lung Carcinoma</a>
+        {% for condition in trial.trial_cond %}
+          <a class='condition inline-list-item text-info' href='/condition?cond=101'>{{ condition.cond_name }}</a>
+        {% endfor %}
       </p>
       <p class='intervention-list'>
-        <span class='key'>Interventions: </span>
-        <a class='intervention inline-list-item text-info' href='#'>Other: therapeutic interventions</a>
+        {% if trial.trial_iv > 0 %}
+          <span class='key'>Interventions: </span>
+          {% for intervention in trial.trial_iv %}
+            {{ intervention }}
+          {% endfor %}
+        {% endif %}
       </p>
     </div>
   </div> <!-- end .conditions-interventions -->
