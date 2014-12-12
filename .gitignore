@@ -61,6 +61,7 @@ connect.py
 data/
 *.json
 *.pickle
+*.pkl
 data/
 
 *.pickle
