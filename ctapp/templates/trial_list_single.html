@@ -1,0 +1,33 @@
+<div id='trial-{{trial.trial_id}}' class='trial block-list-item'>
+  <h3 class='h4'>
+    <a href='http://clinicaltrials.gov/ct2/show/{{ trial.trial_id }}' target='_blank'>
+      {{ trial.trial_title }}
+    </a>
+    <small><i class='glyphicon glyphicon-new-window'></i></small>
+  </h3>
+  <div class='people-place row'>
+    <div class='institute col-md-6'>
+      <p class='small'>{{ trial.trial_sponsor }}</p>
+    </div>
+  </div> <!-- end .people-place -->
+  <div class='conditions-interventions row'>
+    <div class='col-md-12'>
+      {% if trial.trial_cond %}
+        <p class='conditions-list'>
+          <span class='key'>Conditions: </span>
+          {% for condition in trial.trial_cond %}
+            <a class='condition inline-list-item text-info' href='condition?cond={{ condition.cond_id }}'>{{ condition.cond_name }}</a>
+          {% endfor %}
+        </p>
+      {% endif %}
+      <p class='intervention-list'>
+        {% if trial.trial_iv > 0 %}
+          <span class='key'>Interventions: </span> 
+          {% for intervention in trial.trial_iv %}
+            {{ intervention }}
+          {% endfor %}
+        {% endif %}
+      </p>
+    </div>
+  </div> <!-- end .conditions-interventions -->
+</div> <!-- end #trial-NCT01574300 -->

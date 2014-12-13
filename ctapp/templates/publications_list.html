@@ -1,0 +1,32 @@
+<div class='publications col-xs-8 col-sm-8 col-md-8'>
+  <h2>Recent Publications</h2>
+  {% if inst_pubs %}
+    <div class='overflow'>
+      {% for publication in inst_pubs %}
+        <div id='publication-{{ publication.pubmed_id }}' class='publication block-list-item'>
+          <h3 class='h4'>
+            <a href='http://www.ncbi.nlm.nih.gov/pubmed/{{ publication.pubmed_id }}' target='_blank'>
+            {{ publication.pub_title }}
+            </a>
+            <small><i class='glyphicon glyphicon-new-window'></i></small>
+          </h3>
+          {% if publication.pub_authors %}
+            <p> <span class='key'>Authors: </span>
+            {% for author in publication.pub_authors %}
+              <span class='author inline-list-item'>{{ author }}</span>
+            {% endfor %}
+            </p>
+          {% endif %}
+          <p class='small text-muted'>
+            DOI: {{ publication.pub_doi }}
+          </p>
+          <p class='small text-muted'>
+            PMID: {{ publication.pubmed_id }} [PubMed - as supplied by publisher]
+          </p>
+        </div> <!-- end #publication-pubmed_id -->
+      {% endfor %}
+    </div> <!-- end .overflow -->
+    {% else %}
+    <h3 class='text-muted'>No publications for {{ inst_name }}</h3>
+  {% endif %}
+</div>

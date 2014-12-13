@@ -1,6 +1,30 @@
-    <footer class='text-muted' role='contentinfo'>
-      <div class='container'>
-        <a class='site-name text-info' href="{{ url_for('home') }}"><h1 class='h4'>Clinical Trial Search</h1></a>
-        <p>by Katey Basye, Colin Gerber, Jason Ost</p>
-      </div>
-    </footer>
+		<footer class='text-muted' role='contentinfo'>
+		  <div class='container'>
+		    <a class='site-name text-info' href="{{ url_for('home') }}"><h1 class='h4'>Clinical Trial Search</h1></a>
+		    <p>by Katey Basye, Colin Gerber, Jason Ost</p>
+		  </div>
+		</footer>
+
+
+    </div> <!-- end .wrapper.container -->
+
+    <!-- All -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap_components.js') }}"></script>
+    
+    <!-- INDEX PAGE -->
+    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+
+    <!-- INSTITUTION PAGE -->
+    <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/institution.js') }}"></script>
+
+  </body>
+</html>
+

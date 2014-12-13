@@ -1,0 +1,25 @@
+<li  class='list-group-item row'>
+  <a id='institution-{{institution.inst_id}}' class='institution' href="/institution?inst={{ institution.inst_id }}">
+
+  {% if institution.inst_img %}
+    <div class='institution-logo col-md-3'>
+      <img class='img-rounded' src="{{ institution.inst_img }}" alt="{{ institution.inst_name }} Logo"/>
+    </div> <!-- end .institution-logo -->
+    <div class='institution-location caption col-xs-12 col-sm-12 col-md-9'>
+  {% else %}
+    <div class='institution-location caption col-xs-12 col-sm-12 col-md-12'>
+  {% endif %}
+
+    
+      <h3 class='institution-name h4'>{{ institution.inst_name }}</h3>
+      <p class='institution-location text-muted'>{{ institution.inst_loc }}</p>
+      <p class='rating'>
+        <span class='glyphicon glyphicon-star'></span>
+        <span class='glyphicon glyphicon-star'></span>
+        <span class='glyphicon glyphicon-star'></span>
+        <span class='glyphicon glyphicon-star'></span>
+        <span class='glyphicon glyphicon-star-empty'></span>
+      </p>
+    </div> <!-- end .institution-logo -->
+  </a>
+</li>

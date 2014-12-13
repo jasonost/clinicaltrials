@@ -1,0 +1,14 @@
+<div class='researchers col-xs-4 col-sm-4 col-md-4'>
+  <h2>Researchers</h2>
+  {% if inst_researchers %}
+    <ul class='list-group overflow'>
+    {% for researcher in inst_researchers %}
+      <li  class='researcher list-group-item'>
+        <h3 class='researcher-name h4'>{{ researcher.researcher_name }}<small> ({{ researcher.researcher_count }} trials)</small></h3>
+      </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <h3 class='text-muted'>No researchers for {{ inst_name }}</h3>
+  {% endif %}
+</div>

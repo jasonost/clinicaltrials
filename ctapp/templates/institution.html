@@ -1,252 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clincial Trial Search::Institution::Northwestern University</title>
-
-    <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Style -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/institution.css') }}" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    {% include 'header.html' %}
-    
-    <div id='institution-017j69' class='institution wrapper'>
-      <header class='page-header container'>
-      	<div class='row'>
-            <div class='institution-logo col-md-1'>
-            <img class='img-rounded' src='http://upload.wikimedia.org/wikipedia/en/thumb/6/69/Northwestern_University_Seal.svg/1030px-Northwestern_University_Seal.svg.png' alt='Northwestern University Logo'/>
-            </div> <!-- end .institution-logo -->
-            <div class='institution-location caption col-md-11'>
-              <h1 class='institution-name'>Northwestern University
-              	<br><small>Chicago, IL
-                <span class='rating'>
-                  <span class='glyphicon glyphicon-star'></span>
-                  <span class='glyphicon glyphicon-star'></span>
-                  <span class='glyphicon glyphicon-star'></span>
-                  <span class='glyphicon glyphicon-star'></span>
-                  <span class='glyphicon glyphicon-star-empty'></span>
-                  <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="This rating is based on our imagination at this point.">?</button>
-                </span></small>
-              </h1>
-
-            </div> <!-- end .institution-location -->
-        </div>
-        <div class='meta row'>
-          <div class='summary col-md-12'>
-            <p>
-              <span class='key'>Summary: </span>
-              Northwestern University is a private research university with campuses in Evanston and Chicago in Illinois, United States. Northwestern has 12 undergraduate, graduate, and professional schools offering 124 undergraduate degrees and 145 graduate and professional degrees. Northwestern was founded in 1851 by John Evans, for whom Evanston is named, and eight other lawyers, businessmen and Methodist leaders to serve the people of a region that had once been known as the Northwest Territory. Instruction began in 1855; women were admitted in 1869. Today, the main campus is a 240-acre parcel in Evanston, along the shores of Lake Michigan. The university's law and medical schools are located on a 25-acre campus in Chicago's Streeterville neighborhood. In 2008, the University opened a campus in Education City, Doha, Qatar with programs in journalism and communication. Today, Northwestern University ranks as one of the leading research institutions in the world especially in the physical and life sciences. In academic year 2010–2011, Northwestern enrolled 8,397 undergraduate and 7,870 graduate and professional students.</p>
-          </div>
-        </div> <!-- end .institution-meta.row -->
-      </header>
-
-      <section class='container'>
-        <div class='row'>
-          <div class='active-trials overflow col-md-8'>
-            <h2>Active Trials 
-            <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="Trials with Active and Recruiting Status">?</button><br>
-                <small class='text-muted'>All (2,405)</small>
-            </h2>
-            <div class='overflow'>
-                <div id='trial-NCT00858364' class='trial block-list-item'>
-                  <h3 class='h4'>
-                    <a href='http://clinicaltrials.gov/ct2/show/NCT00858364?term=lung+cancer&state1=NA%3AUS%3ACA&rank=11'>
-                    Anemia Treatment for Advanced Non-Small Cell Lung Cancer (NSCLC) Patients Receiving Chemotherapy
-                    </a>
-                  </h3>
-                  <div class='people-place row'>
-                    <div class='institute col-md-6'>
-                      <p class='small'>
-                      <a class='text-info' href="{{ url_for('institution') }}">Amgen</a></p>
-                    </div>
-                    <div class='researcher col-md-6'></div>
-                  </div>
-                  <div class='conditions-interventions row'>
-                    <div class='col-md-12'>
-                      <p class='conditions-list'>
-                        <span class='key'>Conditions: </span>
-                        <a class='condition inline-list-item text-info' href='#'>Non-Small Cell Lung Cancer</a>
-                        <a class='condition inline-list-item text-info' href='#'>Anemia</a>
-                        <a class='condition inline-list-item text-info' href='#'>Cancer</a>
-                        <a class='condition inline-list-item text-info' href='#'>Lung Cancer</a>
-                      </p>
-                      <p class='intervention-list'>
-                        <span class='key'>Interventions: </span>
-                        <a class='intervention inline-list-item text-info' href='#'>Drug: darbepoetin alfa 
-                        500 mcg Q3W</a>
-                      </p>
-                    </div>
-                  </div>
-                </div> <!-- end .NCT00858364 -->
-                <div id='trial-NCT00932451' class='trial block-list-item'>
-                  <h3 class='h4'>
-                    <a href='http://clinicaltrials.gov/ct2/show/NCT00932451?term=lung+cancer&state1=NA%3AUS%3ACA&rank=12'>
-                    An Investigational Drug, PF-02341066, Is Being Studied In Patients With Advanced Non-Small Cell Lung Cancer With A Specific Gene Profile Involving The Anaplastic Lymphoma Kinase (ALK) Gene
-                    </a>
-                  </h3>
-                  <div class='people-place row'>
-                    <div class='institute col-md-6'>
-                      <p class='small'>
-                      <a class='text-info' href="{{ url_for('institution') }}">Pfizer</a></p>
-                    </div>
-                    <div class='researcher col-md-6'></div>
-                  </div>
-                  <div class='conditions-interventions row'>
-                    <div class='col-md-12'>
-                      <p class='conditions-list'>
-                        <span class='key'>Conditions: </span>
-                        <a class='condition inline-list-item text-info' href='#'>Carcinoma</a>
-                        <a class='condition inline-list-item text-info' href='#'>Non-Small-Cell Lung</a>
-                      </p>
-                      <p class='intervention-list'>
-                        <span class='key'>Interventions: </span>
-                        <a class='intervention inline-list-item text-info' href='#'>Drug: PF-02341066</a>
-                      </p>
-                    </div>
-                  </div>
-                </div> <!-- end .NCT00932451 -->
-            </div>
-          </div> <!-- end .active-trials -->
-          <div class='top-conditions col-md-4'>
-            <h2>Top Conditions</h2>
-          	<img src="{{ url_for('static', filename='assets/top-conditions-chart.png') }}"/>
-          </div> <!-- end .top-conditions -->
-        <div> 
-      </section>
-
-      <section class='bottom container'>
-          <div class='row'>
-    	      <div class='researchers col-md-4'>
-    	      	<h2>Researchers</h2>
-            <ul class='list-group overflow'>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Leora Horn, MD <small>(210 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Meredith Shepherd, MD <small>(158 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Chris Turkle, MD <small>(137 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Miranda Bailey, MD <small>(46 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Elliot Reid, MD <small>(46 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Perry Cox, MD <small>(46 trials)</small></h3>
-              </li>
-              <li  class='researcher list-group-item'>
-                <h3 class='researcher-name h4'>Bob Kelso, MD <small>(46 trials)</small></h3>
-              </li>
-            </ul>
-    	      </div>
-    	      <div class='publications col-md-8'>
-    	      	<h2>Recent Publications</h2>
-    	      	<div class='overflow'>
-                <div id='publication-25464086' class='publication block-list-item'>
-                  <h3 class='h4'>
-                    <a href='http://www.ncbi.nlm.nih.gov/pubmed/25464086' target='_blank'>
-                    Predict the glass transition temperature and plasticization of β-cyclodextrin/water binary system by molecular dynamics simulation.
-                    </a>
-                  </h3>
-                  <p> <span class='key'>Authors: </span>
-                  		<span class='author inline-list-item'>Zhou G</span>
-                  		<span class='author inline-list-item'>Zhao T</span>
-                  		<span class='author inline-list-item'>Wan J</span>
-                  		<span class='author inline-list-item'>Liu C</span>
-                  		<span class='author inline-list-item'>Liu W</span>
-                  		<span class='author inline-list-item'>Wang R.</span>
-                  </p>
-                  <p class='small text-muted'>
-                  	Carbohydr Res. 2014 Nov 4;401C:89-95. doi: 10.1016/j.carres.2014.10.026. [Epub ahead of print]
-                  </p>
-                  <p class='small text-muted'>
-                  	PMID: 25464086 [PubMed - as supplied by publisher]
-                  </p>
-                </div> <!-- end #publication-25464086 -->
-                <div id='publication-25464005' class='publication block-list-item'>
-                  <h3 class='h4'>
-                    <a href='http://www.ncbi.nlm.nih.gov/pubmed/25464005' target='_blank'>
-                    Concordance between Patient Self-Reports and Claims Data on Clinical Diagnoses, Medication Use, and Health System Utilization in Taiwan.
-                    </a>
-                  </h3>
-                  <p> <span class='key'>Authors: </span>
-                    <span class='author inline-list-item'>Wu CS</span>
-                    <span class='author inline-list-item'>Lai MS</span>
-                    <span class='author inline-list-item'>Gau SS</span>
-                    <span class='author inline-list-item'>Wang SC</span>
-                    <span class='author inline-list-item'>Tsai HJ.</span>
-                  </p>
-                  <p class='small text-muted'>
-                  	PLoS One. 2014 Dec 2;9(12):e112257. doi: 10.1371/journal.pone.0112257. eCollection 2014.
-                  </p>
-                  <p class='small text-muted'>
-                  	PMID: 25464005 [PubMed - as supplied by publisher]
-                  </p>
-                </div> <!-- end #publication-25464005 -->
-                <div id='publication-25463993' class='publication block-list-item'>
-                  <h3 class='h4'>
-                    <a href='http://www.ncbi.nlm.nih.gov/pubmed/25463993' target='_blank'>
-                    The Prostate Health Index (phi) Selectively Identifies Clinically-Significant Prostate Cancer.
-                    </a>
-                  </h3>
-                  <p> <span class='key'>Authors: </span>
-                      <span class='author inline-list-item'>Loeb S</span>
-                      <span class='author inline-list-item'>Sanda MG</span>
-                      <span class='author inline-list-item'>Broyles DL</span>
-                      <span class='author inline-list-item'>Shin SS</span>
-                      <span class='author inline-list-item'>Bangma CH</span>
-                      <span class='author inline-list-item'>Wei JT</span>
-                      <span class='author inline-list-item'>Partin AW</span>
-                      <span class='author inline-list-item'>Klee GG</span>
-                      <span class='author inline-list-item'>Slawin KM</span>
-                      <span class='author inline-list-item'>Marks LS</span>
-                      <span class='author inline-list-item'>van Schaik RH</span>
-                      <span class='author inline-list-item'>Chan DW</span>
-                      <span class='author inline-list-item'>Sokoll LJ</span>
-                      <span class='author inline-list-item'>Cruz AB</span>
-                      <span class='author inline-list-item'>Mizrahi IA</span>
-                      <span class='author inline-list-item'>Catalona WJ.</span>
-                  </p>
-                  <p class='small text-muted'>
-                  	J Urol. 2014 Nov 15. pii: S0022-5347(14)04900-3. doi: 10.1016/j.juro.2014.10.121. [Epub ahead of print]
-                  </p>
-                  <p class='small text-muted'>
-                  	PMID: 25463993 [PubMed - as supplied by publisher]
-                  </p>
-                </div> <!-- end #publication-25463993 -->
-               </div>
-    	      </div>
-          </div>
-      </section>
-
-    </div> <!-- end #institution-017j69 -->
-    {% include 'footer.html' %}
-
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/institution.js') }}"></script>
-  </body>
-</html>
+{% include 'header.html' %}
+<div id='institution-{{ inst_id }}' class='institution wrapper'>
+  <header class='page-header container'>
+  	<div class='row'>
+      {% if inst_img %}
+        <div class='institution-logo col-md-1'>
+          <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
+        </div> <!-- end .institution-logo -->
+      {% endif %}
+      <div class='institution-location caption col-md-11'>
+        <h1 class='institution-name'>{{ inst_name }}
+        	<br><small>{{ inst_loc }}
+          <span class='rating'>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star-empty'></span>
+            <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title=" {{ inst_rating_info }}">?</button>
+          </span></small>
+        </h1>
+      </div> <!-- end .institution-location -->
+    </div> <!-- end .row -->
+    <div class='meta row'>
+      <div class='summary small col-md-12'>        
+        <span class='key'>Summary: </span>
+        {{ inst_summary }}
+      </div>
+    </div> <!-- end .meta.row -->
+  </header>
+  <section class='container'>
+    <div class='row'>
+      <div id='top-conditions'class='col-xs-12 col-sm-12 col-md-6'>
+        <h2>Top Conditions</h2>
+      </div> <!-- end .top-conditions -->
+      {% include 'trial_list.html' %}
+    <div> <!-- end .row -->
+  </section>
+  <section class='bottom container'>
+    <div class='row'>
+      {% include 'researchers_list.html' %}
+      {% include 'publications_list.html' %}
+    </div> <!-- end .row -->
+  </section>
+</div> <!-- end #institution-id -->
+{% include 'footer.html' %}
