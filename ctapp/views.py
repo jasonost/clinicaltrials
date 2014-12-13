@@ -45,7 +45,7 @@ def institution():
         return flask.render_template('index.html')
 
 # top conditions JSON
-@app.route('/top-conditions')
+@app.route('/_top_condition')
 def top_condition():
     params = request.args
     if 'inst' in params:

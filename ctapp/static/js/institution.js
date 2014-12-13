@@ -2,7 +2,7 @@ var inst_id = window.location.search.split('=')[1]
 
 var svg = dimple.newSvg("#top-conditions", 500, 420);
 
-$.getJSON( "top-conditions?inst="+inst_id, function( data ) {
+$.getJSON( "_top_condition?inst="+inst_id, function( data ) {
   var items = [];
   var i = 1;
   $.each( data.result, function( key, val ) {

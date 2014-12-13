@@ -1,6 +1,8 @@
 {% include 'header.html' %}
+
 <div id='institution-{{ inst_id }}' class='institution wrapper'>
   <header class='page-header container'>
+    <script>console.log('{{ inst_name }}');</script>
   	<div class='row'>
       {% if inst_img %}
         <div class='institution-logo col-md-1'>
@@ -43,4 +45,10 @@
     </div> <!-- end .row -->
   </section>
 </div> <!-- end #institution-id -->
+
+<!-- INSTITUTION PAGE -->
+<script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+<script src="http://dimplejs.org/dist/dimple.v2.1.0.min.js"></script>
+<script src="{{ url_for('static', filename='js/institution.js') }}"></script>
+
 {% include 'footer.html' %}
