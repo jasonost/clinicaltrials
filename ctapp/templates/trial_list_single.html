@@ -16,7 +16,7 @@
         <p class='conditions-list'>
           <span class='key'>Conditions: </span>
           {% for condition in trial.trial_cond %}
-            <a class='condition inline-list-item text-info' href='clinicaltrials/condition?cond={{ condition.cond_id }}'>{{ condition.cond_name }}</a>
+            <a class='condition inline-list-item text-info' href='condition?cond={{ condition.cond_id }}'>{{ condition.cond_name }}</a>
           {% endfor %}
         </p>
       {% endif %}

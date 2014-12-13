@@ -52,6 +52,8 @@ def top_condition():
         db = mongo_connect(mongoip)
         inst_data = db.institutions.find_one({'inst_id': str(params['inst'])})
         return flask.jsonify(result=inst_data['inst_cond_top'])
+    else:
+        return flask.render_template('index.html')
 
 # condition page
 @app.route('/condition')
