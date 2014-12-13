@@ -28,8 +28,7 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
 
 $(function() {
     loadJSON(function(response) {
-        // Parse JSON string into object
-        var data = JSON.parse(response);
+      var data = JSON.parse(response);
       $( "#search-text" ).catcomplete({
           delay: 0,
           source: data,
@@ -46,27 +45,3 @@ $(function() {
       });
     });
 });
-
-
-// function init(){
-//     loadJSON(function(response) {
-//         // Parse JSON string into object
-//         var data = JSON.parse(response);
-
-//         $("#index #search-text").autocomplete({
-//             source: data,
-//             delay: 200,
-//             minLength:2,
-//             select: function(event, ui) {
-//                 if(ui.item.category == "Institution"){
-//                     window.location = "institution.html"
-//                 }
-//                 else if(ui.item.category == "Condition"){
-//                     window.location = "condition.html"
-//                 }
-//             }
-//         });
-//     });
-// }
-
-// init();
