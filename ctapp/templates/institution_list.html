@@ -1,14 +1,10 @@
-<div class='institution-list col-sm-4 col-md-4'>
-	{% if request.endpoint == 'home' %}
-		<h2>Institution Search</h2>
-	{% else %}
+	<div class='institution-list col-sm-4 col-md-4'>
 		<h2>Top Institutions</h2>
-	{% endif %}
-  <div class='overflow'>
-    <ul class='list-group'>
-    	{% for institution in institution_list %}
-	      {% include 'institution_list_single.html' %}
-    	{% endfor %}
-    </ul>
-  </div>
-</div> <!-- end .institution-list -->
+	  <div class='overflow'>
+	    <ul class='list-group'>
+	    	{% for institution in institution_list %}
+		      {% include 'institution_list_single.html' %}
+	    	{% endfor %}
+	    </ul>
+	  </div>
+	</div> <!-- end .institution-list -->

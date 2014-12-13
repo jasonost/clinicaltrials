@@ -2,22 +2,24 @@
 <div id='institution-{{ inst_id }}' class='institution wrapper'>
   <header class='page-header container'>
   	<div class='row'>
-      <div class='institution-logo col-md-1'>
-        <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
+      {% if inst_img %}
+        <div class='institution-logo col-md-1'>
+          <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
         </div> <!-- end .institution-logo -->
-        <div class='institution-location caption col-md-11'>
-          <h1 class='institution-name'>{{ inst_name }}
-          	<br><small>{{ inst_loc }}
-            <span class='rating'>
-              <span class='glyphicon glyphicon-star'></span>
-              <span class='glyphicon glyphicon-star'></span>
-              <span class='glyphicon glyphicon-star'></span>
-              <span class='glyphicon glyphicon-star'></span>
-              <span class='glyphicon glyphicon-star-empty'></span>
-              <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title=" {{ inst_rating_info }}">?</button>
-            </span></small>
-          </h1>
-        </div> <!-- end .institution-location -->
+      {% endif %}
+      <div class='institution-location caption col-md-11'>
+        <h1 class='institution-name'>{{ inst_name }}
+        	<br><small>{{ inst_loc }}
+          <span class='rating'>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star'></span>
+            <span class='glyphicon glyphicon-star-empty'></span>
+            <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title=" {{ inst_rating_info }}">?</button>
+          </span></small>
+        </h1>
+      </div> <!-- end .institution-location -->
     </div> <!-- end .row -->
     <div class='meta row'>
       <div class='summary small col-md-12'>        
@@ -28,9 +30,8 @@
   </header>
   <section class='container'>
     <div class='row'>
-      <div class='top-conditions col-xs-6 col-sm-4 col-md-4'>
+      <div id='top-conditions'class='col-xs-12 col-sm-12 col-md-6'>
         <h2>Top Conditions</h2>
-        <img src="{{ url_for('static', filename='assets/top-conditions-chart.png') }}"/>
       </div> <!-- end .top-conditions -->
       {% include 'trial_list.html' %}
     <div> <!-- end .row -->

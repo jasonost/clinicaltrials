@@ -9,6 +9,7 @@ img{
 	height: 425px;
 	overflow-y: overlay;
 	overflow-x: hidden;
+	margin-bottom: 2em;
 }
 .wrapper{
 	width: 90%;

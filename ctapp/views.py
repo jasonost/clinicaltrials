@@ -43,7 +43,16 @@ def institution():
                                 )
     else:
         return flask.render_template('index.html')
-        
+
+# top conditions JSON
+@app.route('/top-conditions')
+def top_condition():
+    params = request.args
+    if 'inst' in params:
+        db = mongo_connect(mongoip)
+        inst_data = db.institutions.find_one({'inst_id': str(params['inst'])})
+        return flask.jsonify(result=inst_data['inst_cond_top'])
+
 # condition page
 @app.route('/condition')
 def condition():
