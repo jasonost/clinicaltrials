@@ -60,10 +60,12 @@ trials = {t for c in top_cond for t in cond[c]}
 trial_desc = pickle.load(open('../data/trial_desc.pkl','rb'))
 to_classify = [t for t in trial_desc if t not in trials]
 
-cond_text = pickle.load(open('../data/mesh_level2_textcount.pkl','rb'))
-total_text = pickle.load(open('../data/mesh_level2_alltextcount.pkl','rb'))
+cond_text = pickle.load(open('../data/mesh_level2_textcount_holdout.pkl','rb'))
+total_text = pickle.load(open('../data/mesh_level2_alltextcount_holdout.pkl','rb'))
 
-mesh_models = pickle.load(open('../data/mesh_models_series.pkl','rb'))
+to_classify = pickle.load(open('../data/to_classify_holdout.pkl','rb'))
+
+mesh_models = pickle.load(open('../data/mesh_models_series_holdout.pkl','rb'))
 
 def process_text(text):
     return [word.lower() 
@@ -117,6 +119,6 @@ pool.join()
 
 guesses = dict(zip(classify_text.keys(),preds))
 
-pickle.dump(guesses,open('../data/mesh_guesses.pkl','wb'))
+pickle.dump(guesses,open('../data/mesh_guesses_holdout.pkl','wb'))
 
 
