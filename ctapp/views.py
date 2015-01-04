@@ -2,7 +2,7 @@
 from ctapp import app
 import flask, pymongo, time
 from flask import request, url_for
-from connect import mongoip
+from connect import mongoip, mongouri
 
 # initializing global variables
 #mongoip = 'localhost'
@@ -10,7 +10,7 @@ inst_rating_info = 'These currently do not have any meaning.'
 inst_trials_active_info = "Trials that are recruiting or active."
 cond_name_mesh_info = 'This is the official Medical Subject Heading (MeSH) term for this condition.'
 
-db = pymongo.MongoClient(host=mongoip).ctdb
+db = pymongo.MongoClient(mongouri).clinicaltrials
 
 # homepage
 @app.route('/')
