@@ -21,6 +21,7 @@
 
 .ui-autocomplete-category{
 	font-weight: bold;
+	background-color: #ccc;
 }
 
 #map { 

@@ -8,7 +8,6 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
   $.each( data.result, function( key, val ) {
   	var item = data.result[key];
   	item["sortOrder"] = i++;
-    console.log(item);
   	items.push(item);
   });
 

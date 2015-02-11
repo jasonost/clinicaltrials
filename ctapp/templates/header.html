@@ -41,5 +41,21 @@
           </a>
           <h1 class='site-name col-xs-10 col-sm-11 col-md-11'><a href="{{ url_for('home') }}">Clinical Trial Search</a></h1>
         </div>
+        {% if not is_home %}
+            <div class="form-group">
+              <div class="input-group navbar-search">
+                <label class="sr-only" for="search-text">Condition and Institution Search</label>
+                <div class="input-group-addon">
+                  <span class='glyphicon glyphicon-search'></span>
+                </div>
+                <input type="text" class="form-control" id="search-text" placeholder="Search by condition or institution.">
+                <div class="btn btn-primary input-group-addon">
+                  Search
+                </div>
+              </div>
+            </div>
+            <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+        {% endif %}
       </div>
     </nav>

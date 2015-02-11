@@ -2,7 +2,7 @@ function loadJSON(callback) {
 
   var xobj = new XMLHttpRequest();
       xobj.overrideMimeType("application/json");
-            xobj.open('GET', $SCRIPT_ROOT + 'static/assets/typeahead.json', true); // Replace 'my_data' with the path to your file
+            xobj.open('GET', $SCRIPT_ROOT + 'static/assets/typeahead.json', true); 
             xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
           // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -14,15 +14,15 @@ function loadJSON(callback) {
  
 $.widget( "custom.catcomplete", $.ui.autocomplete, {
   _renderMenu: function( ul, items ) {
-   var self = this,
+    var self = this,
     currentCategory = "";
-   $.each( items, function( index, item ) {
-    if ( item.category != currentCategory ) {
-      ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-      currentCategory = item.category;
-    }
-    self._renderItemData( ul, item );
-      });
+    $.each( items, function( index, item ) {
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = item.category;
+      }
+      self._renderItemData( ul, item );
+    });
   }
 });
 
@@ -31,7 +31,12 @@ $(function() {
       var data = JSON.parse(response);
       $( "#search-text" ).catcomplete({
           delay: 0,
-          source: data,
+          source: function(request, response) {
+              var results = $.ui.autocomplete.filter(data, request.term);
+              var cond_results = results.filter(function(element) {return element.category == "Condition"}).slice(0, 5);
+              var inst_results = results.filter(function(element) {return element.category == "Institution"}).slice(0, 5);
+              response(cond_results.concat(inst_results));
+            },
             delay: 200,
             minLength:2,
             select: function(event, ui) {

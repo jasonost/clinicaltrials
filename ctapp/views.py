@@ -15,7 +15,8 @@ db = pymongo.MongoClient(mongouri).clinicaltrials
 # homepage
 @app.route('/')
 def home():
-    return flask.render_template('index.html')
+    return flask.render_template('index.html',
+                                 is_home=True)
 
 # institution page
 @app.route('/institution')
