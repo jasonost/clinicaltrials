@@ -18,5 +18,9 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
 	  	var xAxis = chart.addMeasureAxis("x", "trial_count");
 	  			xAxis.title = "Trial Count"
 	  	var chartSeries = chart.addSeries(null, dimple.plot.bar);
+          chartSeries.getTooltipText = function(e) {
+            var tool_text = String(e.cx) + " " + String(e.cy) + " trials";
+            return [tool_text];
+          };
 	  	chart.draw();
 });
