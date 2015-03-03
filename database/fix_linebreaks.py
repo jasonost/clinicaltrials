@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, re
+import codecs, os, re
 
 files = os.listdir('.')
 
@@ -10,8 +10,8 @@ def create_breaks(data):
 
 for f in files:
     if f[-3:] == 'txt':
-        curfile = open(f,'r')
-        outfile = open('temp.txt','w')
+        curfile = codecs.open(f,'r','utf-8')
+        outfile = codecs.open('temp.txt','w','utf-8')
         header = True
         rowcount = 0
         towrite = []
@@ -23,7 +23,7 @@ for f in files:
                 # read in this row
                 thisrow = row.strip().split('|')
                 # AEIOU is a placeholder for line breaks...
-                thisrow = [re.sub('^ +| +$','',re.sub(' +',' ',c.replace('\r','').replace('\n','AEIOU').replace('\\',' '))) for c in thisrow]
+                thisrow = [re.sub('^ +| +$','',re.sub(' +',' ',c.replace('\r','').replace('\n','AEIOU').replace(u'\u2028','').replace('\\',' '))) for c in thisrow]
                 # append to the last list in towrite
                 if len(towrite) == 0:
                     towrite.append(thisrow)
