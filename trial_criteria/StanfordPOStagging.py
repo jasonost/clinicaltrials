@@ -2,9 +2,10 @@ from bs4 import BeautifulSoup
 import httplib, codecs, datetime
 import cPickle as pickle
 
-def stan_tag(criteria):
+def stan_tag(criteria, server):
     tagged = []
-    for ix, c in enumerate(criteria[:10000]):
+    file_count = 1
+    for ix, c in enumerate(criteria):
         # initialize list of sentences
         sents = []
 
@@ -22,11 +23,16 @@ def stan_tag(criteria):
         # add sentence to tagged list
         tagged.append(sents)
         
-        #save every 100,000 lines
-        if ix%100000 == 0:
+        #save every 50,000 lines
+        if ix % 50000 == 0:
             print 'Line: ', ix
-            pickle.dump(tagged, open('data/stanford_tagged_criteria.pkl', 'wb'))
-    pickle.dump(tagged, open('data/stanford_tagged_criteria.pkl', 'wb'))
+            print 'File: ', file_count
+            print
+            pickle.dump(tagged, open('data/stanford_tagged/stanford_tagged_criteria_%d.pkl' % (file_count), 'wb'))
+            file_count += 1
+            del tagged
+            tagged = []
+    pickle.dump(tagged, open('data/stanford_tagged/stanford_tagged_criteria_%d.pkl' % (file_count), 'wb'))
     print 'Complete'
 
 
@@ -34,7 +40,7 @@ def main():
     server = httplib.HTTPConnection('127.0.0.1:2020')
     criteria = codecs.open('data/stanford_sentence_list.csv','r').readlines()
 
-    stan_tag(criteria)
+    stan_tag(criteria, server)
 
-if __main__ == '__name__':
+if __name__ == '__main__':
     main()
