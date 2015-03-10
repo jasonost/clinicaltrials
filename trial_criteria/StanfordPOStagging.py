@@ -4,8 +4,8 @@ import cPickle as pickle
 
 def stan_tag(criteria, server):
     tagged = []
-    file_count = 1
-    for ix, c in enumerate(criteria):
+    file_count = 47
+    for ix, c in enumerate(criteria[2250000:]):
         # initialize list of sentences
         sents = []
 
