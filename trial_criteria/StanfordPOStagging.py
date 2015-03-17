@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import httplib, codecs, datetime
 import cPickle as pickle
+import time
 
 def stan_tag(criteria, server):
     tagged = []
@@ -9,20 +10,28 @@ def stan_tag(criteria, server):
         # initialize list of sentences
         sents = []
 
-        # send text to server
-        server.request('', c)
-        res = BeautifulSoup(server.getresponse().read())
+        try:
+            # send text to server
+            server.request('', c)
+            res = BeautifulSoup(server.getresponse().read())
 
-        # loop through sentences to generate lists of tagged/lemmatized tuples
-        for sentence in res.findAll('sentence'):
-            sent_tag = []
-            for word in sentence.findAll('word'):
-                sent_tag.append((word.get_text(), word['pos'], word['lemma']))
-            sents.append(sent_tag)
+
+            # loop through sentences to generate lists of tagged/lemmatized tuples
+            for sentence in res.findAll('sentence'):
+                sent_tag = []
+                for word in sentence.findAll('word'):
+                    sent_tag.append((word.get_text(), word['pos'], word['lemma']))
+                sents.append(sent_tag)
+
+        except:
+            print c
+            print ix
+            server = httplib.HTTPConnection('127.0.0.1:2020')
+            sents.append(c)
 
         # add sentence to tagged list
         tagged.append(sents)
-        
+
         #save every 50,000 lines
         if ix % 50000 == 0:
             print 'Line: ', ix
