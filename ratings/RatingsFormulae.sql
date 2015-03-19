@@ -181,6 +181,12 @@ GROUP BY 1,2,3;
 */
 
 
+CREATE TABLE ratings_description (
+    NCT_ID VARCHAR(50),
+    PRIMARY KEY (NCT_ID),
+    TFIDF_SUM DOUBLE
+);
 
+LOAD DATA LOCAL INFILE '/groups/clinicaltrials/clinicaltrials/data/ratings_description.txt' INTO TABLE ratings_description CHARACTER SET UTF8 COLUMNS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 
 
