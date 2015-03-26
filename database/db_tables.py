@@ -86,6 +86,8 @@ ConditionAll = Table('condition_all', metadata,
     Column('mesh_term', String),
     Column('nct_id', String),
     Column('source', String),
+    Column('disp_order', Integer),
+    Column('syn_flag', Integer),
 )
 
 ConditionBrowse = Table('condition_browse', metadata,
@@ -94,9 +96,15 @@ ConditionBrowse = Table('condition_browse', metadata,
     Column('mesh_term', String),
 )
 
-ConditionLookup = Table('condition_lookup', metadata,
+ConditionDescription = Table('condition_description', metadata,
+    Column('condition_desc_id', Integer, primary_key = True),
     Column('mesh_term', String),
-    Column('mesh_term_lower', String),
+    Column('description', Text),
+)
+
+ConditionSynonym = Table('condition_synonym', metadata,
+    Column('condition_desc_id', Integer, ForeignKey('condition_description.condition_desc_id')),
+    Column('synonym', String),
 )
 
 CriteriaTagged = Table('criteria_tagged', metadata,
@@ -140,6 +148,36 @@ FacilityContacts = Table('facility_contacts', metadata,
     Column('phone', String),
     Column('phone_ext', String),
     Column('email', String),
+)
+
+InstitutionDescription = Table('institution_description', metadata,
+    Column('institution_id', Integer, primary_key = True),
+    Column('name', String),
+    Column('source', String),
+    Column('location', String),
+    Column('image_url', String),
+    Column('decription', Text),
+    Column('latitude', Float),
+    Column('longitude', Float),
+)
+
+InstitutionFacilities = Table('institution_facilities', metadata,
+    Column('institution_id', Integer, ForeignKey('institution_description.institution_id')),
+    Column('facility_name', String),
+    Column('city', String),
+    Column('state', String),
+    Column('zip', String),
+    Column('country', String),
+)
+
+InstitutionLookup = Table('institution_lookup', metadata,
+    Column('institution_id', Integer, ForeignKey('institution_description.institution_id')),
+    Column('nct_id', String),
+)
+
+InstitutionSponsors = Table('institution_sponsors', metadata,
+    Column('institution_id', Integer, ForeignKey('institution_description.institution_id')),
+    Column('sponsor_name', String),
 )
 
 Interventions = Table('interventions', metadata,
