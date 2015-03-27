@@ -16,38 +16,33 @@ CREATE TABLE criteria_tagged (
 ) DEFAULT CHARACTER SET=utf8;
 
 -- condition tables for soft matches and search lookup
-DROP TABLE IF EXISTS condition_all;
-CREATE TABLE condition_all (
-    CONDITION_ALL_ID INT AUTO_INCREMENT,
-    PRIMARY KEY(CONDITION_ALL_ID),
-    MESH_TERM VARCHAR(200),
-    NCT_ID VARCHAR(50),
-    SOURCE VARCHAR(20),
-    DISP_ORDER INT,
-    SYN_FLAG TINYINT
-) DEFAULT CHARACTER SET=utf8;
-CREATE INDEX condition_all_mesh_term_idx ON condition_all(MESH_TERM);
-CREATE INDEX condition_all_nct_id_idx ON condition_all(NCT_ID);
-INSERT INTO condition_all (mesh_term, nct_id, source, syn_flag)
-SELECT distinct mesh_term, nct_id, 'CTGOV', 0
-FROM condition_browse;
-
--- condition synonym and description tables
+DROP TABLE IF EXISTS condition_lookup;
 DROP TABLE IF EXISTS condition_synonym;
 DROP TABLE IF EXISTS condition_description;
 
 CREATE TABLE condition_description (
-    CONDITION_DESC_ID INT,
-    PRIMARY KEY(CONDITION_DESC_ID),
+    CONDITION_ID INT,
+    PRIMARY KEY(CONDITION_ID),
     MESH_TERM VARCHAR(200),
     DESCRIPTION TEXT
 ) DEFAULT CHARACTER SET=utf8;
 CREATE INDEX condition_description_mesh_term_idx on condition_description(MESH_TERM);
 
+CREATE TABLE condition_lookup (
+    CONDITION_ID INT,
+    FOREIGN KEY (CONDITION_ID) REFERENCES condition_description(CONDITION_ID),
+    NCT_ID VARCHAR(50),
+    FOREIGN KEY (NCT_ID) REFERENCES clinical_study(NCT_ID),
+    SOURCE VARCHAR(20),
+    DISP_ORDER INT,
+    SYN_FLAG TINYINT
+) DEFAULT CHARACTER SET=utf8;
+
 CREATE TABLE condition_synonym (
-    CONDITION_DESC_ID INT,
-    FOREIGN KEY (CONDITION_DESC_ID) REFERENCES condition_description(CONDITION_DESC_ID),
-    SYNONYM VARCHAR(200)
+    CONDITION_ID INT,
+    FOREIGN KEY (CONDITION_ID) REFERENCES condition_description(CONDITION_ID),
+    SYNONYM_ID INT,
+    FOREIGN KEY (SYNONYM_ID) REFERENCES condition_description(CONDITION_ID)
 ) DEFAULT CHARACTER SET=utf8;
 
 -- institution description and lookup tables

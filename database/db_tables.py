@@ -81,15 +81,6 @@ Conditions = Table('conditions', metadata,
     Column('condition_name', String),
 )
 
-ConditionAll = Table('condition_all', metadata,
-    Column('condition_all_id', Integer, primary_key = True),
-    Column('mesh_term', String),
-    Column('nct_id', String),
-    Column('source', String),
-    Column('disp_order', Integer),
-    Column('syn_flag', Integer),
-)
-
 ConditionBrowse = Table('condition_browse', metadata,
     Column('mesh_condition_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
@@ -97,14 +88,22 @@ ConditionBrowse = Table('condition_browse', metadata,
 )
 
 ConditionDescription = Table('condition_description', metadata,
-    Column('condition_desc_id', Integer, primary_key = True),
+    Column('condition_id', Integer, primary_key = True),
     Column('mesh_term', String),
     Column('description', Text),
 )
 
+ConditionLookup = Table('condition_lookup', metadata,
+    Column('condition_id', Integer, ForeignKey('condition_description.condition_id')),
+    Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
+    Column('source', String),
+    Column('disp_order', Integer),
+    Column('syn_flag', Integer),
+)
+
 ConditionSynonym = Table('condition_synonym', metadata,
-    Column('condition_desc_id', Integer, ForeignKey('condition_description.condition_desc_id')),
-    Column('synonym', String),
+    Column('condition_id', Integer, ForeignKey('condition_description.condition_id')),
+    Column('synonym_id', Integer, ForeignKey('condition_description.condition_id')),
 )
 
 CriteriaTagged = Table('criteria_tagged', metadata,
