@@ -84,7 +84,7 @@ img{
     height: auto;
 }
 .navbar-brand img{
-    width: 75%;
+    width: 108%;
     display: block;
 }
 
@@ -93,7 +93,7 @@ img{
 }
 
 nav .site-name{
-    padding-left: 0;
+    padding-left: 2%;
     margin-top: 12px;
 }
 

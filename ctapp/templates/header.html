@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clincial Trial Search</title>
+    <title>DiscoverCT</title>
 
     <!-- GLOBAL -->
     <link href="{{ url_for('static', filename='js/jquery-ui/jquery-ui.css') }}" rel="stylesheet">
@@ -31,15 +31,17 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!--favicon-->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon.png') }}">
   </head>
   <body>
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid wrapper">
         <div class="navbar-header row">
           <a class="navbar-brand col-xs-2 col-sm-1 col-md-1" href="{{ url_for('home') }}">
-            <img alt="Brand" src="http://foodwallpaper.info/wp-content/uploads/2014/06/health-care-symbol-png.png">
+            <img alt="Brand" src="{{ url_for('static', filename='assets/health-care-symbol-png.png') }}">
           </a>
-          <h1 class='site-name col-xs-10 col-sm-11 col-md-11'><a href="{{ url_for('home') }}">Clinical Trial Search</a></h1>
+          <h1 class='site-name col-xs-10 col-sm-11 col-md-11'><a href="{{ url_for('home') }}">DiscoverCT</a></h1>
         </div>
         {% if not is_home %}
             <div class="form-group">
@@ -48,7 +50,7 @@
                 <div class="input-group-addon">
                   <span class='glyphicon glyphicon-search'></span>
                 </div>
-                <input type="text" class="form-control" id="search-text" placeholder="Search by condition or institution.">
+                <input type="text" class="form-control" id="search-text" placeholder="Search for a condition or institution">
                 <div class="btn btn-primary input-group-addon">
                   Search
                 </div>
