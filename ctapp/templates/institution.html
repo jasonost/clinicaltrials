@@ -10,32 +10,103 @@
       {% endif %}
       <div class='institution-location caption col-md-11'>
         <h1 class='institution-name'>{{ inst_name }}
-        	<br><small>{{ inst_loc }}
-          <span class='rating'>
-            <span class='glyphicon glyphicon-star'></span>
-            <span class='glyphicon glyphicon-star'></span>
-            <span class='glyphicon glyphicon-star'></span>
-            <span class='glyphicon glyphicon-star'></span>
-            <span class='glyphicon glyphicon-star-empty'></span>
-            <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title=" {{ inst_rating_info }}">?</button>
-          </span></small>
+          <br><small>{{ inst_loc }}</small>
         </h1>
       </div> <!-- end .institution-location -->
     </div> <!-- end .row -->
     <div class='meta row'>
       <div class='summary small col-md-12'>        
-        <span class='key'>Summary: </span>
+        <!--span class='key'>Summary: </span-->
         {{ inst_summary }}
       </div>
     </div> <!-- end .meta.row -->
   </header>
   <section class='container'>
     <div class='row'>
-      <div id='top-conditions'class='col-xs-12 col-sm-12 col-md-6'>
+      <div id='top-conditions' class='col-xs-12 col-sm-12 col-md-6'>
         <h2>Top Conditions Studied</h2>
       </div> <!-- end .top-conditions -->
-      {% include 'trial_list.html' %}
-    <div> <!-- end .row -->
+      <div class='col-xs-12 col-sm-12 col-md-6'>
+        <div id='ratings-summary'>
+          <h2>Data Quality Ratings
+            <a type="button" class="btn btn-primary more-info" id="rating-info-btn" data-toggle="tooltip" data-placement="right" title="Click here for more information (new tab will open)." href="{{ url_for('ratings_description') }}" target="_blank">?</a>
+          </h2>
+            <p class='main-rating'>
+              Overall data quality&nbsp;
+              <span class='rating'>
+                <i class='fa fa-star'></i>
+                <i class='fa fa-star'></i>
+                <i class='fa fa-star'></i>
+                <i class='fa fa-star-half-o'></i>
+                <i class='fa fa-star-o'></i>
+              </span>
+            </p>
+            <table id='ratings-table'>
+              <tr>
+                <td>Date quality&nbsp;</td>
+                <td id='date-rating'>
+                  <span class='rating'>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>MeSH classification quality&nbsp;</td>
+                <td id='mesh-rating'>
+                  <span class='rating'>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Site data quality&nbsp;</td>
+                <td id='site-rating'>
+                  <span class='rating'>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Protocol description quality&nbsp;</td>
+                <td id='desc-rating'>
+                  <span class='rating'>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-half-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Trial criteria description quality&nbsp;</td>
+                <td id='criteria-rating'>
+                  <span class='rating'>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-half-o'></i>
+                    <i class='fa fa-star-o'></i>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        {% include 'site_list.html' %}
+      </div>
+    </div> <!-- end .row -->
   </section>
   <section class='bottom container'>
     <div class='row'>

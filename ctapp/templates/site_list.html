@@ -1,0 +1,20 @@
+  <div class='site-list'>
+    <h2>Associated Sponsors and Sites</h2>
+    <div class='overflow'>
+      <h3>Sponsors</h3>
+      <ul class='list-group'>
+        {% for sponsor in sponsor_list %}
+          <li><i class="fa fa-angle-right"></i> <span style="font-weight:bold">{{ sponsor.name }}</span> ({{ sponsor.cnt }} trials)</li>
+        {% endfor %}
+      </ul>
+      <h3>Research Sites</h3>
+      <ul class='list-group'>
+        {% for facility in facility_list %}
+          <li>
+            <span style="font-weight:bold">{{ facility.name }}</span> ({{ facility.cnt }} trials)<br />
+            {{ facility.address|safe }}<br />
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div> <!-- end .site-list -->
