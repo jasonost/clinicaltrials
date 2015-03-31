@@ -167,6 +167,7 @@ InstitutionFacilities = Table('institution_facilities', metadata,
     Column('state', String),
     Column('zip', String),
     Column('country', String),
+    Column('trial_count', Integer),
 )
 
 InstitutionLookup = Table('institution_lookup', metadata,
@@ -177,6 +178,7 @@ InstitutionLookup = Table('institution_lookup', metadata,
 InstitutionSponsors = Table('institution_sponsors', metadata,
     Column('institution_id', Integer, ForeignKey('institution_description.institution_id')),
     Column('sponsor_name', String),
+    Column('trial_count', Integer),
 )
 
 Interventions = Table('interventions', metadata,
@@ -255,13 +257,23 @@ OverallOfficials = Table('overall_officials', metadata,
     Column('affiliation', String),
 )
 
+RatingsDatesStars = Table('ratings_dates_stars', metadata,
+    Column('nct_id', String, primary_key = True),
+    Column('score', Float),
+)
+
 RatingsDescription = Table('ratings_description', metadata,
-    Column('nct_id', String),
+    Column('nct_id', String, primary_key = True),
     Column('tfidf_sum', Float),
 )
 
+RatingsMeshStars = Table('ratings_mesh_stars', metadata,
+    Column('nct_id', String, primary_key = True),
+    Column('score', Float),
+)
+
 RatingsSitesStars = Table('ratings_sites_stars', metadata,
-    Column('nct_id', String),
+    Column('nct_id', String, primary_key = True),
     Column('score', Float),
 )
 

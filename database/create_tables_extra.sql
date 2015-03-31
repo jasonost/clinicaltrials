@@ -71,7 +71,8 @@ CREATE INDEX institution_lookup_nct_id_idx ON institution_lookup(NCT_ID);
 CREATE TABLE institution_sponsors (
     INSTITUTION_ID INT,
     FOREIGN KEY (INSTITUTION_ID) REFERENCES institution_description(INSTITUTION_ID),
-    SPONSOR_NAME VARCHAR(200)
+    SPONSOR_NAME VARCHAR(200),
+    TRIAL_COUNT INT
 ) DEFAULT CHARACTER SET=utf8;
 CREATE TABLE institution_facilities (
     INSTITUTION_ID INT,
@@ -80,5 +81,6 @@ CREATE TABLE institution_facilities (
     CITY VARCHAR(100), 
     STATE VARCHAR(100), 
     ZIP VARCHAR(50), 
-    COUNTRY VARCHAR(50)
+    COUNTRY VARCHAR(50),
+    TRIAL_COUNT INT
 ) DEFAULT CHARACTER SET=utf8;
