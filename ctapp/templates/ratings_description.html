@@ -1,0 +1,26 @@
+{% include 'header.html' %}
+
+  <div id='ratings-description' class='ratings-description wrapper container'>
+    <header class='container'>
+      <div class='page-header row'>
+        <div class='col-sm-12 col-md-6'>
+          <h2>Description of data quality ratings</h2>
+        </div>
+      </div>
+    </header>
+    <section class='container'>
+      <div class='row'>
+        <div class='col-sm-12 col-md-12'>
+          <div>
+            <p>
+              This is going to be a description of the ratings.
+            </p>
+          </div>
+        </div>
+      </div> <!-- end .row -->
+    </section>
+
+    <!-- Load jQuery just in case we decide to use it -->
+    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+
+{% include 'footer.html' %}
