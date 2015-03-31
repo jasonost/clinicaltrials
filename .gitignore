@@ -56,6 +56,7 @@ docs/_build/
 
 # password info
 connect.py
+db_connect.py
 
 # data
 data/
