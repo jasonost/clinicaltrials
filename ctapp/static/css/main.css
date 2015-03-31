@@ -46,6 +46,10 @@ img{
     margin-top: 0;
 }
 
+.main-rating {
+    font-size: 1.5em;
+}
+
 /*Global Responsive*/
 @media (max-width: 992px) {
     body{font-size: 12px;}
@@ -84,7 +88,7 @@ img{
     height: auto;
 }
 .navbar-brand img{
-    width: 108%;
+    width: 100%;
     display: block;
 }
 
@@ -95,6 +99,12 @@ img{
 nav .site-name{
     padding-left: 2%;
     margin-top: 12px;
+    font-weight: 300;
+}
+
+.site-name {
+    letter-spacing: 1px;
+    font-family: 'Raleway', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 nav .site-name a{
@@ -104,6 +114,12 @@ nav .site-name a{
 
 nav .site-name a:hover{
     opacity: .9;
+}
+
+/* ratings star styles */
+.rating {
+    padding-left: 5px;
+    color: #FFB90F;
 }
 
 /*Footer*/
