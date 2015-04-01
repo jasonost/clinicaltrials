@@ -94,6 +94,7 @@ img{
 
 .navbar-search {
     transform: translateY(50%);
+    padding-left: 10%;
 }
 
 nav .site-name{
