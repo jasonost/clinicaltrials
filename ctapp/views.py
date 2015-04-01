@@ -1,5 +1,6 @@
 #!../clinicaltrials/env/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from ctapp import app
 import flask, pymongo, time
 from flask import request, url_for
@@ -41,6 +42,66 @@ def construct_address(city,state,zipcode,country):
 def home():
     return flask.render_template('index.html',
                                  is_home=True)
+
+
+
+# search results
+@app.route('/search_results')
+def search_results():
+
+    params = request.args
+    inst_path = url_for('institution')
+
+    # procedure to bold search term
+    def bold_term(qtype, qid, name, term, num_trials):
+        term_pos = name.lower().find(term)
+        term_end = term_pos + len(term)
+        bold_name = name[:term_pos] + '<span style="font-weight:bold">' + name[term_pos:term_end] + '</span>' + name[term_end:]
+        print bold_name
+        return '<p><a href="%s?%s=%s">%s</a> (%d trials)</p>' % (inst_path, qtype, qid, bold_name, num_trials)
+
+    if 'q' in params:
+        s_term = params['q'].lower()
+        for i in range(5):
+            try:
+                cond = conn.execute(select([ConditionDescription.c.condition_id,
+                                                ConditionDescription.c.mesh_term,
+                                                func.count(ConditionLookup.c.nct_id).label('cnt')]).
+                                            select_from(ConditionDescription.join(ConditionLookup,
+                                                    ConditionDescription.c.condition_id == ConditionLookup.c.condition_id)).\
+                                            where(func.lower(ConditionDescription.c.mesh_term).contains(s_term)).\
+                                            group_by(ConditionDescription.c.condition_id,
+                                                ConditionDescription.c.mesh_term).\
+                                            order_by(desc('cnt'))).\
+                                        fetchall()
+                inst = conn.execute(InstitutionDescription.\
+                                            select().\
+                                            where(func.lower(InstitutionDescription.c.name).contains(s_term)).\
+                                            order_by(desc(InstitutionDescription.c.trial_count))).\
+                                        fetchall()
+                
+                cond_list = [bold_term('cond', t[0], t[1].decode('utf-8'), s_term, t[2]) for t in cond]
+                inst_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'GOLD']
+                spon_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'SPONSOR']
+                fac_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'FACILITY']
+                return flask.render_template('search_results.html',
+                                             search_term=params['q'],
+                                             conditions=cond_list,
+                                             num_cond=len(cond_list),
+                                             institutions=inst_list,
+                                             num_inst=len(inst_list),
+                                             sponsors=spon_list,
+                                             num_spon=len(spon_list),
+                                             facs=fac_list,
+                                             num_fac=len(fac_list))
+            except:
+                print 'Database connection error'
+                initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+    return flask.redirect(url_for('home'))
+
+
+
+
 
 # institution page
 @app.route('/institution')

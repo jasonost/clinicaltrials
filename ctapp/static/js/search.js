@@ -50,3 +50,15 @@ $(function() {
       });
     });
 });
+
+$("#search-text").keydown(function(event) {
+    if (event.keyCode == 13) {
+        var cur_str = $('#search-text').val();
+        if (cur_str.length > 0) {
+          window.open($SCRIPT_ROOT + "search_results?q=" + cur_str, "_self");
+          return false;
+        }
+      }
+});
+
+

@@ -1,0 +1,57 @@
+{% include 'header.html' %}
+
+  <div id='search-results' class='search-results wrapper container'>
+    <header class='container'>
+      <div class='page-header row'>
+        <div class='col-sm-12 col-md-6'>
+          <h2>Search results for '{{ search_term }}'</h2>
+        </div>
+      </div>
+    </header>
+    <section class='container'>
+      <div class='row'>
+        <div class='col-sm-12 col-md-12'>
+          <div id='search-conditions'>
+            <h3>Conditions ({{ num_cond }} results)</h3>
+              {% for cond in conditions %}
+                {{ cond|safe }}
+              {% endfor %}
+          </div>
+        </div>
+      </div> <!-- end .row -->
+      <div class='row'>
+        <div class='col-sm-12 col-md-12'>
+          <div id='search-institutions'>
+            <h3>Major institutions ({{ num_inst }} results)</h3>
+              {% for inst in institutions %}
+                {{ inst|safe }}
+              {% endfor %}
+          </div>
+        </div>
+      </div> <!-- end .row -->
+      <div class='row'>
+        <div class='col-sm-12 col-md-12'>
+          <div id='search-sponsors'>
+            <h3>Other trial sponsors ({{ num_spon }} results)</h3>
+              {% for spon in sponsors %}
+                {{ spon|safe }}
+              {% endfor %}
+          </div>
+        </div>
+      </div> <!-- end .row -->
+      <div class='row'>
+        <div class='col-sm-12 col-md-12'>
+          <div id='search-facs'>
+            <h3>Other trial sites ({{ num_fac }} results)</h3>
+              {% for fac in facs %}
+                {{ fac|safe }}
+              {% endfor %}
+          </div>
+        </div>
+      </div> <!-- end .row -->
+    </section>
+
+    <!-- Load jQuery just in case we decide to use it -->
+    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+
+{% include 'footer.html' %}
