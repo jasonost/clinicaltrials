@@ -1,10 +1,13 @@
 -- criteria text tables for active learning
+DROP TABLE IF EXISTS criteria_text;
+DROP TABLE IF EXISTS criteria_tagged;
+
 CREATE TABLE criteria_text (
     CRITERIA_TEXT_ID INT, 
     PRIMARY KEY (CRITERIA_TEXT_ID), 
     NCT_ID VARCHAR(50), 
     FOREIGN KEY (NCT_ID) REFERENCES clinical_study(NCT_ID), 
-    CRITERIA_TEXT VARCHAR(2000), 
+    CRITERIA_TEXT TEXT, 
     DISPLAY_TYPE VARCHAR(50), 
     DISPLAY_ORDER INT
 ) DEFAULT CHARACTER SET=utf8;
@@ -12,7 +15,7 @@ CREATE TABLE criteria_text (
 CREATE TABLE criteria_tagged (
     CRITERIA_TEXT_ID INT,
     PRIMARY KEY (CRITERIA_TEXT_ID),
-    TAGGED_TEXT VARCHAR(2000)
+    TAGGED_TEXT TEXT
 ) DEFAULT CHARACTER SET=utf8;
 
 -- condition tables for soft matches and search lookup
@@ -60,7 +63,8 @@ CREATE TABLE institution_description (
     IMAGE_URL VARCHAR(200),
     DESCRIPTION TEXT,
     LATITUDE DOUBLE,
-    LONGITUDE DOUBLE
+    LONGITUDE DOUBLE,
+    TRIAL_COUNT INT
 ) DEFAULT CHARACTER SET=utf8;
 CREATE TABLE institution_lookup (
     INSTITUTION_ID INT,

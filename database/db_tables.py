@@ -108,13 +108,13 @@ ConditionSynonym = Table('condition_synonym', metadata,
 
 CriteriaTagged = Table('criteria_tagged', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
-    Column('tagged_text', String),
+    Column('tagged_text', Text),
 )
 
 CriteriaText = Table('criteria_text', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
-    Column('criteria_text', String),
+    Column('criteria_text', Text),
     Column('display_type', String),
     Column('display_order', Integer),
 )
@@ -158,6 +158,7 @@ InstitutionDescription = Table('institution_description', metadata,
     Column('description', Text),
     Column('latitude', Float),
     Column('longitude', Float),
+    Column('trial_count', Integer),
 )
 
 InstitutionFacilities = Table('institution_facilities', metadata,
