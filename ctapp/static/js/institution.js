@@ -27,18 +27,18 @@ var wrap = function (text, width) {
 var inst_id = window.location.search.split('=')[1];
 
 $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
-  var items = [];
-  var i = 1;
-  $.each( data.result, function( key, val ) {
-    var item = data.result[key];
-    item["sortOrder"] = i++;
-    items.push(item);
-  });
 
-  var svg = dimple.newSvg("#top-conditions", 500, 600);
+  var $t = $("#top-conditions");
+  var divWidth = $t.innerWidth() - parseFloat($t.css("padding-left")) - parseFloat($t.css("padding-right"));
+  var yAxisStart = 160;
 
-  var chart = new dimple.chart(svg, items);
-      chart.setBounds(165, 20, 325, 27.5 * items.length);
+  var svg = dimple.newSvg("#top-conditions", divWidth, 27.5 * data.result.length + 50);
+
+  var chart = new dimple.chart(svg, data.result);
+      chart.setBounds(yAxisStart, 20, divWidth - yAxisStart - 20, 27.5 * data.result.length);
+      chart.defaultColors = [
+        new dimple.color('#0054a8')
+      ]; // green: #00a800, blue: #0054a8
 
   var yAxis = chart.addCategoryAxis("y", "cond_name");
       yAxis.addOrderRule('trial_count', false);
@@ -55,7 +55,7 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
 
   chart.draw();
 
-  yAxis.shapes.selectAll(".tick text").call(wrap, 140);
+  yAxis.shapes.selectAll(".tick text").call(wrap, yAxisStart - 10)
 
 });
 

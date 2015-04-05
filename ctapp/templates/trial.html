@@ -1,0 +1,49 @@
+{% include 'header.html' %}
+
+<div id='trial-{{ nct_id }}' class='condition wrapper'>
+  <header class='container'>
+    <div class='page-header row'>
+      <div class='col-md-12'>
+        <h1>{{ trial_title }}</h1>
+        <h4>{{ lay_str|safe }}</h4>
+      </div>
+    </div>
+    {% if cond_list or cond_list_s %}
+    <div class='row'>
+      <div class='trial-conditions col-xs-12 col-sm-12 col-md-12'>
+        <h2>Conditions addressed by this trial</h2>
+        <div class='col-md-6'>
+          <h4>Assigned by investigator:</h4>
+          <ul>
+            {% for cond in cond_list %}
+              <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class='col-md-6'>
+          <h4>Suggested:</h4>
+          <ul>
+            {% for cond in cond_list_s %}
+              <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class='row {% if cond_list or cond_list_s %} bottom {% endif %}'>
+      <div class='trial-description col-xs-12 col-sm-6 col-md-6'>
+        <h2>Description</h2>
+        <h3>Brief</h3>
+        <p>{{ brief_desc|safe }}</p>
+        <h3>Detailed</h3>
+        <p>{{ detailed_desc|safe }}</p>
+     </div>
+      <div class='trial-criteria col-xs-12 col-sm-6 col-md-6'>
+        <h2>Eligibility criteria</h2>
+        <p>{{ criteria|safe }}</p>
+      </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}

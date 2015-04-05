@@ -25,7 +25,6 @@
     <script src="{{ url_for('static', filename='js/bootstrap_components.js') }}"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
     <script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }} + "/";</script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,17 +36,17 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon_green.png') }}">
   </head>
   <body>
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid wrapper">
-        <div class="navbar-header row">
-          <a class="navbar-brand col-xs-2 col-sm-1 col-md-1" href="{{ url_for('home') }}">
+        <div class="row col-xs-12 col-sm-8 col-md-8">
+          <a class="navbar-brand" href="{{ url_for('home') }}">
             <img alt="Brand" src="{{ url_for('static', filename='assets/health-care-symbol-png.png') }}">
           </a>
-          <h1 class='site-name col-xs-10 col-sm-11 col-md-11'><a href="{{ url_for('home') }}"><span style="letter-spacing: 3px;">Discover</span>CT</a></h1>
+          <h1 class='site-name'><a href="{{ url_for('home') }}"><span style="letter-spacing: 3px;">Discover</span>CT</a></h1>
         </div>
         {% if not is_home %}
             <div class="form-group">
-              <div class="col-md-8"></div>
+              <div class="col-xs-12 col-sm-8 col-md-4"></div>
               <div class="input-group navbar-search">
                 <label class="sr-only" for="search-text">Condition and Institution Search</label>
                 <div class="input-group-addon">

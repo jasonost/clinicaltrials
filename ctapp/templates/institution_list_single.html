@@ -2,24 +2,18 @@
   <a id='institution-{{institution.inst_id}}' class='institution' href="institution?inst={{ institution.inst_id }}">
 
   {% if institution.inst_img %}
-    <div class='institution-logo col-md-3'>
+    <div class='col-xs-3 col-sm-3 col-md-3'>
       <img class='img-rounded' src="{{ institution.inst_img }}" alt="{{ institution.inst_name }} Logo"/>
     </div> <!-- end .institution-logo -->
-    <div class='institution-location caption col-xs-12 col-sm-12 col-md-9'>
+    <div class='institution-location caption col-xs-6 col-sm-6 col-md-6'>
   {% else %}
-    <div class='institution-location caption col-xs-12 col-sm-12 col-md-12'>
+    <div class='institution-location caption col-xs-9 col-sm-9 col-md-9'>
   {% endif %}
-
-    
       <h3 class='institution-name h4'>{{ institution.inst_name }}</h3>
       <p class='institution-location text-muted'>{{ institution.inst_loc }}</p>
-      <p class='rating'>
-        <span class='glyphicon glyphicon-star'></span>
-        <span class='glyphicon glyphicon-star'></span>
-        <span class='glyphicon glyphicon-star'></span>
-        <span class='glyphicon glyphicon-star'></span>
-        <span class='glyphicon glyphicon-star-empty'></span>
-      </p>
+    </div>
+    <div class='col-xs-3 col-sm-3 col-md-3'>
+      <h3><span class="label label-primary">{{ institution.inst_cnt }} trials</span></h3>
     </div> <!-- end .institution-logo -->
   </a>
 </li>

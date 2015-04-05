@@ -12,37 +12,37 @@
       <div class='row'>
         <div class='col-sm-12 col-md-12'>
           <div id='search-conditions'>
-            <h3>Conditions ({{ num_cond }} results)</h3>
+            <h3>Conditions ({{ num_cond }} result{% if num_cond != 1 %}s{% endif %})</h3>
               {% for cond in conditions %}
                 {{ cond|safe }}
               {% endfor %}
           </div>
         </div>
       </div> <!-- end .row -->
-      <div class='row'>
+      <div class='row bottom'>
         <div class='col-sm-12 col-md-12'>
           <div id='search-institutions'>
-            <h3>Major institutions ({{ num_inst }} results)</h3>
+            <h3>Major institutions ({{ num_inst }} result{% if num_inst != 1 %}s{% endif %})</h3>
               {% for inst in institutions %}
                 {{ inst|safe }}
               {% endfor %}
           </div>
         </div>
       </div> <!-- end .row -->
-      <div class='row'>
+      <div class='row bottom'>
         <div class='col-sm-12 col-md-12'>
           <div id='search-sponsors'>
-            <h3>Other trial sponsors ({{ num_spon }} results)</h3>
+            <h3>Other trial sponsors ({{ num_spon }} result{% if num_spon != 1 %}s{% endif %})</h3>
               {% for spon in sponsors %}
                 {{ spon|safe }}
               {% endfor %}
           </div>
         </div>
       </div> <!-- end .row -->
-      <div class='row'>
+      <div class='row bottom'>
         <div class='col-sm-12 col-md-12'>
           <div id='search-facs'>
-            <h3>Other trial sites ({{ num_fac }} results)</h3>
+            <h3>Other trial research sites ({{ num_fac }} result{% if num_fac != 1 %}s{% endif %})</h3>
               {% for fac in facs %}
                 {{ fac|safe }}
               {% endfor %}

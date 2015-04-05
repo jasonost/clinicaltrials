@@ -1,12 +1,10 @@
-{% if request.endpoint == 'condition' %}
-	<div class='active-trials col-xs-12 col-sm-12 col-md-8'>
-{% else %}
-	<div class='active-trials col-xs-12 col-sm-12 col-md-6'>
-{% endif %}
-	  <h2>Active Trials <button type="button" class="btn btn-primary more-info" data-toggle="tooltip" data-placement="right" title="{{ inst_trials_active_info }}">?</button></h2>
-	  <div class='overflow'>
-	    {% for trial in trials_active %}
-	      {% include 'trial_list_single.html' %}    
-	    {% endfor %}
-	  </div>
-	</div> <!-- end .active-trials -->
+<div class='trial-filter col-xs-12 col-sm-3 col-md-3'>
+</div>
+<div class='trial-list col-xs-12 col-sm-9 col-md-9'>
+  <div class='overflow'>
+    {% for trial in trials %}
+      <!--{% include 'trial_list_single.html' %}-->
+      <p>{{ nct_id }}</p>
+    {% endfor %}
+  </div>
+</div> <!-- end .active-trials -->

@@ -1,10 +1,10 @@
-	<div class='institution-list col-sm-4 col-md-4'>
-		<h2>Top Institutions</h2>
-	  <div class='overflow'>
-	    <ul class='list-group'>
-	    	{% for institution in institution_list %}
-		      {% include 'institution_list_single.html' %}
-	    	{% endfor %}
-	    </ul>
-	  </div>
-	</div> <!-- end .institution-list -->
+    <div class='institution-list col-xs-12 col-sm-6 col-md-6'>
+        <h2>Leading Institutions</h2>
+      <div>
+        <ul class='list-group'>
+            {% for institution in institution_list %}
+              {% include 'institution_list_single.html' %}
+            {% endfor %}
+        </ul>
+      </div>
+    </div> <!-- end .institution-list -->

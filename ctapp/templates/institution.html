@@ -1,15 +1,15 @@
 {% include 'header.html' %}
 
 <div id='institution-{{ inst_id }}' class='institution wrapper'>
-  <header class='page-header container'>
-  	<div class='row'>
+  <header class='container'>
+  	<div class='page-header row'>
       {% if inst_img %}
         <div class='institution-logo col-md-1'>
           <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
         </div> <!-- end .institution-logo -->
       {% endif %}
       <div class='institution-location caption col-md-11'>
-        <h1 class='institution-name'>{{ inst_name }}
+        <h1 class='institution-name'>{{ inst_name }} <small><span class="label label-primary">{{ trial_cnt }} trials</span></small>
           <br><small>{{ inst_loc }}</small>
         </h1>
       </div> <!-- end .institution-location -->
@@ -24,83 +24,48 @@
   <section class='container'>
     <div class='row'>
       <div id='top-conditions' class='col-xs-12 col-sm-12 col-md-6'>
-        <h2>Top Conditions Studied</h2>
+        <h2>Most Frequent Conditions Studied</h2>
       </div> <!-- end .top-conditions -->
-      <div class='col-xs-12 col-sm-12 col-md-6'>
+      <div id='top-conditions' class='col-xs-12 col-sm-12 col-md-1'>
+      </div> <!-- end .top-conditions -->
+      <div class='col-xs-12 col-sm-12 col-md-5'>
         <div id='ratings-summary'>
           <h2>Data Quality Ratings
             <a type="button" class="btn btn-primary more-info" id="rating-info-btn" data-toggle="tooltip" data-placement="right" title="Click here for more information (new tab will open)." href="{{ url_for('ratings_description') }}" target="_blank">?</a>
           </h2>
-            <p class='main-rating'>
-              Overall data quality&nbsp;
-              <span class='rating'>
-                <i class='fa fa-star'></i>
-                <i class='fa fa-star'></i>
-                <i class='fa fa-star'></i>
-                <i class='fa fa-star-half-o'></i>
-                <i class='fa fa-star-o'></i>
-              </span>
-            </p>
             <table id='ratings-table'>
-              <tr>
-                <td>Date quality&nbsp;</td>
-                <td id='date-rating'>
-                  <span class='rating'>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star-o'></i>
-                  </span>
-                </td>
+              <col width="60%">
+              <col width="35%">
+              <col width="5%">
+              <tr class='rating-overall'>
+                <td>Overall data quality</td>
+                <td class='stars-text'>{{ ratings.overall|safe }}</td>
+                <td></td>
               </tr>
-              <tr>
-                <td>MeSH classification quality&nbsp;</td>
-                <td id='mesh-rating'>
-                  <span class='rating'>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star-o'></i>
-                    <i class='fa fa-star-o'></i>
-                  </span>
-                </td>
+              <tr class='rating-category'>
+                <td>MeSH classification quality</td>
+                <td class='stars-text'>{{ ratings.mesh|safe }}</td>
+                <td></td>
               </tr>
-              <tr>
-                <td>Site data quality&nbsp;</td>
-                <td id='site-rating'>
-                  <span class='rating'>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star-o'></i>
-                  </span>
-                </td>
+              <tr class='rating-category'>
+                <td>Site data quality</td>
+                <td class='stars-text'>{{ ratings.sites|safe }}</td>
+                <td></td>
               </tr>
-              <tr>
-                <td>Protocol description quality&nbsp;</td>
-                <td id='desc-rating'>
-                  <span class='rating'>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star-half-o'></i>
-                    <i class='fa fa-star-o'></i>
-                    <i class='fa fa-star-o'></i>
-                  </span>
-                </td>
+              <tr class='rating-category'>
+                <td>Protocol description quality</td>
+                <td class='stars-text'>{{ ratings.desc|safe }}</td>
+                <td></td>
               </tr>
-              <tr>
-                <td>Trial criteria description quality&nbsp;</td>
-                <td id='criteria-rating'>
-                  <span class='rating'>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star'></i>
-                    <i class='fa fa-star-half-o'></i>
-                    <i class='fa fa-star-o'></i>
-                  </span>
-                </td>
+              <tr class='rating-category'>
+                <td>Trial criteria description quality</td>
+                <td class='stars-text'>{{ ratings.crit|safe }}</td>
+                <td></td>
+              </tr>
+              <tr class='rating-category'>
+                <td>Date quality</td>
+                <td class='stars-text'>{{ ratings.dates|safe }}</td>
+                <td></td>
               </tr>
             </table>
           </div>
@@ -110,8 +75,8 @@
   </section>
   <section class='bottom container'>
     <div class='row'>
-      {% include 'researchers_list.html' %}
-      {% include 'publications_list.html' %}
+      <h2>Trials associated with {{ inst_name }}</h2>
+      {% include 'trial_window.html' %}
     </div> <!-- end .row -->
   </section>
 </div> <!-- end #institution-id -->
@@ -120,5 +85,7 @@
 <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dimple.v2.1.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/institution.js') }}"></script>
+<script src="{{ url_for('static', filename='js/trial_list.js') }}"></script>
+
 
 {% include 'footer.html' %}
