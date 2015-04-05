@@ -1,16 +1,24 @@
 /*Global*/
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Raleway'), local('Raleway-Regular'), url(/static/fonts/Raleway-Regular.ttf) format('truetype');
+}
+
 .bottom{
     border-top: 1px solid #ccc;
 }
-img{
+img {
     width: 100%;
 }
-.overflow{
+.overflow {
     height: 425px;
     overflow-y: overlay;
     overflow-x: hidden;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
+
 .wrapper{
     width: 90%;
     margin: 0 auto;
@@ -46,13 +54,34 @@ img{
     margin-top: 0;
 }
 
+header {
+    margin-top: 150px;
+}
+
 .main-rating {
     font-size: 1.5em;
+}
+
+.rating-large {
+    font-size: 150%;
+    margin-top: .3em;
+}
+
+a .btn {
+    font-size: 60%;
+    transform: translateY(-50%);
+}
+
+br {
+    margin-top: .5em;
 }
 
 /*Global Responsive*/
 @media (max-width: 992px) {
     body{font-size: 12px;}
+    h1 .site-name {
+        font-size: 36px;
+    }
     h1,
     .h1 {
       font-size: 30px;
@@ -81,20 +110,28 @@ img{
     .overflow{height: 300px;}
 }
 
-
 /*Top navbar*/
 .navbar-brand{
     display: block;
     height: auto;
 }
 .navbar-brand img{
-    width: 100%;
+    width: 32px;
     display: block;
 }
 
 .navbar-search {
-    transform: translateY(50%);
-    padding-left: 10%;
+    padding-left: 60px;
+}
+
+@media (min-width: 768px) {
+    .navbar-search {
+        transform: translateY(50%);
+    }
+    header {
+        margin-top: 100px;
+        margin-bottom: 15px;
+    }
 }
 
 nav .site-name{
@@ -117,10 +154,42 @@ nav .site-name a:hover{
     opacity: .9;
 }
 
-/* ratings star styles */
+
+/* search autocomplete list */
+.ui-autocomplete {
+    z-index: 1050;
+}
+
+/* ratings styles */
+#ratings-summary {
+    margin-bottom: 20px;
+}
+
+#ratings-table {
+    margin-top: 20px;
+}
+
+.rating-overall {
+    font-size: 180%;
+    font-weight: bold;
+}
+
+.rating-category {
+    font-size: 135%;
+}
+
 .rating {
-    padding-left: 5px;
     color: #FFB90F;
+}
+
+.stars-text {
+    text-align: center;
+}
+
+/* facilities in list */
+
+.facility {
+    margin-bottom: .5em;
 }
 
 /*Footer*/
