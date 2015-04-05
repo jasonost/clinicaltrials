@@ -108,13 +108,13 @@ ConditionSynonym = Table('condition_synonym', metadata,
 
 CriteriaTagged = Table('criteria_tagged', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
-    Column('tagged_text', Text),
+    Column('tagged_text', String),
 )
 
 CriteriaText = Table('criteria_text', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
-    Column('criteria_text', Text),
+    Column('criteria_text', String),
     Column('display_type', String),
     Column('display_order', Integer),
 )
@@ -174,6 +174,15 @@ InstitutionFacilities = Table('institution_facilities', metadata,
 InstitutionLookup = Table('institution_lookup', metadata,
     Column('institution_id', Integer, ForeignKey('institution_description.institution_id')),
     Column('nct_id', String),
+)
+
+InstitutionRatings = Table('institution_ratings', metadata,
+    Column('institution_id', Integer),
+    Column('rating_dates', Float),
+    Column('rating_mesh', Float),
+    Column('rating_sites', Float),
+    Column('rating_desc', Float),
+    Column('rating_criteria', Float),
 )
 
 InstitutionSponsors = Table('institution_sponsors', metadata,
@@ -258,14 +267,20 @@ OverallOfficials = Table('overall_officials', metadata,
     Column('affiliation', String),
 )
 
+RatingsCriteriaStars = Table('ratings_criteria_stars', metadata,
+    Column('nct_id', String),
+    Column('score', BigInteger),
+)
+
 RatingsDatesStars = Table('ratings_dates_stars', metadata,
     Column('nct_id', String, primary_key = True),
     Column('score', Float),
 )
 
-RatingsDescription = Table('ratings_description', metadata,
+RatingsDescriptionStars = Table('ratings_description_stars', metadata,
     Column('nct_id', String, primary_key = True),
     Column('tfidf_sum', Float),
+    Column('score', Float),
 )
 
 RatingsMeshStars = Table('ratings_mesh_stars', metadata,
@@ -481,5 +496,13 @@ StudyOutcome = Table('study_outcome', metadata,
     Column('safety_issue', String),
     Column('time_frame', String),
     Column('description', String),
+)
+
+TrialSummary = Table('trial_summary', metadata,
+    Column('nct_id', String, primary_key = True),
+    Column('brief_title', String),
+    Column('overall_status', String),
+    Column('phase', String),
+    Column('study_type', String),
 )
 

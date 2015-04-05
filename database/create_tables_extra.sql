@@ -88,3 +88,17 @@ CREATE TABLE institution_facilities (
     COUNTRY VARCHAR(50),
     TRIAL_COUNT INT
 ) DEFAULT CHARACTER SET=utf8;
+
+-- trial summary table
+DROP TABLE IF EXISTS trial_summary;
+CREATE TABLE trial_summary AS
+SELECT
+    nct_id,
+    brief_title,
+    case when overall_status = 'Active, not recruiting' then 'active, but not recruiting' else lower(overall_status) end overall_status,
+    phase,
+    case when study_type like 'Observational%' then 'observational' else lower(study_type) end study_type
+from clinical_study;
+CREATE UNIQUE INDEX trial_summary_nct_id_idx ON trial_summary(nct_id);
+
+

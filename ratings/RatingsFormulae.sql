@@ -141,7 +141,7 @@ CREATE TABLE ratings_sites_stars AS
 SELECT
   nct_id,
   1 + 
-  case when total_sites > 0 then
+  (round((case when total_sites > 0 then
     (has_country / total_sites * 1.5) +
     (has_city / total_sites * 1.5) -
     (generic_site_name / total_sites * 1.5) -
@@ -151,7 +151,7 @@ SELECT
       (ok_investigator_name / total_investigators) - 
       ((1 - least(total_investigators / total_sites,1)) * 0.5)
       else 0 end
-    else 0 end score
+    else 0 end) * 2) / 2) score
 FROM ratings_sites;
 CREATE UNIQUE INDEX ratings_sites_stars_nct_id_idx on ratings_sites_stars(nct_id);
 
@@ -180,13 +180,67 @@ join ratings_sites_stars c using (nct_id)
 GROUP BY 1,2,3;
 */
 
+-- CRITERIA
 
-CREATE TABLE ratings_description (
-    NCT_ID VARCHAR(50),
-    PRIMARY KEY (NCT_ID),
-    TFIDF_SUM DOUBLE
-);
+CREATE OR REPLACE VIEW ratings_criteria AS
+SELECT 
+  nct_id,
+  max(case when display_type = 'I' then 1 else 0 end) any_inclusion,
+  max(case when display_type = 'E' then 1 else 0 end) any_exclusion,
+  case when max(case when display_type = 'I' and criteria_text like '% not %' then 1 else 0 end) = 0 then 1 else 0 end inclusion_not,
+  case when sum(case when display_type != 'H' then 1 else 0 end) >= 30 then 0 else 1 end more_than_30
+FROM criteria_text
+GROUP BY 1;
 
-LOAD DATA LOCAL INFILE '/groups/clinicaltrials/clinicaltrials/data/ratings_description.txt' INTO TABLE ratings_description CHARACTER SET UTF8 COLUMNS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+/*
+--testing
+SELECT
+  count(*) total,
+  sum(any_inclusion) any_inclusion,
+  sum(any_exclusion) any_exclusion,
+  sum(inclusion_not) inclusion_not,
+  sum(more_than_30) more_than_30
+FROM ratings_criteria;
+*/
+
+DROP TABLE IF EXISTS ratings_criteria_stars;
+CREATE TABLE ratings_criteria_stars AS
+SELECT 
+  nct_id,
+  1 + 
+  any_inclusion +
+  any_exclusion +
+  inclusion_not +
+  more_than_30 score
+FROM ratings_criteria;
+CREATE UNIQUE INDEX ratings_criteria_stars_nct_id_idx on ratings_criteria_stars(nct_id);
+
+
+-- COMBINE ALL IN AN INSTITUTION TABLE
+DROP TABLE IF EXISTS institution_ratings;
+CREATE TABLE institution_ratings AS
+SELECT 
+  i.institution_id,
+  round(avg(d.score) * 2) / 2 rating_dates,
+  round(avg(m.score) * 2) / 2 rating_mesh,
+  round(avg(s.score) * 2) / 2 rating_sites,
+  round(avg(e.score) * 2) / 2 rating_desc,
+  round(avg(c.score) * 2) / 2 rating_criteria
+FROM 
+  institution_lookup i
+ JOIN
+  ratings_dates_stars d ON i.nct_id=d.nct_id
+ JOIN
+  ratings_mesh_stars m ON i.nct_id=m.nct_id
+ JOIN
+  ratings_sites_stars s ON i.nct_id=s.nct_id
+ JOIN
+  ratings_description_stars e ON i.nct_id=e.nct_id
+ JOIN
+  ratings_criteria_stars c ON i.nct_id=c.nct_id
+GROUP BY 1;
+CREATE UNIQUE INDEX institution_ratings_institution_id_idx on institution_ratings(institution_id);
+
+
 
 
