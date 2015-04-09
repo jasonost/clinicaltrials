@@ -1,0 +1,38 @@
+{% include 'header.html' %}
+
+<div id='site-list-{{ inst_id }}' class='wrapper'>
+  <header class='container'>
+    <div class='page-header row'>
+      <h1>Trial sponsors and research sites associated with {{ inst_name }}</h1>
+    </div>
+  </header>
+  <section class='container'>
+    <div id='site-list'>
+      <div id='sponsor-list' class='row'>
+        {% if sponsor_list|length > 0 %}
+          <h2>Sponsors</h2>
+          <ul class='list-group'>
+            {% for sponsor in sponsor_list %}
+              <li><i class="fa fa-angle-right"></i> <span style="font-weight:bold">{{ sponsor.name }}</span> ({{ sponsor.cnt }} trials)</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div id='facility-list' class='row'>
+        {% if facility_list|length > 0 %}
+          <h2>Research Sites</h2>
+          <ul class='list-group'>
+            {% for facility in facility_list %}
+              <li class='facility'>
+                <span style="font-weight:bold">{{ facility.name }}</span> ({{ facility.cnt }} trials)<br />
+                {{ facility.address|safe }}<br />
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div> <!-- end .site-list -->
+  </section>
+</div>
+
+{% include 'footer.html' %}

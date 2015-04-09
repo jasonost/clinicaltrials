@@ -24,7 +24,7 @@
   </div> <!-- end .site-list -->
 
   <script>
-    {% if (sponsor_list|length) + (facility_list|length * 3) >= 10 %}
+    {% if (sponsor_list|length) + (facility_list|length * 3) >= 9 %}
       $(".overflow-sites").css("height", "350px");
     {% elif (sponsor_list|length) + (facility_list|length * 3) >= 6 %}
       $(".overflow-sites").css("height", "200px");

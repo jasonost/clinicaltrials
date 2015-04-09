@@ -72,8 +72,34 @@ a .btn {
     transform: translateY(-50%);
 }
 
-br {
-    margin-top: .5em;
+.nodec:hover {
+    text-decoration: none;
+}
+
+tspan {
+    font-weight: bold;
+}
+
+#inst-summary {
+    padding-left: 1.5em;
+}
+
+#top-conditions {
+    text-align: center;
+}
+
+.modal-input {
+    margin-bottom: 10px;
+}
+
+#facility-list ul.list-group {
+    padding-left: 0;
+      -moz-column-count: 2;
+      -moz-column-gap: 10px;
+      -webkit-column-count: 2;
+      -webkit-column-gap: 10px;
+  column-count: 2;
+  column-gap: 10px;
 }
 
 /*Global Responsive*/
@@ -121,8 +147,12 @@ br {
 }
 
 .navbar-search {
-    padding-left: 60px;
+    padding-left: 40px;
 }
+
+.navbar-button {
+        transform: translateY(100%);
+    }
 
 @media (min-width: 768px) {
     .navbar-search {
@@ -165,12 +195,12 @@ nav .site-name a:hover{
     margin-bottom: 20px;
 }
 
-#ratings-table {
+.ratings-table {
     margin-top: 20px;
 }
 
 .rating-overall {
-    font-size: 180%;
+    font-size: 150%;
     font-weight: bold;
 }
 

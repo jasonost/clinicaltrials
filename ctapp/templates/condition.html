@@ -25,11 +25,14 @@
     </div>
     {% include 'institution_list.html' %}
   </section>
-  <section class='container bottom'>
+  <section id="trial-window" class='bottom container'>
     <div class='row'>
-      {% include 'trial_list.html' %}
-    </div>
+      <h2>Trials addressing {{ cond_name }}</h2>
+      {% include 'trial_window.html' %}
+    </div> <!-- end .row -->
   </section>
 </div>
+
+<script src="{{ url_for('static', filename='js/trial_list.js') }}"></script>
 
 {% include 'footer.html' %}

@@ -3,6 +3,7 @@ var v_type = window.location.search.split('=')[0].substring(1);
 
 $.getJSON( $SCRIPT_ROOT + "_trial_list", {page: v_type, id: v_id}, function( data ) {
 
+$("#trial-list-spinner").remove()
 $.each( data.result, function( key, val ) {
 
   var trial_div = "<div class='trial block-list-item'><h4><a href='" + $SCRIPT_ROOT + "trial?nct_id=" + 
@@ -10,7 +11,11 @@ $.each( data.result, function( key, val ) {
                   "'>" +
                   val.trial_title + 
                   "</a></h4>" +
-                  "<p>" + val.lay_str + "</p>"
+                  "<p>" + val.lay_str + "</p>" +
+                  "<small>" +
+                  "<span style='font-weight: bold'>Conditions: </span>" + val.trial_cond_list + "<br>" +
+                  "<span style='font-weight: bold'>Interventions: </span>" + val.trial_inv_list +
+                  "</small>" +
                   "</div>"
   $("#trial-list").append(trial_div)
 

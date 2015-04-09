@@ -1,0 +1,35 @@
+          <table class='ratings-table'>
+            <col width="60%">
+            <col width="35%">
+            <col width="5%">
+            <tr>
+              <td class='rating-overall'>Overall data quality</td>
+              <td class='stars-text rating-category'>{{ ratings.overall|safe }}</td>
+              <td></td>
+            </tr>
+            <tr class='rating-category'>
+              <td>MeSH classification quality</td>
+              <td class='stars-text'>{{ ratings.mesh|safe }}</td>
+              <td></td>
+            </tr>
+            <tr class='rating-category'>
+              <td>Site data quality</td>
+              <td class='stars-text'>{{ ratings.sites|safe }}</td>
+              <td></td>
+            </tr>
+            <tr class='rating-category'>
+              <td>Protocol description quality</td>
+              <td class='stars-text'>{{ ratings.desc|safe }}</td>
+              <td></td>
+            </tr>
+            <tr class='rating-category'>
+              <td>Trial criteria description quality</td>
+              <td class='stars-text'>{{ ratings.crit|safe }}</td>
+              <td></td>
+            </tr>
+            <tr class='rating-category'>
+              <td>Date quality</td>
+              <td class='stars-text'>{{ ratings.dates|safe }}</td>
+              <td></td>
+            </tr>
+          </table>

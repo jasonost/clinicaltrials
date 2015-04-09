@@ -2,26 +2,30 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from ctapp import app
-import flask, pymongo, time
+import flask, time
 from flask import request, url_for
 from collections import defaultdict
 
 # SQLAlchemy setup
 from sqlalchemy import create_engine
-from sqlalchemy.sql import func, select, and_, or_, not_, desc
+from sqlalchemy.sql import text, func, select, and_, or_, not_, desc
 from connect import mysqlusername, mysqlpassword, mysqlserver, mysqldbname
 from db_tables import metadata, InstitutionDescription, InstitutionLookup, ConditionDescription, \
     ConditionLookup, InstitutionSponsors, InstitutionFacilities, InstitutionRatings, TrialSummary, \
-    Interventions, Conditions, ConditionSynonym, ClinicalStudy, Investigators
+    Interventions, Conditions, ConditionSynonym, ClinicalStudy, Investigators, TrialRatings
 
 def initializeDB(user,pwd,server,dbname):
-    engine = create_engine('mysql://%s:%s@%s/%s' % (user,pwd,server,dbname), pool_recycle=3600)
+    engine = create_engine('mysql://%s:%s@%s/%s?charset=utf8' % (user,pwd,server,dbname),
+                           pool_recycle=3600)
     conn = engine.connect()
     metadata.create_all(engine)
     return conn
 
 mysqlserver = 'localhost'
 conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+
+# a = conn.execute(select([InstitutionDescription.c.description]).select_from(InstitutionDescription).where(InstitutionDescription.c.institution_id == 19097)).fetchone()
+# server encoding: .decode('latin1').encode('ascii', 'xmlcharrefreplace')
 
 # initializing global variables
 inst_rating_info = 'These currently do not have any meaning.'
@@ -127,6 +131,27 @@ def layman_desc(phase, status, inv_dict, stype):
 
     return lay_str
 
+# procedure to bold search term
+def bold_term(qtype, qid, name, term, num_trials):
+    '''
+        qtype is a string indicating the type of result, eg "inst" or "cond"
+        qid is the object id for this result, usually an integer
+        name is a string representing the full result text
+        term is the search term
+        num_trials is an integer indicating how many trials are associated with this result
+    '''
+    if qtype == 'cond':
+        qpath = url_for('condition')
+    elif qtype == 'inst':
+        qpath = url_for('institution')
+    background = 'rgba(255, 223, 51, 0.7)'
+    term_pos = name.lower().find(term)
+    term_end = term_pos + len(term)
+    bold_name = '%s<span style="background-color: %s; font-weight: bold;">%s</span>%s'  % (name[:term_pos],
+                                                                                           background,
+                                                                                           name[term_pos:term_end],
+                                                                                           name[term_end:])
+    return '<p><a href="%s?%s=%s">%s</a> (%d trials)</p>' % (qpath, qtype, qid, bold_name, num_trials)
 
 
 
@@ -148,17 +173,10 @@ def home():
 def search_results():
 
     params = request.args
-    inst_path = url_for('institution')
-
-    # procedure to bold search term
-    def bold_term(qtype, qid, name, term, num_trials):
-        term_pos = name.lower().find(term)
-        term_end = term_pos + len(term)
-        bold_name = name[:term_pos] + '<span style="font-weight:bold">' + name[term_pos:term_end] + '</span>' + name[term_end:]
-        return '<p><a href="%s?%s=%s">%s</a> (%d trials)</p>' % (inst_path, qtype, qid, bold_name, num_trials)
 
     if 'q' in params:
         s_term = params['q'].lower()
+
         for i in range(5):
             try:
                 cond = conn.execute(select([ConditionDescription.c.condition_id,
@@ -179,10 +197,11 @@ def search_results():
                                             order_by(desc(InstitutionDescription.c.trial_count))).\
                                         fetchall()
                 
-                cond_list = [bold_term('cond', t[0], t[1].decode('utf-8'), s_term, t[2]) for t in cond]
-                inst_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'GOLD']
-                spon_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'SPONSOR']
-                fac_list = [bold_term('inst', t[0], t[1].decode('utf-8'), s_term, t[8]) for t in inst if t[2] == 'FACILITY']
+                cond_list = [bold_term('cond', t[0], t[1], s_term, t[2]) for t in cond]
+                inst_list = [bold_term('inst', t[0], t[1], s_term, t[8]) for t in inst if t[2] == 'GOLD']
+                spon_list = [bold_term('inst', t[0], t[1], s_term, t[8]) for t in inst if t[2] == 'SPONSOR']
+                fac_list = [bold_term('inst', t[0], t[1], s_term, t[8]) for t in inst if t[2] == 'FACILITY']
+
                 return flask.render_template('search_results.html',
                                              search_term=params['q'],
                                              conditions=cond_list[:20],
@@ -229,15 +248,10 @@ def institution():
                                             order_by(desc('trial_count'))).\
                                         fetchall()
 
-                sponsor_list = [{'name': t[1].decode('utf-8'), 'cnt': t[2]} for t in sponsors]
-                facility_list = [{'name': t[1].decode('utf-8'),
-                                  'cnt': t[6],
-                                  'address': construct_address(t[2],t[3],t[4],t[5]).decode('utf-8')}
-                                  for t in facilities[:50]]
-                if len(facilities) > 50:
-                    facility_list += [{'name': '...and %d more' % (len(facilities) - 50),
-                                       'cnt': sum([t[6] for t in facilities[50:]]),
-                                       'address': ''}]
+                inst_concept_desc = 'This institution is associated with %d trial sponsor%s and %d research facilit%s' % (len(sponsors),
+                                                                                                                          '' if len(sponsors) == 1 else 's',
+                                                                                                                          len(facilities),
+                                                                                                                          'y' if len(facilities) == 1 else 'ies')
 
                 rating_info = conn.execute(InstitutionRatings.select().where(InstitutionRatings.c.institution_id == inst_id)).fetchone()
                 rating_obj = {'dates': gen_stars(float(rating_info[1])),
@@ -249,13 +263,12 @@ def institution():
                 if inst_data:
                     return flask.render_template('institution.html',
                                                 inst_id=inst_id,
-                                                inst_name=inst_data[1].decode('utf-8'),
+                                                inst_name=inst_data[1],
                                                 trial_cnt=inst_data[8],
-                                                inst_loc=inst_data[3].decode('utf-8'),
-                                                inst_img=inst_data[4].decode('utf-8'),
-                                                inst_summary=inst_data[5].decode('utf-8') or 'No description available',
-                                                sponsor_list=sponsor_list,
-                                                facility_list=facility_list,
+                                                inst_loc=inst_data[3],
+                                                inst_img=inst_data[4],
+                                                inst_summary=inst_data[5],
+                                                inst_concept_desc=inst_concept_desc,
                                                 ratings=rating_obj
                                                 )
             except Exception, e:
@@ -301,10 +314,17 @@ def trial_list():
 
         for i in range(5):
             try:
+                if params['page'] == 'inst':
+                    tbl = 'institution_lookup'
+                    key = 'institution_id'
+                elif params['page'] == 'cond':
+                    tbl = 'condition_lookup'
+                    key = 'condition_id'
+
                 trials = conn.execute(select([TrialSummary]).\
-                                        select_from(TrialSummary.join(InstitutionLookup,
-                                            and_(InstitutionLookup.c.nct_id == TrialSummary.c.nct_id,
-                                                 InstitutionLookup.c.institution_id == int(params['id'])))).\
+                                        select_from(TrialSummary.join(text(tbl),
+                                            and_(text('%s.nct_id = trial_summary.nct_id' % tbl),
+                                                 text('%s.%s = %s' % (tbl, key, params['id']))))).\
                                         limit(50)).\
                                     fetchall()
 
@@ -313,6 +333,7 @@ def trial_list():
                                             and_(InstitutionLookup.c.nct_id == Interventions.c.nct_id,
                                                  InstitutionLookup.c.institution_id == int(params['id']))))).\
                                     fetchall()
+
                 inv_dict = dictify(inv)
 
                 # compile JSON object
@@ -331,6 +352,52 @@ def trial_list():
 
     return flask.jsonify(None)
 
+
+
+
+
+# institution sponsors and facilities page
+@app.route('/inst_sites')
+def inst_sites():
+    params = request.args
+    if 'inst' in params:
+        inst_id = int(params['inst'])
+        for i in range(5):
+            try:
+                inst_data = conn.execute(InstitutionDescription.\
+                                            select().\
+                                            where(InstitutionDescription.c.institution_id == inst_id)).\
+                                        fetchone()
+
+                sponsors = conn.execute(InstitutionSponsors.\
+                                            select().\
+                                            where(InstitutionSponsors.c.institution_id == inst_id).\
+                                            order_by(desc('trial_count'))).\
+                                        fetchall()
+                facilities = conn.execute(InstitutionFacilities.\
+                                            select().\
+                                            where(InstitutionFacilities.c.institution_id == inst_id).\
+                                            order_by(desc('trial_count'))).\
+                                        fetchall()
+
+                sponsor_list = [{'name': t[1], 'cnt': t[2]} for t in sponsors]
+                facility_list = [{'name': t[1],
+                                  'cnt': t[6],
+                                  'address': construct_address(t[2],t[3],t[4],t[5])}
+                                  for t in facilities]
+
+                if inst_data:
+                    return flask.render_template('inst_sites.html',
+                                                inst_id=inst_id,
+                                                inst_name=inst_data[1],
+                                                sponsor_list=sponsor_list,
+                                                facility_list=facility_list
+                                                )
+            except Exception, e:
+                print 'Database connection error getting institution info : %s' % str(e)
+                initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+
+    return flask.redirect(url_for('home'))
 
 
 
@@ -373,18 +440,18 @@ def condition():
                                             limit(5)).\
                                         fetchall()
 
-                summary_text = cond_data[2].replace('<a ','<a target="blank" ').decode('utf-8') if cond_data[2] else ''
+                summary_text = cond_data[2].replace('<a ','<a target="blank" ') if cond_data[2] else ''
 
                 inst_obj = [{'inst_id': t[0],
-                             'inst_name': t[1].decode('utf-8'),
+                             'inst_name': t[1],
                              'inst_img': t[2],
-                             'inst_loc': t[3].decode('utf-8'),
+                             'inst_loc': t[3],
                              'inst_cnt': t[4]}
                              for t in top_inst]
                 if cond_data:
                     return flask.render_template('condition.html', 
-                                                cond_name=cond_data[1].decode('utf-8'),
-                                                cond_summary=summary_text.decode('utf-8') or 'This condition has no description available.',
+                                                cond_name=cond_data[1],
+                                                cond_summary=summary_text or 'This condition has no description available.',
                                                 cond_synonyms=[t[0] for t in cond_syn],
                                                 institution_list=inst_obj
                                                 )
@@ -422,9 +489,9 @@ def trial():
                                             where(ClinicalStudy.c.nct_id == nct_id)).\
                                         fetchone()
 
-                brief_desc = summary_data[1].decode('utf-8').replace('<br />','</p><p>') or 'No brief summary was provided.'
-                detailed_desc = summary_data[2].decode('utf-8').replace('<br />','</p><p>') or 'No detailed description was provided.'
-                criteria = summary_data[6].decode('utf-8').replace('<br />','</p><p>') or 'No eligibility criteria were provided.'
+                brief_desc = summary_data[1].replace('<br />','</p><p>') or 'No brief summary was provided.'
+                detailed_desc = summary_data[2].replace('<br />','</p><p>') or 'No detailed description was provided.'
+                criteria = summary_data[6].replace('<br />','</p><p>') or 'No eligibility criteria were provided.'
 
                 inv = conn.execute(select([Interventions.c.nct_id, Interventions.c.intervention_type]).\
                                         select_from(Interventions).\
@@ -451,10 +518,18 @@ def trial():
                                                     ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
                                     fetchall()
 
+                rating_info = conn.execute(TrialRatings.select().where(TrialRatings.c.nct_id == nct_id)).fetchone()
+                rating_obj = {'dates': gen_stars(float(rating_info[1])),
+                              'mesh': gen_stars(float(rating_info[2])),
+                              'sites': gen_stars(float(rating_info[3])),
+                              'desc': gen_stars(float(rating_info[4])),
+                              'crit': gen_stars(float(rating_info[5])),
+                              'overall': gen_stars(calc_overall([float(f) for f in rating_info[1:6]]))}
+
                 if summary_data:
                     return flask.render_template('trial.html', 
                                                 nct_id=nct_id,
-                                                trial_title=summary_data[0].decode('utf-8'),
+                                                trial_title=summary_data[0],
                                                 lay_str=layman_desc(summary_data[4],
                                                                     summary_data[3].lower(),
                                                                     list(inv_dict[nct_id]) if nct_id in inv_dict else '',
@@ -467,7 +542,8 @@ def trial():
                                                               for c in set(tuple(t) for t in cond_suggest)],
                                                 brief_desc=brief_desc,
                                                 detailed_desc=detailed_desc,
-                                                criteria=criteria
+                                                criteria=criteria,
+                                                ratings=rating_obj
                                                 )
             except Exception, e:
                 print 'Database connection error getting trial summary info: %s' % e
@@ -487,9 +563,6 @@ def trial():
 @app.route('/ratings_description')
 def ratings_description():
     return flask.render_template('ratings_description.html')
-
-
-
 
 
 # old ClinicalTrials Browser infoviz project

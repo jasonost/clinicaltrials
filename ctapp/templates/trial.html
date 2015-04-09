@@ -8,42 +8,70 @@
         <h4>{{ lay_str|safe }}</h4>
       </div>
     </div>
-    {% if cond_list or cond_list_s %}
+  </header>
+  <section class='container'>
     <div class='row'>
-      <div class='trial-conditions col-xs-12 col-sm-12 col-md-12'>
-        <h2>Conditions addressed by this trial</h2>
-        <div class='col-md-6'>
-          <h4>Assigned by investigator:</h4>
-          <ul>
-            {% for cond in cond_list %}
-              <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
-            {% endfor %}
-          </ul>
+      <div class='col-xs-12 col-sm-12 col-md-12'>
+        Sponsor
+        Investigator
+        Link to ct.gov
+      </div>
+    </div>
+  </section>
+  <section class='bottom container'>
+    <div class='row'>
+      <div class='trial-summary col-xs-12 col-sm-12 col-md-12'>
+        <div class='col-xs-12 col-sm-12 col-md-6'>
+        <h3>Conditions addressed by this trial</h3>
+          <div class="ratings-table">
+            <h4>Assigned in database:</h4>
+            {% if cond_list %}
+              <ul>
+                {% for cond in cond_list %}
+                  <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>No conditions assigned in database.</p>
+            {% endif %}
+            <h4>Suggested:</h4>
+            {% if cond_list_s %}
+              <ul>
+                {% for cond in cond_list_s %}
+                  <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>No suggested terms.</p>
+            {% endif %}
+          </div>
         </div>
-        <div class='col-md-6'>
-          <h4>Suggested:</h4>
-          <ul>
-            {% for cond in cond_list_s %}
-              <li><a href="{{ url_for('condition') }}?cond={{ cond.id }}">{{ cond.name }}</a></li>
-            {% endfor %}
-          </ul>
+        <div class='col-xs-12 col-sm-12 col-md-5'>
+          <div id='ratings-summary'>
+            <h3>Trial Data Quality Ratings
+              <a type="button" class="btn btn-primary more-info" id="rating-info-btn" data-toggle="tooltip" data-placement="right" title="Click here for more information about data quality ratings (new tab will open)." href="{{ url_for('ratings_description') }}" target="_blank">?</a>
+            </h3>
+            {% include 'ratings_summary.html' %}
+          </div>
         </div>
       </div>
     </div>
-    {% endif %}
+  </section>
+  <section class='bottom container'>
     <div class='row {% if cond_list or cond_list_s %} bottom {% endif %}'>
       <div class='trial-description col-xs-12 col-sm-6 col-md-6'>
-        <h2>Description</h2>
-        <h3>Brief</h3>
+        <h3>Description</h3>
+        <h4>Brief</h4>
         <p>{{ brief_desc|safe }}</p>
-        <h3>Detailed</h3>
+        <h4>Detailed</h4>
         <p>{{ detailed_desc|safe }}</p>
      </div>
       <div class='trial-criteria col-xs-12 col-sm-6 col-md-6'>
-        <h2>Eligibility criteria</h2>
+        <h3>Eligibility criteria</h3>
         <p>{{ criteria|safe }}</p>
       </div>
     </div>
+  </section>
 </div>
 
 {% include 'footer.html' %}
