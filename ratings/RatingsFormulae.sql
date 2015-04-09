@@ -215,6 +215,28 @@ SELECT
 FROM ratings_criteria;
 CREATE UNIQUE INDEX ratings_criteria_stars_nct_id_idx on ratings_criteria_stars(nct_id);
 
+-- COMBINE ALL IN A TRIAL TABLE
+DROP TABLE IF EXISTS trial_ratings;
+CREATE TABLE trial_ratings AS
+SELECT 
+  d.nct_id,
+  d.score rating_dates,
+  m.score rating_mesh,
+  s.score rating_sites,
+  e.score rating_desc,
+  c.score rating_criteria
+FROM 
+  ratings_dates_stars d
+ JOIN
+  ratings_mesh_stars m ON d.nct_id=m.nct_id
+ JOIN
+  ratings_sites_stars s ON d.nct_id=s.nct_id
+ JOIN
+  ratings_description_stars e ON d.nct_id=e.nct_id
+ JOIN
+  ratings_criteria_stars c ON d.nct_id=c.nct_id;
+CREATE UNIQUE INDEX trial_ratings_nct_id_idx on trial_ratings(nct_id);
+
 
 -- COMBINE ALL IN AN INSTITUTION TABLE
 DROP TABLE IF EXISTS institution_ratings;

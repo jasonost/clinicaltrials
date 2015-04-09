@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Table, Column, BigInteger, Date, Float, Integer, Text, String, ForeignKey
+from sqlalchemy import MetaData, Table, Column, BigInteger, Date, Float, Integer, Text, String, DateTime, ForeignKey
 
 metadata = MetaData()
 
@@ -75,6 +75,30 @@ ClinicalStudy = Table('clinical_study', metadata,
     Column('limitations_and_caveats', String),
 )
 
+ConceptPredictors = Table('concept_predictors', metadata,
+    Column('predictor_id', Integer, primary_key = True),
+    Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
+    Column('predictor', String),
+)
+
+ConceptPredictorsReject = Table('concept_predictors_reject', metadata,
+    Column('predictor_reject_id', Integer, primary_key = True),
+    Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
+    Column('predictor', String),
+)
+
+ConceptTerms = Table('concept_terms', metadata,
+    Column('term_id', Integer, primary_key = True),
+    Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
+    Column('term', String),
+)
+
+ConceptTermsReject = Table('concept_terms_reject', metadata,
+    Column('term_reject_id', Integer, primary_key = True),
+    Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
+    Column('term', String),
+)
+
 Conditions = Table('conditions', metadata,
     Column('condition_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
@@ -106,25 +130,38 @@ ConditionSynonym = Table('condition_synonym', metadata,
     Column('synonym_id', Integer, ForeignKey('condition_description.condition_id')),
 )
 
-criteria_concept_staging = Tabel('criteria_concept_staging', metadata,
+CriteriaConcept = Table('criteria_concept', metadata,
+    Column('concept_id', String, primary_key = True),
+    Column('concept_name', String),
+)
+
+CriteriaConceptLookup = Table('criteria_concept_lookup', metadata,
+    Column('criteria_text_id', Integer, ForeignKey('criteria_text.criteria_text_id')),
+    Column('term_id', Integer, ForeignKey('concept_terms.term_id')),
+    Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
+    Column('inverse', Integer),
+)
+
+CriteriaConceptStaging = Table('criteria_concept_staging', metadata,
     Column('update_id', Integer, primary_key = True),
-    Column('user_id', Integer),
-    Column('update_time', Integer),
+    Column('user_id', Integer, ForeignKey('users.user_id')),
+    Column('update_time', DateTime),
     Column('concept_id', String),
     Column('new_concept', Integer),
-    Column('update_type', Text),
-    Column('value', Text)
+    Column('update_type', String),
+    Column('value', String),
 )
 
 CriteriaTagged = Table('criteria_tagged', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
-    Column('tagged_text', String),
+    Column('tagged_text', Text),
+    Column('random_select', Integer),
 )
 
 CriteriaText = Table('criteria_text', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
-    Column('criteria_text', String),
+    Column('criteria_text', Text),
     Column('display_type', String),
     Column('display_order', Integer),
 )
@@ -255,6 +292,14 @@ LocationCountries = Table('location_countries', metadata,
     Column('location_countries_id', Integer, primary_key = True),
     Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
     Column('country', String),
+)
+
+MeshAssignStaging = Table('mesh_assign_staging', metadata,
+    Column('update_id', Integer, primary_key = True),
+    Column('user_id', Integer, ForeignKey('users.user_id')),
+    Column('update_time', DateTime),
+    Column('nct_id', String),
+    Column('condition_id', Integer),
 )
 
 MeshThesaurus = Table('mesh_thesaurus', metadata,
@@ -508,11 +553,61 @@ StudyOutcome = Table('study_outcome', metadata,
     Column('description', String),
 )
 
+TrialPublications = Table('trial_publications', metadata,
+    Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
+    Column('pubmed_id', String),
+    Column('authors', String),
+    Column('title', String),
+    Column('citation', String),
+    Column('confidence', Float),
+)
+
+TrialRatings = Table('trial_ratings', metadata,
+    Column('nct_id', String, primary_key = True),
+    Column('rating_dates', Float),
+    Column('rating_mesh', Float),
+    Column('rating_sites', Float),
+    Column('rating_desc', Float),
+    Column('rating_criteria', BigInteger),
+)
+
 TrialSummary = Table('trial_summary', metadata,
     Column('nct_id', String, primary_key = True),
     Column('brief_title', String),
     Column('overall_status', String),
     Column('phase', String),
     Column('study_type', String),
+)
+
+Users = Table('users', metadata,
+    Column('user_id', Integer, primary_key = True),
+    Column('user_name', String),
+    Column('full_name', String),
+    Column('institution', String),
+    Column('email_address', String),
+    Column('password', String),
+    Column('access_level', String),
+)
+
+UserHistoryCriteria = Table('user_history_criteria', metadata,
+    Column('history_id', Integer, primary_key = True),
+    Column('update_id', Integer),
+    Column('user_id', Integer, ForeignKey('users.user_id')),
+    Column('update_time', DateTime),
+    Column('concept_id', String),
+    Column('new_concept', Integer),
+    Column('update_type', String),
+    Column('value', String),
+    Column('accepted', Integer),
+)
+
+UserHistoryMesh = Table('user_history_mesh', metadata,
+    Column('history_id', Integer, primary_key = True),
+    Column('update_id', Integer),
+    Column('user_id', Integer, ForeignKey('users.user_id')),
+    Column('update_time', DateTime),
+    Column('nct_id', String),
+    Column('condition_id', Integer),
+    Column('accepted', Integer),
 )
 
