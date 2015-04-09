@@ -106,6 +106,16 @@ ConditionSynonym = Table('condition_synonym', metadata,
     Column('synonym_id', Integer, ForeignKey('condition_description.condition_id')),
 )
 
+criteria_concept_staging = Tabel('criteria_concept_staging', metadata,
+    Column('update_id', Integer, primary_key = True),
+    Column('user_id', Integer),
+    Column('update_time', Integer),
+    Column('concept_id', String),
+    Column('new_concept', Integer),
+    Column('update_type', Text),
+    Column('value', Text)
+)
+
 CriteriaTagged = Table('criteria_tagged', metadata,
     Column('criteria_text_id', Integer, primary_key = True),
     Column('tagged_text', String),
