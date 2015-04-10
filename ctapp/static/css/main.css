@@ -92,6 +92,11 @@ tspan {
     margin-bottom: 10px;
 }
 
+.modal-input .input-group-addon {
+    text-align: left;
+    min-width: 85px;
+}
+
 #facility-list ul.list-group {
     padding-left: 0;
       -moz-column-count: 2;
@@ -237,7 +242,10 @@ footer .site-name:hover{
 }
 
 
-
+/* institution page */
+svg rect:hover {
+    cursor: pointer;
+}
 
 
 

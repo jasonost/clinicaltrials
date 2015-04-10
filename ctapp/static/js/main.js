@@ -62,18 +62,77 @@ $("#search-text").keydown(function(event) {
 });
 
 if ($(window).width() < 768) {
-  var buttons = $("#login-buttons").clone();
-  $("#login-buttons").remove();
+  var buttons = $("#login-area").clone();
+  $("#login-area").remove();
   $("#navbar-top").append(buttons);
 }
 
+// logout button action
+$("#login-area").on('click', "#logout-button", function (e) {
+  $.getJSON( $SCRIPT_ROOT + "_logout", function(e) {
+    $("#logged-in-area").remove();
+    $('#login-area').append('<button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" ' +
+        'data-toggle="modal" data-target="#create-user-modal">Create account</button> <button id="login-button" type="button" ' +
+        'class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">Login</button>');
+  });
+});
 
-$('#exampleModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
+// clearing input vals info
+function clearVals() {
+  $(".form-control").val('');
+};
+
+// main user creation interaction
+$('#create-user-submit').on('click', function(e){
+  $("#create-acct-button").blur();
+  $.getJSON( $SCRIPT_ROOT + "_create_user", {
+      name: $("#input-full-name").val(),
+      inst_user: $("#input-institution").val(),
+      email: $("#input-email").val(),
+      pwd: $("#create-user-modal #input-password").val(),
+      username: $("#create-user-modal #input-username").val()
+    }, function( data ) {
+    clearVals();
+    if (data.result == 'ok') {
+      $('#create-acct-button').remove();
+      $('#login-button').remove();
+      $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + data.username + '</b><small> ' +
+          '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
+    } else {
+      alert("There was an error. Please try again.");
+    }
+   });
+});
+
+$('#create-user-cancel').on('click', function(e){
+    $("#create-acct-button").blur();
+    clearVals();
+  }
+);
+
+// main user login interaction
+$('#login-submit').on('click', function(e){
+  $.getJSON( $SCRIPT_ROOT + "_login", {
+      pwd: $("#login-modal #input-password").val(),
+      username: $("#login-modal #input-username").val()
+    }, function( data ) {
+    clearVals();
+    if (data.result == 'ok') {
+      $('#create-acct-button').remove();
+      $('#login-button').remove();
+      $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + data.username + '</b><small> ' +
+          '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
+    } else {
+      alert("Well, that didn't work. Please try again.");
+    }
+   });
+});
+
+$('#login-cancel').on('click', function(e){
+    clearVals();
+  }
+);
+
+
+
+

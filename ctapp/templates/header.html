@@ -46,11 +46,11 @@
           </a>
           <h1 class='site-name'><a href="{{ url_for('home') }}"><span style="letter-spacing: 3px;">Discover</span>CT</a></h1>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-2">
-          <button type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
+        <div id="login-area" class="col-xs-4 col-sm-4 col-md-2">
+          <button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
             Create account
           </button>
-          <button type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
+          <button id="login-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
             Login
           </button>
         </div>
@@ -78,45 +78,15 @@
             </div>
           </div>
         </div>
-        <div id="login-buttons" class="col-xs-4 col-sm-4 col-md-2">
-          <button type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
+        <div id="login-area" class="col-xs-4 col-sm-4 col-md-2">
+          <button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
             Create account
           </button>
-          <button type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
+          <button id="login-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
             Login
           </button>
         </div>
     </nav>
   {% endif %}
 
-  <div class="modal fade" id="create-user-modal" tabindex="-1" role="dialog" aria-labelledby="create-user-label" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="create-user-label">Create an account</h4>
-        </div>
-        <div class="modal-body">
-          <div class="input-group modal-input">
-            <span class="input-group-addon" id="input-user-name">User name:</span>
-            <input type="text" class="form-control" placeholder="User name" aria-describedby="input-user-name">
-          </div>
-
-          <div class="input-group modal-input">
-            <span class="input-group-addon" id="input-institution">Institution:</span>
-            <input type="text" class="form-control" placeholder="Institution name" aria-describedby="input-institution">
-          </div>
-
-          <div class="input-group modal-input">
-            <span class="input-group-addon">$</span>
-            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <span class="input-group-addon">.00</span>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Create account!</button>
-        </div>
-      </div>
-    </div>
-  </div>
+{% include 'modals.html' %}

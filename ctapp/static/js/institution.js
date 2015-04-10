@@ -2,6 +2,13 @@ var inst_id = window.location.search.split('=')[1];
 
 $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
 
+  // create lookup of term to condition id
+  var id_lookup = {}
+  for (i =0; i < data.result.length; i++) {
+    id_lookup[data.result[i].cond_name] = data.result[i].cond_id;
+  }
+  console.log(id_lookup);
+
   var $t = $("#top-conditions");
   var divWidth = $t.innerWidth() - parseFloat($t.css("padding-left")) - parseFloat($t.css("padding-right"));
   var yAxisStart = 20;
@@ -27,10 +34,13 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
       xAxis.fontSize = "0.9em";
 
   var chartSeries = chart.addSeries(null, dimple.plot.bar);
-      chartSeries.getTooltipText = function(e) {
-        var tool_text = String(e.cx) + " " + String(e.cy) + " trials";
-        return [tool_text,];
-      };
+  chartSeries.getTooltipText = function(e) {
+    var tool_text = String(e.cx) + " " + String(e.cy) + " trials";
+    return [tool_text,];
+  };
+  chartSeries.addEventHandler("click", function (e) {
+    window.location = $SCRIPT_ROOT + "condition?cond=" + id_lookup[e.yValue];
+  });
 
   // remove spinner
   $("#top-cond-spinner").remove();

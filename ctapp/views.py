@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from ctapp import app
 import flask, time
 from flask import request, url_for
+from hashlib import md5
 from collections import defaultdict
 
 # SQLAlchemy setup
@@ -12,7 +13,8 @@ from sqlalchemy.sql import text, func, select, and_, or_, not_, desc
 from connect import mysqlusername, mysqlpassword, mysqlserver, mysqldbname
 from db_tables import metadata, InstitutionDescription, InstitutionLookup, ConditionDescription, \
     ConditionLookup, InstitutionSponsors, InstitutionFacilities, InstitutionRatings, TrialSummary, \
-    Interventions, Conditions, ConditionSynonym, ClinicalStudy, Investigators, TrialRatings
+    Interventions, Conditions, ConditionSynonym, ClinicalStudy, Investigators, TrialRatings, \
+    Users, MeshAssignStaging, UserHistoryMesh, CriteriaConceptStaging, UserHistoryCriteria
 
 def initializeDB(user,pwd,server,dbname):
     engine = create_engine('mysql://%s:%s@%s/%s?charset=utf8' % (user,pwd,server,dbname),
@@ -28,6 +30,7 @@ conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 # server encoding: .decode('latin1').encode('ascii', 'xmlcharrefreplace')
 
 # initializing global variables
+app.secret_key = 'this is not a secret'
 inst_rating_info = 'These currently do not have any meaning.'
 inst_trials_active_info = "Trials that are recruiting or active."
 cond_name_mesh_info = 'This is the official Medical Subject Heading (MeSH) term for this condition.'
@@ -285,7 +288,8 @@ def top_condition():
 
         for i in range(5):
             try:
-                cond_cnt = conn.execute(select([ConditionDescription.c.mesh_term, 
+                cond_cnt = conn.execute(select([ConditionDescription.c.condition_id, 
+                                            ConditionDescription.c.mesh_term, 
                                             func.count(InstitutionLookup.c.nct_id).label('cond_count')]).\
                                                 select_from(InstitutionLookup.join(ConditionLookup,
                                                                                    and_(InstitutionLookup.c.institution_id == int(params['inst']),
@@ -294,12 +298,14 @@ def top_condition():
                                                                                         or_(ConditionLookup.c.source == 'CTGOV',
                                                                                             ConditionLookup.c.source == 'ASSIGNED'))).\
                                                                               join(ConditionDescription)).\
-                                                group_by(ConditionDescription.c.mesh_term).\
+                                                group_by(ConditionDescription.c.condition_id, ConditionDescription.c.mesh_term).\
                                                 order_by(desc('cond_count')).\
                                                 limit(20)).\
                                         fetchall()
                 if cond_cnt:
-                    return flask.jsonify(result=[{'cond_name': t[0], 'trial_count': t[1]} for t in cond_cnt])
+                    return flask.jsonify(result=[{'cond_name': t[1],
+                                                  'cond_id': t[0],
+                                                  'trial_count': t[2]} for t in cond_cnt])
             except Exception, e:
                 print 'Database connection error getting top conditions for institution info: %s' % e
                 initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
@@ -553,7 +559,48 @@ def trial():
 
 
 
+# user creation and login
+@app.route('/_create_user')
+def create_user():
+    name = request.args['name']
+    inst_user = request.args['inst_user']
+    email = request.args['email']
+    username = request.args['username']
+    pwd = md5(request.args['pwd']).hexdigest()
 
+    res = conn.execute(Users.insert().values(user_name=username,
+                                             full_name=name,
+                                             institution=inst_user,
+                                             email_address=email,
+                                             password=pwd,
+                                             access_level='user'))
+    if res.inserted_primary_key:
+        flask.session['userid'] = res.inserted_primary_key[0]
+        return flask.jsonify(result='ok',
+                             username=username)
+    else:
+        return flask.jsonify(result='bad')
+
+@app.route('/_login')
+def login():
+    username = request.args['username']
+    pwd = md5(request.args['pwd']).hexdigest()
+
+    in_db = conn.execute(Users.select().\
+                            where(and_(Users.c.user_name == username,
+                                       Users.c.password == pwd))).fetchone()
+
+    if in_db:
+        flask.session['userid'] = in_db[0]
+        return flask.jsonify(result='ok',
+                             username=username)
+    else:
+        return flask.jsonify(result='bad')
+
+@app.route('/_logout')
+def logout():
+    flask.session.pop('userid',None)
+    return flask.jsonify(result='ok')
 
 
 
