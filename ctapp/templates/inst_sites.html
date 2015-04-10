@@ -11,7 +11,7 @@
       <div id='sponsor-list' class='row'>
         {% if sponsor_list|length > 0 %}
           <h2>Sponsors</h2>
-          <ul class='list-group'>
+          <ul class='no-disc list-group'>
             {% for sponsor in sponsor_list %}
               <li><i class="fa fa-angle-right"></i> <span style="font-weight:bold">{{ sponsor.name }}</span> ({{ sponsor.cnt }} trials)</li>
             {% endfor %}
@@ -21,9 +21,9 @@
       <div id='facility-list' class='row'>
         {% if facility_list|length > 0 %}
           <h2>Research Sites</h2>
-          <ul class='list-group'>
+          <ul class='list-group-horizontal'>
             {% for facility in facility_list %}
-              <li class='facility'>
+              <li class='facility list-group-item'>
                 <span style="font-weight:bold">{{ facility.name }}</span> ({{ facility.cnt }} trials)<br />
                 {{ facility.address|safe }}<br />
               </li>

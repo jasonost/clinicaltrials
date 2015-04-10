@@ -29,12 +29,12 @@ img {
     border-bottom: 1px solid #ccc;
     padding: 1.43em 0 1.43em 0;
 }
-    .block-list-item:nth-of-type(1){
-        padding-top: 0;
-    }
-    .block-list-item:last-child{
-        border: none;
-    }
+.block-list-item:nth-of-type(1){
+    padding-top: 0;
+}
+.block-list-item:last-child{
+    border: none;
+}
 .inline-list-item{
     margin-right: 1em;
 }
@@ -76,18 +76,6 @@ a .btn {
     text-decoration: none;
 }
 
-tspan {
-    font-weight: bold;
-}
-
-#inst-summary {
-    padding-left: 1.5em;
-}
-
-#top-conditions {
-    text-align: center;
-}
-
 .modal-input {
     margin-bottom: 10px;
 }
@@ -97,14 +85,8 @@ tspan {
     min-width: 85px;
 }
 
-#facility-list ul.list-group {
-    padding-left: 0;
-      -moz-column-count: 2;
-      -moz-column-gap: 10px;
-      -webkit-column-count: 2;
-      -webkit-column-gap: 10px;
-  column-count: 2;
-  column-gap: 10px;
+.no-disc {
+    list-style-type: none;
 }
 
 /*Global Responsive*/
@@ -149,10 +131,6 @@ tspan {
 .navbar-brand img{
     width: 32px;
     display: block;
-}
-
-.navbar-search {
-    padding-left: 40px;
 }
 
 .navbar-button {
@@ -221,10 +199,24 @@ nav .site-name a:hover{
     text-align: center;
 }
 
-/* facilities in list */
-
+/* facility and sponsor list */
 .facility {
     margin-bottom: .5em;
+}
+
+#facility-list ul.list-group-horizontal {
+    padding-left: 0;
+      -moz-column-count: 3;
+      -moz-column-gap: 20px;
+      -webkit-column-count: 3;
+      -webkit-column-gap: 20px;
+  column-count: 3;
+  column-gap: 20px;
+}
+
+/* horizontal list group */
+.list-group-horizontal .list-group-item {
+    display: inline-block;
 }
 
 /*Footer*/
@@ -243,8 +235,20 @@ footer .site-name:hover{
 
 
 /* institution page */
-svg rect:hover {
+svg rect:hover, svg text:hover {
     cursor: pointer;
+}
+
+tspan {
+    font-weight: bold;
+}
+
+#inst-summary, .ratings-table {
+    margin-left: 1.5em;
+}
+
+#top-conditions {
+    text-align: center;
 }
 
 

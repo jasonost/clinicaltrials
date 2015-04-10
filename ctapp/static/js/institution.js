@@ -7,7 +7,6 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
   for (i =0; i < data.result.length; i++) {
     id_lookup[data.result[i].cond_name] = data.result[i].cond_id;
   }
-  console.log(id_lookup);
 
   var $t = $("#top-conditions");
   var divWidth = $t.innerWidth() - parseFloat($t.css("padding-left")) - parseFloat($t.css("padding-right"));
@@ -58,7 +57,12 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
       var text = d3.select(this),
           y = text.attr("y"),
           dy = parseFloat(text.attr("dy"));
-      text.style({'text-anchor': 'start', 'font-weight': 'bold', 'text-shadow': '0 0 0.5em #FFF, 0 0 0.05em rgba(255, 255, 255, 0.5)'}).attr("x", 10).attr("y", y).attr("dy", dy + "em")
+      text.style({'text-anchor': 'start', 'font-weight': 'bold', 'text-shadow': '0 0 0.5em #FFF, 0 0 0.05em rgba(255, 255, 255, 0.5)'}).attr("x", 10).attr("y", y).attr("dy", dy + "em");
+      $(this).parent().on("click", function (e) {
+        console.log(this);
+        var cond_id = id_lookup[$(this).text()];
+        window.location = $SCRIPT_ROOT + "condition?cond=" + cond_id;
+      });
     })
   });
 
