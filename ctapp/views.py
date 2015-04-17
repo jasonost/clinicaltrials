@@ -1,14 +1,22 @@
 #!../clinicaltrials/env/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from ctapp import app
-import flask, time, re, word2vec, random, uuid, json
+import flask, time, re, random, uuid, json, warnings
 from flask import request, url_for
 from hashlib import md5
-from nltk import RegexpParser
 from collections import defaultdict, Counter
 from string import punctuation 
 from datetime import datetime
+
+# active learning
+import word2vec
+from nltk import RegexpParser
+
+# document similarity
+from gensim import corpora, models, similarities, utils
+import gensim, simserver
 
 # SQLAlchemy setup
 from sqlalchemy import create_engine
@@ -20,7 +28,7 @@ from db_tables import metadata, InstitutionDescription, InstitutionLookup, Condi
     Users, MeshAssignStaging, UserHistoryMesh, CriteriaConceptStaging, UserHistoryCriteria, \
     Sponsors, Facilities, TrialPublications, CriteriaText, CriteriaTagged, CriteriaConceptLookup, \
     ConceptTerms, CriteriaConcept, ConceptPredictors, ConceptPredictorsReject, ConceptTerms, \
-    ConceptTermsReject
+    ConceptTermsReject, ConditionBrowse, MeshThesaurus
 
 
 
@@ -37,7 +45,7 @@ mysqlserver = 'localhost'
 engine, conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 
 # initialize global variables
-app.secret_key = 'this is not a secret'
+app.secret_key = str(uuid.uuid4())
 
 skip_term_list = {'month', 'months', 'patient', 'patients', 'history', 'day', 'days',
                   'year', 'years', 'week', 'weeks', 'subject', 'subjects', 'study', 'inclusion criteria', 'exclusion criteria',
@@ -46,11 +54,14 @@ skip_term_list = {'month', 'months', 'patient', 'patients', 'history', 'day', 'd
 skip_predictor_list = {'inclusion criteria', 'exclusion criteria'}
 
 
-#load in model and clusters
+# load active learning model
 #model = word2vec.load('/groups/clinicaltrials/clinicaltrials/data/criteria.bin')
-#model.clusters = word2vec.load_clusters('/groups/clinicaltrials/clinicaltrials/data/criteria-clusters.txt')
 model = word2vec.load('data/criteria.bin')
-#model.clusters = word2vec.load_clusters('data/criteria-clusters.txt')
+
+# load similarity server
+similarity_server = simserver.SessionServer('data/docsim_server')
+
+
 
 
 
@@ -181,7 +192,6 @@ def chunker(sent):
                       CHUNK: {(<NN.*><POS>)?<RB>?<JJ.*>*<NN.*>+}
                  """
     results = []
-
     cp = RegexpParser(chunk_reg)
 
     tree = cp.parse(sent)
@@ -263,6 +273,31 @@ def weight_preds(past_predictors, pred_list):
         
     return pred_weight_list
 
+# write list of terms to database
+def write_list(termlist, termtype):
+    if termlist:
+        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                              'update_time': datetime.now(),
+                                                              'concept_id': flask.session['concept_id'],
+                                                              'new_concept': flask.session['new_concept'],
+                                                              'update_type': termtype,
+                                                              'value': t}
+                                                              for t in termlist])
+
+# get list of strings based on typelist (eg 'term','term-reject', etc.)
+def get_list(typelist):
+    r = conn.execute(select([CriteriaConceptStaging.c.value]).\
+                     where(and_(CriteriaConceptStaging.c.concept_id == flask.session['concept_id'],
+                                CriteriaConceptStaging.c.update_type.in_(typelist)))).fetchall()
+    outlist = [t[0] for t in r]
+    for ttype in typelist:
+        parts = ttype.split('-')
+        thisvar = parts[0]
+        thistab = 'Concept%ss%s' % (thisvar.title(), 'Reject' if len(parts) == 2 else '')
+        r = conn.execute(select([eval('%s.c.%s' % (thistab, thisvar))]).\
+                         where(eval('%s.c.concept_id' % thistab) == flask.session['concept_id'])).fetchall()
+        outlist += [t[0] for t in r]
+    return outlist
 
 
 
@@ -778,6 +813,10 @@ def structure_trial_criteria():
                                         order_by(CriteriaText.c.display_order)).\
                                     fetchall()
 
+                under_review = conn.execute(select([CriteriaConceptStaging.c.value]).\
+                                                where(CriteriaConceptStaging.c.update_type == 'concept-name')).fetchall()
+                cur_concepts = [t[0].lower() for t in under_review]
+
                 criteria_dict = {}
                 for cid, corder, ct, tt, dtype, cterm, cinv, conid, conname in ctext:
                     if corder not in criteria_dict:
@@ -817,7 +856,7 @@ def structure_trial_criteria():
                         out_text = '<h3>%s</h3>' % ct
                     elif criteria_dict[c]['chunks']:
                         chunks = criteria_dict[c]['chunks']
-                        out_text = '<p>%s' % ct[:chunks[0][1]]
+                        out_text = '<p class="criteria-text">%s' % ct[:chunks[0][1]]
                         for i, chunk in enumerate(chunks):
 
                             phrase, start = chunk
@@ -837,23 +876,26 @@ def structure_trial_criteria():
                             out_text += '<span class="criteria-highlight">%s</span>%s' % (phrase, ct[start+len(phrase):end])
 
                             chunk_links = []
-                            for concept in concept_list:
-                                if concept['id']:
-                                    link_text = 'Continue developing <b>%s</b> concept' % concept['name']
-                                else:
-                                    link_text = concept['name']
-                                chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
-                                                                                                           phrase,
-                                                                                                           concept['id'],
-                                                                                                           criteria_dict[c]['id'],
-                                                                                                           link_text)
-                                chunk_links.append('<p>%s</p>' % chunk_link)
+                            if phrase.lower() in cur_concepts:
+                                chunk_links.append('<span class="disabled-text">Concept is under review</span>')
+                            else:
+                                for concept in concept_list:
+                                    if concept['id']:
+                                        link_text = 'Continue developing <b>%s</b> concept' % concept['name']
+                                    else:
+                                        link_text = concept['name']
+                                    chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
+                                                                                                               phrase,
+                                                                                                               concept['id'],
+                                                                                                               criteria_dict[c]['id'],
+                                                                                                               link_text)
+                                    chunk_links.append('<p>%s</p>' % chunk_link)
 
                             poss_chunks.append({'term': '<p>%s</p>' % phrase, 'links': chunk_links})
 
                         out_text += '</p>'
                     else:
-                        out_text = '<p>%s</p>' % ct
+                        out_text = '<p class="criteria-text">%s</p>' % ct
                     write_obj.append({'text': out_text, 'chunks': poss_chunks})
 
                 if nct_id:
@@ -894,37 +936,21 @@ def learning_startup():
 
     if concept_id:
         new_concept = 0
-        term_list = [t[0] for t in conn.execute(select([ConceptTerms.c.term]).\
-                                        where(ConceptTerms.c.concept_id == concept_id))]
-        term_exc = [t[0] for t in conn.execute(select([ConceptTermsReject.c.term]).\
-                                        where(ConceptTermsReject.c.concept_id == concept_id))]
-        pred_list = [t[0] for t in conn.execute(select([ConceptPredictors.c.predictor]).\
-                                        where(ConceptPredictors.c.concept_id == concept_id))]
-        pred_exc = [t[0] for t in conn.execute(select([ConceptPredictorsReject.c.predictor]).\
-                                        where(ConceptPredictorsReject.c.concept_id == concept_id))]
     else:
         new_concept = 1
         concept_id = str(uuid.uuid4())
-        term_list = [initial_term]
-        term_exc = []
-        pred_list = []
-        pred_exc = []
 
     #add skip terms to term_exc and pred_exc
-    term_exc += list(skip_term_list)
-    pred_exc += list(skip_predictor_list)
+    #term_exc += list(skip_term_list)
+    #pred_exc += list(skip_predictor_list)
 
     # getting existing predictors
-    all_preds = list(get_past_predictors())
+    #all_preds = list(get_past_predictors())
 
     # setting session variables
     flask.session['new_concept'] = new_concept
     flask.session['concept_id'] = concept_id
-    flask.session['term_list'] = term_list
-    flask.session['term_exc'] = term_exc
-    flask.session['pred_list'] = pred_list
-    flask.session['pred_exc'] = pred_exc
-    flask.session['all_preds'] = all_preds
+    #flask.session['all_preds'] = all_preds
 
     # write concept info to the database
     ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
@@ -933,7 +959,8 @@ def learning_startup():
                                                           'new_concept': flask.session['new_concept'],
                                                           'update_type': 'concept-name',
                                                           'value':initial_term}])
-
+    if new_concept == 1:
+        write_list([initial_term], 'term')
 
     return flask.jsonify(ok=True)
 
@@ -944,12 +971,14 @@ def learning_terms_w2v():
     word = request.args['initial_term']
     word = '_'.join(word.lower().split(' '))
 
+    exc_list = get_list(['term','term-reject'])
+
     try:
         indexes, metrics = model.cosine(word, n=num_terms)
         return flask.jsonify(vals='terms',
                              new_vals=[{'name': ' '.join(w.split('_')), 'score': round(p*100)}
                                        for w, p in model.generate_response(indexes, metrics).tolist()
-                                       if w not in flask.session['term_exc']
+                                       if w not in exc_list
                                        and w not in skip_term_list])
     except Exception as e:
         print 'word2vec problem with %s: %s' % (word,e)
@@ -961,7 +990,10 @@ def learning_terms_basic():
 
     text = get_random_text()
 
-    pred_weight_list = weight_preds(flask.session['all_preds'], flask.session['pred_list'])
+    pred_list = get_list(['predictor'])
+    all_preds = get_past_predictors()
+
+    pred_weight_list = weight_preds(all_preds, pred_list)
 
     term_options_dict = Counter()
     for sent in text:
@@ -983,11 +1015,13 @@ def learning_terms_basic():
         term_options_dict.update(terms)
 
     #get top 20 predictors that have not been seen before
+    exc_list = get_list(['term','term-reject'])
+    exc_list += list(skip_term_list)
     sorted_terms = sorted(term_options_dict.items(), key=lambda x: x[1], reverse=True)
     counter = 0
     top_terms = []
     for term in sorted_terms:
-        if term[0] not in flask.session['term_list'] + flask.session['term_exc'] + list(skip_term_list):
+        if term[0] not in exc_list:
             top_terms.append(term)
             counter += 1
             if counter == 20 or counter == len(sorted_terms):
@@ -1002,6 +1036,9 @@ def learning_preds():
 
     text = get_random_text()
 
+    term_list = get_list(['term'])
+    print flask.session['concept_id']
+    print term_list
     pred_options_dict = Counter()
     for sent in text:
         #if the sentance has less than 2 words skip it
@@ -1009,7 +1046,11 @@ def learning_preds():
             continue
         #create a sentence rank for judging weight of terms found
         sent_rank = 0
-        for term in flask.session['term_list']:
+        for term in term_list:
+            if random.random() < 0.001:
+                print term
+                print ' '.join(zip(*sent)[0]).lower()
+                print
             if term.lower() in ' '.join(zip(*sent)[0]).lower():
                 sent_rank += 1
         result = chunker_preds(sent)
@@ -1021,11 +1062,13 @@ def learning_preds():
         pred_options_dict.update(preds)
 
     #get top 20 predictors that have not been seen before
+    exc_list = get_list(['predictor','predictor-reject'])
+    exc_list += list(skip_predictor_list)
     sorted_preds = sorted(pred_options_dict.items(), key=lambda x: x[1], reverse=True)
     counter = 0
     top_preds = []
     for pred in sorted_preds:
-        if pred[0] not in flask.session['pred_list'] + flask.session['pred_exc'] + list(skip_predictor_list):
+        if pred[0] not in exc_list:
             top_preds.append(pred)
             counter += 1
             if counter == 20 or counter == len(sorted_preds):
@@ -1043,45 +1086,53 @@ def write_data():
     wordtype = params['wt']
 
     if wordtype == 'term':
-        current_list = flask.session['term_list']
-        print 'current:'
-        print current_list
-        print 
-        flask.session['term_list'] += new_accepts
-        flask.session['term_exc'] += new_rejects
-        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
-                                                              'update_time': datetime.now(),
-                                                              'concept_id': flask.session['concept_id'],
-                                                              'new_concept': flask.session['new_concept'],
-                                                              'update_type': 'term',
-                                                              'value': t}
-                                                              for t in new_accepts])
-        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
-                                                              'update_time': datetime.now(),
-                                                              'concept_id': flask.session['concept_id'],
-                                                              'new_concept': flask.session['new_concept'],
-                                                              'update_type': 'term-reject',
-                                                              'value': t}
-                                                              for t in new_rejects])
+        write_list(new_accepts,'term')
+        write_list(new_rejects,'term-reject')
     else:
-        flask.session['pred_list'] += new_accepts
-        flask.session['pred_exc'] += new_rejects
-        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
-                                                              'update_time': datetime.now(),
-                                                              'concept_id': flask.session['concept_id'],
-                                                              'new_concept': flask.session['new_concept'],
-                                                              'update_type': 'predictor',
-                                                              'value': t}
-                                                              for t in new_accepts])
-        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
-                                                              'update_time': datetime.now(),
-                                                              'concept_id': flask.session['concept_id'],
-                                                              'new_concept': flask.session['new_concept'],
-                                                              'update_type': 'predictor-reject',
-                                                              'value': t}
-                                                              for t in new_rejects])
+        write_list(new_accepts,'predictor')
+        write_list(new_rejects,'predictor-reject')
 
     return flask.jsonify(done=True)
+
+
+
+
+
+
+
+
+# tools page
+@app.route('/tools')
+def tools():
+    return flask.render_template('tools.html')
+
+# MeSH suggestion page
+@app.route('/mesh_suggest')
+def mesh_suggest():
+    return flask.render_template('mesh_suggest.html')
+
+@app.route('/_get_suggestions')
+def get_suggestions():
+    sim_docs = {sim_id: dist
+                 for sim_id, dist, _ in 
+                    similarity_server.find_similar({'tokens': utils.simple_preprocess(request.args['doc'])}, min_score=0.4, max_results=10)}
+    doc_terms = conn.execute(select([ConditionBrowse.c.nct_id, ConditionBrowse.c.mesh_term]).\
+                                where(ConditionBrowse.c.nct_id.in_(sim_docs.keys()))).fetchall()
+    if doc_terms:
+        ranking = defaultdict(float)
+        for nct_id, term in doc_terms:
+            ranking[term] += sim_docs[nct_id]
+        ordered_terms = [t[0] for t in sorted(ranking.items(), key=lambda x: x[1], reverse=True)]
+        #mesh_codes = conn.execute(select([MeshThesaurus.c.mesh_term, MeshThesaurus.c.mesh_id]).where(MeshThesaurus.c.mesh_term.in_(ordered_terms)))
+        #mesh_lookup = dictify(mesh_codes)
+        #results = []
+        #for t in ordered_terms:
+        #    out_text = '%s (%s)' % (t, ', '.join(['<a href="#" target="_blank">%s</a>' % m for m in mesh_lookup[t]]))
+        return flask.jsonify(results=ordered_terms)
+    else:
+        return flask.jsonify(results=False)
+
+
 
 
 
@@ -1147,6 +1198,18 @@ def check_login():
         username = None
     return flask.jsonify(logged_in='userid' in flask.session,
                          username=username)
+
+@app.route('/_clear_session')
+def clear_session():
+    thisuser = None
+    if 'userid' in flask.session:
+        thisuser = flask.session['userid']
+    flask.session.clear()
+    if thisuser:
+        flask.session['userid'] = thisuser
+
+    return flask.jsonify(done=True)
+
 
 
 
