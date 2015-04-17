@@ -128,6 +128,7 @@ CREATE TABLE criteria_concept_staging (
     UPDATE_TYPE VARCHAR(20),
     VALUE VARCHAR(200)
 ) DEFAULT CHARACTER SET=utf8;
+CREATE INDEX criteria_concept_staging_concept_id_idx ON criteria_concept_staging(concept_id);
 
 CREATE TABLE user_history_criteria (
     HISTORY_ID INT NOT NULL AUTO_INCREMENT,
