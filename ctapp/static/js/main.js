@@ -1,3 +1,10 @@
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 function loadJSON(callback) {   
 
   var xobj = new XMLHttpRequest();
@@ -13,6 +20,10 @@ function loadJSON(callback) {
 }
  
 $.widget( "custom.catcomplete", $.ui.autocomplete, {
+  _create: function() {
+        this._super();
+        this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+      },
   _renderMenu: function( ul, items ) {
     var self = this,
     currentCategory = "";
@@ -33,8 +44,8 @@ $(function() {
           delay: 0,
           source: function(request, response) {
               var results = $.ui.autocomplete.filter(data, request.term);
-              var cond_results = results.filter(function(element) {return element.category == "Condition"}).slice(0, 5);
-              var inst_results = results.filter(function(element) {return element.category == "Institution"}).slice(0, 5);
+              var cond_results = results.filter(function(element) {return element.category == "Condition"}).slice(0, 7);
+              var inst_results = results.filter(function(element) {return element.category == "Institution"}).slice(0, 7);
               response(cond_results.concat(inst_results));
             },
             delay: 200,
@@ -49,6 +60,13 @@ $(function() {
             }
       });
     });
+
+    $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
+      if (data.logged_in && !($("#logged-in-area").length > 0)) {
+        changeButtons(data.username);
+        return false;
+      }
+    });
 });
 
 $("#search-text").keydown(function(event) {
@@ -61,11 +79,117 @@ $("#search-text").keydown(function(event) {
       }
 });
 
+// move login area on mobile screens
 if ($(window).width() < 768) {
   var buttons = $("#login-area").clone();
   $("#login-area").remove();
   $("#navbar-top").append(buttons);
 }
+
+
+
+
+
+
+
+
+// clearing input vals info
+function clearVals() {
+  $(".form-control").val('');
+};
+
+function clearUserPass() {
+  $("#input-username").val('');
+  $("#input-password").val('');
+}
+
+// replacing login buttons with username and logout button
+function changeButtons(username) {
+  $('#create-acct-button').remove();
+  $('#login-button').remove();
+  $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + username + '</b><small> ' +
+      '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
+}
+
+// main user creation interaction
+function createUser(e) {
+  $.getJSON( $SCRIPT_ROOT + "_create_user", {
+      name: $("#input-full-name").val(),
+      inst_user: $("#input-institution").val(),
+      email: $("#input-email").val(),
+      pwd: $("#create-user-modal #input-password").val(),
+      username: $("#create-user-modal #input-username").val()
+    }, function( data ) {
+    if (data.result == 'ok') {
+      clearVals();
+      changeButtons(data.username);
+    } else if (data.result == 'Username is already taken. Please try another one.') {
+      clearUserPass();
+      alert(data.result);
+    } else {
+      $("#input-password").val('');
+      alert("There was an error. Please try again.");
+    }
+   });
+}
+
+$('#create-user-submit').on('click', function(e){createUser(e)} );
+
+$("#create-user-modal .form-control").keydown(function(e) {
+    if (e.keyCode == 13) {
+        if ($("#input-full-name").val().length > 0 &&
+            $("#input-institution").val().length > 0 &&
+            $("#input-email").val().length > 0 &&
+            $("#create-user-modal #input-password").val().length > 0 &&
+            $("#create-user-modal #input-username").val().length > 0) {
+          createUser(e);
+          $("#create-user-modal").hide();
+        } else {
+          alert('All fields must be completed in order to create an account! Please try again.');
+        }
+        return false;
+      }
+});
+
+$('#create-user-cancel').on('click', function(e){clearVals()} );
+
+// main user login interaction
+function loginUser(e) {
+  $.getJSON( $SCRIPT_ROOT + "_login", {
+      pwd: $("#login-modal #input-password").val(),
+      username: $("#login-modal #input-username").val()
+    }, function( data ) {
+    clearVals();
+    if (data.result == 'ok') {
+      changeButtons(data.username);
+    } else {
+      alert("Username and password don't match any existing account. Please try again.");
+    }
+  });
+}
+
+$("#login-modal").on('shown', function() {
+    $("#login-modal #input-username").focus();
+});
+
+$('#login-submit').on('click', function(e){loginUser(e)} );
+
+$("#login-modal .form-control").keydown(function(e) {
+    if (e.keyCode == 13) {
+        if ($("#login-modal #input-password").val().length > 0 &&
+            $("#login-modal #input-username").val().length > 0) {
+          loginUser(e);
+          $("#login-modal").hide();
+        } else {
+          alert('Username and password must both be present in order to log in! Please try again.');
+        }
+        return false;
+      }
+});
+
+
+
+$('#login-cancel').on('click', function(e){clearVals()} );
 
 // logout button action
 $("#login-area").on('click', "#logout-button", function (e) {
@@ -77,62 +201,95 @@ $("#login-area").on('click', "#logout-button", function (e) {
   });
 });
 
-// clearing input vals info
-function clearVals() {
-  $(".form-control").val('');
-};
 
-// main user creation interaction
-$('#create-user-submit').on('click', function(e){
-  $("#create-acct-button").blur();
-  $.getJSON( $SCRIPT_ROOT + "_create_user", {
-      name: $("#input-full-name").val(),
-      inst_user: $("#input-institution").val(),
-      email: $("#input-email").val(),
-      pwd: $("#create-user-modal #input-password").val(),
-      username: $("#create-user-modal #input-username").val()
-    }, function( data ) {
-    clearVals();
-    if (data.result == 'ok') {
-      $('#create-acct-button').remove();
-      $('#login-button').remove();
-      $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + data.username + '</b><small> ' +
-          '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
+
+
+
+
+
+
+
+// check login and alert or redirect as necessary
+function OpenInNewTab(url) {
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+
+$("#structure-criteria-btn").on("click", function(e) {
+  $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
+    if (data.logged_in) {
+      var nct_id = window.location.search.split('=')[1];
+      e.preventDefault();
+      e.stopPropagation();
+      OpenInNewTab($SCRIPT_ROOT + "structure_trial_criteria?nct_id=" + nct_id);
+      return false;
     } else {
-      alert("There was an error. Please try again.");
+      alert("Whoops, you need to log in before you can use that tool.");
     }
-   });
+  });
+})
+
+// check login and update div as necessary
+$()
+
+
+
+
+
+
+
+
+
+// trial list filters
+$("#filter-type-switch").bootstrapSwitch();
+
+var intr = ['All (default)',
+            'Drug',
+            'Procedure',
+            'Behavioral',
+            'Device',
+            'Biological',
+            'Dietary Supplement',
+            'Radiation',
+            'Genetic','Other'];
+var stat = ['All (default)',
+            'Completed',
+            'Recruiting',
+            'Active, not recruiting',
+            'Not yet recruiting',
+            'Terminated',
+            'Withdrawn',
+            'Enrolling by invitation',
+            'Suspended',
+            'Withheld',
+            'Available',
+            'No longer available',
+            'Approved for marketing',
+            'Temporarily not available'];
+var patient_html;
+
+$('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, state) {
+  if (state) {
+    // Patients
+    $('#filter-list').empty();
+    $('#filter-list').append(patient_html);
+  } else {
+    // Researchers
+    patient_html = $('#filter-list').html();
+    $('#filter-list').empty();
+    $('#filter-list').append('<h5>Intervention Type</h5>'+
+                                '<select multiple class="form-control">' +
+                                  '<option>' + intr.join('</option><option>') + '</option>' +
+                                '</select>' +
+                              '<h5>Trial Status</h5>' +
+                              '<select multiple class="form-control">' +
+                                '<option>' + stat.join('</option><option>') + '</option>' +
+                              '</select>');
+  }
+  console.log(this); // DOM element
+  console.log(event); // jQuery event
+  console.log(state); // true | false
 });
 
-$('#create-user-cancel').on('click', function(e){
-    $("#create-acct-button").blur();
-    clearVals();
-  }
-);
-
-// main user login interaction
-$('#login-submit').on('click', function(e){
-  $.getJSON( $SCRIPT_ROOT + "_login", {
-      pwd: $("#login-modal #input-password").val(),
-      username: $("#login-modal #input-username").val()
-    }, function( data ) {
-    clearVals();
-    if (data.result == 'ok') {
-      $('#create-acct-button').remove();
-      $('#login-button').remove();
-      $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + data.username + '</b><small> ' +
-          '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
-    } else {
-      alert("Well, that didn't work. Please try again.");
-    }
-   });
-});
-
-$('#login-cancel').on('click', function(e){
-    clearVals();
-  }
-);
-
-
-
-
+  
+    

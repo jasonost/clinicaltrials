@@ -17,8 +17,8 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
   var chart = new dimple.chart(svg, data.result);
   chart.setBounds(yAxisStart, 5, divWidth - yAxisStart - 20, 27.5 * data.result.length);
 
-  var myColor = new dimple.color('#0054a8'); // green: #00a800, blue: #0054a8
-  myColor.opacity = 0.55;
+  var myColor = new dimple.color('#0080db'); // green: #00a800, blue: #0054a8
+  myColor.opacity = 0.3;
   chart.defaultColors = [
     myColor
   ]; 
@@ -57,7 +57,7 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
       var text = d3.select(this),
           y = text.attr("y"),
           dy = parseFloat(text.attr("dy"));
-      text.style({'text-anchor': 'start', 'font-weight': 'bold', 'text-shadow': '0 0 0.5em #FFF, 0 0 0.05em rgba(255, 255, 255, 0.5)'}).attr("x", 10).attr("y", y).attr("dy", dy + "em");
+      text.style({'text-anchor': 'start', 'font-weight': 'bold'}).attr("x", 10).attr("y", y).attr("dy", dy + "em");
       $(this).parent().on("click", function (e) {
         console.log(this);
         var cond_id = id_lookup[$(this).text()];
