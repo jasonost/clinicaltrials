@@ -115,11 +115,6 @@ function getPredictors() {
     })
 }
 
-
-
-
-
-
 // getting terms
 function getTerms() {
     $.getJSON($SCRIPT_ROOT + "_learning_terms_basic", {}, function(data) {
@@ -146,9 +141,7 @@ $("body").delegate("#reject-word", 'click', function(e) {
     cycleWord(w, 'exclude', rejects);
 });
 $("body").delegate("#quit-word", 'click', function(e) {
-    $("#learning-window").empty();
-    // TODO: warn user about quitting
-    writeData(accepts, rejects, wordtype);
+    $("#quit-warning-modal").modal('show');
 });
 
 function learnWords() {
@@ -178,12 +171,26 @@ function cycleWord(w, incexc, arr) {
 }
 
 
+// modal interaction
 
-
-
-
-// looping through all rounds
-function loopRounds() {
-
+function closeWindow() {
+  if (confirm("Close Window?")) {
+    close();
+  }
 }
+
+$("body").delegate("#quit-warning-cancel", 'click', function(e) {
+    $("#learning-window").empty();
+    startProcess();
+});
+$("body").delegate("#quit-warning-submit", 'click', function(e) {
+    writeData();
+    $.getJSON($SCRIPT_ROOT + '_clear_session', {}, function(data) {
+        closeWindow();
+    })
+});
+
+
+
+
 
