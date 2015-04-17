@@ -9,23 +9,26 @@
     <!-- GLOBAL -->
     <link href="{{ url_for('static', filename='js/jquery-ui/jquery-ui.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-switch.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" type='text/css'>
+
     <!-- INDEX -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+    {% if is_home %}
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+      <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    {% endif %}
     <!-- CONDITION PAGE -->
     <link href="{{ url_for('static', filename='css/condition.css') }}" rel="stylesheet">
     <!-- INSTITUTION PAGE -->
     <link href="{{ url_for('static', filename='css/institution.css') }}" rel="stylesheet">
 
     <!-- All -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap_components.js') }}"></script>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" type='text/css'>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/jquery-ui/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-switch.min.js') }}"></script>
     <script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }} + "/";</script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -59,7 +62,7 @@
           </div>
         </div>
       {% endif %}
-      <div id="login-area" class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-0 col-md-2">
+      <div id="login-area" class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 {% if is_home %}col-md-offset-4{% else %}col-md-offset-0{% endif %} col-md-2">
         <button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
           Create account
         </button>
