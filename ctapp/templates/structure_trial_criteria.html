@@ -1,0 +1,43 @@
+{% include 'header.html' %}
+
+<div id='structure-criteria-{{ nct_id }}' class='wrapper'>
+  <header class='container'>
+    <div class='page-header row'>
+      <h1>Identify important criteria concepts</h1>
+      <p>Go to this trial: <a href="{{ url_for('trial') }}?nct_id={{ nct_id }}" target="_blank">{{ nct_id }}</a></p>
+    </div>
+  </header>
+  <section class='container'>
+    <div id='criteria-list'>
+      <table>
+        <col width="60%">
+        <col width="40%">
+          {% for crit in crit_list %}
+            <tr>
+              <td class='long-text'>{{ crit.text|safe }}</td>
+              {% if crit.chunks|length > 0 %}
+                <td><table>
+                  <col width="65%">
+                  <col width="35%">
+                  {% for chunk in crit.chunks %}
+                    <tr>
+                      <td>{{ chunk.term|safe }}</td>
+                      <td>
+                        {% for clink in chunk.links %}
+                          {{ clink|safe }}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </table></td>
+              {% else %}
+                <td></td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+      </table>
+    </div> <!-- end .site-list -->
+  </section>
+</div>
+
+{% include 'footer.html' %}

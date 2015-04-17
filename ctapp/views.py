@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from ctapp import app
-import flask, time
+import flask, time, re, word2vec, random, uuid, json
 from flask import request, url_for
 from hashlib import md5
-from collections import defaultdict
+from nltk import RegexpParser
+from collections import defaultdict, Counter
+from string import punctuation 
+from datetime import datetime
 
 # SQLAlchemy setup
 from sqlalchemy import create_engine
@@ -14,26 +17,41 @@ from connect import mysqlusername, mysqlpassword, mysqlserver, mysqldbname
 from db_tables import metadata, InstitutionDescription, InstitutionLookup, ConditionDescription, \
     ConditionLookup, InstitutionSponsors, InstitutionFacilities, InstitutionRatings, TrialSummary, \
     Interventions, Conditions, ConditionSynonym, ClinicalStudy, Investigators, TrialRatings, \
-    Users, MeshAssignStaging, UserHistoryMesh, CriteriaConceptStaging, UserHistoryCriteria
+    Users, MeshAssignStaging, UserHistoryMesh, CriteriaConceptStaging, UserHistoryCriteria, \
+    Sponsors, Facilities, TrialPublications, CriteriaText, CriteriaTagged, CriteriaConceptLookup, \
+    ConceptTerms, CriteriaConcept, ConceptPredictors, ConceptPredictorsReject, ConceptTerms, \
+    ConceptTermsReject
 
+
+
+
+# initialize database
 def initializeDB(user,pwd,server,dbname):
     engine = create_engine('mysql://%s:%s@%s/%s?charset=utf8' % (user,pwd,server,dbname),
                            pool_recycle=3600)
     conn = engine.connect()
     metadata.create_all(engine)
-    return conn
+    return engine, conn
 
 mysqlserver = 'localhost'
-conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+engine, conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 
-# a = conn.execute(select([InstitutionDescription.c.description]).select_from(InstitutionDescription).where(InstitutionDescription.c.institution_id == 19097)).fetchone()
-# server encoding: .decode('latin1').encode('ascii', 'xmlcharrefreplace')
-
-# initializing global variables
+# initialize global variables
 app.secret_key = 'this is not a secret'
-inst_rating_info = 'These currently do not have any meaning.'
-inst_trials_active_info = "Trials that are recruiting or active."
-cond_name_mesh_info = 'This is the official Medical Subject Heading (MeSH) term for this condition.'
+
+skip_term_list = {'month', 'months', 'patient', 'patients', 'history', 'day', 'days',
+                  'year', 'years', 'week', 'weeks', 'subject', 'subjects', 'study', 'inclusion criteria', 'exclusion criteria',
+                  'history of', 'patients with', 'age', 'investigator', 'use', 'evidence', 'women', 'men', 'woman', 'man',
+                  'female', 'male', 'enrollment', 'time'}
+skip_predictor_list = {'inclusion criteria', 'exclusion criteria'}
+
+
+#load in model and clusters
+#model = word2vec.load('/groups/clinicaltrials/clinicaltrials/data/criteria.bin')
+#model.clusters = word2vec.load_clusters('/groups/clinicaltrials/clinicaltrials/data/criteria-clusters.txt')
+model = word2vec.load('data/criteria.bin')
+#model.clusters = word2vec.load_clusters('data/criteria-clusters.txt')
+
 
 
 
@@ -91,7 +109,7 @@ def dictify(qresult):
     return output
 
 # create a comma-separated list of words
-def add_commas(strlist, conj='and'):
+def add_commas(strlist, conj='and', sep=', '):
     ''' strlist is a list of strings to be concatenated with comma
         conj is the final conjunction, defaults to 'and'
     '''
@@ -103,7 +121,7 @@ def add_commas(strlist, conj='and'):
     elif len(strlist) == 2:
         return '%s %s %s' % (strlist[0], conj, strlist[1])
     else:
-        return '%s, %s %s' % (', '.join(strlist[:-1]), conj, strlist[-1])
+        return '%s%s%s %s' % (sep.join(strlist[:-1]), sep, conj, strlist[-1])
 
 # create a layman's terms string that describes the trial
 def layman_desc(phase, status, inv_dict, stype):
@@ -156,6 +174,94 @@ def bold_term(qtype, qid, name, term, num_trials):
                                                                                            name[term_end:])
     return '<p><a href="%s?%s=%s">%s</a> (%d trials)</p>' % (qpath, qtype, qid, bold_name, num_trials)
 
+# procedure to return chunks of noun phrase terms
+def chunker(sent):
+
+    chunk_reg = r"""
+                      CHUNK: {(<NN.*><POS>)?<RB>?<JJ.*>*<NN.*>+}
+                 """
+    results = []
+
+    cp = RegexpParser(chunk_reg)
+
+    tree = cp.parse(sent)
+    for subtree in tree.subtrees():
+        if subtree.label() == 'CHUNK':
+            results.append(subtree[:])
+
+    return results
+
+#get chunks for predictors
+def chunker_preds(sent):
+
+    chunk_reg1 = r"""
+                      CHUNK: {<NN.*><IN>}
+                 """
+    chunk_reg2 = r"""
+                      CHUNK: {<VB.*><DT>}
+                 """
+    chunk_reg3 = r"""
+                      CHUNK: {<NN.*><VB.*>}
+                 """
+    results = []
+
+    for chunk_reg in [chunk_reg1, chunk_reg2, chunk_reg3]:
+        cp = RegexpParser(chunk_reg)
+
+        try:
+            tree = cp.parse(sent)
+        except Exception as e:
+            print 'Chunker problem: %s' % e
+            print sent
+        
+        for subtree in tree.subtrees():
+            if subtree.label() == 'CHUNK':
+                results.append(subtree[:])
+    return results
+
+# get random selection of tagged text to process
+def get_random_text():
+
+    if 'criteria_tracking' not in flask.session:
+        flask.session['criteria_tracking'] = []
+
+    criteria_tracking = flask.session['criteria_tracking']
+
+    while True:
+        rand_select = random.choice(range(250))
+        if rand_select not in criteria_tracking:
+            flask.session['criteria_tracking'].append(rand_select)
+            break
+
+    result = conn.execute(select([CriteriaTagged.c.tagged_text]).where(CriteriaTagged.c.random_select == rand_select))
+
+    #convert into list of lists
+    data = [eval(r.tagged_text)[0] for r in result]
+
+    #mark punctuation with XX tag and convert inner list to tuples for processing
+    data = [[(w[0], w[1]) if w[0] not in punctuation else (w[0], 'XX') for w in s] for s in data]
+
+    return data
+
+def get_past_predictors():
+    '''pulls all the past predictors from other concepts into a list of lists'''
+    result = conn.execute(select([ConceptPredictors.c.concept_id,
+                                   ConceptPredictors.c.predictor])).fetchall()
+    return result
+
+# weight predictor terms for active learning algorithm
+def weight_preds(past_predictors, pred_list):
+    pred_weight_list = []
+
+    #create a combined list of all preds, create Counter dict
+    count_pred = Counter([p[1] for p in past_predictors])
+
+    #add weights to pred terms and create new pred weight lists
+    for idx in range(len(pred_list)):
+        weight  = len(past_predictors) - (count_pred[pred_list[idx]]-1)
+        pred_weight_list.append((pred_list[idx], weight))
+        
+    return pred_weight_list
 
 
 
@@ -168,6 +274,9 @@ def bold_term(qtype, qid, name, term, num_trials):
 def home():
     return flask.render_template('index.html',
                                  is_home=True)
+
+
+
 
 
 
@@ -220,6 +329,9 @@ def search_results():
                 initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 
     return flask.redirect(url_for('home'))
+
+
+
 
 
 
@@ -312,56 +424,6 @@ def top_condition():
 
     return flask.jsonify(None)
 
-# trials JSON
-@app.route('/_trial_list')
-def trial_list():
-    params = request.args
-    if 'page' in params and 'id' in params:
-
-        for i in range(5):
-            try:
-                if params['page'] == 'inst':
-                    tbl = 'institution_lookup'
-                    key = 'institution_id'
-                elif params['page'] == 'cond':
-                    tbl = 'condition_lookup'
-                    key = 'condition_id'
-
-                trials = conn.execute(select([TrialSummary]).\
-                                        select_from(TrialSummary.join(text(tbl),
-                                            and_(text('%s.nct_id = trial_summary.nct_id' % tbl),
-                                                 text('%s.%s = %s' % (tbl, key, params['id']))))).\
-                                        limit(50)).\
-                                    fetchall()
-
-                inv = conn.execute(select([Interventions.c.nct_id, Interventions.c.intervention_type]).\
-                                        select_from(Interventions.join(InstitutionLookup,
-                                            and_(InstitutionLookup.c.nct_id == Interventions.c.nct_id,
-                                                 InstitutionLookup.c.institution_id == int(params['id']))))).\
-                                    fetchall()
-
-                inv_dict = dictify(inv)
-
-                # compile JSON object
-                out_obj = []
-                for nct_id, title, status, phase, stype in trials:
-                    out_obj.append({'nct_id': nct_id,
-                                    'trial_title': title,
-                                    'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype)
-                                    })
-
-                if trials:
-                    return flask.jsonify(result=out_obj)
-            except Exception, e:
-                print 'Database connection error getting trial list info: %s' % e
-                initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
-
-    return flask.jsonify(None)
-
-
-
-
-
 # institution sponsors and facilities page
 @app.route('/inst_sites')
 def inst_sites():
@@ -404,6 +466,9 @@ def inst_sites():
                 initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 
     return flask.redirect(url_for('home'))
+
+
+
 
 
 
@@ -470,6 +535,9 @@ def condition():
 
 
 
+
+
+
 # trial summary page
 @app.route('/trial')
 def trial():
@@ -485,7 +553,6 @@ def trial():
                                                     ClinicalStudy.c.overall_status,
                                                     ClinicalStudy.c.phase,
                                                     ClinicalStudy.c.study_type,
-                                                    ClinicalStudy.c.criteria,
                                                     ClinicalStudy.c.gender,
                                                     ClinicalStudy.c.minimum_age,
                                                     ClinicalStudy.c.maximum_age,
@@ -497,7 +564,6 @@ def trial():
 
                 brief_desc = summary_data[1].replace('<br />','</p><p>') or 'No brief summary was provided.'
                 detailed_desc = summary_data[2].replace('<br />','</p><p>') or 'No detailed description was provided.'
-                criteria = summary_data[6].replace('<br />','</p><p>') or 'No eligibility criteria were provided.'
 
                 inv = conn.execute(select([Interventions.c.nct_id, Interventions.c.intervention_type]).\
                                         select_from(Interventions).\
@@ -514,6 +580,16 @@ def trial():
                                                     ConditionLookup.c.syn_flag == 0,
                                                     ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
                                     fetchall()
+
+                ctext = conn.execute(select([CriteriaText.c.criteria_text,
+                                             CriteriaText.c.display_type]).\
+                                        select_from(CriteriaText).\
+                                        where(CriteriaText.c.nct_id == nct_id).\
+                                        order_by(CriteriaText.c.display_order)).\
+                                    fetchall()
+                criteria = [{'disptext': t[0],
+                             'disptype': t[1]}
+                             for t in ctext]
 
                 cond_suggest = conn.execute(select([ConditionDescription.c.condition_id,
                                                     ConditionDescription.c.mesh_term]).\
@@ -532,6 +608,28 @@ def trial():
                               'crit': gen_stars(float(rating_info[5])),
                               'overall': gen_stars(calc_overall([float(f) for f in rating_info[1:6]]))}
 
+                sponsors = conn.execute(Sponsors.select().where(Sponsors.c.nct_id == nct_id)).fetchall()
+                prim_spon = [t[3] for t in sponsors if t[2] == 'Lead Sponsor'][0]
+                other_collab = [t[3] for t in sponsors if t[2] == 'Collaborator']
+                collab_dict = {'cnt': len(other_collab),
+                               'list_string': add_commas(other_collab, sep='; ')}
+
+                facilities = conn.execute(Facilities.select().where(Facilities.c.nct_id == nct_id)).fetchall()
+                valid_fac = [{'name': t[3] or '[No facility name provided]',
+                              'address': construct_address(t[4],t[5],t[6],t[7])}
+                             for t in facilities]
+
+                pubs = conn.execute(TrialPublications.select().where(TrialPublications.c.nct_id == nct_id)).fetchall()
+                pub_dict = {'linked': [{'pmid': t[1],
+                                        'authors': t[2],
+                                        'title': t[3],
+                                        'cite': t[4]} for t in pubs if t[5] == 1],
+                            'other': [{'pmid': t[1],
+                                       'authors': t[2],
+                                       'title': t[3],
+                                       'cite': t[4]} for t in pubs if t[5] < 1]
+                            }
+
                 if summary_data:
                     return flask.render_template('trial.html', 
                                                 nct_id=nct_id,
@@ -549,13 +647,444 @@ def trial():
                                                 brief_desc=brief_desc,
                                                 detailed_desc=detailed_desc,
                                                 criteria=criteria,
-                                                ratings=rating_obj
+                                                ratings=rating_obj,
+                                                prim_spon=prim_spon,
+                                                other_collab=collab_dict,
+                                                facility_list=valid_fac,
+                                                pubs=pub_dict
                                                 )
             except Exception, e:
                 print 'Database connection error getting trial summary info: %s' % e
+
+    return flask.redirect(url_for('home'))
+
+@app.route('/trial_sites')
+def trial_sites():
+    params = request.args
+    if 'nct_id' in params:
+        nct_id = params['nct_id']
+        for i in range(5):
+            try:
+
+                summary_data = conn.execute(select([ClinicalStudy.c.brief_title]).
+                                            select_from(ClinicalStudy).\
+                                            where(ClinicalStudy.c.nct_id == nct_id)).\
+                                        fetchone()
+
+                facilities = conn.execute(Facilities.select().where(Facilities.c.nct_id == nct_id)).fetchall()
+                valid_fac = [{'name': t[3] or '[No facility name provided]',
+                              'address': construct_address(t[4],t[5],t[6],t[7])}
+                             for t in facilities]
+
+                if summary_data:
+                    return flask.render_template('trial_sites.html', 
+                                                nct_id=nct_id,
+                                                trial_title=summary_data[0],
+                                                facility_list=valid_fac
+                                                )
+            except Exception, e:
+                print 'Database connection error getting trial site list info: %s' % e
     
 
     return flask.redirect(url_for('home'))
+
+
+
+
+
+
+
+
+
+# trials JSON
+@app.route('/_trial_list')
+def trial_list():
+    params = request.args
+    if 'page' in params and 'id' in params:
+
+        for i in range(5):
+            try:
+                if params['page'] == 'inst':
+                    tbl = 'institution_lookup'
+                    key = 'institution_id'
+                elif params['page'] == 'cond':
+                    tbl = 'condition_lookup'
+                    key = 'condition_id'
+
+                trials = conn.execute(select([TrialSummary]).\
+                                        select_from(TrialSummary.join(text(tbl),
+                                            and_(text('%s.nct_id = trial_summary.nct_id' % tbl),
+                                                 text('%s.%s = %s' % (tbl, key, params['id']))))).\
+                                        limit(50)).\
+                                    fetchall()
+
+                inv = conn.execute(select([Interventions.c.nct_id, Interventions.c.intervention_type]).\
+                                        select_from(Interventions.join(InstitutionLookup,
+                                            and_(InstitutionLookup.c.nct_id == Interventions.c.nct_id,
+                                                 InstitutionLookup.c.institution_id == int(params['id']))))).\
+                                    fetchall()
+
+                inv_dict = dictify(inv)
+
+                # compile JSON object
+                out_obj = []
+                for nct_id, title, status, phase, stype in trials:
+                    out_obj.append({'nct_id': nct_id,
+                                    'trial_title': title,
+                                    'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype)
+                                    })
+
+                if trials:
+                    return flask.jsonify(result=out_obj)
+            except Exception, e:
+                print 'Database connection error getting trial list info: %s' % e
+                initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+
+    return flask.jsonify(None)
+
+
+
+
+
+
+
+
+
+@app.route('/structure_trial_criteria')
+def structure_trial_criteria():
+    params = request.args
+    if 'nct_id' in params:
+        nct_id = params['nct_id']
+        for i in range(5):
+            try:
+                ctext = conn.execute(select([CriteriaText.c.criteria_text_id,
+                                             CriteriaText.c.display_order,
+                                             CriteriaText.c.criteria_text,
+                                             CriteriaTagged.c.tagged_text,
+                                             CriteriaText.c.display_type,
+                                             ConceptTerms.c.term,
+                                             CriteriaConceptLookup.c.inverse,
+                                             CriteriaConcept.c.concept_id,
+                                             CriteriaConcept.c.concept_name]).\
+                                        select_from(CriteriaText.join(CriteriaTagged,
+                                            and_(CriteriaText.c.nct_id == nct_id,
+                                                CriteriaText.c.criteria_text_id == CriteriaTagged.c.criteria_text_id)).\
+                                            outerjoin(CriteriaConceptLookup,
+                                                CriteriaText.c.criteria_text_id == CriteriaConceptLookup.c.criteria_text_id).\
+                                            outerjoin(ConceptTerms,
+                                                CriteriaConceptLookup.c.term_id == ConceptTerms.c.term_id).\
+                                            outerjoin(CriteriaConcept,
+                                                CriteriaConceptLookup.c.concept_id == CriteriaConcept.c.concept_id)).\
+                                        order_by(CriteriaText.c.display_order)).\
+                                    fetchall()
+
+                criteria_dict = {}
+                for cid, corder, ct, tt, dtype, cterm, cinv, conid, conname in ctext:
+                    if corder not in criteria_dict:
+                        chunks = []
+                        last_pos = 0
+
+                        for s in eval(tt):
+                            new_s = [(w[0],w[1]) for w in s]
+                            s_tags = chunker(new_s)
+
+                            for c in s_tags:
+                                this_str = c[0][0] 
+                                if len(c) > 1:
+                                    this_str += ''.join('%s%s' % (' ' if c[i][1] != 'POS' and not (c[i-1][1] == 'JJR' and len(c[i-1][0]) == 1) else '',
+                                                                  c[i][0]) for i in range(1,len(c)))
+                                if len(this_str) > 1 and this_str.lower() not in skip_term_list:
+                                    this_pos = ct.find(this_str, last_pos)
+                                    if this_pos == -1:
+                                        print ct
+                                        print this_str
+                                        print
+                                    chunks.append((this_str, this_pos))
+                                    last_pos += len(this_str)
+                        criteria_dict[corder] = {'id': cid,
+                                                 'disptype': dtype,
+                                                 'ctext': ct,
+                                                 'chunks': chunks,
+                                                 'terms': defaultdict(dict)}
+                    if conname:
+                        criteria_dict[corder]['terms'][cterm.lower()][conname] = conid
+
+                write_obj = []
+                for c in sorted(criteria_dict.keys()):
+                    ct = criteria_dict[c]['ctext']
+                    poss_chunks = []
+                    if criteria_dict[c]['disptype'] == 'H':
+                        out_text = '<h3>%s</h3>' % ct
+                    elif criteria_dict[c]['chunks']:
+                        chunks = criteria_dict[c]['chunks']
+                        out_text = '<p>%s' % ct[:chunks[0][1]]
+                        for i, chunk in enumerate(chunks):
+
+                            phrase, start = chunk
+
+                            concept_class = 'criteria-highlight'
+                            concept_list = [{'id': criteria_dict[c]['terms'][t][m],
+                                             'name': t}
+                                             for m in sorted(criteria_dict[c]['terms'][phrase.lower()].keys())
+                                             if phrase.lower() in criteria_dict[c]['terms']]
+                            concept_list += [{'id': '', 'name': 'Start a new concept'}]
+
+                            if i == len(chunks) - 1:
+                                end = len(ct)
+                            else:
+                                end = chunks[i+1][1]
+
+                            out_text += '<span class="criteria-highlight">%s</span>%s' % (phrase, ct[start+len(phrase):end])
+
+                            chunk_links = []
+                            for concept in concept_list:
+                                if concept['id']:
+                                    link_text = 'Continue developing <b>%s</b> concept' % concept['name']
+                                else:
+                                    link_text = concept['name']
+                                chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
+                                                                                                           phrase,
+                                                                                                           concept['id'],
+                                                                                                           criteria_dict[c]['id'],
+                                                                                                           link_text)
+                                chunk_links.append('<p>%s</p>' % chunk_link)
+
+                            poss_chunks.append({'term': '<p>%s</p>' % phrase, 'links': chunk_links})
+
+                        out_text += '</p>'
+                    else:
+                        out_text = '<p>%s</p>' % ct
+                    write_obj.append({'text': out_text, 'chunks': poss_chunks})
+
+                if nct_id:
+                    return flask.render_template('structure_trial_criteria.html', 
+                                                nct_id=nct_id,
+                                                crit_list=write_obj
+                                                )
+            except Exception, e:
+                print 'Database connection error getting structure trial criteria info: %s' % e
+
+    return flask.redirect(url_for('home'))
+
+# run active learning for a term
+@app.route('/active_learning')
+def active_learning():
+    params = request.args
+    initial_term = params['term']
+
+    return flask.render_template('active_learning.html',
+                                 initial_term=initial_term)
+
+@app.route('/_learning_startup')
+def learning_startup():
+    params = request.args
+
+    concept_id = params['concept_id']
+    initial_term = params['initial_term']
+    criteria_text_id = params['criteria_text_id']
+
+    concepts = conn.execute(select([CriteriaConcept.c.concept_name]).\
+                                select_from(CriteriaConceptLookup.join(ConceptTerms,
+                                        and_(CriteriaConceptLookup.c.criteria_text_id == criteria_text_id,
+                                             ConceptTerms.c.term == initial_term.lower(),
+                                             CriteriaConceptLookup.c.term_id == ConceptTerms.c.term_id,
+                                             CriteriaConceptLookup.c.concept_id == ConceptTerms.c.concept_id)).\
+                                    join(CriteriaConcept,CriteriaConceptLookup.c.concept_id == CriteriaConcept.c.concept_id))).\
+                            fetchall()
+
+    if concept_id:
+        new_concept = 0
+        term_list = [t[0] for t in conn.execute(select([ConceptTerms.c.term]).\
+                                        where(ConceptTerms.c.concept_id == concept_id))]
+        term_exc = [t[0] for t in conn.execute(select([ConceptTermsReject.c.term]).\
+                                        where(ConceptTermsReject.c.concept_id == concept_id))]
+        pred_list = [t[0] for t in conn.execute(select([ConceptPredictors.c.predictor]).\
+                                        where(ConceptPredictors.c.concept_id == concept_id))]
+        pred_exc = [t[0] for t in conn.execute(select([ConceptPredictorsReject.c.predictor]).\
+                                        where(ConceptPredictorsReject.c.concept_id == concept_id))]
+    else:
+        new_concept = 1
+        concept_id = str(uuid.uuid4())
+        term_list = [initial_term]
+        term_exc = []
+        pred_list = []
+        pred_exc = []
+
+    #add skip terms to term_exc and pred_exc
+    term_exc += list(skip_term_list)
+    pred_exc += list(skip_predictor_list)
+
+    # getting existing predictors
+    all_preds = list(get_past_predictors())
+
+    # setting session variables
+    flask.session['new_concept'] = new_concept
+    flask.session['concept_id'] = concept_id
+    flask.session['term_list'] = term_list
+    flask.session['term_exc'] = term_exc
+    flask.session['pred_list'] = pred_list
+    flask.session['pred_exc'] = pred_exc
+    flask.session['all_preds'] = all_preds
+
+    # write concept info to the database
+    ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                          'update_time': datetime.now(),
+                                                          'concept_id': flask.session['concept_id'],
+                                                          'new_concept': flask.session['new_concept'],
+                                                          'update_type': 'concept-name',
+                                                          'value':initial_term}])
+
+
+    return flask.jsonify(ok=True)
+
+@app.route('/_learning_terms_w2v')
+def learning_terms_w2v():
+
+    num_terms = int(request.args['num'])
+    word = request.args['initial_term']
+    word = '_'.join(word.lower().split(' '))
+
+    try:
+        indexes, metrics = model.cosine(word, n=num_terms)
+        return flask.jsonify(vals='terms',
+                             new_vals=[{'name': ' '.join(w.split('_')), 'score': round(p*100)}
+                                       for w, p in model.generate_response(indexes, metrics).tolist()
+                                       if w not in flask.session['term_exc']
+                                       and w not in skip_term_list])
+    except Exception as e:
+        print 'word2vec problem with %s: %s' % (word,e)
+        return flask.jsonify(vals='terms',
+                             new_vals=[word])
+
+@app.route('/_learning_terms_basic')
+def learning_terms_basic():
+
+    text = get_random_text()
+
+    pred_weight_list = weight_preds(flask.session['all_preds'], flask.session['pred_list'])
+
+    term_options_dict = Counter()
+    for sent in text:
+        #skip sentence if it contains less than one word
+        if len(sent) <= 1:
+                continue
+        #crate a sentence rank for judging weight of terms found
+        sent_rank = 1
+        for pred in pred_weight_list:
+            if pred[0].lower() in ' '.join(zip(*sent)[0]).lower():
+                sent_rank += pred[1]
+        result = chunker(sent)
+        terms = [' '.join(x) for x in [[x[0] for x in term] for term in result]]
+        terms.append(' '.join([sent[0][0], sent[1][0]]))
+        #lower case all terms
+        terms = [x.lower() for x in terms]
+        #add weights to terms by multiplying by sent_rank
+        terms = terms * sent_rank
+        term_options_dict.update(terms)
+
+    #get top 20 predictors that have not been seen before
+    sorted_terms = sorted(term_options_dict.items(), key=lambda x: x[1], reverse=True)
+    counter = 0
+    top_terms = []
+    for term in sorted_terms:
+        if term[0] not in flask.session['term_list'] + flask.session['term_exc'] + list(skip_term_list):
+            top_terms.append(term)
+            counter += 1
+            if counter == 20 or counter == len(sorted_terms):
+                break
+
+    return flask.jsonify(vals='terms',
+                         new_vals=[{'name': t[0], 'score': round(t[1])}
+                                    for t in top_terms])
+
+@app.route('/_learning_preds')
+def learning_preds():
+
+    text = get_random_text()
+
+    pred_options_dict = Counter()
+    for sent in text:
+        #if the sentance has less than 2 words skip it
+        if len(sent) <= 1:
+            continue
+        #create a sentence rank for judging weight of terms found
+        sent_rank = 0
+        for term in flask.session['term_list']:
+            if term.lower() in ' '.join(zip(*sent)[0]).lower():
+                sent_rank += 1
+        result = chunker_preds(sent)
+        preds = [' '.join(x) for x in [[x[0] for x in term] for term in result]]
+        preds.append(' '.join([sent[0][0], sent[1][0]]))
+        #lower case all preds
+        preds = [x.lower() for x in preds]
+        preds = preds * sent_rank
+        pred_options_dict.update(preds)
+
+    #get top 20 predictors that have not been seen before
+    sorted_preds = sorted(pred_options_dict.items(), key=lambda x: x[1], reverse=True)
+    counter = 0
+    top_preds = []
+    for pred in sorted_preds:
+        if pred[0] not in flask.session['pred_list'] + flask.session['pred_exc'] + list(skip_predictor_list):
+            top_preds.append(pred)
+            counter += 1
+            if counter == 20 or counter == len(sorted_preds):
+                break
+
+    return flask.jsonify(vals='predictors',
+                         new_vals=[{'name': p[0], 'score': round(p[1])}
+                                    for p in top_preds])
+
+@app.route('/_write_data')
+def write_data():
+    params = request.args
+    new_accepts = json.loads(params['acc'])
+    new_rejects = json.loads(params['rej'])
+    wordtype = params['wt']
+
+    if wordtype == 'term':
+        current_list = flask.session['term_list']
+        print 'current:'
+        print current_list
+        print 
+        flask.session['term_list'] += new_accepts
+        flask.session['term_exc'] += new_rejects
+        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                              'update_time': datetime.now(),
+                                                              'concept_id': flask.session['concept_id'],
+                                                              'new_concept': flask.session['new_concept'],
+                                                              'update_type': 'term',
+                                                              'value': t}
+                                                              for t in new_accepts])
+        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                              'update_time': datetime.now(),
+                                                              'concept_id': flask.session['concept_id'],
+                                                              'new_concept': flask.session['new_concept'],
+                                                              'update_type': 'term-reject',
+                                                              'value': t}
+                                                              for t in new_rejects])
+    else:
+        flask.session['pred_list'] += new_accepts
+        flask.session['pred_exc'] += new_rejects
+        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                              'update_time': datetime.now(),
+                                                              'concept_id': flask.session['concept_id'],
+                                                              'new_concept': flask.session['new_concept'],
+                                                              'update_type': 'predictor',
+                                                              'value': t}
+                                                              for t in new_accepts])
+        ins = conn.execute(CriteriaConceptStaging.insert(), [{'user_id': flask.session['userid'],
+                                                              'update_time': datetime.now(),
+                                                              'concept_id': flask.session['concept_id'],
+                                                              'new_concept': flask.session['new_concept'],
+                                                              'update_type': 'predictor-reject',
+                                                              'value': t}
+                                                              for t in new_rejects])
+
+    return flask.jsonify(done=True)
+
+
+
 
 
 
@@ -568,21 +1097,27 @@ def create_user():
     username = request.args['username']
     pwd = md5(request.args['pwd']).hexdigest()
 
-    res = conn.execute(Users.insert().values(user_name=username,
-                                             full_name=name,
-                                             institution=inst_user,
-                                             email_address=email,
-                                             password=pwd,
-                                             access_level='user'))
-    if res.inserted_primary_key:
-        flask.session['userid'] = res.inserted_primary_key[0]
-        return flask.jsonify(result='ok',
-                             username=username)
+    already_taken = conn.execute(Users.select().where(Users.c.user_name == username)).fetchone()
+
+    if already_taken:
+        return flask.jsonify(result='Username is already taken. Please try another one.')
     else:
-        return flask.jsonify(result='bad')
+        res = conn.execute(Users.insert().values(user_name=username,
+                                                 full_name=name,
+                                                 institution=inst_user,
+                                                 email_address=email,
+                                                 password=pwd,
+                                                 access_level='user'))
+        if res.inserted_primary_key:
+            flask.session['userid'] = res.inserted_primary_key[0]
+            return flask.jsonify(result='ok',
+                                 username=username)
+        else:
+            return flask.jsonify(result="Sorry, we couldn't create a new account for some reason. Please try again.")
 
 @app.route('/_login')
 def login():
+    #flask.session.clear()
     username = request.args['username']
     pwd = md5(request.args['pwd']).hexdigest()
 
@@ -599,8 +1134,23 @@ def login():
 
 @app.route('/_logout')
 def logout():
+    #flask.session.clear()
     flask.session.pop('userid',None)
     return flask.jsonify(result='ok')
+
+@app.route('/_check_login')
+def check_login():
+    userid = flask.session['userid'] if 'userid' in flask.session else None
+    if 'userid' in flask.session:
+        username = conn.execute(select([Users.c.user_name]).where(Users.c.user_id == flask.session['userid'])).fetchone()[0]
+    else:
+        username = None
+    return flask.jsonify(logged_in='userid' in flask.session,
+                         username=username)
+
+
+
+
 
 
 
