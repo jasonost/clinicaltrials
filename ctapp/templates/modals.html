@@ -6,6 +6,9 @@
           <h4 class="modal-title" id="create-user-label">Create a DiscoverCT account</h4>
         </div>
         <div class="modal-body">
+          <div>
+            <p><b>Please note:</b> a DiscoverCT account is only required if you want to categorize current trials or structure their eligibility criteria. Searching and otherwise using the interface does not require a login.</p>
+          </div>
           <div class="input-group modal-input">
             <span class="input-group-addon">Full name:</span>
             <input id="input-full-name" type="text" class="form-control" placeholder="Full name" aria-describedby="input-full-name">
@@ -64,3 +67,48 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="quit-warning-modal" tabindex="-1" role="dialog" aria-labelledby="quit-warning-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h3 class="modal-title" id="quit-warning-label">Warning!</h3>
+        </div>
+        <div class="modal-body">
+          <h4>Exiting now will save your work, but you won't be able to continue developing this concept until an administrator has approved your contribution. Do you want to continue?</h4>
+        </div>
+        <div class="modal-footer">
+          <button id="quit-warning-cancel" type="button" class="btn btn-default" data-dismiss="modal">No, take me back</button>
+          <button id="quit-warning-submit" type="button" class="btn btn-danger" data-dismiss="modal">Yes, I'm done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="create-concept-modal" tabindex="-1" role="dialog" aria-labelledby="create-concept-label" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="create-concept-label">Create a new concept</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <p>Please enter a seed term for this concept (e.g., "cancer"):</p>
+          </div>
+          <div class="input-group modal-input">
+            <input id="input-new-concept" type="text" class="form-control" placeholder="Seed term" aria-describedby="input-new-concept">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="create-concept-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button id="create-concept-submit" type="button" class="btn btn-primary" data-dismiss="modal">Start process</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+

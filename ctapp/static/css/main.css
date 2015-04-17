@@ -9,9 +9,11 @@
 .bottom{
     border-top: 1px solid #ccc;
 }
+
 img {
     width: 100%;
 }
+
 .overflow {
     height: 500px;
     overflow-y: overlay;
@@ -26,6 +28,12 @@ img {
 .wrapper{
     width: 90%;
     margin: 0 auto;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }
 
 /*Global Components*/
@@ -358,6 +366,14 @@ tspan {
 
 #criteria-list td.long-text {
     padding-right: 2em;
+}
+
+.criteria-text {
+    font-size: 1.2em;
+}
+
+.disabled-text {
+    color: #888;
 }
 
 
