@@ -1,0 +1,36 @@
+{% include 'header.html' %}
+
+<div class='wrapper'>
+  <header class='container'>
+    <div class='page-header row'>
+      <h1>DiscoverCT Tools</h1>
+    </div>
+  </header>
+  <section class='page-header row container'>
+    <div class='col-xs-12 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10'>
+      <h2>Select a tool:</h2>
+    </div>
+    <div id='tool-list'>
+      <div class='col-xs-4 col-sm-offset-3 col-sm-2 col-md-offset-3 col-md-2'>
+        <button id="pick-eligibility-tool" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-concept-modal">
+          <i class="fa fa-check-square-o" style="font-size: 5em; margin: .5em;"></i><br>
+          Create eligibility<br>concept
+        </button>
+      </div>
+      <div class='col-xs-4 col-sm-2 col-md-2'>
+        <a id="pick-mesh-tool" type="button" class="btn btn-primary" href="{{ url_for('mesh_suggest') }}">
+          <i class="fa fa-tasks" style="font-size: 5em; margin: .5em;"></i><br>
+          Get MeSH term<br>suggestions
+        </a>
+      </div>
+      <div class='col-xs-4 col-sm-2 col-md-2'>
+        <button id="pick-admin-tool" type="button" class="btn btn-primary">
+          <i class="fa fa-cogs" style="font-size: 5em; margin: .5em;"></i><br>
+          Admin tools<br>&nbsp;
+        </button>
+      </div>
+    </div> <!-- end .site-list -->
+  </section>
+</div>
+
+{% include 'footer.html' %}

@@ -143,7 +143,7 @@ $("#create-user-modal .form-control").keydown(function(e) {
             $("#create-user-modal #input-password").val().length > 0 &&
             $("#create-user-modal #input-username").val().length > 0) {
           createUser(e);
-          $("#create-user-modal").hide();
+          $("#create-user-modal").modal('hide');
         } else {
           alert('All fields must be completed in order to create an account! Please try again.');
         }
@@ -168,9 +168,9 @@ function loginUser(e) {
   });
 }
 
-$("#login-modal").on('shown', function() {
-    $("#login-modal #input-username").focus();
-});
+$('#login-modal').on('shown.bs.modal', function () {
+    $('#login-modal #input-username').focus();
+})
 
 $('#login-submit').on('click', function(e){loginUser(e)} );
 
@@ -179,7 +179,7 @@ $("#login-modal .form-control").keydown(function(e) {
         if ($("#login-modal #input-password").val().length > 0 &&
             $("#login-modal #input-username").val().length > 0) {
           loginUser(e);
-          $("#login-modal").hide();
+          $("#login-modal").modal('hide');
         } else {
           alert('Username and password must both be present in order to log in! Please try again.');
         }
@@ -215,24 +215,106 @@ function OpenInNewTab(url) {
   win.focus();
 }
 
-$("#structure-criteria-btn").on("click", function(e) {
+function loginCheck(ok_fcn, warn_msg) {
   $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
     if (data.logged_in) {
+      ok_fcn();
+    } else {
+      alert(warn_msg);
+    }
+  });
+}
+
+$("#structure-criteria-btn").on("click", function(e) {
+  function redir() {
       var nct_id = window.location.search.split('=')[1];
       e.preventDefault();
       e.stopPropagation();
       OpenInNewTab($SCRIPT_ROOT + "structure_trial_criteria?nct_id=" + nct_id);
       return false;
-    } else {
-      alert("Whoops, you need to log in before you can use that tool.");
-    }
-  });
+  }
+  loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+});
+
+
+
+
+
+
+// tool interactions
+$('#create-concept-modal').on('shown.bs.modal', function () {
+    $('#create-concept-modal #input-new-concept').focus();
 })
 
-// check login and update div as necessary
-$()
+$('#create-concept-submit').on('click', function(e){
+  function redir() {
+      var initial_term = $("#create-concept-modal #input-new-concept").val();
+      e.preventDefault();
+      e.stopPropagation();
+      OpenInNewTab($SCRIPT_ROOT + "active_learning?term=" + initial_term);
+      return false;
+  }
+  if ($("#create-concept-modal #input-new-concept").val().length > 1) {
+    loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+    $("#create-concept-modal").modal('hide');
+  } else {
+    clearVals();
+    alert('You must enter a term longer than one character. Please try again.');
+  }
+});
+
+$("#create-concept-modal .form-control").keydown(function(e) {
+  function redir() {
+      var initial_term = $("#create-concept-modal #input-new-concept").val();
+      e.preventDefault();
+      e.stopPropagation();
+      OpenInNewTab($SCRIPT_ROOT + "active_learning?term=" + initial_term);
+      return false;
+  }
+  if (e.keyCode == 13) {
+      if ($("#create-concept-modal #input-new-concept").val().length > 1) {
+        loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+        $("#create-concept-modal").modal('hide');
+      } else {
+        clearVals();
+        alert('You must enter a term longer than one character. Please try again.');
+      }
+      return false;
+    }
+});
+
+$('#create-concept-cancel').on('click', function(e){clearVals()} );
 
 
+
+
+
+
+// MeSH suggestion interactions
+$("#submit-suggestion-text").on('click', function(e) {
+  var thisdoc = $("#mesh-text").val();
+  if (thisdoc.length > 0) {
+    var header = '<h4>Retrieving suggestions...</h4>',
+        spinner = '<i id="top-cond-spinner" class="fa fa-spinner fa-pulse" style="font-size: 5em; margin: .5em;"></i>';
+    $("#results-pane").html(header + spinner);
+    $.getJSON($SCRIPT_ROOT + '_get_suggestions', {doc: thisdoc}, function(data) {
+      $("#results-pane").empty();
+      var write_html = '';
+      if (data.results) {
+        write_html = "<h5>Suggested terms</h5><ul class='nodisc'>";
+        for (i=0; i<data.results.length; i++) {
+          write_html += "<li><a href='http://www.nlm.nih.gov/cgi/mesh/2015/MB_cgi?mode=&term=" + data.results[i] + 
+                        "' target='_blank'>" + data.results[i] + "</li>";
+        }
+        write_html += "</ul>"
+      } else {
+        write_html = '<p>Sorry, no results were returned</p>';
+      }
+      $("#results-pane").html(write_html);
+    })
+  }
+
+})
 
 
 
