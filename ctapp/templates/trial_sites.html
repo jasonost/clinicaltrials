@@ -1,0 +1,29 @@
+{% include 'header.html' %}
+
+<div id='site-list-{{ nct_id }}' class='wrapper'>
+  <header class='container'>
+    <div class='page-header row'>
+      <h1>Trial research sites associated with {{ nct_id }}
+        <br><small>{{ trial_title }}</small>
+      </h1>
+    </div>
+  </header>
+  <section class='container'>
+    <div id='site-list'>
+      <div id='facility-list' class='row'>
+        {% if facility_list|length > 0 %}
+          <ul class='list-group-horizontal'>
+            {% for facility in facility_list %}
+              <li class='facility list-group-item'>
+                <span style="font-weight:bold">{{ facility.name }}</span><br />
+                {{ facility.address|safe }}<br />
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div> <!-- end .site-list -->
+  </section>
+</div>
+
+{% include 'footer.html' %}
