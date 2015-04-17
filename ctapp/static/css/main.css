@@ -13,10 +13,14 @@ img {
     width: 100%;
 }
 .overflow {
-    height: 425px;
+    height: 500px;
     overflow-y: overlay;
     overflow-x: hidden;
     margin-bottom: 1em;
+}
+
+.overflow-small {
+    height: 250px;
 }
 
 .wrapper{
@@ -29,42 +33,40 @@ img {
     border-bottom: 1px solid #ccc;
     padding: 1.43em 0 1.43em 0;
 }
+
 .block-list-item:nth-of-type(1){
     padding-top: 0;
 }
+
 .block-list-item:last-child{
     border: none;
 }
+
 .inline-list-item{
     margin-right: 1em;
 }
+
 .key{
     font-weight: bold;
     margin-right: 1em;
     text-transform: uppercase;
     font-size: 85%;
 }
+
 .more-info{
     border-radius: 50%;
     padding: 1px 5px 0px 5px;
     color: white;
     font-size: 12px;
+    transform: translateY(-15%);
 }
+
 .page-header{
     margin-top: 0;
 }
 
 header {
     margin-top: 150px;
-}
-
-.main-rating {
-    font-size: 1.5em;
-}
-
-.rating-large {
-    font-size: 150%;
-    margin-top: .3em;
 }
 
 a .btn {
@@ -83,6 +85,27 @@ a .btn {
 .modal-input .input-group-addon {
     text-align: left;
     min-width: 85px;
+}
+
+.search.form-inline,
+.search.form-inline .form-group,
+.search.form-inline .form-group .input-group{
+    width: 100%;
+}
+
+.search.form-inline{
+    margin-bottom: 1.43em;
+}
+
+.search.form-inline .form-group .input-group,
+.search.form-inline .form-group .input-group input[type=text]{
+    height: 40px;
+}
+
+.btn.input-group-addon{
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
 }
 
 .no-disc {
@@ -121,6 +144,7 @@ a .btn {
     }
 
     .overflow{height: 300px;}
+    .overflow-small{height: 200px;}
 }
 
 /*Top navbar*/
@@ -173,6 +197,16 @@ nav .site-name a:hover{
     z-index: 1050;
 }
 
+.ui-autocomplete-category{
+    font-weight: bold;
+    background-color: #ccc;
+    position: relative;
+    margin: 0;
+    padding: 3px 1em 3px .4em;
+}
+
+
+
 /* ratings styles */
 #ratings-summary {
     margin-bottom: 20px;
@@ -199,6 +233,9 @@ nav .site-name a:hover{
     text-align: center;
 }
 
+
+
+
 /* facility and sponsor list */
 .facility {
     margin-bottom: .5em;
@@ -214,10 +251,16 @@ nav .site-name a:hover{
   column-gap: 20px;
 }
 
+
+
+
 /* horizontal list group */
 .list-group-horizontal .list-group-item {
     display: inline-block;
 }
+
+
+
 
 /*Footer*/
 footer{
@@ -253,4 +296,95 @@ tspan {
 
 
 
+/* ratings */
+.main-rating {
+    font-size: 1.5em;
+}
 
+.rating-large {
+    font-size: 150%;
+    margin-top: .3em;
+}
+
+
+
+
+
+/* map */
+#map { 
+    height: 400px;
+}
+
+.leaflet-popup{
+    cursor: pointer;
+}
+
+
+
+/* trial filters */
+.filter-col-header {
+    font-size: .8em;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.filter-col-header td {
+    padding-bottom: 0.4em;
+}
+
+.filter-row td {
+    padding-bottom: 0.5em;
+    font-size: 0.8em;
+}
+
+
+
+
+/* criteria active learning */
+.criteria-highlight {
+    background-color: #ddd;
+}
+
+#criteria-list td {
+    vertical-align: top;
+    word-wrap:break-word;
+}
+
+#criteria-list table {
+    width: 100%;
+    table-layout:fixed;
+}
+
+#criteria-list td.long-text {
+    padding-right: 2em;
+}
+
+
+#learning-window {
+    height: 150px;
+}
+
+#terms-and-preds ul {
+    padding-left: 1em;
+}
+
+.word-highlight {
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.word-btn {
+    margin-left: 1em;
+}
+
+#term-include, #predictor-include {
+    font-weight: bold;
+    color: green;
+}
+
+#term-exclude, #predictor-exclude {
+    font-weight: bold;
+    color: red;
+}
