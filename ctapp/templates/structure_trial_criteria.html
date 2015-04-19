@@ -4,8 +4,9 @@
   <header class='container'>
     <div class='page-header row'>
       <h1>Identify important criteria concepts<br>
-        <small>For trial <a href="{{ url_for('trial') }}?nct_id={{ nct_id }}" target="_blank">{{ nct_id }}</a></small>
+        <small>{{ trial_title }}</small>
       </h1>
+      <p>Go to trial page: <a href="{{ url_for('trial') }}?nct_id={{ nct_id }}" target="_blank">{{ nct_id }}</a></p>
     </div>
   </header>
   <section class='container'>
@@ -13,11 +14,15 @@
       <table>
         <col width="60%">
         <col width="40%">
+        <tr>
+          <th><p>These are the eligibility criteria for the above-referenced trial. Words and phrases that may represent more general criteria <em>concepts</em> are highlighted. Select a term on the right in order to develop it further and find trials that share a similar criteria concept. Your work will need to be approved by an administrator. </p><p><strong>A good criteria concept is one that applies to a nontrivial share of trials, but may be expressed using a variety of words or phrases.</strong></p></th>
+          <th style='text-align:center; vertical-align:bottom;'><h3>Potential criteria concepts</h3></th>
+        </tr>
           {% for crit in crit_list %}
             <tr>
               <td class='long-text'>{{ crit.text|safe }}</td>
               {% if crit.chunks|length > 0 %}
-                <td><table>
+                <td><table class="table">
                   <col width="65%">
                   <col width="35%">
                   {% for chunk in crit.chunks %}

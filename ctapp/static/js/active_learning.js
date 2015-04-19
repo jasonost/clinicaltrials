@@ -16,6 +16,14 @@ function stopThinking() {
     $("#learning-window").empty();
 }
 
+function writeExisting(wordlist) {
+    var outtext = '';
+    for (i=0; i<wordlist.length; i++) {
+        outtext += '<li>' + wordlist[i] + '</li>';
+    }
+    return outtext;
+}
+
 // global variables to keep track of things
 var idx = 0,
     accepts = [],
@@ -37,22 +45,25 @@ $(function() {
             criteria_text_id: criteria_text_id,
             initial_term: initial_term
         }, function( data ) {
-            $.ajax({dataType: "json",
-                    url: $SCRIPT_ROOT + "_learning_terms_w2v",
-                    data: {initial_term: initial_term,
-                            num: 20
-                            },
-                    success: function( data ) {
-                                stopThinking();
-                                if (data.new_vals.length == 1) {
-                                    console.log('no word2vec for ' + initial_term);
-                                    startProcess();
-                                } else {
-                                    thislist = data.new_vals;
-                                    learnWords();
-                                }
-                            } 
-            });
+            if (data.new_concept == 0) {
+                $("#term-include").append(writeExisting(data.term));
+                $("#term-exclude").append(writeExisting(data.term_exc));
+                $("#predictor-include").append(writeExisting(data.predictor));
+                $("#predictor-include").append(writeExisting(data.predictor_exc));
+            };
+            $.getJSON($SCRIPT_ROOT + "_learning_terms_w2v", {
+                initial_term: initial_term,
+                num: 20
+                }, function( data ) {
+                        stopThinking();
+                        if (data.new_vals.length == 1) {
+                            console.log('no word2vec for ' + initial_term);
+                            startProcess();
+                        } else {
+                            thislist = data.new_vals;
+                            learnWords();
+                        }
+                    });
     });
 
 
@@ -165,7 +176,9 @@ function learnWords() {
 
 function cycleWord(w, incexc, arr) {
     arr.push(w);
-    $("#" + wordtype + "-" + incexc).append("<li>" + w + "</li>");
+    var thisid = thisround*100 + idx;
+    $("#" + wordtype + "-" + incexc).prepend("<li id='t-" + thisid + "''>" + w + "</li>");
+    $("#t-" + thisid).effect("highlight", {}, 1000);
     idx++;
     learnWords();
 }

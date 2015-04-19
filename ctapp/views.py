@@ -50,7 +50,7 @@ app.secret_key = str(uuid.uuid4())
 skip_term_list = {'month', 'months', 'patient', 'patients', 'history', 'day', 'days',
                   'year', 'years', 'week', 'weeks', 'subject', 'subjects', 'study', 'inclusion criteria', 'exclusion criteria',
                   'history of', 'patients with', 'age', 'investigator', 'use', 'evidence', 'women', 'men', 'woman', 'man',
-                  'female', 'male', 'enrollment', 'time'}
+                  'female', 'male', 'enrollment', 'time', 'informed consent', 'treatment'}
 skip_predictor_list = {'inclusion criteria', 'exclusion criteria'}
 
 
@@ -813,6 +813,8 @@ def structure_trial_criteria():
                                         order_by(CriteriaText.c.display_order)).\
                                     fetchall()
 
+                trial_title = conn.execute(select([TrialSummary.c.brief_title]).where(TrialSummary.c.nct_id == nct_id)).fetchone()[0]
+
                 under_review = conn.execute(select([CriteriaConceptStaging.c.value]).\
                                                 where(CriteriaConceptStaging.c.update_type == 'concept-name')).fetchall()
                 cur_concepts = [t[0].lower() for t in under_review]
@@ -873,7 +875,7 @@ def structure_trial_criteria():
                             else:
                                 end = chunks[i+1][1]
 
-                            out_text += '<span class="criteria-highlight">%s</span>%s' % (phrase, ct[start+len(phrase):end])
+                            out_text += '<mark>%s</mark>%s' % (phrase, ct[start+len(phrase):end])
 
                             chunk_links = []
                             if phrase.lower() in cur_concepts:
@@ -901,6 +903,7 @@ def structure_trial_criteria():
                 if nct_id:
                     return flask.render_template('structure_trial_criteria.html', 
                                                 nct_id=nct_id,
+                                                trial_title=trial_title,
                                                 crit_list=write_obj
                                                 )
             except Exception, e:
@@ -934,11 +937,16 @@ def learning_startup():
                                     join(CriteriaConcept,CriteriaConceptLookup.c.concept_id == CriteriaConcept.c.concept_id))).\
                             fetchall()
 
+    ctypes = ['term','term-reject','predictor','predictor-reject']
     if concept_id:
         new_concept = 0
+        for c in ctypes:
+            exec('%s = get_list(["%s"])' % (c.replace('-','_'),c))
     else:
         new_concept = 1
         concept_id = str(uuid.uuid4())
+        for c in ctypes:
+            exec('%s = []' % c.replace('-','_'))
 
     #add skip terms to term_exc and pred_exc
     #term_exc += list(skip_term_list)
@@ -960,9 +968,14 @@ def learning_startup():
                                                           'update_type': 'concept-name',
                                                           'value':initial_term}])
     if new_concept == 1:
-        write_list([initial_term], 'term')
+        write_list([initial_term.lower()], 'term')
 
-    return flask.jsonify(ok=True)
+    return flask.jsonify(new_concept=new_concept,
+                         term=term,
+                         term_exc=term_reject,
+                         predictor=predictor,
+                         predictor_exc=predictor_reject,
+                         )
 
 @app.route('/_learning_terms_w2v')
 def learning_terms_w2v():
@@ -1021,7 +1034,7 @@ def learning_terms_basic():
     counter = 0
     top_terms = []
     for term in sorted_terms:
-        if term[0] not in exc_list:
+        if term[0] not in exc_list and len(term[0]) > 1:
             top_terms.append(term)
             counter += 1
             if counter == 20 or counter == len(sorted_terms):
@@ -1068,7 +1081,7 @@ def learning_preds():
     counter = 0
     top_preds = []
     for pred in sorted_preds:
-        if pred[0] not in exc_list:
+        if pred[0] not in exc_list and len(pred[0]) > 1:
             top_preds.append(pred)
             counter += 1
             if counter == 20 or counter == len(sorted_preds):
@@ -1123,11 +1136,6 @@ def get_suggestions():
         for nct_id, term in doc_terms:
             ranking[term] += sim_docs[nct_id]
         ordered_terms = [t[0] for t in sorted(ranking.items(), key=lambda x: x[1], reverse=True)]
-        #mesh_codes = conn.execute(select([MeshThesaurus.c.mesh_term, MeshThesaurus.c.mesh_id]).where(MeshThesaurus.c.mesh_term.in_(ordered_terms)))
-        #mesh_lookup = dictify(mesh_codes)
-        #results = []
-        #for t in ordered_terms:
-        #    out_text = '%s (%s)' % (t, ', '.join(['<a href="#" target="_blank">%s</a>' % m for m in mesh_lookup[t]]))
         return flask.jsonify(results=ordered_terms)
     else:
         return flask.jsonify(results=False)
