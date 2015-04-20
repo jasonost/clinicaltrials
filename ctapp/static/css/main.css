@@ -120,6 +120,11 @@ a .btn {
     list-style-type: none;
 }
 
+.dropdown-wide {
+    width: 60%;
+    text-align: right;
+}
+
 /*Global Responsive*/
 @media (max-width: 992px) {
     body{font-size: 12px;}
