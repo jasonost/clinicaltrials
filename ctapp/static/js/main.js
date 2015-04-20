@@ -225,15 +225,47 @@ function loginCheck(ok_fcn, warn_msg) {
   });
 }
 
+// structure criteria jump
 $("#structure-criteria-btn").on("click", function(e) {
   function redir() {
-      var nct_id = window.location.search.split('=')[1];
+      var nct_id = getParameterByName('nct_id');
       e.preventDefault();
       e.stopPropagation();
       OpenInNewTab($SCRIPT_ROOT + "structure_trial_criteria?nct_id=" + nct_id);
       return false;
   }
   loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+});
+
+// accepting MeSH term suggestions interaction
+$("#add-mesh-btn").on('click', function(e) {
+  loginCheck(function() {
+    $("#add-mesh-modal").modal('show');
+    $("#add-mesh-submit").on("click", function(g) {
+      var nct_id = getParameterByName('nct_id'),
+          cond_ids = [];
+      $.each($("input[name='add-mesh-term']:checked"), function() {
+        cond_ids.push($(this).val());
+      });
+      console.log(cond_ids);
+      $.getJSON($SCRIPT_ROOT + "_mesh_stage", {
+        cond_ids: JSON.stringify(cond_ids),
+        nct_id: nct_id
+      }, function(data) {
+        if (data.done) {
+          $("#add-mesh-modal .modal-body").html("<p>Your contribution will be reviewed by an administrator.</p>");
+        } else {
+          $("#add-mesh-modal .modal-body").html("<p>There is a problem. Please try again later.</p>");
+        }
+        $("#add-mesh-submit").remove();
+        $("#add-mesh-modal .modal-footer").append('<button id="add-mesh-finish" type="button" class="btn btn-success" data-dismiss="modal">OK</button>');
+        $("#add-mesh-finish").on('click', function(e) {
+          $("#add-mesh-modal").modal('hide');
+        })
+      });
+      return false;
+    });
+  }, "Whoops, you need to log in before you can tag trials with additional conditions.")
 });
 
 
@@ -284,6 +316,9 @@ $("#create-concept-modal .form-control").keydown(function(e) {
 });
 
 $('#create-concept-cancel').on('click', function(e){clearVals()} );
+
+
+
 
 
 
