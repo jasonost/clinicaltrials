@@ -1,3 +1,4 @@
+<!-- CREATE USER -->
   <div class="modal fade" id="create-user-modal" tabindex="-1" role="dialog" aria-labelledby="create-user-label" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -42,6 +43,7 @@
     </div>
   </div>
 
+<!-- LOGIN -->
   <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-label" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -68,6 +70,11 @@
     </div>
   </div>
 
+
+
+
+
+<!-- ACTIVE LEARNING: QUIT WARNING -->
   <div class="modal fade" id="quit-warning-modal" tabindex="-1" role="dialog" aria-labelledby="quit-warning-label" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -86,6 +93,84 @@
     </div>
   </div>
 
+<!-- ACTIVE LEARNING: MANY REJECTS WARNING -->
+  <div class="modal fade" id="rejects-warning-modal" tabindex="-1" role="dialog" aria-labelledby="rejects-warning-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="rejects-warning-label">Caution!</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button id="rejects-warning-submit" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ACTIVE LEARNING: 20 TERMS WARNING -->
+  <div class="modal fade" id="terms-20-modal" tabindex="-1" role="dialog" aria-labelledby="terms-20-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="terms-20-label">Caution!</h4>
+        </div>
+        <div class="modal-body">
+          <p>You have discovered 20 new terms associated with this concept. For many concepts this is a nearly exhaustive list of possible related terms, so you may be served a large number of incorrect suggestions.</p>
+          <p>Press "Stop" at any time to end the term discovery process and submit the concept for review.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="terms-20-submit" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ACTIVE LEARNING: 10 ROUNDS ALERT -->
+  <div class="modal fade" id="rounds-10-modal" tabindex="-1" role="dialog" aria-labelledby="rounds-10-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="rounds-10-label">10 round limit reached</h4>
+        </div>
+        <div class="modal-body">
+          <p>The concept creation process currently has a limit of 10 rounds of term discovery. Click "Close" to save your work and close this window.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="rounds-10-submit" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ACTIVE LEARNING: RENAME CONCEPT -->
+  <div class="modal fade" id="rename-concept-modal" tabindex="-1" role="dialog" aria-labelledby="rename-concept-label" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="rename-concept-label">Rename this concept</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button id="rename-concept-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+<!-- TOOLS: CRITERIA SEED TERM -->
   <div class="modal fade" id="create-concept-modal" tabindex="-1" role="dialog" aria-labelledby="create-concept-label" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -111,4 +196,40 @@
 
 
 
+
+
+<!-- TRIAL: ADDING MESH TERMS -->
+  <div class="modal fade" id="add-mesh-modal" tabindex="-1" role="dialog" aria-labelledby="add-mesh-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="add-mesh-label">Tag more conditions</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <p>These suggested conditions were automatically generated and may be related to this trial.</p>
+            <p>Please check any that should definitely be associated with this trial, and this information will be submitted to a site adiminstrator for approval.</p>
+          </div>
+          <div class="input-group modal-input">
+            {% if cond_list_s %}
+              <ul id="add-mesh-list" class="no-disc h4">
+                {% for cond in cond_list_s %}
+                  <li class="modal-input">
+                    <label class="checkbox-inline">
+                      <input id="cond-{{ cond.id }}" type="checkbox" name="add-mesh-term" value="{{ cond.id }}"> {{ cond.name }}
+                    </label>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="add-mesh-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button id="add-mesh-submit" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 

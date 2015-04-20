@@ -3,7 +3,8 @@
 <div id='active-learning' class='wrapper'>
   <header class='container'>
     <div class='page-header row'>
-      <h1>Concept: <b>{{ initial_term }}</b></h1>
+      <h1>Concept: <span style="font-weight: bold" id='concept-name'>{{ initial_term }}</span>
+        <button type="button" class="btn btn-primary more-info" id="rename-concept" data-toggle="tooltip" data-placement="right" title="Click here to rename this concept."><i class="fa fa-pencil"></i></button></h1>
     </div>
   </header>
   <section class='container'>

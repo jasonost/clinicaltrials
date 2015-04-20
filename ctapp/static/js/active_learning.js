@@ -26,11 +26,24 @@ function writeExisting(wordlist) {
 
 // global variables to keep track of things
 var idx = 0,
+    totalaccepts = 0,
     accepts = [],
     rejects = [],
     wordtype = 'term',
     thislist = [],
     thisround = 0;
+
+// warning text for when a lot of terms and predictors are rejects
+var term_rejects_warning = "<p>You are rejecting a lot of suggestions, so it's possible you have exhausted the " +
+                           "list of terms for this concept. Press \"Stop\" at any time to end the term discovery " +
+                           "process and submit the concept for review.</p>",
+    pred_rejects_warning = "<p>Please keep in mind that predictors are only used to find new terms. They will not be used " +
+                           "to identify trials associated with this concept, so do not need to be closely related to the concept itself.</p>" +
+                           "<p>If it's possible a word or phrase may appear in the same sentence as this concept, you may " +
+                           "want to accept it so the algorithm can find new terms to suggest.</p>"
+
+
+
 
 // when document is ready...
 $(function() {
@@ -73,8 +86,23 @@ $(function() {
 
 
 
-// decide what to do
+// decide what to do (main loop function)
 function startProcess() {
+    thisround++;
+
+    // check if rejecting more than 75% of stuff...
+    var thiscount = accepts.length + rejects.length,
+        rejcount = rejects.length;
+    if (thiscount >= 8 && rejcount / thiscount >= 0.75) {
+        if (wordtype == 'term') {
+            $("#rejects-warning-modal .modal-body").html(term_rejects_warning);
+        } else {
+            $("#rejects-warning-modal .modal-body").html(pred_rejects_warning);
+        }
+        $("#rejects-warning-modal").modal("show");
+    }
+
+    // decide what to do based on the existing word type
     if (wordtype == 'term') {
         thinking("Loading new predictors...");
         idx = 0,
@@ -107,11 +135,6 @@ function writeData() {
         return true;
     });
 }
-
-
-
-
-
 
 // getting predictors
 function getPredictors() {
@@ -168,14 +191,29 @@ function learnWords() {
                                      '<button id="reject-word" ' + word_attrs + ' class="btn btn-danger btn-sm word-btn">No</button>&nbsp;' +
                                      '<button id="quit-word" class="btn btn-default btn-sm word-btn">Stop</button>&nbsp;' +
                                    '</div>');
-    } else {
+    } else if (thisround < 10) {
         writeData();
         startProcess();
+    } else {
+        $("#rounds-10-modal").modal('show');
+        $("#rounds-10-submit").on('click', function(e) {
+            writeData();
+            $.getJSON($SCRIPT_ROOT + '_clear_session', {}, function(data) {
+                closeWindow();
+            });
+        });
     }
+
 }
 
 function cycleWord(w, incexc, arr) {
     arr.push(w);
+    if (incexc == 'include' && wordtype == 'term') {
+        totalaccepts++;
+        if (totalaccepts == 20) {
+            $("#terms-20-modal").modal("show");
+        }
+    }
     var thisid = thisround*100 + idx;
     $("#" + wordtype + "-" + incexc).prepend("<li id='t-" + thisid + "''>" + w + "</li>");
     $("#t-" + thisid).effect("highlight", {}, 1000);
@@ -200,8 +238,49 @@ $("body").delegate("#quit-warning-submit", 'click', function(e) {
     writeData();
     $.getJSON($SCRIPT_ROOT + '_clear_session', {}, function(data) {
         closeWindow();
-    })
+    });
 });
+
+
+
+
+
+// rename concept
+$("#rename-concept").on('click', function(e) {
+    $.getJSON($SCRIPT_ROOT + "_concept_terms", {
+        acc: JSON.stringify(accepts)
+    }, function(data) {
+        var new_html = "<p>Please select one of the following terms to be the name of this concept:</p>" +
+                        "<div class='dropdown'>" +
+                         "<button class='btn btn-default dropdown-toggle dropdown-wide' type='button' id='all-term-dropdown' data-toggle='dropdown' aria-expanded='true'>" +
+                         "<span class='caret'></span>" +
+                         "</button>" +
+                        "<ul class='dropdown-menu' role='menu' aria-labelledby='all-term-dropdown'>";
+        for (i=0; i<data.all_terms.length; i++) {
+            new_html += "<li role='presentation'><a role='menuitem' tabindex='-1' href='#'>" + data.all_terms[i] + "</a></li>";
+        }
+        new_html += "</ul></div>";
+        $("#rename-concept-modal .modal-body").html(new_html);
+        $("#rename-concept-modal").modal('show');
+        $(".dropdown-menu li a").on('click', function(e) {
+            var new_name = $(this).text();
+            $.getJSON($SCRIPT_ROOT + '_rename_concept', {
+                new_name: new_name
+            }, function(data) {
+                if (data.done) {
+                    $("#concept-name").text(new_name);
+                } else {
+                    alert("Sorry, there was a problem. Please try again later.");
+                }
+                $("#rename-concept-modal").modal('hide');
+            })
+        });
+    });
+});
+
+
+
+
 
 
 
