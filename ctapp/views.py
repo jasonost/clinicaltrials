@@ -50,7 +50,7 @@ app.secret_key = str(uuid.uuid4())
 skip_term_list = {'month', 'months', 'patient', 'patients', 'history', 'day', 'days',
                   'year', 'years', 'week', 'weeks', 'subject', 'subjects', 'study', 'inclusion criteria', 'exclusion criteria',
                   'history of', 'patients with', 'age', 'investigator', 'use', 'evidence', 'women', 'men', 'woman', 'man',
-                  'female', 'male', 'enrollment', 'time', 'informed consent', 'treatment'}
+                  'female', 'male', 'enrollment', 'time', 'informed consent', 'treatment', 'mg/dl', 'mm'}
 skip_predictor_list = {'inclusion criteria', 'exclusion criteria'}
 
 
@@ -1107,6 +1107,52 @@ def write_data():
 
     return flask.jsonify(done=True)
 
+@app.route('/_concept_terms')
+def concept_terms():
+    params = request.args
+    all_terms = json.loads(params['acc']) + get_list(['term'])
+    return flask.jsonify(all_terms=all_terms)
+
+
+@app.route('/_rename_concept')
+def rename_concept():
+    params = request.args
+    new_name = params['new_name']
+
+    try:
+        r = conn.execute(CriteriaConceptStaging.update().\
+                            where(and_(CriteriaConceptStaging.c.concept_id == flask.session['concept_id'],
+                                       CriteriaConceptStaging.c.update_type == 'concept-name')).\
+                            values(value=new_name))
+        return flask.jsonify(done=True)
+    except:
+        return flask.jsonify(done=False)
+
+
+
+
+
+
+
+
+
+# accepting suggested MeSH terms
+@app.route('/_mesh_stage')
+def stage_mesh():
+    params = request.args
+    nct_id = params['nct_id']
+    conds = json.loads(params['cond_ids'])
+
+    try:
+        r = conn.execute(MeshAssignStaging.insert(), [{'user_id': flask.session['userid'],
+                                                       'nct_id': nct_id,
+                                                       'update_time': datetime.now(),
+                                                       'condition_id': cid}
+                                                       for cid in conds
+                                                       if len(str(cid)) > 0])
+        return flask.jsonify(done=True)
+    except:
+        return flask.jsonify(done=False)
 
 
 
