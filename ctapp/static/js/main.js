@@ -79,12 +79,6 @@ $("#search-text").keydown(function(event) {
       }
 });
 
-// move login area on mobile screens
-if ($(window).width() < 768) {
-  var buttons = $("#login-area").clone();
-  $("#login-area").remove();
-  $("#navbar-top").append(buttons);
-}
 
 
 
@@ -107,7 +101,7 @@ function clearUserPass() {
 function changeButtons(username) {
   $('#create-acct-button').remove();
   $('#login-button').remove();
-  $('#login-area').append('<div id="logged-in-area" class="navbar-button"><small>Logged in as <b>' + username + '</b><small> ' +
+  $('#login-area').append('<div id="logged-in-area"><small>Logged in as <strong>' + username + '</strong><small>&nbsp;' +
       '<button id="logout-button" type="button" class="btn btn-danger btn-xs">Logout</button></div>');
 }
 
@@ -195,9 +189,9 @@ $('#login-cancel').on('click', function(e){clearVals()} );
 $("#login-area").on('click', "#logout-button", function (e) {
   $.getJSON( $SCRIPT_ROOT + "_logout", function(e) {
     $("#logged-in-area").remove();
-    $('#login-area').append('<button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" ' +
+    $('#login-area').append('<button id="create-acct-button" type="button" class="btn btn-success btn-xs" ' +
         'data-toggle="modal" data-target="#create-user-modal">Create account</button> <button id="login-button" type="button" ' +
-        'class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">Login</button>');
+        'class="btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">Login</button>');
   });
 });
 

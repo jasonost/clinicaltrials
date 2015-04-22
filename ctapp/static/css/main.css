@@ -170,23 +170,40 @@ a .btn {
     display: block;
 }
 
-.navbar-button {
-        transform: translateY(100%);
-    }
 
-@media (min-width: 768px) {
-    .navbar-search {
-        transform: translateY(50%);
-    }
+@media (min-width: 992px) {
     header {
         margin-top: 100px;
         margin-bottom: 15px;
     }
+    .container-fluid {
+        height: 70px;
+    }
+    .navbar-button, .navbar-search {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+    }
+    .navbar-button {
+        text-align: center;
+    }
 }
+
+@media (max-width: 992px) {
+    .navbar-button, .navbar-search {
+        padding-bottom: 12px;
+    }
+    .navbar-button {
+        text-align: right;
+    }
+}
+
 
 nav .site-name{
     padding-left: 2%;
-    margin-top: 12px;
+    margin-top: 16px;
     font-weight: 300;
 }
 

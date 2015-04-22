@@ -49,8 +49,8 @@
         <h1 class='site-name'><a href="{{ url_for('home') }}"><span style="letter-spacing: 3px;">Discover</span>CT</a></h1>
       </div>
       {% if not is_home %}
-        <div class="form-group col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-0 col-md-4">
-          <div class="input-group navbar-search">
+        <div class="navbar-search col-xs-12 col-sm-12 col-md-offset-0 col-md-4">
+          <div class="input-group">
             <label class="sr-only" for="search-text">Condition and Institution Search</label>
             <div class="input-group-addon">
               <span class='glyphicon glyphicon-search'></span>
@@ -62,11 +62,11 @@
           </div>
         </div>
       {% endif %}
-      <div id="login-area" class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 {% if is_home %}col-md-offset-4{% else %}col-md-offset-0{% endif %} col-md-2">
-        <button id="create-acct-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
+      <div id="login-area" class="navbar-button col-xs-12 col-sm-12 {% if is_home %}col-md-offset-4{% else %}col-md-offset-0{% endif %} col-md-2">
+        <button id="create-acct-button" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#create-user-modal">
           Create account
         </button>
-        <button id="login-button" type="button" class="navbar-button btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
+        <button id="login-button" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#login-modal">
           Login
         </button>
       </div>
