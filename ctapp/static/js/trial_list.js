@@ -13,8 +13,8 @@ $.each( data.result, function( key, val ) {
                   "</a></h4>" +
                   "<p>" + val.lay_str + "</p>" +
                   "<small>" +
-                  "<span style='font-weight: bold'>Conditions: </span>" + val.trial_cond_list + "<br>" +
-                  "<span style='font-weight: bold'>Interventions: </span>" + val.trial_inv_list +
+                  "<span style='font-weight: bold'>Condition(s): </span>" + val.conditions + "<br>" +
+                  "<span style='font-weight: bold'>Intervention(s): </span>" + val.interventions +
                   "</small>" +
                   "</div>"
   $("#trial-list").append(trial_div)

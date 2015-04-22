@@ -218,7 +218,7 @@ function OpenInNewTab(url) {
 function loginCheck(ok_fcn, warn_msg) {
   $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
     if (data.logged_in) {
-      ok_fcn();
+      ok_fcn(data.admin);
     } else {
       alert(warn_msg);
     }
@@ -227,7 +227,7 @@ function loginCheck(ok_fcn, warn_msg) {
 
 // structure criteria jump
 $("#structure-criteria-btn").on("click", function(e) {
-  function redir() {
+  function redir(admin) {
       var nct_id = getParameterByName('nct_id');
       e.preventDefault();
       e.stopPropagation();
@@ -239,7 +239,7 @@ $("#structure-criteria-btn").on("click", function(e) {
 
 // accepting MeSH term suggestions interaction
 $("#add-mesh-btn").on('click', function(e) {
-  loginCheck(function() {
+  loginCheck(function(admin) {
     $("#add-mesh-modal").modal('show');
     $("#add-mesh-submit").on("click", function(g) {
       var nct_id = getParameterByName('nct_id'),
@@ -279,7 +279,7 @@ $('#create-concept-modal').on('shown.bs.modal', function () {
 })
 
 $('#create-concept-submit').on('click', function(e){
-  function redir() {
+  function redir(admin) {
       var initial_term = $("#create-concept-modal #input-new-concept").val();
       e.preventDefault();
       e.stopPropagation();
@@ -296,7 +296,7 @@ $('#create-concept-submit').on('click', function(e){
 });
 
 $("#create-concept-modal .form-control").keydown(function(e) {
-  function redir() {
+  function redir(admin) {
       var initial_term = $("#create-concept-modal #input-new-concept").val();
       e.preventDefault();
       e.stopPropagation();
@@ -316,6 +316,20 @@ $("#create-concept-modal .form-control").keydown(function(e) {
 });
 
 $('#create-concept-cancel').on('click', function(e){clearVals()} );
+
+// admin tools jump
+$("#pick-admin-tool").on("click", function(e) {
+  function redir(admin) {
+      console.log(admin);
+      if (admin == 1) {
+        $("#admin-select-modal").modal('show');
+      } else {
+        alert("Sorry, you need to have administrator privileges to use these tools.");
+      }
+      return false;
+  }
+  loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+});
 
 
 
