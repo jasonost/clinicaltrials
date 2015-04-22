@@ -194,6 +194,41 @@
     </div>
   </div>
 
+<!-- TOOLS: ADMIN PAGE SELECTION -->
+  <div class="modal fade" id="admin-select-modal" tabindex="-1" role="dialog" aria-labelledby="admin-select-label" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="admin-select-label">Select admin tool</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <p>Please select the data you would like to review:</p>
+          </div>
+          <div id='tool-list' class="input-group modal-input">
+            <div class='col-xs-12 col-sm-6 col-md-6'>
+              <a id="admin-concept-tool" type="button" class="btn btn-primary" href="{{ url_for('approve_concepts') }}">
+                <i class="fa fa-check-square-o" style="font-size: 3em; margin: .5em;"></i><br>
+                Eligibility<br>concepts
+              </a>
+            </div>
+            <div class='col-xs-12 col-sm-6 col-md-6'>
+              <a id="admin-mesh-tool" type="button" class="btn btn-primary" href="{{ url_for('approve_mesh') }}">
+                <i class="fa fa-tasks" style="font-size: 3em; margin: .5em;"></i><br>
+                MeSH term<br>assignments
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="admin-select-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 
 
