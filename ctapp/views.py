@@ -112,11 +112,11 @@ def calc_overall(r_array):
     return 1 + (round((r_wgt_avg) * 2 - 2) / 2.0)
 
 # turn a query result with multiple rows per key into a lookup dictionary
-def dictify(qresult):
-    ''' qresult is a list of 2-tuples '''
+def dictify(qresult,pos):
+    ''' qresult is a list of n-tuples, pos is the position in the tuple to make the value (key is assumed to be 0) '''
     output = defaultdict(set)
-    for k, v in qresult:
-        output[k].add(v)
+    for r in qresult:
+        output[r[0]].add(r[pos])
     return output
 
 # create a comma-separated list of words
@@ -605,7 +605,7 @@ def trial():
                                         where(Interventions.c.nct_id == nct_id)).\
                                     fetchall()
 
-                inv_dict = dictify(inv)
+                inv_dict = dictify(inv,1)
 
                 cond = conn.execute(select([ConditionDescription.c.condition_id,
                                             ConditionDescription.c.mesh_term]).\
@@ -753,20 +753,34 @@ def trial_list():
                                         limit(50)).\
                                     fetchall()
 
-                inv = conn.execute(select([Interventions.c.nct_id, Interventions.c.intervention_type]).\
-                                        select_from(Interventions.join(InstitutionLookup,
-                                            and_(InstitutionLookup.c.nct_id == Interventions.c.nct_id,
-                                                 InstitutionLookup.c.institution_id == int(params['id']))))).\
+                nct_ids = [t[0] for t in trials]
+
+                inv = conn.execute(select([Interventions.c.nct_id, 
+                                           Interventions.c.intervention_type,
+                                           Interventions.c.intervention_name]).\
+                                        where(Interventions.c.nct_id.in_(nct_ids))).\
                                     fetchall()
 
-                inv_dict = dictify(inv)
+                inv_dict = dictify(inv,1)
+                inv_list = dictify(inv,2)
+
+                conds = conn.execute(select([ConditionLookup.c.nct_id,
+                                             ConditionDescription.c.mesh_term]).
+                                        select_from(ConditionLookup.join(ConditionDescription,
+                                            and_(ConditionLookup.c.nct_id.in_(nct_ids),
+                                                 ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
+                                    fetchall()
+
+                cond_list = dictify(conds,1)
 
                 # compile JSON object
                 out_obj = []
                 for nct_id, title, status, phase, stype in trials:
                     out_obj.append({'nct_id': nct_id,
                                     'trial_title': title,
-                                    'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype)
+                                    'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
+                                    'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
+                                    'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
                                     })
 
                 if trials:
@@ -1050,8 +1064,6 @@ def learning_preds():
     text = get_random_text()
 
     term_list = get_list(['term'])
-    print flask.session['concept_id']
-    print term_list
     pred_options_dict = Counter()
     for sent in text:
         #if the sentance has less than 2 words skip it
@@ -1060,10 +1072,6 @@ def learning_preds():
         #create a sentence rank for judging weight of terms found
         sent_rank = 0
         for term in term_list:
-            if random.random() < 0.001:
-                print term
-                print ' '.join(zip(*sent)[0]).lower()
-                print
             if term.lower() in ' '.join(zip(*sent)[0]).lower():
                 sent_rank += 1
         result = chunker_preds(sent)
@@ -1136,24 +1144,6 @@ def rename_concept():
 
 
 
-# accepting suggested MeSH terms
-@app.route('/_mesh_stage')
-def stage_mesh():
-    params = request.args
-    nct_id = params['nct_id']
-    conds = json.loads(params['cond_ids'])
-
-    try:
-        r = conn.execute(MeshAssignStaging.insert(), [{'user_id': flask.session['userid'],
-                                                       'nct_id': nct_id,
-                                                       'update_time': datetime.now(),
-                                                       'condition_id': cid}
-                                                       for cid in conds
-                                                       if len(str(cid)) > 0])
-        return flask.jsonify(done=True)
-    except:
-        return flask.jsonify(done=False)
-
 
 
 
@@ -1186,6 +1176,41 @@ def get_suggestions():
     else:
         return flask.jsonify(results=False)
 
+# inserting suggested MeSH terms
+@app.route('/_mesh_stage')
+def stage_mesh():
+    params = request.args
+    nct_id = params['nct_id']
+    conds = json.loads(params['cond_ids'])
+
+    try:
+        r = conn.execute(MeshAssignStaging.insert(), [{'user_id': flask.session['userid'],
+                                                       'nct_id': nct_id,
+                                                       'update_time': datetime.now(),
+                                                       'condition_id': cid}
+                                                       for cid in conds
+                                                       if len(str(cid)) > 0])
+        return flask.jsonify(done=True)
+    except:
+        return flask.jsonify(done=False)
+
+
+
+
+
+
+
+
+# admin concept approval page
+@app.route('/approve_concepts')
+def approve_concepts():
+    return flask.render_template('approve_concepts.html')
+
+
+# admin mesh assignment page
+@app.route('/approve_mesh')
+def approve_mesh():
+    return flask.render_template('approve_mesh.html')
 
 
 
@@ -1247,11 +1272,14 @@ def logout():
 def check_login():
     userid = flask.session['userid'] if 'userid' in flask.session else None
     if 'userid' in flask.session:
-        username = conn.execute(select([Users.c.user_name]).where(Users.c.user_id == flask.session['userid'])).fetchone()[0]
+        username, usertype = conn.execute(select([Users.c.user_name, Users.c.access_level]).\
+                                            where(Users.c.user_id == flask.session['userid'])).fetchone()
     else:
         username = None
+        usertype = None
     return flask.jsonify(logged_in='userid' in flask.session,
-                         username=username)
+                         username=username,
+                         admin=1 if usertype =='admin' else 0)
 
 @app.route('/_clear_session')
 def clear_session():
