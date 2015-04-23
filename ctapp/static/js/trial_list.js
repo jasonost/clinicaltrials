@@ -132,7 +132,13 @@ function get_trials(trial_criteria) {
 
 }
 
+
+// make filter selection a switch
+$("#filter-type-switch").bootstrapSwitch();
+
 function get_patient_filters() {
+    $("#filter-type-switch").bootstrapSwitch('labelText',"<div style='font-size: 10px; line-height: 1em; color: #888'>Go to<br>researcher<br>view</div>");
+    $("#filter-type-switch").bootstrapSwitch('state', true);
     $("#filter-list").html(patient_filters_html);
     $.getJSON($SCRIPT_ROOT + "_patient_filters", {}, function(data) {
         if (data.concepts.length > 0) {
@@ -153,6 +159,8 @@ function get_patient_filters() {
 }
 
 function get_research_filters(filter_cond) {
+    $("#filter-type-switch").bootstrapSwitch('labelText',"<div style='font-size: 10px; line-height: 1em; color: #888'>Go to<br>patient<br>view</div>");
+    $("#filter-type-switch").bootstrapSwitch('state', false);
     $("#filter-list").html(research_filters_html);
     if (filter_cond) {
       $("#research-input-condition").val(filter_cond);
@@ -161,29 +169,23 @@ function get_research_filters(filter_cond) {
 
 
 
-// make filter selection a switch
-$("#filter-type-switch").bootstrapSwitch();
 $('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, state) {
   if (state) {
     // Patients
     $('#filter-list').empty();
     get_patient_filters();
-    $("#filter-type-switch").bootstrapSwitch('state', true);
   } else {
     // Researchers
     $('#filter-list').empty();
     get_research_filters();
-    $("#filter-type-switch").bootstrapSwitch('state', false);
   }
 });
 
 // load patient filters if there's no filter_by condition
 if (!viewtype) {
   get_patient_filters();
-    $("#filter-type-switch").bootstrapSwitch('state', true);
 } else {
   get_research_filters(viewtype);
-    $("#filter-type-switch").bootstrapSwitch('state', false);
 }
 
 // load trials data into pane
