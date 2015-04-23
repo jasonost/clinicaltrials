@@ -241,7 +241,6 @@ $("#add-mesh-btn").on('click', function(e) {
       $.each($("input[name='add-mesh-term']:checked"), function() {
         cond_ids.push($(this).val());
       });
-      console.log(cond_ids);
       $.getJSON($SCRIPT_ROOT + "_mesh_stage", {
         cond_ids: JSON.stringify(cond_ids),
         nct_id: nct_id
@@ -314,7 +313,6 @@ $('#create-concept-cancel').on('click', function(e){clearVals()} );
 // admin tools jump
 $("#pick-admin-tool").on("click", function(e) {
   function redir(admin) {
-      console.log(admin);
       if (admin == 1) {
         $("#admin-select-modal").modal('show');
       } else {
@@ -365,56 +363,3 @@ $("#submit-suggestion-text").on('click', function(e) {
 
 
 
-// trial list filters
-$("#filter-type-switch").bootstrapSwitch();
-
-var intr = ['All (default)',
-            'Drug',
-            'Procedure',
-            'Behavioral',
-            'Device',
-            'Biological',
-            'Dietary Supplement',
-            'Radiation',
-            'Genetic','Other'];
-var stat = ['All (default)',
-            'Completed',
-            'Recruiting',
-            'Active, not recruiting',
-            'Not yet recruiting',
-            'Terminated',
-            'Withdrawn',
-            'Enrolling by invitation',
-            'Suspended',
-            'Withheld',
-            'Available',
-            'No longer available',
-            'Approved for marketing',
-            'Temporarily not available'];
-var patient_html;
-
-$('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, state) {
-  if (state) {
-    // Patients
-    $('#filter-list').empty();
-    $('#filter-list').append(patient_html);
-  } else {
-    // Researchers
-    patient_html = $('#filter-list').html();
-    $('#filter-list').empty();
-    $('#filter-list').append('<h5>Intervention Type</h5>'+
-                                '<select multiple class="form-control">' +
-                                  '<option>' + intr.join('</option><option>') + '</option>' +
-                                '</select>' +
-                              '<h5>Trial Status</h5>' +
-                              '<select multiple class="form-control">' +
-                                '<option>' + stat.join('</option><option>') + '</option>' +
-                              '</select>');
-  }
-  console.log(this); // DOM element
-  console.log(event); // jQuery event
-  console.log(state); // true | false
-});
-
-  
-    

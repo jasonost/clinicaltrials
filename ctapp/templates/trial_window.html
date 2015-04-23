@@ -1,69 +1,16 @@
 <div id='trial-container'>
 <div id='trial-filter' class='col-xs-12 col-sm-2 col-md-2'>
   <div>
-    <input id="filter-type-switch" type="checkbox" checked data-size="mini" data-on-text="Patient<br>view" data-off-text="Researcher<br>view" data-label-text="<div style='font-size: 10px; line-height: 1.1em; color: #888; transform:translateY(-25%)'>Switch<br>filters</div>" data-off-color="success">
+    <input id="filter-type-switch" type="checkbox" checked data-size="mini" data-on-text="Patient<br>view" data-off-text="Researcher<br>view" data-label-text="<div style='font-size: 10px; line-height: 1.1em; color: #888; transform:translateY(-25%)'>Switch<br>filters</div>" data-off-color="primary">
+    <p></p>
   </div>
   <div id='filter-list' class="overflow">
-    <p></p>
-    <small>Fill in as much information as possible about the potential trial participant, then click</small>
-    <div style="text-align:center; margin-top: .8em">
-        <button class="btn btn-success btn-xs" type="submit">Update results</button>
-    </div>
-    <hr/> 
-    <table>
-        <tr class='filter-row'>
-            <td><h5>Gender:&nbsp;</h5></td>
-            <td>
-                <div class="btn-group btn-group-sm" data-toggle="buttons">
-                  <label class="btn btn-default" name="gender-radio" id="gender-female">
-                    <input type="radio" value="female">
-                    Female
-                  </label>
-                  <label class="btn btn-default" name="gender-radio" id="gender-male">
-                    <input type="radio" value="male">
-                    Male
-                  </label>
-                </div>
-            </td>
-        </tr>
-        <tr class='filter-row'>
-            <td><h5>Age:&nbsp;</h5></td>
-            <td>
-                <input type="number" class="form-control" id="participant-age" placeholder="" style="width: 60px">
-            </td>
-        </tr>
-    </table>
-    <hr/>
-    <table style="text-align:center">
-        <tr>
-            <td class='filter-col-header'>Applies</td>
-            <td class='filter-col-header'></td>
-            <td class='filter-col-header'>Doesn't<br>apply</td>
-        </tr>
-        <tr class='filter-row'>
-            <td><input type="checkbox" id="filter-pregnant" value=""></td>
-            <td>Pregnant?</td>
-            <td><input type="checkbox" id="filter-pregnant-not" value=""></td>
-        </tr>
-        <tr class='filter-row'>
-            <td><input type="checkbox" id="filter-pregnant" value=""></td>
-            <td>Smoking?</td>
-            <td><input type="checkbox" id="filter-pregnant-not" value=""></td>
-        </tr>
-        <tr class='filter-row'>
-            <td><input type="checkbox" id="filter-pregnant" value=""></td>
-            <td>Birth control?</td>
-            <td><input type="checkbox" id="filter-pregnant-not" value=""></td>
-        </tr>
-    </table>
-    <hr/>
-    <label class="checkbox-inline">
-      <input type="checkbox" id="filter-only-healthy" value="only-healthy"> Only show trials accepting healthy volunteers
-    </label>
   </div>
 </div>
 <div id='trial-list' class='col-xs-12 col-sm-10 col-md-10 overflow'>
 <i id='trial-list-spinner' class="fa fa-spinner fa-pulse spinner" style="font-size: 5em; margin: .5em;"></i>
 </div> 
 </div> <!-- end #trial-container -->
+
+<script src="{{ url_for('static', filename='js/trial_list.js') }}"></script>
 

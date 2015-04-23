@@ -1,6 +1,11 @@
-var inst_id = window.location.search.split('=')[1];
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
-$.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: inst_id}, function( data ) {
+$.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: getParameterByName('inst')}, function( data ) {
 
   // create lookup of term to condition id
   var id_lookup = {}
