@@ -559,6 +559,7 @@ def condition():
                              for t in top_inst]
                 if cond_data:
                     return flask.render_template('condition.html', 
+                                                cond_id=cond_id,
                                                 cond_name=cond_data[1],
                                                 cond_summary=summary_text or 'This condition has no description available.',
                                                 cond_synonyms=[t[0] for t in cond_syn],
@@ -811,6 +812,12 @@ def patient_filters():
                  'concept_name': t[1]}
                 for t in concepts]
     return flask.jsonify(concepts=con_list)
+
+@app.route('/_get_condition_name')
+def get_condition_name():
+    cond_id = request.args['cond_id']
+    cname = conn.execute(select([ConditionDescription.c.mesh_term]).where(ConditionDescription.c.condition_id == int(cond_id))).fetchone()[0]
+    return flask.jsonify(condition_name=cname)
 
 
 
