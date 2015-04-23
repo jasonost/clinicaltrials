@@ -15,7 +15,7 @@ img {
 }
 
 .overflow {
-    height: 500px;
+    height: 550px;
     overflow-y: overlay;
     overflow-x: hidden;
     margin-bottom: 1em;
@@ -366,6 +366,10 @@ tspan {
 .filter-row td {
     padding-bottom: 0.5em;
     font-size: 0.8em;
+}
+
+.filter-div {
+    margin-top: 1em;
 }
 
 

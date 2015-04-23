@@ -130,13 +130,31 @@
         {% endif %}
         <p>&nbsp;</p>
         <h4>Other possibly related publications</h4>
-        {% if pubs.other|length > 0 %}
+        {% if pubs.other_likely|length > 0 %}
+          <h5>Likely related</h5>
           <ul>
-            {% for pub in pubs.other %}
+            {% for pub in pubs.other_likely %}
               <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
             {% endfor %}
           </ul>
-        {% else %}
+        {% endif %}
+        {% if pubs.other_probably|length > 0 %}
+          <h5>Probably related</h5>
+          <ul>
+            {% for pub in pubs.other_probably %}
+              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if pubs.other_possibly|length > 0 %}
+          <h5>Possibly related</h5>
+          <ul>
+            {% for pub in pubs.other_possibly %}
+              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if pubs.other_likely|length + pubs.other_probably|length + pubs.other_possibly|length == 0%}
           <p>No other suggested publications</p>
         {% endif %}
       </div>
