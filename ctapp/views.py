@@ -143,7 +143,10 @@ def layman_desc(phase, status, inv_dict, stype):
     else:
         lay_str = "This trial"
         missing_data.append('phase')
-    lay_str += " is <span style='font-weight: bold'>%s</span>." % status
+    lay_str += " is <span style='font-weight: bold%s'>%s</span>." % ("; color: #228B22;" if status in ['recruiting',
+                                                                                                       'not yet recruiting',
+                                                                                                       'enrolling by invitation'] else "",
+                                                                     status)
 
     inv_str = add_commas(inv_dict, 'and/or')
     if inv_str:
@@ -659,10 +662,18 @@ def trial():
                                         'authors': t[2],
                                         'title': t[3],
                                         'cite': t[4]} for t in pubs if t[5] == 1],
-                            'other': [{'pmid': t[1],
+                            'other_likely': [{'pmid': t[1],
                                        'authors': t[2],
                                        'title': t[3],
-                                       'cite': t[4]} for t in pubs if t[5] < 1]
+                                       'cite': t[4]} for t in pubs if t[5] == 0.9],
+                            'other_probably': [{'pmid': t[1],
+                                       'authors': t[2],
+                                       'title': t[3],
+                                       'cite': t[4]} for t in pubs if t[5] == 0.6],
+                            'other_possibly': [{'pmid': t[1],
+                                       'authors': t[2],
+                                       'title': t[3],
+                                       'cite': t[4]} for t in pubs if t[5] == 0.3],
                             }
 
                 if summary_data:
@@ -768,6 +779,8 @@ def trial_list():
                                              ConditionDescription.c.mesh_term]).
                                         select_from(ConditionLookup.join(ConditionDescription,
                                             and_(ConditionLookup.c.nct_id.in_(nct_ids),
+                                                 ConditionLookup.c.source == 'CTGOV',
+                                                 ConditionLookup.c.syn_flag == 0,
                                                  ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
                                     fetchall()
 
@@ -791,6 +804,13 @@ def trial_list():
 
     return flask.jsonify(None)
 
+@app.route('/_patient_filters')
+def patient_filters():
+    concepts = conn.execute(select([CriteriaConcept])).fetchall()
+    con_list = [{'concept_id': t[0],
+                 'concept_name': t[1]}
+                for t in concepts]
+    return flask.jsonify(concepts=con_list)
 
 
 
@@ -1300,6 +1320,21 @@ def clear_session():
 
 
 
+
+# about page
+@app.route('/about')
+def about():
+    return flask.render_template('about.html')
+
+# data page
+@app.route('/data')
+def data():
+    return flask.render_template('data.html')
+
+# contact page
+@app.route('/contact')
+def contact():
+    return flask.render_template('contact.html')
 
 # ratings description page
 @app.route('/ratings_description')
