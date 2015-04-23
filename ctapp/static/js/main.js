@@ -5,6 +5,31 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substrRegex;
+ 
+    // an array that will be populated with substring matches
+    matches = [];
+ 
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+ 
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        // the typeahead jQuery plugin expects suggestions to a
+        // JavaScript object, refer to typeahead docs for more info
+        matches.push({ value: str });
+      }
+    });
+ 
+    cb(matches);
+  };
+};
+
+/*
 function loadJSON(callback) {   
 
   var xobj = new XMLHttpRequest();
@@ -18,7 +43,7 @@ function loadJSON(callback) {
           };
           xobj.send(null);  
 }
- 
+
 $.widget( "custom.catcomplete", $.ui.autocomplete, {
   _create: function() {
         this._super();
@@ -69,16 +94,86 @@ $(function() {
     });
 });
 
+*/
+
+$(function() {
+
+    var conditions = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      prefetch: $SCRIPT_ROOT + "static/assets/conditions.json"
+    });
+
+    var institutions = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      prefetch: $SCRIPT_ROOT + "static/assets/institutions.json"
+    });
+
+    conditions.initialize(true);
+    institutions.initialize(true);
+
+    conditions.clearPrefetchCache();
+    institutions.clearPrefetchCache();
+
+    $('#search-text').typeahead({
+      highlight: true,
+      minLength: 2
+    },
+    {
+      name: 'conditions',
+      displayKey: 'text',
+      source: conditions.ttAdapter(),
+      templates: {
+        header: '<div class="search-header">Conditions</div>'
+      }
+    },
+    {
+      name: 'institutions',
+      displayKey: 'text',
+      source: institutions.ttAdapter(),
+      templates: {
+        header: '<div class="search-header">Institutions</div>'
+      }
+    });
+
+});
+
+
+var cur_obj = {},
+    full_val = false;
+
 $("#search-text").keydown(function(event) {
     if (event.keyCode == 13) {
-        var cur_str = $('#search-text').val();
-        if (cur_str.length > 0) {
-          window.open($SCRIPT_ROOT + "search_results?q=" + cur_str, "_self");
+      console.log(cur_obj);
+      console.log(full_val);
+        if (full_val) {
+          var page = '';
+          if (cur_obj.type == 'cond') {
+            page = 'condition';
+          } else {
+            page = 'institution';
+          }
+          window.open($SCRIPT_ROOT + page + "?" + cur_obj.type + "=" + cur_obj.value, "_self");
           return false;
+        } else {
+          var cur_str = $('#search-text').val();
+          if (cur_str.length > 0) {
+            window.open($SCRIPT_ROOT + "search_results?q=" + cur_str, "_self");
+            return false;
+          }
         }
+      } else {
+        cur_obj = {};
+        full_val = false;
       }
 });
 
+
+$("#search-text").on('typeahead:cursorchanged typeahead:selected typeahead:autocompleted', function (e, datum) {
+    cur_obj = datum;
+    full_val = true;
+});
 
 
 
