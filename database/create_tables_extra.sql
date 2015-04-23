@@ -247,12 +247,49 @@ CREATE TABLE trial_publications (
 DROP TABLE IF EXISTS trial_summary;
 CREATE TABLE trial_summary AS
 SELECT
-    nct_id,
+    a.nct_id,
     brief_title,
     case when overall_status = 'Active, not recruiting' then 'active, but not recruiting' else lower(overall_status) end overall_status,
     phase,
-    case when study_type like 'Observational%' then 'observational' else lower(study_type) end study_type
-from clinical_study;
+    case when study_type like 'Observational%' then 'observational' else lower(study_type) end study_type,
+    gender,
+    minimum_age,
+    maximum_age,
+    healthy_volunteers,
+    case when c.nct_id is not null then 'Y' else 'N' end has_results,
+    GROUP_CONCAT(DISTINCT intervention_type ORDER BY case when intervention_type = 'Other' then 'ZZZ' else intervention_type end) interventions
+FROM clinical_study a
+ LEFT JOIN interventions b on a.nct_id=b.nct_id
+ LEFT JOIN results_baseline c on a.nct_id=c.nct_id
+GROUP BY
+ 1, 2, 3, 4, 5, 6, 7, 8, 9;
 CREATE UNIQUE INDEX trial_summary_nct_id_idx ON trial_summary(nct_id);
+
+
+
+
+
+
+-- ZIP code data
+DROP TABLE IF EXISTS zip_latlong;
+CREATE TABLE zip_latlong (
+    ZIP CHAR(5),
+    LATITUDE DOUBLE,
+    LONGITUDE DOUBLE
+);
+CREATE UNIQUE INDEX zip_latlong_zip ON zip_latlong (zip);
+
+LOAD DATA LOCAL INFILE 'data/zip_table.txt' INTO TABLE zip_latlong CHARACTER SET UTF8 COLUMNS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+
+
+DROP TABLE IF EXISTS zip_facilities;
+CREATE TABLE zip_facilities AS
+SELECT nct_id, facility_id, latitude, longitude
+FROM facilities a
+ JOIN zip_latlong b 
+ ON a.country='United States' AND length(a.zip) >= 5 and substr(a.zip,1,5) = b.zip;
+CREATE INDEX zip_facilities_nct_id ON zip_facilities (nct_id);
+CREATE UNIQUE INDEX zip_facilities_facility_id ON zip_facilities (facility_id);
+
 
 
