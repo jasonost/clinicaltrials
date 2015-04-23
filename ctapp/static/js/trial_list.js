@@ -7,46 +7,54 @@ function getParameterByName(name) {
 
 var cond_id = getParameterByName('cond'),
     inst_id = getParameterByName('inst'),
-    viewtype = getParameterByName('filter_by');
+    viewtype = getParameterByName('filterBy');
+
+// initialize conditions typeahead for researcher filters
+var conditions = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: $SCRIPT_ROOT + "static/assets/conditions.json"
+});
+
+conditions.initialize();
 
 // patient filters
-var patient_filters_html = `
-    <small>Fill in as much information as possible about the potential trial participant, then click</small>
-    <div style="text-align:center; margin-top: .8em">
-        <button class="btn btn-success btn-xs" type="submit">Update results</button>
-    </div>
-    <div id='patient-filters-demog' class='filter-div'>
-        <table>
-            <tr class='filter-row'>
-                <td><h5>Gender:&nbsp;</h5></td>
-                <td>
-                    <div class="btn-group btn-group-sm" data-toggle="buttons">
-                      <label class="btn btn-default" name="gender-radio" id="gender-female">
-                        <input type="radio" value="female">
-                        Female
-                      </label>
-                      <label class="btn btn-default" name="gender-radio" id="gender-male">
-                        <input type="radio" value="male">
-                        Male
-                      </label>
-                    </div>
-                </td>
-            </tr>
-            <tr class='filter-row'>
-                <td><h5>Age:&nbsp;</h5></td>
-                <td>
-                    <input type="number" class="form-control" id="participant-age" placeholder="" style="width: 60px">
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id='patient-filters-crit'>
-    </div>
-    <div id='patient-filters-healthy' class='filter-div'>
-        <label class="checkbox-inline">
-          <input type="checkbox" id="filter-only-healthy" value="only-healthy"> Only show trials accepting healthy volunteers
-        </label>
-    </div>`,
+var patient_filters_html =  '<small>Fill in as much information as possible about the potential trial participant, then click</small>' +
+                            '<div style="text-align:center; margin-top: .8em">' +
+                                '<button class="btn btn-success btn-xs" type="submit">Update results</button>' +
+                            '</div>' +
+                            '<div id="patient-filters-demog" class="filter-div">' +
+                                '<table>' +
+                                    '<tr class="filter-row">' +
+                                        '<td><h5>Gender:&nbsp;</h5></td>' +
+                                        '<td>' +
+                                            '<div class="btn-group btn-group-sm" data-toggle="buttons">' +
+                                              '<label class="btn btn-default" name="gender-radio" id="gender-female">' +
+                                                '<input type="radio" value="female">' +
+                                                'Female' +
+                                              '</label>' +
+                                              '<label class="btn btn-default" name="gender-radio" id="gender-male">' +
+                                                '<input type="radio" value="male">' +
+                                                'Male' +
+                                              '</label>' +
+                                            '</div>' +
+                                        '</td>' +
+                                    '</tr>' +
+                                    '<tr class="filter-row">' +
+                                        '<td><h5>Age:&nbsp;</h5></td>' +
+                                        '<td>' +
+                                            '<input type="number" class="form-control form-inline" id="participant-age" placeholder="years" style="width: 75px">' +
+                                        '</td>' +
+                                    '</tr>' +
+                                '</table>' +
+                            '</div>' +
+                            '<div id="patient-filters-crit">' +
+                            '</div>' +
+                            '<div id="patient-filters-healthy" class="filter-div">' +
+                                '<label class="checkbox-inline">' +
+                                  '<input type="checkbox" id="filter-only-healthy" value="only-healthy"> Only show trials accepting healthy volunteers' +
+                                '</label>' +
+                            '</div>',
     table_head = "<table style='text-align:center' class='filter-div'>" +
                  "<tr>" +
                     "<td class='filter-col-header'>Inclusion</td>" +
@@ -84,19 +92,19 @@ var research_filters_html = '<small>Make selections, then click</small>' +
                                 '<button class="btn btn-success btn-xs" type="submit">Update results</button>' +
                               '</div>' +
                               '<div id="research-intr-type">' +
-                              '<h5>Intervention Type</h5>'+
+                              '<h5>Intervention Type(s)</h5>'+
                                 '<select multiple class="form-control">' +
                                   '<option>' + intr.join('</option><option>') + '</option>' +
                                 '</select>' +
                               '</div>' +
                               '<div id="research-trial-status">' +
-                              '<h5>Trial Status</h5>' +
+                              '<h5>Trial Status(es)</h5>' +
                               '<select multiple class="form-control">' +
                                 '<option>' + stat.join('</option><option>') + '</option>' +
                               '</select>' +
                               '</div>' +
                               '<div id="research-cond-filter"></div>' +
-                                '<h5>Condition</h5>' +
+                                '<h5>Condition(s)</h5>' +
                                   '<input id="research-input-condition" type="text" class="form-control" data-role="tagsinput"' +
                                     'placeholder="Enter a condition" aria-describedby="research-input-condition">' +
                               '<div>' +
@@ -155,18 +163,46 @@ function get_patient_filters() {
           new_table += table_foot;
           $("#patient-filters-crit").html(new_table);
         }
-    })
+    });
+    get_trials({page: cond_id ? 'cond' : 'inst', id: cond_id ? cond_id : inst_id});
 }
 
 function get_research_filters(filter_cond) {
     $("#filter-type-switch").bootstrapSwitch('labelText',"<div style='font-size: 10px; line-height: 1em; color: #888'>Go to<br>patient<br>view</div>");
     $("#filter-type-switch").bootstrapSwitch('state', false);
     $("#filter-list").html(research_filters_html);
+
+    var cond_typeahead = $('#research-input-condition');
+    cond_typeahead.tagsinput({
+      tagClass: 'label label-primary',
+      itemValue: 'value',
+      itemText: 'text',
+      typeaheadjs: {
+        name: 'conditions',
+        displayKey: 'text',
+        source: conditions.ttAdapter()
+      }
+    });
+
+    var query_obj = {page: cond_id ? 'cond' : 'inst', id: cond_id ? cond_id : inst_id};
     if (filter_cond) {
-      $("#research-input-condition").val(filter_cond);
+      query_obj.condition_filter = filter_cond;
+      $.getJSON($SCRIPT_ROOT + "_get_condition_name", {
+        cond_id: filter_cond
+      }, function(data) {
+        cond_typeahead.tagsinput('add', {'value': filter_cond, 'text': data.condition_name})
+      });
     }
+
+    get_trials(query_obj);
 }
 
+// on page open, load patient filters if there's no filterBy condition
+if (!viewtype) {
+  get_patient_filters();
+} else {
+  get_research_filters(viewtype);
+}
 
 
 $('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, state) {
@@ -177,20 +213,20 @@ $('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, stat
   } else {
     // Researchers
     $('#filter-list').empty();
-    get_research_filters();
+    get_research_filters(viewtype);
   }
 });
 
-// load patient filters if there's no filter_by condition
-if (!viewtype) {
-  get_patient_filters();
-} else {
-  get_research_filters(viewtype);
-}
-
-// load trials data into pane
-get_trials({page: cond_id ? 'cond' : 'inst', id: cond_id ? cond_id : inst_id});
 
 
 
+// fixing scroll to wait until div is at top
+var waypoint = new Waypoint({
+  element: $('#trial-container'),
+  handler: function() {
+    $("#filter-list, #trial-list").removeClass("overflow-stopped");
+    $("#filter-list, #trial-list").addClass("overflow");
+  },
+  offset: 142
+})
 

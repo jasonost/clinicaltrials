@@ -4,14 +4,14 @@
   <header class='container'>
     <div class='page-header row'>
       {% if inst_img %}
-        <div class='institution-logo col-md-1'>
+        <div class='institution-logo hidden-xs col-md-1'>
           <img class='img-rounded' src="{{ inst_img }}" alt="{{ inst_name }} Logo"/>
         </div> <!-- end .institution-logo -->
       {% endif %}
       <div class='institution-location caption col-md-11'>
         <h1 class='institution-name'>{{ inst_name }} 
           <small>
-            <a href="#trial-window" class="nodec">
+            <a href="#trial-pane" class="nodec">
               <span class="label label-primary">{{ trial_cnt }} trials</span>
             </a>
           </small>
@@ -47,10 +47,10 @@
       </div>
     </div> <!-- end .row -->
   </section>
-  <section id="trial-window" class='bottom container'>
+  <section id="trial-pane" class='bottom container'>
     <div class='row'>
-      <h3>Trials associated with {{ inst_name }}</h3>
-      {% include 'trial_window.html' %}
+      <h3 class='trial-pane-header'>Trials associated with {{ inst_name }}</h3>
+      {% include 'trial_pane.html' %}
     </div> <!-- end .row -->
   </section>
 </div> <!-- end #institution-id -->

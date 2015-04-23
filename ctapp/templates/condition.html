@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-<div id='condition-{{cond_id}}' class='condition wrapper'>
+<div id='condition-{{ cond_id }}' class='condition wrapper'>
   <header class='container'>
     <div class='page-header row'>
       <div class='col-xs-12 col-sm-12 col-md-12'>
@@ -25,10 +25,10 @@
     </div>
     {% include 'institution_list.html' %}
   </section>
-  <section id="trial-window" class='bottom container'>
+  <section id="trial-pane" class='bottom container'>
     <div class='row'>
-      <h2>Trials addressing {{ cond_name }}</h2>
-      {% include 'trial_window.html' %}
+      <h3 class='trial-pane-header'>Trials addressing {{ cond_name }}</h3>
+      {% include 'trial_pane.html' %}
     </div> <!-- end .row -->
   </section>
 </div>
