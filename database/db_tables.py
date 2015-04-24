@@ -577,6 +577,13 @@ TrialSummary = Table('trial_summary', metadata,
     Column('overall_status', String),
     Column('phase', String),
     Column('study_type', String),
+    Column('gender', String),
+    Column('minimum_age', Float),
+    Column('maximum_age', Float),
+    Column('healthy_volunteers', String),
+    Column('has_results', String),
+    Column('sort_date', String),
+    Column('interventions', Text),
 )
 
 Users = Table('users', metadata,
@@ -609,5 +616,18 @@ UserHistoryMesh = Table('user_history_mesh', metadata,
     Column('nct_id', String),
     Column('condition_id', Integer),
     Column('accepted', Integer),
+)
+
+ZipFacilities = Table('zip_facilities', metadata,
+    Column('nct_id', String),
+    Column('facility_id', Integer, primary_key = True),
+    Column('latitude', Float),
+    Column('longitude', Float),
+)
+
+ZipLatlong = Table('zip_latlong', metadata,
+    Column('zip', String),
+    Column('latitude', Float),
+    Column('longitude', Float),
 )
 

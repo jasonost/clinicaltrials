@@ -253,10 +253,35 @@ SELECT
     phase,
     case when study_type like 'Observational%' then 'observational' else lower(study_type) end study_type,
     gender,
-    minimum_age,
-    maximum_age,
+    CASE 
+        WHEN minimum_age in ('','N/A') 
+          OR substr(substr(minimum_age,instr(minimum_age,' ')+1),1,4) in ('Hour','Minu') THEN 0
+        ELSE cast(substr(minimum_age,1,instr(minimum_age,' ')-1) as DECIMAL) /
+            CASE
+                WHEN substr(substr(minimum_age,instr(minimum_age,' ')+1),1,4) = 'Year' then 1.0
+                WHEN substr(substr(minimum_age,instr(minimum_age,' ')+1),1,4) = 'Mont' then 12.0
+                WHEN substr(substr(minimum_age,instr(minimum_age,' ')+1),1,4) = 'Week' then 52.0
+                WHEN substr(substr(minimum_age,instr(minimum_age,' ')+1),1,4) = 'Day' then 365.0
+            END
+    END minimum_age,
+    CASE 
+        WHEN maximum_age in ('','N/A') THEN 999
+        WHEN substr(substr(maximum_age,instr(maximum_age,' ')+1),1,4) in ('Hour','Minu') THEN 0
+        ELSE cast(substr(maximum_age,1,instr(maximum_age,' ')-1) as DECIMAL) /
+            CASE
+                WHEN substr(substr(maximum_age,instr(maximum_age,' ')+1),1,4) = 'Year' then 1.0
+                WHEN substr(substr(maximum_age,instr(maximum_age,' ')+1),1,4) = 'Mont' then 12.0
+                WHEN substr(substr(maximum_age,instr(maximum_age,' ')+1),1,4) = 'Week' then 52.0
+                WHEN substr(substr(maximum_age,instr(maximum_age,' ')+1),1,4) = 'Day' then 365.0
+            END
+    END maximum_age,
     healthy_volunteers,
-    case when c.nct_id is not null then 'Y' else 'N' end has_results,
+    CASE WHEN c.nct_id is not null THEN 'Y' ELSE 'N' END has_results,
+    CASE 
+        WHEN length(primary_completion_date) > 0 THEN substr(primary_completion_date,instr(primary_completion_date,' ')+1)
+        WHEN length(completion_date) > 0 THEN substr(completion_date,instr(completion_date,' ')+1)
+        WHEN length(start_date) > 0 THEN substr(start_date,instr(start_date,' ')+1)
+        ELSE '0000' END sort_date,
     GROUP_CONCAT(DISTINCT intervention_type ORDER BY case when intervention_type = 'Other' then 'ZZZ' else intervention_type end) interventions
 FROM clinical_study a
  LEFT JOIN interventions b on a.nct_id=b.nct_id
