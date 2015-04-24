@@ -747,63 +747,102 @@ def trial_sites():
 @app.route('/_trial_list')
 def trial_list():
     params = request.args
-    if 'page' in params and 'id' in params:
 
-        for i in range(5):
-            try:
-                if params['page'] == 'inst':
-                    tbl = 'institution_lookup'
-                    key = 'institution_id'
-                elif params['page'] == 'cond':
-                    tbl = 'condition_lookup'
-                    key = 'condition_id'
+    main_table = TrialSummary
+    wheres = []
 
-                trials = conn.execute(select([TrialSummary]).\
-                                        select_from(TrialSummary.join(text(tbl),
-                                            and_(text('%s.nct_id = trial_summary.nct_id' % tbl),
-                                                 text('%s.%s = %s' % (tbl, key, params['id']))))).\
-                                        limit(50)).\
-                                    fetchall()
+    if 'page' in params:
+        if params['page'] == 'inst':
+            tbl = InstitutionLookup
+            tbl_key = InstitutionLookup.c.institution_id
+        elif params['page'] == 'cond':
+            tbl = ConditionLookup
+            tbl_key = ConditionLookup.c.condition_id
 
-                nct_ids = [t[0] for t in trials]
+        main_table = main_table.join(tbl, 
+                            and_(tbl.c.nct_id == TrialSummary.c.nct_id,
+                                 tbl_key == int(params['id'])))
 
-                inv = conn.execute(select([Interventions.c.nct_id, 
-                                           Interventions.c.intervention_type,
-                                           Interventions.c.intervention_name]).\
-                                        where(Interventions.c.nct_id.in_(nct_ids))).\
-                                    fetchall()
+    if 'age' in params and params['age']:
+        wheres.append(text('trial_summary.minimum_age <= %s' % params['age']))
+        wheres.append(text('trial_summary.maximum_age >= %s' % params['age']))
 
-                inv_dict = dictify(inv,1)
-                inv_list = dictify(inv,2)
+    if 'gender' in params and params['gender'] != 'false':
+        if params['gender'] == 'female':
+            wheres.append(text("trial_summary.gender != 'Male'"))
+        elif params['gender'] == 'male':
+            wheres.append(text("trial_summary.gender != 'Female'"))
 
-                conds = conn.execute(select([ConditionLookup.c.nct_id,
-                                             ConditionDescription.c.mesh_term]).
-                                        select_from(ConditionLookup.join(ConditionDescription,
-                                            and_(ConditionLookup.c.nct_id.in_(nct_ids),
-                                                 ConditionLookup.c.source == 'CTGOV',
-                                                 ConditionLookup.c.syn_flag == 0,
-                                                 ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
-                                    fetchall()
+    if 'healthy' in params and params['healthy'] != 'false':
+        wheres.append(text("trial_summary.healthy_volunteers = 'Accepts Healthy Volunteers'"))
 
-                cond_list = dictify(conds,1)
+    if 'status' in params and json.loads(params['status']):
+        if 'All (default)' not in json.loads(params['status']):
+            wheres.append(text("trial_summary.overall_status in ('%s')" % "','".join(json.loads(params['status']))))
 
-                # compile JSON object
-                out_obj = []
-                for nct_id, title, status, phase, stype in trials:
-                    out_obj.append({'nct_id': nct_id,
-                                    'trial_title': title,
-                                    'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
-                                    'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
-                                    'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
-                                    })
+    if 'condition_filter' in params and json.loads(params['condition_filter']):
+        main_table = main_table.join(ConditionLookup,
+                            and_(ConditionLookup.c.nct_id == TrialSummary.c.nct_id,
+                                 ConditionLookup.c.source == 'CTGOV',
+                                 ConditionLookup.c.condition_id.in_(d for d in json.loads(params['condition_filter']))))
 
-                if trials:
-                    return flask.jsonify(result=out_obj)
-            except Exception, e:
-                print 'Database connection error getting trial list info: %s' % e
-                initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+    if 'has_res' in params and params['has_res'] != 'false':
+        wheres.append(text("trial_summary.has_results = 'Y'"))
 
-    return flask.jsonify(None)
+    if 'interventions' in params and json.loads(params['interventions']):
+        if 'All (default)' not in json.loads(params['interventions']):
+            wheres.append(text("(%s)" % ' or '.join("trial_summary.interventions like '%%%s%%'" % i for i in json.loads(params['interventions']))))
+
+    trials = conn.execute(select([TrialSummary]).\
+                            select_from(main_table).\
+                            where(and_(cl for cl in wheres)).\
+                            order_by(desc(TrialSummary.c.sort_date), TrialSummary.c.nct_id)).\
+                        fetchall()
+
+    nct_ids = list(set(t[0] for t in trials))
+
+    if len(nct_ids) > 0:
+        inv = conn.execute(select([Interventions.c.nct_id, 
+                                   Interventions.c.intervention_type,
+                                   Interventions.c.intervention_name]).\
+                                where(Interventions.c.nct_id.in_(nct_ids))).\
+                            fetchall()
+
+        inv_dict = dictify(inv,1)
+        inv_list = dictify(inv,2)
+
+        conds = conn.execute(select([ConditionLookup.c.nct_id,
+                                     ConditionDescription.c.mesh_term]).
+                                select_from(ConditionLookup.join(ConditionDescription,
+                                    and_(ConditionLookup.c.nct_id.in_(nct_ids),
+                                         ConditionLookup.c.source == 'CTGOV',
+                                         ConditionLookup.c.syn_flag == 0,
+                                         ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
+                            fetchall()
+
+        cond_list = dictify(conds,1)
+
+    # compile JSON object
+    out_obj = []
+    already_seen = set()
+    if 'limit' in params:
+        this_limit = int(params['limit'])
+    else:
+        this_limit = 10000000
+    for nct_id, title, status, phase, stype, gender, min_age, max_age, hv, has_res, sort_date, intrv in trials:
+        if nct_id not in already_seen and len(already_seen) < this_limit:
+            out_obj.append({'nct_id': nct_id,
+                            'trial_title': title,
+                            'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
+                            'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
+                            'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
+                            })
+            already_seen.add(nct_id)
+
+    return flask.jsonify(result=out_obj,
+                         total_results=len(nct_ids),
+                         num_results=this_limit)
+
 
 @app.route('/_patient_filters')
 def patient_filters():

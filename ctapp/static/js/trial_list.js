@@ -5,9 +5,22 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+function thinking(description) {
+    var header = '<h4>' + description + '</h4>',
+        spinner = '<i id="top-cond-spinner" class="fa fa-spinner fa-pulse" style="font-size: 5em; margin: .5em;"></i>';
+    $("#trial-list").empty();
+    $("#trial-list").html(header + spinner);
+}
+
+function stopThinking() {
+    $("#trial-list").empty();
+}
+
 var cond_id = getParameterByName('cond'),
     inst_id = getParameterByName('inst'),
-    viewtype = getParameterByName('filterBy');
+    viewtype = getParameterByName('filterBy'),
+    cur_limit = 50,
+    query_obj = {};
 
 // initialize conditions typeahead for researcher filters
 var conditions = new Bloodhound({
@@ -19,9 +32,11 @@ var conditions = new Bloodhound({
 conditions.initialize();
 
 // patient filters
-var patient_filters_html =  '<small>Fill in as much information as possible about the potential trial participant, then click</small>' +
+var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center">' +
+                            '<small><p><strong>This view only shows trials that are in the recruiting phase or earlier.</strong></p>' +
+                            '<p>Refine these results by providing information about the trial participant, then click</p></small></div>' +
                             '<div style="text-align:center; margin-top: .8em">' +
-                                '<button class="btn btn-success btn-xs" type="submit">Update results</button>' +
+                                '<button id="update-patient-results" class="btn btn-success btn-xs" type="submit">Update results</button>' +
                             '</div>' +
                             '<div id="patient-filters-demog" class="filter-div">' +
                                 '<table>' +
@@ -29,12 +44,12 @@ var patient_filters_html =  '<small>Fill in as much information as possible abou
                                         '<td><h5>Gender:&nbsp;</h5></td>' +
                                         '<td>' +
                                             '<div class="btn-group btn-group-sm" data-toggle="buttons">' +
-                                              '<label class="btn btn-default" name="gender-radio" id="gender-female">' +
-                                                '<input type="radio" value="female">' +
+                                              '<label class="btn btn-default">' +
+                                                '<input type="radio" value="female" name="gender-radio" id="gender-female">' +
                                                 'Female' +
                                               '</label>' +
-                                              '<label class="btn btn-default" name="gender-radio" id="gender-male">' +
-                                                '<input type="radio" value="male">' +
+                                              '<label class="btn btn-default">' +
+                                                '<input type="radio" value="male" name="gender-radio" id="gender-male">' +
                                                 'Male' +
                                               '</label>' +
                                             '</div>' +
@@ -87,27 +102,27 @@ var intr = ['All (default)',
             'No longer available',
             'Approved for marketing',
             'Temporarily not available'];
-var research_filters_html = '<small>Make selections, then click</small>' +
+var research_filters_html = '<div style="text-align:center; line-height:0.8em"><small>Make selections, then click</small></div>' +
                              '<div style="text-align:center; margin-top: .8em">' +
-                                '<button class="btn btn-success btn-xs" type="submit">Update results</button>' +
+                                '<button id="update-research-results" class="btn btn-success btn-xs" type="submit">Update results</button>' +
                               '</div>' +
-                              '<div id="research-intr-type">' +
+                              '<div class="filter-form" id="research-intr-type">' +
                               '<h5>Intervention Type(s)</h5>'+
-                                '<select multiple class="form-control">' +
+                                '<select id="intervention-select" multiple class="form-control">' +
                                   '<option>' + intr.join('</option><option>') + '</option>' +
                                 '</select>' +
                               '</div>' +
-                              '<div id="research-trial-status">' +
+                              '<div class="filter-form" id="research-trial-status">' +
                               '<h5>Trial Status(es)</h5>' +
-                              '<select multiple class="form-control">' +
+                              '<select id="status-select" multiple class="form-control">' +
                                 '<option>' + stat.join('</option><option>') + '</option>' +
                               '</select>' +
                               '</div>' +
-                              '<div id="research-cond-filter"></div>' +
-                                '<h5>Condition(s)</h5>' +
+                              '<div id="research-cond-filter">' +
+                                '<div class="filter-form"><h5>Condition(s)</h5></div>' +
                                   '<input id="research-input-condition" type="text" class="form-control" data-role="tagsinput"' +
                                     'placeholder="Enter a condition" aria-describedby="research-input-condition">' +
-                              '<div>' +
+                              '</div>' +
                               '<div id="research-only-results" class="filter-div">' +
                                 '<label class="checkbox-inline">' +
                                   '<input type="checkbox" id="research-results" value="research-results"> Only show trials that have submitted results' +
@@ -118,22 +133,38 @@ function get_trials(trial_criteria) {
 
     $.getJSON( $SCRIPT_ROOT + "_trial_list", trial_criteria, function( data ) {
 
-        $("#trial-list").empty();
-        $.each( data.result, function( key, val ) {
+        stopThinking();
+        if (data.num_results > 0) {
+          $.each( data.result, function( key, val ) {
 
-          var trial_div = "<div class='trial block-list-item'><h4><a href='" + $SCRIPT_ROOT + "trial?nct_id=" + 
-                          val.nct_id + 
-                          "'>" +
-                          val.trial_title + 
-                          "</a></h4>" +
-                          "<p>" + val.lay_str + "</p>" +
-                          "<small>" +
-                          "<span style='font-weight: bold'>Condition(s): </span>" + val.conditions + "<br>" +
-                          "<span style='font-weight: bold'>Intervention(s): </span>" + val.interventions +
-                          "</small>" +
-                          "</div>"
-          $("#trial-list").append(trial_div);
-        });
+            var trial_div = "<div class='trial block-list-item'><h4><a href='" + $SCRIPT_ROOT + "trial?nct_id=" + 
+                            val.nct_id + 
+                            "'>" +
+                            val.trial_title + 
+                            "</a></h4>" +
+                            "<p>" + val.lay_str + "</p>" +
+                            "<small>" +
+                            "<span style='font-weight: bold'>Condition(s): </span>" + val.conditions + "<br>" +
+                            "<span style='font-weight: bold'>Intervention(s): </span>" + val.interventions +
+                            "</small>" +
+                            "</div>"
+            $("#trial-list").append(trial_div);
+          });
+          if (data.num_results < data.total_results) {
+            var num_left = data.total_results - data.num_results >= 50 ? 50 : data.total_results - data.num_results;
+            var new_limit = cur_limit + num_left;
+            var see_more = "<div class='trial block-list-item'><h4>Displaying <strong>" + data.num_results + " out of " +
+                              data.total_results + "</strong> trials. <a id='see-more-trials' new-limit='" + new_limit + "'>" +
+                              "Load next " + num_left + " trials</a></h4></div>";
+            $("#trial-list").append(see_more);
+          }
+        } else {
+          var no_results = "<div class='trial block-list-item><h4>There are no trials that match your selections. Please try again.</h4></div>";
+          $("#trial-list").append(no_results);
+        }
+        if (cur_limit == 50) {
+          $("#trial-list").scrollTop(0);
+        }
         $("#trial-list").effect("highlight", {}, 1000);
 
     });
@@ -155,16 +186,23 @@ function get_patient_filters() {
             var con_name = data.concepts[i].concept_name,
                 con_id = data.concepts[i].concept_id;
             new_table += "<tr class='filter-row'>" +
-                          "<td><input type='checkbox' id='filter-y-" + con_id + "' value=''></td>" +
+                          "<td><input type='radio' name='filter-" + con_id + "' value='I'></td>" +
                           "<td>" + con_name + "</td>" +
-                          "<td><input type='checkbox' id='filter-n-" + con_id + "' value=''></td>" +
+                          "<td><input type='radio' name='filter-" + con_id + "' value='E'></td>" +
                          "</tr>";
           }
           new_table += table_foot;
           $("#patient-filters-crit").html(new_table);
         }
     });
-    get_trials({page: cond_id ? 'cond' : 'inst', id: cond_id ? cond_id : inst_id});
+
+    cur_limit = 50;
+    query_obj = {page: cond_id ? 'cond' : 'inst',
+                  id: cond_id ? cond_id : inst_id,
+                  status: JSON.stringify(['recruiting','not yet recruiting', 'enrolling by invitation']),
+                  limit: cur_limit
+                  };
+    get_trials(query_obj);
 }
 
 function get_research_filters(filter_cond) {
@@ -184,9 +222,13 @@ function get_research_filters(filter_cond) {
       }
     });
 
-    var query_obj = {page: cond_id ? 'cond' : 'inst', id: cond_id ? cond_id : inst_id};
+    cur_limit = 50;
+    query_obj = {page: cond_id ? 'cond' : 'inst', 
+                 id: cond_id ? cond_id : inst_id,
+                 limit: cur_limit
+                };
     if (filter_cond) {
-      query_obj.condition_filter = filter_cond;
+      query_obj.condition_filter = JSON.stringify([filter_cond]);
       $.getJSON($SCRIPT_ROOT + "_get_condition_name", {
         cond_id: filter_cond
       }, function(data) {
@@ -195,13 +237,6 @@ function get_research_filters(filter_cond) {
     }
 
     get_trials(query_obj);
-}
-
-// on page open, load patient filters if there's no filterBy condition
-if (!viewtype) {
-  get_patient_filters();
-} else {
-  get_research_filters(viewtype);
 }
 
 
@@ -217,6 +252,63 @@ $('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, stat
   }
 });
 
+// on page open, load patient filters if there's no filterBy condition
+if (!viewtype) {
+  get_patient_filters();
+} else {
+  $('#filter-type-switch').bootstrapSwitch('toggleState');
+}
+
+
+
+// update trials based on new filters
+$("body").delegate("#update-patient-results", 'click', function(e) {
+  thinking();
+  var gender = $('input[name=gender-radio]:checked').val(),
+      age = $("#participant-age").val(),
+      healthy = $("#filter-only-healthy").prop('checked');
+  gender = gender ? gender : false;
+  cur_limit = 50;
+  query_obj = {page: cond_id ? 'cond' : 'inst', 
+                id: cond_id ? cond_id : inst_id,
+                gender: gender,
+                age: age,
+                healthy: healthy,
+                status: JSON.stringify(['recruiting','not yet recruiting', 'enrolling by invitation']),
+                limit: cur_limit
+              };
+  get_trials(query_obj);
+})
+
+$("body").delegate("#update-research-results", 'click', function(e) {
+  thinking();
+  var interventions = $("#intervention-select").val(),
+      status = $("#status-select").val(),
+      conds = $("#research-input-condition").val(),
+      has_res = $("#research-results").prop('checked');
+  var cond_array = conds.length > 0 ? conds.split(',') : null;
+  cur_limit = 50;
+  query_obj = {page: cond_id ? 'cond' : 'inst', 
+                id: cond_id ? cond_id : inst_id,
+                interventions: JSON.stringify(interventions),
+                status: JSON.stringify(status),
+                condition_filter: JSON.stringify(cond_array),
+                has_res: has_res,
+                limit: cur_limit
+              };
+  get_trials(query_obj);
+})
+
+
+
+
+// see more trials
+$("body").delegate("#see-more-trials", 'click', function(e) {
+  cur_limit = $(this).attr('new-limit');
+  query_obj.limit = cur_limit;
+  get_trials(query_obj);
+})
+
 
 
 
@@ -228,5 +320,13 @@ var waypoint = new Waypoint({
     $("#filter-list, #trial-list").addClass("overflow");
   },
   offset: 142
-})
+});
 
+var waypoint = new Waypoint({
+  element: $('#trial-container'),
+  handler: function() {
+    $("#filter-list, #trial-list").removeClass("overflow");
+    $("#filter-list, #trial-list").addClass("overflow-stopped");
+  },
+  offset: 143
+});

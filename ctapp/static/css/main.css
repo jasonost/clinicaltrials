@@ -412,7 +412,7 @@ tspan {
 
 
 
-/* trial filters */
+/* trial pane */
 .filter-col-header {
     font-size: .8em;
     font-weight: bold;
@@ -433,6 +433,22 @@ tspan {
     margin-top: 1em;
 }
 
+#see-more-trials:hover {
+    cursor: pointer;
+}
+
+.filter-form {
+    text-align: center;
+}
+
+.light-border {
+    border-style: dotted;
+    border-width: 1px;
+    border-color: #ddd;
+    -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
 
 
 
