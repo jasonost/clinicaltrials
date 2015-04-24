@@ -6,7 +6,7 @@ function getParameterByName(name) {
 }
 
 function thinking(description) {
-    var header = '<h4>' + description + '</h4>',
+    var header = '<h4>Loading list of trials...</h4>',
         spinner = '<i id="top-cond-spinner" class="fa fa-spinner fa-pulse" style="font-size: 5em; margin: .5em;"></i>';
     $("#trial-list").empty();
     $("#trial-list").html(header + spinner);
@@ -21,6 +21,11 @@ var cond_id = getParameterByName('cond'),
     viewtype = getParameterByName('filterBy'),
     cur_limit = 50,
     query_obj = {};
+var has_filterBy = viewtype ? true : false;
+
+if (cond_id) {
+  viewtype = cond_id;
+}
 
 // initialize conditions typeahead for researcher filters
 var conditions = new Bloodhound({
@@ -164,9 +169,11 @@ function get_trials(trial_criteria) {
         }
         if (cur_limit == 50) {
           $("#trial-list").scrollTop(0);
+          $("#trial-pane-num").text(data.total_results);
+          $("#trial-pane-num").effect("highlight", {}, 1000);
         }
-        $("#trial-list").effect("highlight", {}, 1000);
 
+        $("#trial-list").effect("highlight", {}, 1000);
     });
 
 }
@@ -176,6 +183,7 @@ function get_trials(trial_criteria) {
 $("#filter-type-switch").bootstrapSwitch();
 
 function get_patient_filters() {
+    thinking();
     $("#filter-type-switch").bootstrapSwitch('labelText',"<div style='font-size: 10px; line-height: 1em; color: #888'>Go to<br>researcher<br>view</div>");
     $("#filter-type-switch").bootstrapSwitch('state', true);
     $("#filter-list").html(patient_filters_html);
@@ -206,6 +214,7 @@ function get_patient_filters() {
 }
 
 function get_research_filters(filter_cond) {
+    thinking();
     $("#filter-type-switch").bootstrapSwitch('labelText',"<div style='font-size: 10px; line-height: 1em; color: #888'>Go to<br>patient<br>view</div>");
     $("#filter-type-switch").bootstrapSwitch('state', false);
     $("#filter-list").html(research_filters_html);
@@ -253,7 +262,7 @@ $('#filter-type-switch').on('switchChange.bootstrapSwitch', function(event, stat
 });
 
 // on page open, load patient filters if there's no filterBy condition
-if (!viewtype) {
+if (!has_filterBy) {
   get_patient_filters();
 } else {
   $('#filter-type-switch').bootstrapSwitch('toggleState');
@@ -304,7 +313,7 @@ $("body").delegate("#update-research-results", 'click', function(e) {
 
 // see more trials
 $("body").delegate("#see-more-trials", 'click', function(e) {
-  cur_limit = $(this).attr('new-limit');
+  cur_limit = parseInt($(this).attr('new-limit'));
   query_obj.limit = cur_limit;
   get_trials(query_obj);
 })

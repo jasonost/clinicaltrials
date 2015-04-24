@@ -750,19 +750,42 @@ def trial_list():
 
     main_table = TrialSummary
     wheres = []
+    filter_cond_list = []
+
+    # fill in condition list if part of user's query
+    if 'condition_filter' in params and json.loads(params['condition_filter']):
+        filter_cond_list = json.loads(params['condition_filter'])
 
     if 'page' in params:
+        # for institution pages, filter trials by institution_id
         if params['page'] == 'inst':
             tbl = InstitutionLookup
             tbl_key = InstitutionLookup.c.institution_id
+            main_table = main_table.join(tbl, 
+                                and_(tbl.c.nct_id == TrialSummary.c.nct_id,
+                                     tbl_key == int(params['id'])))
+
+        # for condition pages, filter trials by condition_id
         elif params['page'] == 'cond':
             tbl = ConditionLookup
             tbl_key = ConditionLookup.c.condition_id
+            filter_cond_list.append(params['id'])
 
-        main_table = main_table.join(tbl, 
-                            and_(tbl.c.nct_id == TrialSummary.c.nct_id,
-                                 tbl_key == int(params['id'])))
+    # add in condition table if there are condition filters
+    if len(filter_cond_list) > 0:
+        cond_table = select([ConditionLookup.c.nct_id]).\
+                        where(and_(ConditionLookup.c.source == 'CTGOV',
+                                   ConditionLookup.c.condition_id.in_(int(d) for d in filter_cond_list))).\
+                        distinct().alias()
+        main_table = main_table.join(cond_table, cond_table.c.nct_id == TrialSummary.c.nct_id)
 
+    # get limit count
+    if 'limit' in params:
+        this_limit = int(params['limit'])
+    else:
+        this_limit = 10000000
+
+    # add other where clauses based on user query
     if 'age' in params and params['age']:
         wheres.append(text('trial_summary.minimum_age <= %s' % params['age']))
         wheres.append(text('trial_summary.maximum_age >= %s' % params['age']))
@@ -780,12 +803,6 @@ def trial_list():
         if 'All (default)' not in json.loads(params['status']):
             wheres.append(text("trial_summary.overall_status in ('%s')" % "','".join(json.loads(params['status']))))
 
-    if 'condition_filter' in params and json.loads(params['condition_filter']):
-        main_table = main_table.join(ConditionLookup,
-                            and_(ConditionLookup.c.nct_id == TrialSummary.c.nct_id,
-                                 ConditionLookup.c.source == 'CTGOV',
-                                 ConditionLookup.c.condition_id.in_(d for d in json.loads(params['condition_filter']))))
-
     if 'has_res' in params and params['has_res'] != 'false':
         wheres.append(text("trial_summary.has_results = 'Y'"))
 
@@ -793,14 +810,16 @@ def trial_list():
         if 'All (default)' not in json.loads(params['interventions']):
             wheres.append(text("(%s)" % ' or '.join("trial_summary.interventions like '%%%s%%'" % i for i in json.loads(params['interventions']))))
 
+    # get trials
     trials = conn.execute(select([TrialSummary]).\
                             select_from(main_table).\
                             where(and_(cl for cl in wheres)).\
                             order_by(desc(TrialSummary.c.sort_date), TrialSummary.c.nct_id)).\
                         fetchall()
 
-    nct_ids = list(set(t[0] for t in trials))
+    nct_ids = [t[0] for t in trials][:this_limit]
 
+    # if any trials match query, get condition and institutions for those trials
     if len(nct_ids) > 0:
         inv = conn.execute(select([Interventions.c.nct_id, 
                                    Interventions.c.intervention_type,
@@ -824,24 +843,17 @@ def trial_list():
 
     # compile JSON object
     out_obj = []
-    already_seen = set()
-    if 'limit' in params:
-        this_limit = int(params['limit'])
-    else:
-        this_limit = 10000000
-    for nct_id, title, status, phase, stype, gender, min_age, max_age, hv, has_res, sort_date, intrv in trials:
-        if nct_id not in already_seen and len(already_seen) < this_limit:
-            out_obj.append({'nct_id': nct_id,
-                            'trial_title': title,
-                            'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
-                            'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
-                            'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
-                            })
-            already_seen.add(nct_id)
+    for nct_id, title, status, phase, stype, gender, min_age, max_age, hv, has_res, sort_date, intrv in trials[:this_limit]:
+        out_obj.append({'nct_id': nct_id,
+                        'trial_title': title,
+                        'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
+                        'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
+                        'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
+                        })
 
     return flask.jsonify(result=out_obj,
-                         total_results=len(nct_ids),
-                         num_results=this_limit)
+                         total_results=len(trials),
+                         num_results=len(nct_ids))
 
 
 @app.route('/_patient_filters')
@@ -935,7 +947,7 @@ def structure_trial_criteria():
                     ct = criteria_dict[c]['ctext']
                     poss_chunks = []
                     if criteria_dict[c]['disptype'] == 'H':
-                        out_text = '<h3>%s</h3>' % ct
+                        out_text = '<h4>%s</h4>' % ct
                     elif criteria_dict[c]['chunks']:
                         chunks = criteria_dict[c]['chunks']
                         out_text = '<p class="criteria-text">%s' % ct[:chunks[0][1]]
@@ -957,13 +969,17 @@ def structure_trial_criteria():
 
                             out_text += '<mark>%s</mark>%s' % (phrase, ct[start+len(phrase):end])
 
+                            in_db = []
+                            where_from = True
                             chunk_links = []
                             if phrase.lower() in cur_concepts:
                                 chunk_links.append('<span class="disabled-text">Concept is under review</span>')
+                                where_from = False
                             else:
                                 for concept in concept_list:
                                     if concept['id']:
-                                        link_text = 'Continue developing <b>%s</b> concept' % concept['name']
+                                        link_text = 'Continue developing <b>%s</b>' % concept['name']
+                                        in_db.append([concept['name']])
                                     else:
                                         link_text = concept['name']
                                     chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
@@ -973,7 +989,14 @@ def structure_trial_criteria():
                                                                                                                link_text)
                                     chunk_links.append('<p>%s</p>' % chunk_link)
 
-                            poss_chunks.append({'term': '<p>%s</p>' % phrase, 'links': chunk_links})
+                            if in_db:
+                                in_db_text = "Part of %s" % add_commas(in_db)
+                            elif where_from:
+                                in_db_text = "Not part of any concept"
+                            else:
+                                in_db_text = ""
+
+                            poss_chunks.append({'term': '<p>%s</p>' % phrase, 'in_db': in_db_text, 'links': chunk_links})
 
                         out_text += '</p>'
                     else:
