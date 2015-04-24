@@ -10,12 +10,15 @@
     </div>
   </header>
   <section class='container'>
+    <div class="row alert alert-success col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+      <p>Below are the eligibility criteria for the above-referenced trial. Words and phrases that may represent general criteria <em>concepts</em> are highlighted. Select a term on the right in order to develop it further and find trials that share a similar criteria concept. After your work is reviewed by an administrator, this concept will appear in the trial search filters.</p><p><strong>A good criteria concept is one that applies to a nontrivial number of trials, but may be expressed using a variety of words or phrases.</strong></p>
+    </div>
     <div id='criteria-list'>
       <table>
         <col width="60%">
         <col width="40%">
         <tr>
-          <th><p>These are the eligibility criteria for the above-referenced trial. Words and phrases that may represent more general criteria <em>concepts</em> are highlighted. Select a term on the right in order to develop it further and find trials that share a similar criteria concept. Your work will need to be approved by an administrator. </p><p><strong>A good criteria concept is one that applies to a nontrivial share of trials, but may be expressed using a variety of words or phrases.</strong></p></th>
+          <th style='text-align:center; vertical-align:bottom;'><h3>Eligibility criteria</h3></th>
           <th style='text-align:center; vertical-align:bottom;'><h3>Potential criteria concepts</h3></th>
         </tr>
           {% for crit in crit_list %}
@@ -23,11 +26,13 @@
               <td class='long-text'>{{ crit.text|safe }}</td>
               {% if crit.chunks|length > 0 %}
                 <td><table class="table">
-                  <col width="65%">
-                  <col width="35%">
+                  <col width="45%">
+                  <col width="17%">
+                  <col width="38%">
                   {% for chunk in crit.chunks %}
                     <tr>
                       <td>{{ chunk.term|safe }}</td>
+                      <td class="small-cell">{{ chunk.in_db }}</td>
                       <td>
                         {% for clink in chunk.links %}
                           {{ clink|safe }}

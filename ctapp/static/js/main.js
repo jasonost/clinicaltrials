@@ -67,6 +67,13 @@ $(function() {
       }
     });
 
+    $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
+        if (data.logged_in && !($("#logged-in-area").length > 0)) {
+          changeButtons(data.username);
+          return false;
+        }
+    });
+
 });
 
 
@@ -260,14 +267,21 @@ function loginCheck(ok_fcn, warn_msg) {
 
 // structure criteria jump
 $("#structure-criteria-btn").on("click", function(e) {
+  $("#goto-criteria-modal").modal('show');
+})
+
+$("#goto-criteria-ok").on("click", function(e) {
   function redir(admin) {
       var nct_id = getParameterByName('nct_id');
-      e.preventDefault();
-      e.stopPropagation();
-      OpenInNewTab($SCRIPT_ROOT + "structure_trial_criteria?nct_id=" + nct_id);
+      window.open($SCRIPT_ROOT + "structure_trial_criteria?nct_id=" + nct_id, "_self");
       return false;
   }
   loginCheck(redir, "Whoops, you need to log in before you can use that tool.");
+});
+
+$("#goto-criteria-enter").on("click", function(e) {
+  $("#create-concept-modal").modal('show');
+  $("#goto-criteria-modal").modal('hide');
 });
 
 // accepting MeSH term suggestions interaction
@@ -313,9 +327,7 @@ $('#create-concept-modal').on('shown.bs.modal', function () {
 $('#create-concept-submit').on('click', function(e){
   function redir(admin) {
       var initial_term = $("#create-concept-modal #input-new-concept").val();
-      e.preventDefault();
-      e.stopPropagation();
-      OpenInNewTab($SCRIPT_ROOT + "active_learning?term=" + initial_term);
+      window.open($SCRIPT_ROOT + "active_learning?term=" + initial_term, "_self");
       return false;
   }
   if ($("#create-concept-modal #input-new-concept").val().length > 1) {
@@ -330,9 +342,7 @@ $('#create-concept-submit').on('click', function(e){
 $("#create-concept-modal .form-control").keydown(function(e) {
   function redir(admin) {
       var initial_term = $("#create-concept-modal #input-new-concept").val();
-      e.preventDefault();
-      e.stopPropagation();
-      OpenInNewTab($SCRIPT_ROOT + "active_learning?term=" + initial_term);
+      window.open($SCRIPT_ROOT + "active_learning?term=" + initial_term, "_self");
       return false;
   }
   if (e.keyCode == 13) {

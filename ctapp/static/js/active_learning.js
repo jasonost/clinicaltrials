@@ -234,14 +234,18 @@ $("body").delegate("#quit-warning-cancel", 'click', function(e) {
     $("#learning-window").empty();
     startProcess();
 });
+
 $("body").delegate("#quit-warning-submit", 'click', function(e) {
     writeData();
     $.getJSON($SCRIPT_ROOT + '_clear_session', {}, function(data) {
-        closeWindow();
+        $("#quit-warning-modal").modal('hide');
+        $("#close-window-modal").modal('show');
     });
 });
 
-
+$("body").delegate("#close-window-submit", 'click', function(e) {
+    close();
+});
 
 
 
