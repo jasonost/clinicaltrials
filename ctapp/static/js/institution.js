@@ -64,7 +64,6 @@ $.getJSON( $SCRIPT_ROOT + "_top_condition", {inst: getParameterByName('inst')}, 
           dy = parseFloat(text.attr("dy"));
       text.style({'text-anchor': 'start', 'font-weight': 'bold'}).attr("x", 10).attr("y", y).attr("dy", dy + "em");
       $(this).parent().on("click", function (e) {
-        console.log(this);
         var cond_id = id_lookup[$(this).text()];
         window.location = $SCRIPT_ROOT + "condition?cond=" + cond_id;
       });
