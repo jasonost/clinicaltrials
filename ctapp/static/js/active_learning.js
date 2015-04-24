@@ -8,12 +8,24 @@ function getParameterByName(name) {
 function thinking(description) {
     var header = '<h4>' + description + '</h4>',
         spinner = '<i id="top-cond-spinner" class="fa fa-spinner fa-pulse" style="font-size: 5em; margin: .5em;"></i>';
-    $("#learning-window").empty();
-    $("#learning-window").html(header + spinner);
+
+    // clear out old items
+    $("#learning-pane-term, #learning-pane-predictor").empty();
+
+    // add spinner
+    $("#learning-pane-" + wordtype).html(header + spinner);
+
+    // add overlays
+    var otherterm = wordtype == 'term' ? 'predictor' : 'term';
+    $("." + otherterm + "-pane").append(overlay);
 }
 
 function stopThinking() {
-    $("#learning-window").empty();
+    if (wordtype == 'term') {
+        $("#learning-pane-" + wordtype).html(term_div);
+    } else {
+        $("#learning-pane-" + wordtype).html(pred_div);
+    }
 }
 
 function writeExisting(wordlist) {
@@ -40,7 +52,14 @@ var term_rejects_warning = "<p>You are rejecting a lot of suggestions, so it's p
     pred_rejects_warning = "<p>Please keep in mind that predictors are only used to find new terms. They will not be used " +
                            "to identify trials associated with this concept, so do not need to be closely related to the concept itself.</p>" +
                            "<p>If it's possible a word or phrase may appear in the same sentence as this concept, you may " +
-                           "want to accept it so the algorithm can find new terms to suggest.</p>"
+                           "want to accept it so the algorithm can find new terms to suggest.</p>",
+    term_div = "<p class='alert alert-info'>A <b>term</b> is a word or phrase that is related to the concept.</p>" +
+               "<div class='col-xs-12 col-sm-12 col-md-12 learning-question' id='learning-term'></div>",
+    pred_div = "<p class='alert alert-info'>A <b>predictor</b> is a word or phrase that often co-occurs with the concept, e.g. "+
+               "&quot;hypertension&quot; is often preceded by &quot;chronic&quot;. Don't worry about whether a certain word or phrase " +
+               "<em>uniquely</em> co-occurs with the concept.</p>" +
+               "<div class='col-xs-12 col-sm-12 col-md-12 learning-question' id='learning-predictor'></div>",
+    overlay = "<div class='overlay-box'></div>";
 
 
 
@@ -89,6 +108,7 @@ $(function() {
 // decide what to do (main loop function)
 function startProcess() {
     thisround++;
+    $(".overlay-box").remove();
 
     // check if rejecting more than 75% of stuff...
     var thiscount = accepts.length + rejects.length,
@@ -104,18 +124,18 @@ function startProcess() {
 
     // decide what to do based on the existing word type
     if (wordtype == 'term') {
+        wordtype = 'predictor';
         thinking("Loading new predictors...");
         idx = 0,
         accepts = [],
         rejects = [],
-        wordtype = 'predictor';
         getPredictors();
     } else {
+        wordtype = 'term';
         thinking("Loading new terms...");
         idx = 0,
         accepts = [],
         rejects = [],
-        wordtype = 'term';
         getTerms();
     }
 }
@@ -180,12 +200,16 @@ $("body").delegate("#quit-word", 'click', function(e) {
 
 function learnWords() {
     if (idx < thislist.length) {
-        $("#learning-window").empty();
+        $("#learning-" + wordtype).empty();
         var this_word = thislist[idx].name;
-        var word_attrs = 'word="' + this_word + '" '
-        $("#learning-window").html('<p>&nbsp;</p>' +
-                                   '<h4>Is the ' + wordtype + ' <span class="word-highlight">' + 
-                                   this_word + '</span> related to this concept?</h4>' +
+        var word_attrs = 'word="' + this_word + '" ';
+        var headertext = '';
+        if (wordtype == 'term') {
+            headertext = '<h4>Is the term <span class="word-highlight">' + this_word + '</span> related to this concept?</h4>';
+        } else {
+            headertext = '<h4>Does <span class="word-highlight">' + this_word + '</span> sometimes appear with this concept?</h4>';
+        }
+        $("#learning-" + wordtype).html(headertext +
                                    '<div class="form-inline" style="margin-left: 2em">' +
                                      '<button id="accept-word" ' + word_attrs + ' class="btn btn-success btn-sm word-btn">Yes</button>&nbsp;' +
                                      '<button id="reject-word" ' + word_attrs + ' class="btn btn-danger btn-sm word-btn">No</button>&nbsp;' +
@@ -231,7 +255,7 @@ function closeWindow() {
 }
 
 $("body").delegate("#quit-warning-cancel", 'click', function(e) {
-    $("#learning-window").empty();
+    $("#learning-" + wordtype).empty();
     startProcess();
 });
 
