@@ -826,6 +826,15 @@ def trial_list():
         if 'All (default)' not in json.loads(params['interventions']):
             wheres.append(text("(%s)" % ' or '.join("trial_summary.interventions like '%%%s%%'" % i for i in json.loads(params['interventions']))))
 
+    if 'criteria_filters' in params and json.loads(params['criteria_filters']):
+        critf = json.loads(params['criteria_filters'])
+        crit_table = select([CriteriaConceptLookup.c.nct_id]).\
+                     group_by(CriteriaConceptLookup.c.nct_id).\
+                     having(or_(text("sum(case when concept_id = '%s' and inverse = %d then 1 else 0 end) > 0" % (k, 1 if v == 'Y' else 0))
+                            for k, v in critf.items())).alias('crit_table')
+        main_table = main_table.outerjoin(crit_table, TrialSummary.c.nct_id == crit_table.c.nct_id)
+        wheres.append(text("crit_table.nct_id is null"))
+
     # get trials
     trials = conn.execute(select([TrialSummary]).\
                             select_from(main_table).\
@@ -1476,14 +1485,16 @@ def associate_trials():
     
     criteria_text = conn.execute(select([CriteriaText.c.criteria_text,
                                          CriteriaText.c.criteria_text_id,
+                                         CriteriaText.c.display_type,
                                          CriteriaText.c.nct_id]).\
-                                 where(and_(CriteriaText.c.random_select == rnd,
+                                 where(and_(CriteriaText.c.display_type != 'H',
+                                            CriteriaText.c.random_select == rnd,
                                             or_(CriteriaText.c.criteria_text.op('rlike')('[[:<:]]' + t[0] + '[[:>:]]')
                                            for t in term_list))))
     
     #find all the sentences where a concept term occurs
     tagged_sentences = []
-    for sent, sent_id, nct_id in criteria_text:
+    for sent, sent_id, disp_type, nct_id in criteria_text:
         for term, term_id in term_list:
             if term in sent.lower():
                 #check if there is a negative in the sentence related to the term.
@@ -1497,6 +1508,11 @@ def associate_trials():
                     inverse = 1
                 else:
                     inverse = 0
+                if disp_type == 'E':
+                    if inverse == 1:
+                        inverse = 0
+                    else:
+                        inverse = 1
                 tagged_sentences.append((sent_id, nct_id, term_id, inverse))
                 
     #write tagged sentences to db
@@ -1525,6 +1541,53 @@ def associate_trials():
 @app.route('/approve_mesh')
 def approve_mesh():
     return flask.render_template('approve_mesh.html')
+
+@app.route('/_approve_assignments_load')
+def approve_assignments_load():
+    concept_data = conn.execute(select([CriteriaConceptStaging.c.concept_id, 
+                                        CriteriaConceptStaging.c.user_id,
+                                        CriteriaConceptStaging.c.new_concept,
+                                        CriteriaConceptStaging.c.value]).\
+                                where(CriteriaConceptStaging.c.update_type == 'concept-name')).\
+                            fetchall()
+
+    concept_terms = conn.execute(select([CriteriaConceptStaging.c.concept_id,
+                                         CriteriaConceptStaging.c.update_type,
+                                         CriteriaConceptStaging.c.value]).\
+                                 where(CriteriaConceptStaging.c.update_type.in_(['term','term-reject']))).\
+                            fetchall()
+
+    uniq_user = list(set(t[1] for t in concept_data))
+    if len(uniq_user) > 0:
+        uinfo = conn.execute(select([Users.c.user_id, 
+                                     Users.c.full_name,
+                                     Users.c.institution]).where(Users.c.user_id.in_(uniq_user))).fetchall()
+
+        user_info = {t[0]: {'name': t[1], 'institution': t[2]} for t in uinfo}
+
+    concepts = {}
+    for cid, user_id, newconc, cname in concept_data:
+        if newconc == 0:
+            old_terms     = [r[0] for r in conn.execute(select([ConceptTerms.c.term]).where(ConceptTerms.c.concept_id == cid))]
+            old_terms_rej = [r[0] for r in conn.execute(select([ConceptTermsReject.c.term]).where(ConceptTermsReject.c.concept_id == cid))]
+        else:
+            old_terms = []
+            old_terms_rej = []
+
+        new_terms = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term' and t[2] != cname]
+        new_terms_rej = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term-reject']
+
+        concepts[cid] = {'name': cname,
+                         'new_concept': newconc,
+                         'userid': user_id,
+                         'username': user_info[user_id]['name'],
+                         'userinst': user_info[user_id]['institution'],
+                         'new_terms': new_terms,
+                         'new_terms_rej': new_terms_rej,
+                         'old_terms': old_terms,
+                         'old_terms_rej': old_terms_rej}
+
+    return flask.jsonify(concepts=concepts)
 
 
 

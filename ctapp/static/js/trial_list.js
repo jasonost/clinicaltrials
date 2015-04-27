@@ -77,7 +77,8 @@ var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center"
                             '</div>',
     table_head = "<div class='filter-div'>" +
                    "<h5>Eligibility Criteria</h5>" +
-                   "<table style='text-align:center'>" +
+                   "<table id='concept-filter-table' style='text-align:center'>" +
+                   "<col width='15%'><col width='70%'><col width='15%'>" +
                    "<tr>" +
                       "<td class='filter-col-header'>Yes</td>" +
                       "<td class='filter-col-header'></td>" +
@@ -196,9 +197,9 @@ function get_patient_filters() {
             var con_name = data.concepts[i].concept_name,
                 con_id = data.concepts[i].concept_id;
             new_table += "<tr class='filter-row'>" +
-                          "<td><input type='radio' name='filter-" + con_id + "' value='I'></td>" +
+                          "<td><input type='radio' name='" + con_id + "' value='Y'></td>" +
                           "<td>&nbsp;" + con_name + "?&nbsp;</td>" +
-                          "<td><input type='radio' name='filter-" + con_id + "' value='E'></td>" +
+                          "<td><input type='radio' name='" + con_id + "' value='N'></td>" +
                          "</tr>";
           }
           new_table += table_foot;
@@ -278,6 +279,11 @@ $("body").delegate("#update-patient-results", 'click', function(e) {
   var gender = $('input[name=gender-radio]:checked').val(),
       age = $("#participant-age").val(),
       healthy = $("#filter-only-healthy").prop('checked');
+  var criteria_filters = {};
+  $("#concept-filter-table input:checked").each(function() {
+    criteria_filters[$(this).attr('name')] = $(this).val();
+  });
+  console.log(criteria_filters);
   gender = gender ? gender : false;
   cur_limit = 50;
   query_obj = {page: cond_id ? 'cond' : 'inst', 
@@ -285,6 +291,7 @@ $("body").delegate("#update-patient-results", 'click', function(e) {
                 gender: gender,
                 age: age,
                 healthy: healthy,
+                criteria_filters: JSON.stringify(criteria_filters),
                 status: JSON.stringify(['recruiting','not yet recruiting', 'enrolling by invitation']),
                 limit: cur_limit
               };
