@@ -136,6 +136,7 @@ CriteriaConcept = Table('criteria_concept', metadata,
 )
 
 CriteriaConceptLookup = Table('criteria_concept_lookup', metadata,
+    Column('nct_id', String, ForeignKey('clinical_study.nct_id')),
     Column('criteria_text_id', Integer, ForeignKey('criteria_text.criteria_text_id')),
     Column('term_id', Integer, ForeignKey('concept_terms.term_id')),
     Column('concept_id', String, ForeignKey('criteria_concept.concept_id')),
@@ -598,7 +599,6 @@ Users = Table('users', metadata,
 
 UserHistoryCriteria = Table('user_history_criteria', metadata,
     Column('history_id', Integer, primary_key = True),
-    Column('update_id', Integer),
     Column('user_id', Integer, ForeignKey('users.user_id')),
     Column('update_time', DateTime),
     Column('concept_id', String),
@@ -610,7 +610,6 @@ UserHistoryCriteria = Table('user_history_criteria', metadata,
 
 UserHistoryMesh = Table('user_history_mesh', metadata,
     Column('history_id', Integer, primary_key = True),
-    Column('update_id', Integer),
     Column('user_id', Integer, ForeignKey('users.user_id')),
     Column('update_time', DateTime),
     Column('nct_id', String),
