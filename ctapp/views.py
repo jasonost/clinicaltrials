@@ -1332,11 +1332,12 @@ def approve_concepts_load():
                             fetchall()
 
     uniq_user = list(set(t[1] for t in concept_data))
-    uinfo = conn.execute(select([Users.c.user_id, 
-                                 Users.c.full_name,
-                                 Users.c.institution]).where(Users.c.user_id.in_(uniq_user))).fetchall()
+    if len(uniq_user) > 0:
+        uinfo = conn.execute(select([Users.c.user_id, 
+                                     Users.c.full_name,
+                                     Users.c.institution]).where(Users.c.user_id.in_(uniq_user))).fetchall()
 
-    user_info = {t[0]: {'name': t[1], 'institution': t[2]} for t in uinfo}
+        user_info = {t[0]: {'name': t[1], 'institution': t[2]} for t in uinfo}
 
     concepts = {}
     for cid, user_id, newconc, cname in concept_data:
@@ -1373,6 +1374,7 @@ def write_criteria_approval():
     existing = pull_staged_data(concept_id)
 
     concept_name = existing['concept-name'].keys()[0]
+    ok_terms.append(concept_name)
 
     # write data to main criteria concept tables
     try:
@@ -1391,7 +1393,7 @@ def write_criteria_approval():
         r = conn.execute(ConceptTerms.insert(), [{'concept_id': concept_id,
                                                   'term': k}
                                                  for k, v in existing['term'].items()
-                                                 if k in ok_terms or k == concept_name])
+                                                 if k in ok_terms])
 
         other_tabs = [(ConceptTermsReject,'term-reject'),
                       (ConceptPredictors, 'predictor'),
@@ -1413,14 +1415,16 @@ def write_criteria_approval():
                                                          'value': k,
                                                          'accepted': 1}
                                                         for t in existing.keys()
+                                                        if len(existing[t].keys()) > 0
                                                         for k, v in existing[t].items()])
 
-        bad_terms = list(set(existing['term'].keys()) - set(ok_terms.append(concept_name)))
-        r = conn.execute(UserHistoryCriteria.update().\
-                                             where(and_(UserHistoryCriteria.c.concept_id == concept_id,
-                                                        UserHistoryCriteria.c.update_type == 'term',
-                                                        UserHistoryCriteria.c.value.in_(bad_terms))).\
-                                             values(accepted=0))
+        bad_terms = list(set(existing['term'].keys()) - set(ok_terms))
+        if len(bad_terms) > 0:
+            r = conn.execute(UserHistoryCriteria.update().\
+                                                 where(and_(UserHistoryCriteria.c.concept_id == concept_id,
+                                                            UserHistoryCriteria.c.update_type == 'term',
+                                                            UserHistoryCriteria.c.value.in_(bad_terms))).\
+                                                 values(accepted=0))
     except Exception, e:
         print 'Problem inserting user log data: %s' % e
 
@@ -1436,13 +1440,34 @@ def write_criteria_rejection():
     params = request.args
     concept_id = params['concept_id']
 
+    concept_data = conn.execute(select([CriteriaConceptStaging]).where(CriteriaConceptStaging.c.concept_id == concept_id)).fetchall()
 
-    return flask.jsonify(done=True)
+    try:
+        r = conn.execute(UserHistoryCriteria.insert(), [{'user_id': t[1],
+                                                         'update_time': t[2],
+                                                         'concept_id': t[3],
+                                                         'new_concept': t[4],
+                                                         'update_type': t[5],
+                                                         'value': t[6],
+                                                         'accepted': 0}
+                                                        for t in concept_data])
+    except Exception, e:
+        print 'Problem writing rejection data: %s' % e
+
+    try:
+        r = conn.execute(CriteriaConceptStaging.delete().where(CriteriaConceptStaging.c.concept_id == concept_id))
+        return flask.jsonify(done=True)
+    except Exception, e:
+        print 'Problem deleting concept %s: %s' % (concept_id, e)
+
+    return flask.jsonify(done=False)
 
 @app.route('/_associate_trials')
 def associate_trials():
     params = request.args
     concept_id = params['concept_id']
+    rnd = int(params['rnd'])
+    num_trials = int(params['num_trials'])
 
     #pull the terms and all criteria sentences that match
     term_list = conn.execute(select([ConceptTerms.c.term, ConceptTerms.c.term_id]).\
@@ -1452,8 +1477,9 @@ def associate_trials():
     criteria_text = conn.execute(select([CriteriaText.c.criteria_text,
                                          CriteriaText.c.criteria_text_id,
                                          CriteriaText.c.nct_id]).\
-                                 where(or_(CriteriaText.c.criteria_text.op('rlike')('[[:<:]]' + t[0] + '[[:>:]]')
-                                           for t in term_list)))
+                                 where(and_(CriteriaText.c.random_select == rnd,
+                                            or_(CriteriaText.c.criteria_text.op('rlike')('[[:<:]]' + t[0] + '[[:>:]]')
+                                           for t in term_list))))
     
     #find all the sentences where a concept term occurs
     tagged_sentences = []
@@ -1464,9 +1490,9 @@ def associate_trials():
                 #the negative term has to be within 3 words of the concept term
                 #or at the beginning of the sentece
                 string = sent.lower()
-                negative_pattern_start = r"^[not|no|isn't|didn't]"
+                negative_pattern_start = r"^(not|no|isn't|didn't)"
                 negative_beginning = re.search(negative_pattern_start, string)
-                negative_in_sentence = re.search("[not|didn't|isn't|no]\W+(?:\w+\W+){1,2}%s" % (term), string)
+                negative_in_sentence = re.search("(not|didn't|isn't|no)\W+(?:\w+\W+){0,3}%s" % (term), string)
                 if negative_beginning or negative_in_sentence:
                     inverse = 1
                 else:
@@ -1483,16 +1509,16 @@ def associate_trials():
                                                         'inverse': v[3]}
                                                        for v in tagged_sentences])
 
-            trials = len(set([t[1] for t in tagged_sentences]))
+            num_trials += len(set([t[1] for t in tagged_sentences]))
 
-            return flask.jsonify(num_trials=trials)
+            return flask.jsonify(num_trials=num_trials)
 
         except Exception, e:
             print 'Problem writing concept data: %s' % e
             global engine, conn
             engine, conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
 
-    return flask.jsonify(num_trials=0)
+    return flask.jsonify(num_trials=num_trials)
 
 
 # admin mesh assignment page

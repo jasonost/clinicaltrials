@@ -49,7 +49,7 @@ function getConceptData() {
 
         var concepts = data.concepts;
 
-        if (concepts) {
+        if (Object.keys(concepts).length > 0) {
             $("#current-approval").html(select_concept);
             all_concepts = concepts;
 
@@ -122,7 +122,7 @@ function displayTerms(concept_id) {
 }
 
 
-
+// change in dropdown
 $("body").delegate(".concept-selection", 'click', function(e) {
     var this_id =$(this).attr('id');
     $("#current-concept").html('<strong>' + all_concepts[this_id].name + '&nbsp;</strong>');
@@ -130,6 +130,8 @@ $("body").delegate(".concept-selection", 'click', function(e) {
     displayTerms(this_id);
 })
 
+
+// select all/deselect all functionality
 $("body").delegate("#check-all", "click", function(e) {
     var is_checked = $(this).is(':checked'),
         check_terms = $("input[name=terms-checked]");
@@ -150,6 +152,35 @@ $("body").delegate("input[name=terms-checked]", "click", function(e) {
     }
 });
 
+
+
+// approving a concept
+var this_round = 0,
+    current_concept = '',
+    num_trials = 0;
+
+function outerLoop() {
+  thinking("Associating to trials...<br><small>" + (this_round*4) + "% done</small>");
+  assocTrials(current_concept);
+}
+
+function assocTrials(concept_id) {
+  if (this_round < 25) {
+    $.getJSON($SCRIPT_ROOT + "_associate_trials", {
+      concept_id: current_concept,
+      rnd: this_round,
+      num_trials: num_trials
+    }, function(data) {
+      this_round++;
+      num_trials = parseInt(data.num_trials);
+      outerLoop();
+    });
+  } else {
+    alert("Associated with " + num_trials + " trials");
+    getConceptData();
+  }
+}
+
 $("body").delegate("#button-approval", "click", function(e) {
     var concept_id = $(this).attr("concept"),
         ok_terms = [];
@@ -169,19 +200,18 @@ $("body").delegate("#button-approval", "click", function(e) {
     }, function(approval_data) {
 
         stopThinking();
-        thinking("Associating to trials...<br><small>This may take a while</small>");
-
-        $.getJSON($SCRIPT_ROOT + "_associate_trials", {
-          concept_id: concept_id
-        }, function(assoc_data) {
-            alert("Associated with " + assoc_data.num_trials + " trials");
-            getConceptData();
-        });
+        this_round = 0,
+        current_concept = concept_id,
+        num_trials = 0;
+        outerLoop();
 
     });
 
 });
 
+
+
+// rejecting a concept
 $("body").delegate("#button-reject", "click", function(e) {
   var concept_id = $(this).attr("concept");
   $("#concept-reject-confirm").attr("concept", concept_id);

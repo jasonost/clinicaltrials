@@ -75,13 +75,15 @@ var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center"
                                   '<input type="checkbox" id="filter-only-healthy" value="only-healthy"> Only show trials accepting healthy volunteers' +
                                 '</label>' +
                             '</div>',
-    table_head = "<table style='text-align:center' class='filter-div'>" +
-                 "<tr>" +
-                    "<td class='filter-col-header'>Inclusion</td>" +
-                    "<td class='filter-col-header'></td>" +
-                    "<td class='filter-col-header'>Exclusion</td>" +
-                 "</tr>",
-    table_foot = "</table>";
+    table_head = "<div class='filter-div'>" +
+                   "<h5>Eligibility Criteria</h5>" +
+                   "<table style='text-align:center'>" +
+                   "<tr>" +
+                      "<td class='filter-col-header'>Yes</td>" +
+                      "<td class='filter-col-header'></td>" +
+                      "<td class='filter-col-header'>No</td>" +
+                   "</tr>",
+    table_foot = "</table></div>";
 
 // researcher filters
 var intr = ['All (default)',
@@ -195,7 +197,7 @@ function get_patient_filters() {
                 con_id = data.concepts[i].concept_id;
             new_table += "<tr class='filter-row'>" +
                           "<td><input type='radio' name='filter-" + con_id + "' value='I'></td>" +
-                          "<td>" + con_name + "</td>" +
+                          "<td>&nbsp;" + con_name + "?&nbsp;</td>" +
                           "<td><input type='radio' name='filter-" + con_id + "' value='E'></td>" +
                          "</tr>";
           }
