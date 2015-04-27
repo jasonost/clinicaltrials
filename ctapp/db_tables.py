@@ -165,6 +165,7 @@ CriteriaText = Table('criteria_text', metadata,
     Column('criteria_text', Text),
     Column('display_type', String),
     Column('display_order', Integer),
+    Column('random_select', Integer),
 )
 
 Designs = Table('designs', metadata,

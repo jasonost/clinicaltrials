@@ -18,6 +18,12 @@ CREATE TABLE criteria_text (
     DISPLAY_ORDER INT
 ) DEFAULT CHARACTER SET=utf8;
 
+/* after load:
+alter table criteria_text add column random_select int;
+UPDATE criteria_text SET random_select = FLOOR(RAND( ) *25 );
+create index criteria_text_random_select_idx on criteria_text(random_select);
+*/
+
 CREATE TABLE criteria_tagged (
     CRITERIA_TEXT_ID INT,
     PRIMARY KEY (CRITERIA_TEXT_ID),
