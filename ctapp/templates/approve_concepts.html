@@ -4,16 +4,16 @@
   <header class='container'>
     <div class='page-header row'>
       <h1>Administrator tools
-        <br><small>Crtieria concept review</small>
+        <br><small>Crtieria concept review (<a href="{{ url_for('approve_mesh') }}">Go to MeSH term assignment review</a>)</small>
       </h1>
     </div>
   </header>
   <section class='container'>
     <div id='current-approval' class='col-xs-12 col-sm-8 col-md-8'>
     </div>
-    <div id='existing-terms' class='col-xs-12 col-sm-4 col-md-4'>
-    </div>
   </section>
 </div>
 
 {% include 'footer.html' %}
+
+<script src="{{ url_for('static', filename='js/approval_criteria.js') }}"></script>

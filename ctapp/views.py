@@ -302,6 +302,22 @@ def get_list(typelist):
         outlist += [t[0] for t in r]
     return outlist
 
+# get all staged data for a particular concept
+def pull_staged_data(concept_id):
+    current_data = conn.execute(select([CriteriaConceptStaging.c.update_time,
+                                        CriteriaConceptStaging.c.update_type,
+                                        CriteriaConceptStaging.c.value]).\
+                                where(CriteriaConceptStaging.c.concept_id == concept_id)).\
+                        fetchall()
+
+    existing = defaultdict(dict)
+    for update_time, update_type, value in current_data:
+        existing[update_type][value] = update_time
+
+    return existing
+
+
+
 
 
 
@@ -1020,8 +1036,13 @@ def active_learning():
     params = request.args
     initial_term = params['term']
 
+    under_review = conn.execute(select([CriteriaConceptStaging.c.concept_id]).\
+                                where(and_(CriteriaConceptStaging.c.update_type == 'concept-name',
+                                           CriteriaConceptStaging.c.value == initial_term.lower()))).fetchall()
+
     return flask.render_template('active_learning.html',
-                                 initial_term=initial_term)
+                                 initial_term=initial_term,
+                                 under_review=len(under_review) > 0)
 
 @app.route('/_learning_startup')
 def learning_startup():
@@ -1294,6 +1315,184 @@ def stage_mesh():
 @app.route('/approve_concepts')
 def approve_concepts():
     return flask.render_template('approve_concepts.html')
+
+@app.route('/_approve_concepts_load')
+def approve_concepts_load():
+    concept_data = conn.execute(select([CriteriaConceptStaging.c.concept_id, 
+                                        CriteriaConceptStaging.c.user_id,
+                                        CriteriaConceptStaging.c.new_concept,
+                                        CriteriaConceptStaging.c.value]).\
+                                where(CriteriaConceptStaging.c.update_type == 'concept-name')).\
+                            fetchall()
+
+    concept_terms = conn.execute(select([CriteriaConceptStaging.c.concept_id,
+                                         CriteriaConceptStaging.c.update_type,
+                                         CriteriaConceptStaging.c.value]).\
+                                 where(CriteriaConceptStaging.c.update_type.in_(['term','term-reject']))).\
+                            fetchall()
+
+    uniq_user = list(set(t[1] for t in concept_data))
+    uinfo = conn.execute(select([Users.c.user_id, 
+                                 Users.c.full_name,
+                                 Users.c.institution]).where(Users.c.user_id.in_(uniq_user))).fetchall()
+
+    user_info = {t[0]: {'name': t[1], 'institution': t[2]} for t in uinfo}
+
+    concepts = {}
+    for cid, user_id, newconc, cname in concept_data:
+        if newconc == 0:
+            old_terms     = [r[0] for r in conn.execute(select([ConceptTerms.c.term]).where(ConceptTerms.c.concept_id == cid))]
+            old_terms_rej = [r[0] for r in conn.execute(select([ConceptTermsReject.c.term]).where(ConceptTermsReject.c.concept_id == cid))]
+        else:
+            old_terms = []
+            old_terms_rej = []
+
+        new_terms = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term' and t[2] != cname]
+        new_terms_rej = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term-reject']
+
+        concepts[cid] = {'name': cname,
+                         'new_concept': newconc,
+                         'userid': user_id,
+                         'username': user_info[user_id]['name'],
+                         'userinst': user_info[user_id]['institution'],
+                         'new_terms': new_terms,
+                         'new_terms_rej': new_terms_rej,
+                         'old_terms': old_terms,
+                         'old_terms_rej': old_terms_rej}
+
+    return flask.jsonify(concepts=concepts)
+
+@app.route('/_write_criteria_approval')
+def write_criteria_approval():
+    params = request.args
+    concept_id = params['concept_id']
+    new_concept = params['new_concept']
+    user_id = params['userid']
+    ok_terms = json.loads(params['ok_terms'])
+
+    existing = pull_staged_data(concept_id)
+
+    concept_name = existing['concept-name'].keys()[0]
+
+    # write data to main criteria concept tables
+    try:
+        if new_concept:
+            r = conn.execute(CriteriaConcept.insert(), [{'concept_id': concept_id,
+                                                         'concept_name': concept_name
+                                                        }])
+        else:
+            r = conn.update(CriteriaConcept.update().\
+                                            where(CriteriaConcept.c.concept_id == concept_id).\
+                                            values(concept_name=concept_name))
+    except Exception, e:
+        print 'Problem inserting or updating concept name: %s' % e
+
+    try:
+        r = conn.execute(ConceptTerms.insert(), [{'concept_id': concept_id,
+                                                  'term': k}
+                                                 for k, v in existing['term'].items()
+                                                 if k in ok_terms or k == concept_name])
+
+        other_tabs = [(ConceptTermsReject,'term-reject'),
+                      (ConceptPredictors, 'predictor'),
+                      (ConceptPredictorsReject, 'predictor-reject')]
+        for tab, ttype in other_tabs:
+            r = conn.execute(tab.insert(), [{'concept_id': concept_id,
+                                             'term': k}
+                                            for k, v in existing[ttype].items()])
+    except Exception, e:
+        print 'Problem inserting concept terms and predictors: %s' % e
+
+    # write data to user log table
+    try:
+        r = conn.execute(UserHistoryCriteria.insert(), [{'user_id': user_id,
+                                                         'update_time': v,
+                                                         'concept_id': concept_id,
+                                                         'new_concept': new_concept,
+                                                         'update_type': t,
+                                                         'value': k,
+                                                         'accepted': 1}
+                                                        for t in existing.keys()
+                                                        for k, v in existing[t].items()])
+
+        bad_terms = list(set(existing['term'].keys()) - set(ok_terms.append(concept_name)))
+        r = conn.execute(UserHistoryCriteria.update().\
+                                             where(and_(UserHistoryCriteria.c.concept_id == concept_id,
+                                                        UserHistoryCriteria.c.update_type == 'term',
+                                                        UserHistoryCriteria.c.value.in_(bad_terms))).\
+                                             values(accepted=0))
+    except Exception, e:
+        print 'Problem inserting user log data: %s' % e
+
+    try:
+        r = conn.execute(CriteriaConceptStaging.delete().where(CriteriaConceptStaging.c.concept_id == concept_id))
+    except Exception, e:
+        print 'Problem deleting concept %s: %s' % (concept_name, e)
+
+    return flask.jsonify(concept_id=concept_id)
+
+@app.route('/_write_criteria_rejection')
+def write_criteria_rejection():
+    params = request.args
+    concept_id = params['concept_id']
+
+
+    return flask.jsonify(done=True)
+
+@app.route('/_associate_trials')
+def associate_trials():
+    params = request.args
+    concept_id = params['concept_id']
+
+    #pull the terms and all criteria sentences that match
+    term_list = conn.execute(select([ConceptTerms.c.term, ConceptTerms.c.term_id]).\
+                             where(ConceptTerms.c.concept_id == concept_id)).\
+                     fetchall()
+    
+    criteria_text = conn.execute(select([CriteriaText.c.criteria_text,
+                                         CriteriaText.c.criteria_text_id,
+                                         CriteriaText.c.nct_id]).\
+                                 where(or_(CriteriaText.c.criteria_text.op('rlike')('[[:<:]]' + t[0] + '[[:>:]]')
+                                           for t in term_list)))
+    
+    #find all the sentences where a concept term occurs
+    tagged_sentences = []
+    for sent, sent_id, nct_id in criteria_text:
+        for term, term_id in term_list:
+            if term in sent.lower():
+                #check if there is a negative in the sentence related to the term.
+                #the negative term has to be within 3 words of the concept term
+                #or at the beginning of the sentece
+                string = sent.lower()
+                negative_pattern_start = r"^[not|no|isn't|didn't]"
+                negative_beginning = re.search(negative_pattern_start, string)
+                negative_in_sentence = re.search("[not|didn't|isn't|no]\W+(?:\w+\W+){1,2}%s" % (term), string)
+                if negative_beginning or negative_in_sentence:
+                    inverse = 1
+                else:
+                    inverse = 0
+                tagged_sentences.append((sent_id, nct_id, term_id, inverse))
+                
+    #write tagged sentences to db
+    for i in range(5):
+        try:
+            r = conn.execute(CriteriaConceptLookup.insert(), [{'criteria_text_id': v[0],
+                                                        'nct_id': v[1],
+                                                        'term_id': v[2],
+                                                        'concept_id': concept_id,
+                                                        'inverse': v[3]}
+                                                       for v in tagged_sentences])
+
+            trials = len(set([t[1] for t in tagged_sentences]))
+
+            return flask.jsonify(num_trials=trials)
+
+        except Exception, e:
+            print 'Problem writing concept data: %s' % e
+            global engine, conn
+            engine, conn = initializeDB(mysqlusername, mysqlpassword, mysqlserver, mysqldbname)
+
+    return flask.jsonify(num_trials=0)
 
 
 # admin mesh assignment page
