@@ -1,3 +1,12 @@
+// check login to update box
+$.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
+    if (data.logged_in && !($("#logged-in-area").length > 0)) {
+      changeButtons(data.username);
+      return false;
+    }
+});
+
+
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -65,13 +74,6 @@ $(function() {
       templates: {
         header: '<div class="search-header">Institutions</div>'
       }
-    });
-
-    $.getJSON( $SCRIPT_ROOT + "_check_login", {}, function( data ) {
-        if (data.logged_in && !($("#logged-in-area").length > 0)) {
-          changeButtons(data.username);
-          return false;
-        }
     });
 
 });
@@ -406,6 +408,14 @@ $("#submit-suggestion-text").on('click', function(e) {
   }
 
 })
+
+
+
+
+
+
+// Criteria concept approvals
+
 
 
 

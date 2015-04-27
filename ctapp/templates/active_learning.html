@@ -9,6 +9,11 @@
   </header>
   <section class='container'>
     <div id='learning-pane-term' class='term-pane col-xs-12 col-sm-6 col-md-6'>
+      {% if under_review %}
+        <div class='alert alert-danger'>
+          <h5>Sorry, it looks like this concept is currently under review or being developed by someone else. Please try again later.</h5>
+        </div>
+      {% endif %}
     </div> 
     <div id='learning-pane-predictor' class='predictor-pane col-xs-12 col-sm-6 col-md-6'>
     </div>
@@ -49,4 +54,6 @@
 
 {% include 'footer.html' %}
 
+{% if not under_review %}
 <script src="{{ url_for('static', filename='js/active_learning.js') }}"></script>
+{% endif %}

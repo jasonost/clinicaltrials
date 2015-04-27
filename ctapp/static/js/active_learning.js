@@ -268,7 +268,7 @@ $("body").delegate("#quit-warning-submit", 'click', function(e) {
 });
 
 $("body").delegate("#close-window-submit", 'click', function(e) {
-    close();
+    window.open($SCRIPT_ROOT, "_self");
 });
 
 
