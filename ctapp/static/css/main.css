@@ -536,6 +536,9 @@ tspan {
 
 
 /* approval pages */
+.top-margin-1em {
+    margin-top: 1em;
+}
 .top-margin-2em {
     margin-top: 2em;
 }
@@ -553,10 +556,9 @@ tspan {
     margin-bottom: 2em;
 }
 
-#about-page p {
+#about-page p, #ratings-description p {
     font-size: 1.12em;
 }
-
 
 
 

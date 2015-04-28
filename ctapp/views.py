@@ -1691,7 +1691,8 @@ def data():
 # contact page
 @app.route('/contact')
 def contact():
-    return flask.render_template('contact.html')
+    print request.url_root
+    return flask.render_template('contact.html',url=request.url_root)
 
 # ratings description page
 @app.route('/ratings_description')

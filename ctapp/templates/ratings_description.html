@@ -10,14 +10,121 @@
     </header>
     <section class='container'>
       <div class='row'>
-        <div class='col-sm-12 col-md-12'>
-          <div>
-            <p>
-              This is going to be a description of the ratings.
-            </p>
+        <div class='col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6'>
+          <div class='alert alert-info'>
+            <p>In an effort to expose the varied quality of clinical trial information that is submitted to ClinicalTrials.gov, we created a system to rate each trial on the data quality measures listed below.</p>
+            <p>Institutional data quality ratings represent a simple average of the ratings for every trial associated with an institution. This includes all trials sponsored by and hosted at the institution and may not represent the quality of data submitted by individual departments or offices within that institution.</p>
+            <p>Please <strong><a href="{{ url_for('contact') }}">contact us</a></strong> with any further questions.</p>
           </div>
         </div>
-      </div> <!-- end .row -->
+      </div>
+      <div class='row'>
+        <div class='col-xs-12 col-sm-12 col-md-12'>
+          <table class="table">
+            <col width="30%">
+            <col width="35%">
+            <col width="35%">
+            <tr>
+              <td>
+              </td>
+              <td><h4 class="text-success" style="text-align:center">Positive Factors</h4>
+              </td>
+              <td><h4 class="text-danger" style="text-align:center">Negative Factors</h4>
+              </td>
+            <tr>
+            <tr>
+              <td><h3>Site data quality
+                    <br><small>How well are the trial's research site locations described?</small>
+                  </h3>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Valid city and country</p></li>
+                  <li><p>ZIP Code, if in the United States</p></li>
+                  <li><p>A meaningful site name, e.g. "SF General Hospital"</p></li>
+                  <li><p>A valid investigator name, e.g. "John Doe, MD"</p></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>A generic site name, e.g. "Investigation Site #24"</p></li>
+                  <li><p>A recruiting status that is inconsistent with the trial's recruiting status</p></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><h3>Protocol description quality
+                    <br><small>How much information is contained in the trial protocol description?</small>
+                  </h3>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Approximately 500 words or more</p></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Boilerplate text</p></li>
+                  <li><p>A high number of very frequent terms, e.g. "trial", "study", "intervention"</p></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><h3>Trial criteria description quality
+                    <br><small>How well are the trial's eligibility criteria described?</small>
+                  </h3>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>A section clearly labeled "inclusion criteria"</p></li>
+                  <li><p>A section clearly labeled "exclusion criteria"</p></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>More than 30 eligibility criteria</p></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><h3>Medical Subject Headings (MeSH) classification quality
+                    <br><small>How well are the trial's interventions and conditions described according to this controlled vocabulary?</small>
+                  </h3>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Four or more condition terms</p></li>
+                  <li><p>Two or more intervention terms</p></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>No condition terms</p></li>
+                  <li><p>No intervention terms</p></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><h3>Date quality
+                    <br><small>Do the trial's dates appear to be valid?</small>
+                  </h3>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Presence of start and completion dates</p></li>
+                  <li><p>Presence of completion date type, e.g. "Actual", "Anticipated"</p></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="top-margin-1em no-disc">
+                  <li><p>Obviously incorrect dates, e.g. "December 2099"</p></li>
+                  <li><p>"Anticipated" completion date occurs in the past</p></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </section>
 
 {% include 'footer.html' %}
