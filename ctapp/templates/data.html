@@ -1,6 +1,6 @@
 {% include 'header.html' %}
 
-  <div id='about-page' class='wrapper container'>
+  <div id='data-page' class='wrapper container'>
     <header class='container'>
       <div class='page-header row'>
         <div class='col-sm-12 col-md-6'>
@@ -10,14 +10,38 @@
     </header>
     <section class='container'>
       <div class='row'>
-        <div class='col-sm-12 col-md-12'>
-          <div>
-            <p>
-              This will be a description of our data
-            </p>
-          </div>
+        <div class='col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8'>
+        <h3>ClinicalTrials.gov</h3>
+            <p>The National Library of Medicine (NLM) at the National Institutes of Health (NIH) have maintained a publicly accessible registry of observational and interventional trials since 1997, when the Food and Drug Administration Modernization Act (FDAMA) mandated registration of all Phase II-IV clinical trials. This database has become more widely used since 2005, when all major scientific journals instituted a requirement that a trial be registered in the database prior to first patient being enrolled in order to publish results. This makes the database the main source of clinical trial information worldwide. For more information you can visit <a href="https://clinicaltrials.gov/ct2/about-site/background" target="_blank">ClinicalTrials.gov</a>.</p>
+        <h3>Clinical Trials Transformation Initiative</h3>
+            <p>The Clinical Trials Transformation Initiative (CTTI), hosted at Duke University, provides the ClinicalTrials.gov information as a relational database, published twice each year in common database formats. The latest version, published in September 2014, contains information for over 160,000 clinical trials. This data set is our primary data source for the current project. For more information you can visit <a href="http://www.ctti-clinicaltrials.org/what-we-do/analysis-dissemination/state-clinical-trials/aact-database" target="_blank">CTTI's description of the database</a>.</p>
+        <h3>Deduplication and Freebase</h3>
+            <p>The majority of information submitted to ClinicalTrials.gov is free-text data, which has resulted in a large number of duplicated institution names. For example, "Johns Hopkins University" and "John's Hopkins University" were both very common strings referring to the same institution, with the only difference being the apostrophe character. Moreover, various departments within an institution often identified themselves as such, usually with varying acronyms, abbreviations, and punctuation marks. As such, data related to <a href="{{ url_for('institution') }}?inst=26957">Johns Hopkins University</a> is associated with several different keys instead of a single canonical key: the database has in fact over 260 unique strings that could be reasonably associated with the institution.</p>
+            <p>In order to properly return results in a search interface, we needed all the data related to one institution to be queryable under a single canonical string representing each institution, so that when a user searches for Johns Hopkins University, they retrieve all the results they were seeking.</p>
+            <p>To achieve this goal we first pulled out all of the institution names in the database and used the <a href="https://www.freebase.com/" target="_blank">Freebase API</a> to look for all the matching business, hospital, or other institution that would serve as the institution's canonical representation. This worked well for some institutions but struggled with some others. We also used a Python package called <a href="https://pypi.python.org/pypi/dedupe" target="_blank">dedupe</a> that enabled us to combine together similarly titled institutions based on their names and locations. As a result we were able to identify around 15,000 distinct institutions from the approximately 280,000 unique names in the database.</p>
+        <h3>National Library of Medicine (NLM) Medical Thesaurus</h3>
+            <p>All clinical trials in the database are tagged with <a href="https://www.nlm.nih.gov/pubs/factsheets/mesh.html" target="_blank">Medical Subject Heading (MeSH)</a> terms, a controlled vocabulary to describe biomedical text and concepts. This is great for understanding the relationships between trials, researchers, and institutions, but it is often not ideal for a search implementation because the average user does not colloquially use MeSH terms. For example, trials studying treatments for cancer use the MeSH term “neoplasm” (the medical term for tumor), but most laypeople have never heard of a neoplasm.</p>
+            <p>For this reason we needed a thesaurus that links MeSH terms their common names. The NLM has a great resource for this that we used called the <a href="http://www.nlm.nih.gov/medlineplus/xml.html" target="_blank">MedlinePlus Health Topic Thesaurus</a>. </p>
+        <h3>PubMed Publications Linking</h3>
+            <p>It is important to have publications linked with clinical trials and institutions because peer reviewed publications are one of the best indicators of successful trials, investigators, and institutions. If, for example, an institution had a very low number of publications compared to the number of trials they had run related to a certain disease, this would be an indicator that they have not had very many successful trials in that disease category.</p>
+            <p>While there is the option to associate related publications to the records in the database, not all investigators have done so. As a result there is a sparse record of publications linked to trials. As a result we linked publications drawn from an external source (<a href="http://www.ncbi.nlm.nih.gov/pubmed" target="_blank">PubMed</a>) to the clinical trials in the database so that users are able to see more publications linked and potentially linked to trials.</p>
+        <h3>Data Quality Ratings</h3>
+            <p>One of the goals of the project was to improve the data quality of the clinical trials database. One of the main ways that this can be accomplished and maintained is by improving the quality of data entered into the database. Towards this goal we developed and rating system for the quality of data entered for each trial. We combined a variety of measures to come up with this ranking including the quality of the dates, MeSH terms, site description, general completeness, trial description, and eligibility criteria. You can find more detail about each of these measures on our <a href="{{ url_for('ratings_description') }}">ratings description page</a>.</p>
+            <p>These ratings are then tagged to each trial and then also aggregated across institutions so that each institution has an overall data quality rating. The hope is that researchers and institutions will become aware if they do have a data quality problem through these ratings as well as strive to improve their data quality.</p>
+        <h3>MeSH Term Suggestions</h3>
+            <p>Because MeSH is a controlled vocabulary, trials can be more easily retrieved and compared when they are are tagged with all relevant MeSH terms. Over 23,000 trials, or 14% of those in the CTTI database, have no MeSH condition terms associated with them, and another 51,000 trials (31% of the database) are tagged with just one condition term. This limits the usability of this data set since many searches for a particular condition will fail to retrieve all relevant results.</p>
+            <p>To improve this situation we used several different machine learning algorithms to create suggestions of MeSH terms that apply to each trial based on the portion of trials in the database that were well tagged with MeSH terms. We used three different methods, a series of logistic regression classifiers, a maximum entropy classifier, and a K-Nearest Neighbors model in order to generate suggestions that are displayed on an individual trial's page.</p>
+        <h3>Data Quality Improvement Tools</h3>
+            <p>To further improve the data quality of the clinical trials database, we developed two tools that users can use to help structure the clinical trial data.</p>
+          <h4>Criteria Concepts Structuring</h4>
+            <p>We created an interactive "active learning" process that enables users to select a term from a trial's eligibility criteria section and build out a group of terms that encompass a eligibility concept. For example, if the beginning term was “birth control”, you would be able to find terms like contraceptive, condom, or even IUD. The interface for the tool allows users to accept and exclude different terms while creating the concept.</p>
+            <p>Once a concept is created it is saved in a staging table where an administrator can review and approve the associated terms. Once approved, the concept will be associated with all trials to which it applies, and will then be accessible for filtering trials on the site. This enables users to help structure the free text of the trial eligibility criteria data in order to increase retrieval.</p>
+          <h4>MeSH term identification</h4>
+            <p>This tool uses similar algorithms described in the MeSH Term Suggestions section above to suggest MeSH condition terms based on any text that is entered. HThis should enable users to discover a variety of MeSH condition terms to tag their trial or paper with before submitting them.</p>
         </div>
       </div> <!-- end .row -->
     </section>
 
 {% include 'footer.html' %}
+
+

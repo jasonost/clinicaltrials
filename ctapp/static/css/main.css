@@ -547,6 +547,16 @@ tspan {
 
 
 
+/* about pages */
+
+.bottom-margin-2em {
+    margin-bottom: 2em;
+}
+
+#about-page p {
+    font-size: 1.12em;
+}
+
 
 
 

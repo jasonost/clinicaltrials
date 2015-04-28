@@ -10,14 +10,65 @@
     </header>
     <section class='container'>
       <div class='row'>
-        <div class='col-sm-12 col-md-12'>
-          <div>
-            <p>
-              This will be a description of the project.
-            </p>
+        <div class='col-xs-12 col-sm-offset-1 col-sm-6 col-md-offset-1 col-md-6 bottom-margin-2em'>
+          <p>Jason Ost and Colin Gerber are students in the <a href="http://www.ischool.berkeley.edu/programs/mims" target="_blank">Master of Information Management and Systems (MIMS)</a> program at UC Berkeley's <a href="http://www.ischool.berkeley.edu/" target="_blank">School of Information</a>. This website is our <a href="http://www.ischool.berkeley.edu/programs/mims/projects" target="_blank">final project</a> for the program.</p>
+          <p>We decided to work with the <a href="https://clinicaltrials.gov/" target="_blank">ClinicalTrials.gov</a> database becuase we saw a significant opporunity for positive public impact and a lot of room for data quality improvement, which is something that interests both of us. Currently the clinical trial data is not well-structured (most of the important data is in the form of free text), which results in information access and retrieval problems. This project attempts to improve the data quality, the ease of access, and the ability to structure the data going forward.</p>
+        </div>
+        <div class='xs-hidden col-sm-4 col-md-4'>
+          <img class='bottom-margin-2em' alt="Test tubes" src="{{ url_for('static', filename='assets/test-tubes.jpg') }}">
+        </div>
+      </div> <!-- end .row -->
+      <div class='row bottom'>
+        <div class='top-margin-2em bottom-margin-2em'>
+          <div class="col-xs-12 col-sm-12 col-md-12 bottom-margin-2em">
+            <h3>Project team:</h3>
+          </div>
+          <div class="xs-hidden col-sm-2 col-md-2">
+            <img class='bottom-margin-2em' alt="Jason Ost" src="{{ url_for('static', filename='assets/ost.png') }}">
+          </div>
+          <div class='col-xs-12 col-sm-4 col-md-4'>
+            <p><strong><a href="http://jasonost.com" target="_blank">Jason Ost</a></strong> is a graduate of Georgetown University who has worked in data science and analytics in a variety of fields, including public policy analysis, social media advertising, and electoral campaigns. He is passionate about using data science tools to improve information accessibility and increase understanding of complex topics.</p>
+          </div>
+          <div class="xs-hiddencol-sm-2 col-md-2">
+            <img class='bottom-margin-2em' alt="Jason Ost" src="{{ url_for('static', filename='assets/gerber.jpg') }}">
+          </div>
+          <div class='col-xs-12 col-sm-4 col-md-4'>
+            <p><a href="http://colingerber.com/" target="_blank">Colin Gerber</a> has a neuroscience degree from UC Santa Barbara and worked for the National Institutes of Neurological Disorders and Strokes doing Parkinson’s Disease research for several years before coming to the I School. He has a deep interest in data analysis and data visualization as well as making scientific data and knowledge more accessible to the general public.</p>
           </div>
         </div>
+      </div> <!-- end .row -->
+      <div class='row bottom'>
+        <div class='top-margin-2em bottom-margin-2em'>
+          <div class='col-xs-12 col-sm-12 col-md-12 bottom-margin-2em' style="text-align: center">
+            <h4>We are deeply indebted to the following individuals for their assistance on this project:</h4>
+          </div>
+          <div class="row">
+            <div class='xs-hidden col-sm-offset-3 col-md-offset-3 col-sm-2 col-md-2'>
+              <img class='bottom-margin-2em' alt="Marti Hearst" src="{{ url_for('static', filename='assets/hearst.jpg') }}">
+            </div>
+            <div class='col-xs-12 col-sm-4 col-md-4'>
+              <p><strong><a href="http://www.ischool.berkeley.edu/people/faculty/martihearst" target="_blank">Marti Hearst, PhD</a></strong> is a professor at the I School who served as our faculty advisor on this project. She research has focused on search user interfaces, natural language processing, and informational visualization. She has been instrumental in helping guide and structure this project.</p>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='xs-hidden col-sm-offset-3 col-md-offset-3 col-sm-2 col-md-2'>
+              <img class='bottom-margin-2em' alt="Anobel Odisho" src="{{ url_for('static', filename='assets/odisho.jpg') }}">
+            </div>
+            <div class='col-xs-12 col-sm-4 col-md-4'>
+              <p><strong><a href="http://profiles.ucsf.edu/anobel.odisho" target="_blank">Anobel Odisho, MD</a></strong> is a resident physician at UC San Francisco who is interested in the intersection of health care and information technology. As a collaborator on our original <a href="{{ url_for('browser') }}" target="_blank">information visualization of this data</a>, he provided invaluable guidance and direction to this project from the outset.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class='xs-hidden col-sm-offset-3 col-md-offset-3 col-sm-2 col-md-2'>
+              <img class='bottom-margin-2em' alt="Katey Basye" src="{{ url_for('static', filename='assets/basye.png') }}">
+            </div>
+             <div class='col-xs-12 col-sm-4 col-md-4'>
+              <p><strong><a href="http://www.kateybasye.com/" target="_blank">Katey Basye</a></strong> is an I School classmate of ours who specializes in user interface design. She contributed to the initial conceptualization and implementation of the design of the website.</p>
+            </div>
+          </div>
+       </div>
       </div> <!-- end .row -->
     </section>
 
 {% include 'footer.html' %}
+
