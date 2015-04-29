@@ -20,7 +20,7 @@ import gensim, simserver
 
 # SQLAlchemy setup
 from sqlalchemy import create_engine
-from sqlalchemy.sql import text, func, select, and_, or_, not_, desc
+from sqlalchemy.sql import text, func, select, and_, or_, not_, desc, bindparam
 from connect import mysqlusername, mysqlpassword, mysqlserver, mysqldbname
 from db_tables import metadata, InstitutionDescription, InstitutionLookup, ConditionDescription, \
     ConditionLookup, InstitutionSponsors, InstitutionFacilities, InstitutionRatings, TrialSummary, \
@@ -350,8 +350,7 @@ def search_results():
                                                 func.count(ConditionLookup.c.nct_id).label('cnt')]).
                                             select_from(ConditionDescription.join(ConditionLookup,
                                                     and_(ConditionDescription.c.condition_id == ConditionLookup.c.condition_id,
-                                                         ConditionLookup.c.source == 'CTGOV',
-                                                         ConditionLookup.c.syn_flag == 0))).\
+                                                         ConditionLookup.c.source == 'CTGOV'))).\
                                             where(func.lower(ConditionDescription.c.mesh_term).contains(s_term)).\
                                             group_by(ConditionDescription.c.condition_id,
                                                 ConditionDescription.c.mesh_term).\
@@ -650,7 +649,7 @@ def trial():
                                                     ConditionDescription.c.mesh_term]).\
                                             select_from(ConditionDescription.join(ConditionLookup,
                                                 and_(ConditionLookup.c.nct_id == nct_id,
-                                                    ConditionLookup.c.source != 'CTGOV',
+                                                    ConditionLookup.c.source.in_(['KNN','MAXENT','MTI']),
                                                     ConditionLookup.c.syn_flag == 0,
                                                     ConditionLookup.c.condition_id == ConditionDescription.c.condition_id)))).\
                                     fetchall()
@@ -674,7 +673,10 @@ def trial():
                               'address': construct_address(t[4],t[5],t[6],t[7])}
                              for t in facilities]
 
-                pubs = conn.execute(TrialPublications.select().where(TrialPublications.c.nct_id == nct_id)).fetchall()
+                pubs = conn.execute(TrialPublications.select().\
+                                    where(TrialPublications.c.nct_id == nct_id).\
+                                    order_by(TrialPublications.c.authors)).\
+                            fetchall()
                 pub_dict = {'linked': [{'pmid': t[1],
                                         'authors': t[2],
                                         'title': t[3],
@@ -1318,6 +1320,18 @@ def stage_mesh():
 
 
 
+# get counts for admin modal
+@app.route('/_get_admin_counts')
+def get_admin_counts():
+    num_concepts = len(conn.execute(CriteriaConceptStaging.select().where(CriteriaConceptStaging.c.update_type == 'concept-name')).fetchall())
+    num_mesh = len(conn.execute(MeshAssignStaging.select()).fetchall())
+    return flask.jsonify(num_concepts=num_concepts,
+                         num_mesh=num_mesh)
+
+
+
+
+
 
 
 # admin concept approval page
@@ -1537,6 +1551,13 @@ def associate_trials():
     return flask.jsonify(num_trials=num_trials)
 
 
+
+
+
+
+
+
+
 # admin mesh assignment page
 @app.route('/approve_mesh')
 def approve_mesh():
@@ -1544,50 +1565,93 @@ def approve_mesh():
 
 @app.route('/_approve_assignments_load')
 def approve_assignments_load():
-    concept_data = conn.execute(select([CriteriaConceptStaging.c.concept_id, 
-                                        CriteriaConceptStaging.c.user_id,
-                                        CriteriaConceptStaging.c.new_concept,
-                                        CriteriaConceptStaging.c.value]).\
-                                where(CriteriaConceptStaging.c.update_type == 'concept-name')).\
+    assignments = conn.execute(select([MeshAssignStaging.c.nct_id, 
+                                       MeshAssignStaging.c.user_id,
+                                       MeshAssignStaging.c.update_id,
+                                       ConditionDescription.c.mesh_term]).\
+                                select_from(MeshAssignStaging.join(ConditionDescription,
+                                        MeshAssignStaging.c.condition_id == ConditionDescription.c.condition_id))).\
                             fetchall()
 
-    concept_terms = conn.execute(select([CriteriaConceptStaging.c.concept_id,
-                                         CriteriaConceptStaging.c.update_type,
-                                         CriteriaConceptStaging.c.value]).\
-                                 where(CriteriaConceptStaging.c.update_type.in_(['term','term-reject']))).\
-                            fetchall()
+    if len(assignments) > 0:
 
-    uniq_user = list(set(t[1] for t in concept_data))
-    if len(uniq_user) > 0:
+        assign_dict = {}
+        for nct_id, user_id, update_id, cond_name in assignments:
+            if nct_id not in assign_dict:
+                assign_dict[nct_id] = {'userid': user_id,
+                                       'cond_name': {}}
+            assign_dict[nct_id]['cond_name'][cond_name] = update_id
+
+        nct_ids = list(set(t[0] for t in assignments))
+
+        trial_desc = conn.execute(select([TrialSummary.c.nct_id,
+                                          TrialSummary.c.brief_title]).\
+                                  where(TrialSummary.c.nct_id.in_(nct_ids))).\
+                          fetchall()
+
+        trial_info = {t[0]: t[1] for t in trial_desc}
+        for nct_id in assign_dict:
+            assign_dict[nct_id]['title'] = trial_info[nct_id]
+
+        uniq_user = list(set(t[1] for t in assignments))
         uinfo = conn.execute(select([Users.c.user_id, 
                                      Users.c.full_name,
                                      Users.c.institution]).where(Users.c.user_id.in_(uniq_user))).fetchall()
 
         user_info = {t[0]: {'name': t[1], 'institution': t[2]} for t in uinfo}
+        for nct_id in assign_dict:
+            assign_dict[nct_id]['username'] = user_info[assign_dict[nct_id]['userid']]['name']
+            assign_dict[nct_id]['userinst'] = user_info[assign_dict[nct_id]['userid']]['institution']
 
-    concepts = {}
-    for cid, user_id, newconc, cname in concept_data:
-        if newconc == 0:
-            old_terms     = [r[0] for r in conn.execute(select([ConceptTerms.c.term]).where(ConceptTerms.c.concept_id == cid))]
-            old_terms_rej = [r[0] for r in conn.execute(select([ConceptTermsReject.c.term]).where(ConceptTermsReject.c.concept_id == cid))]
+        return flask.jsonify(assignments=assign_dict)
+
+    return flask.jsonify(assignments={})
+
+@app.route('/_write_assignment_approval')
+def write_assignment_approval():
+    params = request.args
+    ok_assign = json.loads(params['ok_assign'])
+    bad_assign = json.loads(params['bad_assign'])
+
+    cond_info = conn.execute(select([MeshAssignStaging]).where(MeshAssignStaging.c.update_id.in_(ok_assign + bad_assign))).fetchall()
+
+    good_updates = []
+    bad_updates = []
+    for update_id, user_id, update_time, nct_id, condition_id in cond_info:
+        if str(update_id) in ok_assign:
+            good_updates.append({'n': nct_id, 'cid': condition_id})
         else:
-            old_terms = []
-            old_terms_rej = []
+            bad_updates.append({'n': nct_id, 'cid': condition_id})
 
-        new_terms = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term' and t[2] != cname]
-        new_terms_rej = [t[2] for t in concept_terms if t[0] == cid and t[1] == 'term-reject']
+    print good_updates
+    print bad_updates
 
-        concepts[cid] = {'name': cname,
-                         'new_concept': newconc,
-                         'userid': user_id,
-                         'username': user_info[user_id]['name'],
-                         'userinst': user_info[user_id]['institution'],
-                         'new_terms': new_terms,
-                         'new_terms_rej': new_terms_rej,
-                         'old_terms': old_terms,
-                         'old_terms_rej': old_terms_rej}
+    # write new rows for good updates
+    r = conn.execute(ConditionLookup.insert(), [{'condition_id': t['cid'],
+                                                 'nct_id': t['n'],
+                                                 'source': 'ASSIGN',
+                                                 'syn_flag': 0}
+                                                for t in good_updates])
 
-    return flask.jsonify(concepts=concepts)
+    # update rows so they don't show up in suggestions any more
+    r = conn.execute(ConditionLookup.update().\
+                        where(and_(ConditionLookup.c.nct_id == bindparam('n'),
+                                   ConditionLookup.c.condition_id == bindparam('cid'),
+                                   ConditionLookup.c.source.in_(['KNN','MAXENT','MTI']))).\
+                        values(syn_flag=2), good_updates + bad_updates)
+    
+    # write user history
+    r = conn.execute(UserHistoryMesh.insert(), [{'user_id': t[1],
+                                                 'update_time': t[2],
+                                                 'nct_id': t[3],
+                                                 'condition_id': t[4],
+                                                 'accepted': 1 if str(t[0]) in ok_assign else 0}
+                                                for t in cond_info])
+
+    # clear staging
+    r = conn.execute(MeshAssignStaging.delete().where(MeshAssignStaging.c.update_id.in_(ok_assign + bad_assign)))
+
+    return flask.jsonify(done=True)
 
 
 

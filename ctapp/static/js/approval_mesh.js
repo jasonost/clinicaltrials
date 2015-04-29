@@ -5,7 +5,22 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var approval_header = '<h3>Please review the following assignments<h3>';
+var approval_table = '<h3>Please review the following assignments</h3>' +
+                      '<div class="row">' +
+                        '<div class="col-xs-12 col-sm-12 col-md-12">' +
+                          '<table class="top-margin-2em table">' +
+                            '<col width="5%">' +
+                            '<col width="40%">' +
+                            '<col width="20%">' +
+                            '<col width="15%">' +
+                            '<col width="20%">' +
+                            '<tr class="h4">' +
+                              '<td></td>' +
+                              '<td>Title</td>' +
+                              '<td class="warning">New term</td>' +
+                              '<td>User name</td>' +
+                              '<td>User institution</td>' +
+                            '</tr>';
 
 
 // thinking spinner
@@ -34,36 +49,47 @@ $(function() {
 
 
 
-// get data for all staged concepts and add to dropdown
-var all_concepts = {};
+// get data for all staged mesh assignments and add to table
+var all_mesh = {};
 
 function getAssignments() {
 
+    stopThinking();
+
     $.getJSON($SCRIPT_ROOT + "_approve_assignments_load", {}, function (data) {
 
-        var assignments = data.assignments;
+        var assignments = data.assignments,
+            this_approval_table = approval_table;
 
         if (Object.keys(assignments).length > 0) {
-            $("#current-approval").html(select_concept);
-            all_assignments = assignments;
 
-            for (var i in all_concepts) {
-                if (!button_val) {
-                    button_val = true;
-                    $("#current-concept").html('<strong>' + all_concepts[i].name + '&nbsp;</strong>');
-                    displayTerms(i);
+            for (var i in assignments) {
+                var conditions = assignments[i].cond_name;
+                for (var j in conditions) {
+                    this_approval_table += '<tr>' +
+                                        '<td style="text-align: right"><input type="checkbox" name="terms-checked" value="' + 
+                                           conditions[j] + '" checked></td>' + 
+                                        '<td><a href="' + $SCRIPT_ROOT + 'trial?nct_id=' + i + '" target="_blank">' + assignments[i].title + '</td>' +
+                                        '<td class="warning">' + j + '</td>' +
+                                        '<td>' + assignments[i].username + '</td>' +
+                                        '<td>' + assignments[i].userinst + '</td>' +
+                                      '</tr>';
+
                 }
-                dropdown_html += '<li class="concept-selection" id="' + i + '"><a href="#" onClick="return false;">' +
-                                 '<strong>' + all_concepts[i].name + '</strong><small><br>' + 
-                                 (all_concepts[i].old_terms.length > 0 ? "Existing" : "New") +
-                                 ' concept (' +all_concepts[i].new_terms.length + " new terms)</small></a></li>";
             }
 
-            dropdown_html += '</ul>';
-            $("#current-concept-dropdown").append(dropdown_html);
+            this_approval_table += '<tr class="warning">' +
+                                '<td style="text-align: right"><input type="checkbox" id="check-all" checked></td>' +
+                                '<td><strong>Select all</strong></td>' +
+                                '<td></td><td></td><td></td>' +
+                              '</tr></table>' +
+                              '<div class="top-margin-2em">' +
+                                '<button id="button-approval" class="btn btn-success">Approve selected assignments</button>' +
+                              '</div></div></div>';
+            $("#current-approval").html(this_approval_table);
 
         } else {
-            $("#current-approval").html('<div class="alert alert-success">There are no concepts to approve.</div>');
+            $("#current-approval").html('<div class="alert alert-success">There are no MeSH assignments to approve.</div>');
         }
 
     });
@@ -72,54 +98,6 @@ function getAssignments() {
 
 
 
-// display term information for a single concept
-function displayTerms(concept_id) {
-    var term_list = all_concepts[concept_id].new_terms,
-        old_term_list = all_concepts[concept_id].old_terms;
-
-    var term_table = '<div id="term-table" class="top-margin-2em">' +
-                       '<div class="col-xs-12 col-sm-12 col-md-12">' +
-                         '<h4>Terms added by <strong><span class="text-success">' + all_concepts[concept_id].username + '</span></strong> from ' +
-                         '<strong><span class="text-success">' + all_concepts[concept_id].userinst + '</span></strong></h4>' +
-                       '</div>' +
-                       '<div class="col-xs-12 col-sm-6 col-md-6">' +
-                         '<table class="table">' +
-                           '<col width="10%">' +
-                           '<col width="30%">' + 
-                           '<col width="60%">';
-    for (i=0; i<term_list.length; i++) {
-        term_table += '<tr><td style="text-align: right"><input type="checkbox" name="terms-checked" value="' + 
-                      term_list[i] + '" checked></td>' + '<td>' + term_list[i] + '</td></tr>';
-    }
-    term_table += '<tr class="warning"><td style="text-align: right"><input type="checkbox" id="check-all" checked></td>' +
-                  '<td><strong>Select all</strong></td></tr>' +
-                  '</table>' +
-                  '<div class="top-margin-2em">' +
-                    '<button id="button-approval" class="btn btn-success" concept="' + concept_id + '">Approve terms</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                    '<button id="button-reject" class="btn btn-danger" concept="' + concept_id + '">Reject this entire concept</button>' +
-                  '</div></div></div>';
-    $("#current-approval").append(term_table);
-
-    if (old_term_list.length > 0) {
-        var old_term_table = '<div class="col-xs-12 col-sm-offset-1 col-sm-5 col-md-offset-1 col-md-5">' +
-                               '<h5>Previously accepted terms:</h5>' +
-                               '<ul>';
-        for (i=0; i<old_term_list.length; i++) {
-            old_term_table += '<li>' + old_term_list[i] + '</li>';
-        }
-        old_term_table += '</ul></div>';
-        $("#current-approval").append(old_term_table);
-    }
-}
-
-
-// change in dropdown
-$("body").delegate(".concept-selection", 'click', function(e) {
-    var this_id =$(this).attr('id');
-    $("#current-concept").html('<strong>' + all_concepts[this_id].name + '&nbsp;</strong>');
-    $("#term-table").remove();
-    displayTerms(this_id);
-})
 
 
 // select all/deselect all functionality
@@ -146,55 +124,28 @@ $("body").delegate("input[name=terms-checked]", "click", function(e) {
 
 
 // approving a concept
-var this_round = 0,
-    current_concept = '',
-    num_trials = 0;
-
-function outerLoop() {
-  thinking("Associating to trials...<br><small>" + (this_round*4) + "% done</small>");
-  assocTrials(current_concept);
-}
-
-function assocTrials(concept_id) {
-  if (this_round < 25) {
-    $.getJSON($SCRIPT_ROOT + "_associate_trials", {
-      concept_id: current_concept,
-      rnd: this_round,
-      num_trials: num_trials
-    }, function(data) {
-      this_round++;
-      num_trials += parseInt(data.num_trials);
-      outerLoop();
-    });
-  } else {
-    alert("Associated with " + num_trials + " trials");
-    getConceptData();
-  }
-}
 
 $("body").delegate("#button-approval", "click", function(e) {
-    var concept_id = $(this).attr("concept"),
-        ok_terms = [];
+    var ok_assign = [],
+        bad_assign = [];
 
     $("input[name=terms-checked]:checked").each(function() {
-        ok_terms.push($(this).val());
+        ok_assign.push($(this).val());
     });
+
+    $("input[name=terms-checked]:not(:checked)").each(function() {
+        bad_assign.push($(this).val());
+    })
 
     $(window).scrollTop();
     thinking("Writing data...");
 
-    $.getJSON($SCRIPT_ROOT + "_write_criteria_approval", {
-        ok_terms: JSON.stringify(ok_terms),
-        concept_id: concept_id,
-        new_concept: all_concepts[concept_id].new_concept,
-        userid: all_concepts[concept_id].userid
-    }, function(approval_data) {
+    $.getJSON($SCRIPT_ROOT + "_write_assignment_approval", {
+        ok_assign: JSON.stringify(ok_assign),
+        bad_assign: JSON.stringify(bad_assign)
+    }, function() {
 
-        stopThinking();
-        this_round = 0,
-        current_concept = concept_id,
-        num_trials = 0;
-        outerLoop();
+        getAssignments();
 
     });
 
@@ -202,36 +153,3 @@ $("body").delegate("#button-approval", "click", function(e) {
 
 
 
-// rejecting a concept
-$("body").delegate("#button-reject", "click", function(e) {
-  var concept_id = $(this).attr("concept");
-  $("#concept-reject-confirm").attr("concept", concept_id);
-  $("#concept-reject-modal").modal('show');
-})
-
-$("body").delegate("#concept-reject-confirm", "click", function(e) {
-    var concept_id = $(this).attr("concept");
-
-    thinking("Clearing data...");
-
-    $.getJSON($SCRIPT_ROOT + "_write_criteria_rejection", {
-        concept_id: concept_id,
-    }, function(data) {
-        stopThinking();
-        getConceptData();
-    });
-
-});
-
-
-/*
-{'name': cname,
- 'new_concept': newconc,
- 'userid': user_id,
- 'username': user_names[user_id],
- 'new_terms': new_terms,
- 'new_terms_rej': new_terms_rej,
- 'old_terms': old_terms,
- 'old_terms_rej': old_terms_rej}
-
-*/
