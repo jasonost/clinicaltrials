@@ -122,7 +122,7 @@
         {% if pubs.linked|length > 0 %}
           <ul>
             {% for pub in pubs.linked %}
-              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+              <li><p>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</p></li>
             {% endfor %}
           </ul>
         {% else %}
@@ -134,7 +134,7 @@
           <h5>Likely related</h5>
           <ul>
             {% for pub in pubs.other_likely %}
-              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+              <li><p>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</p></li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -142,7 +142,7 @@
           <h5>Probably related</h5>
           <ul>
             {% for pub in pubs.other_probably %}
-              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+              <li><p>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</p></li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -150,7 +150,7 @@
           <h5>Possibly related</h5>
           <ul>
             {% for pub in pubs.other_possibly %}
-              <li>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</li>
+              <li><p>{{ pub.authors }} <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pub.pmid }}" target="_blank">{{ pub.title }}</a> {{ pub.cite }}</p></li>
             {% endfor %}
           </ul>
         {% endif %}

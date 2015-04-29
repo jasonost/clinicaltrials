@@ -232,15 +232,3 @@ $("body").delegate("#concept-reject-confirm", "click", function(e) {
 
 });
 
-
-/*
-{'name': cname,
- 'new_concept': newconc,
- 'userid': user_id,
- 'username': user_names[user_id],
- 'new_terms': new_terms,
- 'new_terms_rej': new_terms_rej,
- 'old_terms': old_terms,
- 'old_terms_rej': old_terms_rej}
-
-*/
