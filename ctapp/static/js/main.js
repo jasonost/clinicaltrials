@@ -365,7 +365,11 @@ $('#create-concept-cancel').on('click', function(e){clearVals()} );
 $("#pick-admin-tool").on("click", function(e) {
   function redir(admin) {
       if (admin == 1) {
-        $("#admin-select-modal").modal('show');
+        $.getJSON($SCRIPT_ROOT + "_get_admin_counts", {}, function(data) {
+          $("#admin-select-num-concepts").text(data.num_concepts + " concept" + (data.num_concepts > 1 ? "s" : "") + " to review");
+          $("#admin-select-num-mesh").text(data.num_mesh + " assignment" + (data.num_mesh > 1 ? "s" : "") + " to review");
+          $("#admin-select-modal").modal('show');
+        })
       } else {
         alert("Sorry, you need to have administrator privileges to use these tools.");
       }
