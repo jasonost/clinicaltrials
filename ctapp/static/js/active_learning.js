@@ -53,11 +53,12 @@ var term_rejects_warning = "<p>You are rejecting a lot of suggestions, so it's p
                            "to identify trials associated with this concept, so do not need to be closely related to the concept itself.</p>" +
                            "<p>If it's possible a word or phrase may appear in the same sentence as this concept, you may " +
                            "want to accept it so the algorithm can find new terms to suggest.</p>",
-    term_div = "<p class='alert alert-info'>A <b>term</b> is a word or phrase that is related to the concept.</p>" +
+    term_div = "<p class='alert alert-info alert-sm' style='margin-bottom: 0px'>" +
+               "<small>A <b>term</b> is a word or phrase that is related to the concept.</small></p>" +
                "<div class='col-xs-12 col-sm-12 col-md-12 learning-question' id='learning-term'></div>",
-    pred_div = "<p class='alert alert-info'>A <b>predictor</b> is a word or phrase that often co-occurs with the concept, e.g. "+
-               "&quot;hypertension&quot; is often preceded by &quot;chronic&quot;. Don't worry about whether a certain word or phrase " +
-               "<em>uniquely</em> co-occurs with the concept.</p>" +
+    pred_div = "<p class='alert alert-info alert-sm' style='margin-bottom: 0px'>" + 
+               "<small>A <b>predictor</b> is a word or phrase that often co-occurs with the concept, e.g. "+
+               "&quot;hypertension&quot; is often preceded by &quot;chronic&quot;.</small></p>" +
                "<div class='col-xs-12 col-sm-12 col-md-12 learning-question' id='learning-predictor'></div>",
     overlay = "<div class='overlay-box'></div>";
 
@@ -205,16 +206,28 @@ function learnWords() {
         var word_attrs = 'word="' + this_word + '" ';
         var headertext = '';
         if (wordtype == 'term') {
-            headertext = '<h4>Is the term <span class="word-highlight">' + this_word + '</span> related to this concept?</h4>';
+            headertext = '<table class="active-learn-table"><col width="100%">' +
+                         '<tr><td style="height: 72px"><h4>Is the term <span class="word-highlight">' + this_word + '</span> related to this concept?</h4></td></tr>';
         } else {
-            headertext = '<h4>Does <span class="word-highlight">' + this_word + '</span> sometimes appear with this concept?</h4>';
+            headertext = '<table class="active-learn-table"><col width="100%">' +
+                         '<tr><td style="height: 64px"><h4>Does <span class="word-highlight">' + this_word + '</span> sometimes appear with this concept?</h4></td></tr>';
         }
+        var this_progress = Math.round((idx + 1) / thislist.length * 100);
         $("#learning-" + wordtype).html(headertext +
-                                   '<div class="form-inline" style="margin-left: 2em">' +
+                                   '<tr><td style="height: 48px"><div class="form-inline" style="margin-left: 2em">' +
                                      '<button id="accept-word" ' + word_attrs + ' class="btn btn-success btn-sm word-btn">Yes</button>&nbsp;' +
                                      '<button id="reject-word" ' + word_attrs + ' class="btn btn-danger btn-sm word-btn">No</button>&nbsp;' +
                                      '<button id="quit-word" class="btn btn-default btn-sm word-btn">Stop</button>&nbsp;' +
-                                   '</div>');
+                                   '</div></td></tr>' +
+                                   '<tr><td style="height: 52px; vertical-align: bottom"><strong>Progress: </strong> ' + 
+                                    (idx + 1) + ' / ' + thislist.length + 
+                                     '<div class="progress" style="margin-bottom: 0px">' +
+                                       '<div class="progress-bar progress-bar-info" role="progressbar" ' +
+                                       ' aria-valuenow="' + this_progress + 
+                                       '" aria-valuemin="0" aria-valuemax="100" style="width: ' + this_progress + '%">' +
+                                       '<span class="sr-only">' + this_progress + '% Complete (success)</span>' +
+                                       '</div>' +
+                                     '</div></td></tr></table>');
     } else if (thisround < 10) {
         writeData();
         startProcess();
