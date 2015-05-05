@@ -41,7 +41,7 @@ var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center"
                             '<small><p><strong>This view only shows trials that are in the recruiting phase or earlier.</strong></p>' +
                             '<p>Refine these results by providing information about the trial participant, then click</p></small></div>' +
                             '<div style="text-align:center; margin-top: .8em">' +
-                                '<button id="update-patient-results" class="btn btn-success btn-xs" type="submit">Update results</button>' +
+                                '<button class="update-patient-results btn btn-success btn-sm" type="submit">Update results</button>' +
                             '</div>' +
                             '<div id="patient-filters-demog" class="filter-div">' +
                                 '<table>' +
@@ -74,6 +74,9 @@ var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center"
                                 '<label class="checkbox-inline">' +
                                   '<input type="checkbox" id="filter-only-healthy" value="only-healthy"> Only show trials accepting healthy volunteers' +
                                 '</label>' +
+                            '</div>' +
+                            '<div style="text-align:center; margin-top: .8em">' +
+                                '<button class="update-patient-results btn btn-success btn-sm" type="submit">Update results</button>' +
                             '</div>',
     table_head = "<div class='filter-div'>" +
                    "<h5>Eligibility Criteria</h5>" +
@@ -112,7 +115,7 @@ var intr = ['All (default)',
             'Temporarily not available'];
 var research_filters_html = '<div style="text-align:center; line-height:0.8em"><small>Make selections, then click</small></div>' +
                              '<div style="text-align:center; margin-top: .8em">' +
-                                '<button id="update-research-results" class="btn btn-success btn-xs" type="submit">Update results</button>' +
+                                '<button class="update-research-results btn btn-success btn-xs" type="submit">Update results</button>' +
                               '</div>' +
                               '<div class="filter-form" id="research-intr-type">' +
                               '<h5>Intervention Type(s)</h5>'+
@@ -135,6 +138,9 @@ var research_filters_html = '<div style="text-align:center; line-height:0.8em"><
                                 '<label class="checkbox-inline">' +
                                   '<input type="checkbox" id="research-results" value="research-results"> Only show trials that have submitted results' +
                                 '</label>' +
+                              '</div>' +
+                              '<div style="text-align:center; margin-top: .8em">' +
+                                '<button class="update-research-results btn btn-success btn-xs" type="submit">Update results</button>' +
                               '</div>';
 
 function get_trials(trial_criteria) {
@@ -152,8 +158,9 @@ function get_trials(trial_criteria) {
                             "</a></h4>" +
                             "<p>" + val.lay_str + "</p>" +
                             "<small>" +
-                            "<span style='font-weight: bold'>Condition(s): </span>" + val.conditions + "<br>" +
-                            "<span style='font-weight: bold'>Intervention(s): </span>" + val.interventions +
+                            "<strong>Location(s): </strong>" + val.facility + "<br>" +
+                            "<strong>Condition(s): </strong>" + val.conditions + "<br>" +
+                            "<strong>Intervention(s): </strong>" + val.interventions +
                             "</small>" +
                             "</div>"
             $("#trial-list").append(trial_div);
@@ -274,7 +281,7 @@ if (!has_filterBy) {
 
 
 // update trials based on new filters
-$("body").delegate("#update-patient-results", 'click', function(e) {
+$("body").delegate(".update-patient-results", 'click', function(e) {
   thinking();
   var gender = $('input[name=gender-radio]:checked').val(),
       age = $("#participant-age").val(),
@@ -298,7 +305,7 @@ $("body").delegate("#update-patient-results", 'click', function(e) {
   get_trials(query_obj);
 })
 
-$("body").delegate("#update-research-results", 'click', function(e) {
+$("body").delegate(".update-research-results", 'click', function(e) {
   thinking();
   var interventions = $("#intervention-select").val(),
       status = $("#status-select").val(),

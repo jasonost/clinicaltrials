@@ -69,10 +69,10 @@ similarity_server = simserver.SessionServer('data/docsim_server')
 # HELPER FUNCTIONS
 
 # construct an address in HTML from city, state, zip, and country
-def construct_address(city,state,zipcode,country):
+def construct_address(city,state,zipcode,country,break_country=True):
     if city:
         if country == 'United States':
-            return '%s, %s %s<br/>%s' % (city, state, zipcode, country)
+            return '%s, %s %s%s' % (city, state, zipcode, '<br>' + country if break_country else '')
         else:
             return '%s, %s' % (city, country)
     else:
@@ -846,7 +846,7 @@ def trial_list():
 
     nct_ids = [t[0] for t in trials][:this_limit]
 
-    # if any trials match query, get condition and institutions for those trials
+    # if any trials match query, get condition, institutions, and facilities for those trials
     if len(nct_ids) > 0:
         inv = conn.execute(select([Interventions.c.nct_id, 
                                    Interventions.c.intervention_type,
@@ -868,14 +868,29 @@ def trial_list():
 
         cond_list = dictify(conds,1)
 
+        facilities = conn.execute(Facilities.select().where(Facilities.c.nct_id.in_(nct_ids))).fetchall()
+        facs_list = {}
+        for t in facilities:
+            if t[1] not in facs_list:
+                fac_entry = '%s, %s' % (t[3] or '[No facility name provided]',
+                                          construct_address(t[4],t[5],t[6],t[7],break_country=False))
+                facs_list[t[1]] = {'lead': fac_entry, 'cnt': 0}
+            else:
+                facs_list[t[1]]['cnt'] += 1
+
     # compile JSON object
     out_obj = []
     for nct_id, title, status, phase, stype, gender, min_age, max_age, hv, has_res, sort_date, intrv in trials[:this_limit]:
+        if nct_id in facs_list:
+            fac_name = '%s%s' % (facs_list[nct_id]['lead'], ', and %d other facilities' % facs_list[nct_id]['cnt'] if facs_list[nct_id]['cnt'] > 0 else '')
+        else:
+            fac_name = 'No trial sites listed'
         out_obj.append({'nct_id': nct_id,
                         'trial_title': title,
                         'lay_str': layman_desc(phase, status, list(inv_dict[nct_id]) if nct_id in inv_dict else '', stype),
                         'interventions': add_commas(list(inv_list[nct_id]),sep='; ') or 'None listed',
-                        'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed'
+                        'conditions': add_commas(list(cond_list[nct_id]),sep='; ') or 'None listed',
+                        'facility': fac_name
                         })
 
     return flask.jsonify(result=out_obj,
