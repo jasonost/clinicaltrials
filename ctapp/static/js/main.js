@@ -38,6 +38,8 @@ var substringMatcher = function(strs) {
   };
 };
 
+
+// on page load:
 $(function() {
 
     var conditions = new Bloodhound({
@@ -75,6 +77,12 @@ $(function() {
         header: '<div class="search-header">Institutions</div>'
       }
     });
+
+    var pulse_props = {
+      color: '#d9534f'
+    }
+
+    $(".fa-wrench").pulse(pulse_props, {duration: 1000, pulses: 8})
 
 });
 
