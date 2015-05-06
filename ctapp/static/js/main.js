@@ -78,11 +78,12 @@ $(function() {
       }
     });
 
+      //color: '#d9534f'
     var pulse_props = {
-      color: '#d9534f'
+      boxShadow: "0px 0px 15px 3px #FFCC11"
     }
 
-    $(".fa-wrench").pulse(pulse_props, {duration: 1000, pulses: 8})
+    $("#add-mesh-btn, #structure-criteria-btn").pulse(pulse_props, {duration: 1500, pulses: 5})
 
 });
 
