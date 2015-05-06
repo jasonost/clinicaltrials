@@ -219,8 +219,9 @@ function learnWords() {
                                      '<button id="reject-word" ' + word_attrs + ' class="btn btn-danger btn-sm word-btn">No</button>&nbsp;' +
                                      '<button id="quit-word" class="btn btn-default btn-sm word-btn">Stop</button>&nbsp;' +
                                    '</div></td></tr>' +
-                                   '<tr><td style="height: 52px; vertical-align: bottom"><strong>Progress: </strong> ' + 
-                                    (idx + 1) + ' / ' + thislist.length + 
+                                   '<tr><td style="height: 52px; vertical-align: bottom"><small><strong>Progress: </strong> ' + 
+                                    (idx + 1) + ' / ' + thislist.length + ' ' + wordtype + (thislist.length > 1 ? 's' : '') +
+                                    ' until ' + (wordtype == 'term' ? 'predictor' : 'term') + ' step</small>' +
                                      '<div class="progress" style="margin-bottom: 0px">' +
                                        '<div class="progress-bar progress-bar-info" role="progressbar" ' +
                                        ' aria-valuenow="' + this_progress + 
