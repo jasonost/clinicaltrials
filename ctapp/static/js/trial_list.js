@@ -37,6 +37,24 @@ var conditions = new Bloodhound({
 conditions.initialize();
 
 // patient filters
+var distance_filter = "<div class='filter-div'>" +
+                        "<h5>Location</h5>" +
+                        '<h6>Trials within ' +
+                        '<div id="trial-distance" class="btn-group form-inline">' +
+                           '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">' +
+                             'Distance <span class="caret"></span>' +
+                           '</button>' +
+                           '<ul class="dropdown-menu" role="menu">' +
+                             '<li><a role="menuitem" tabindex="-1" href="#" onClick="return false;" class="trial-distance-val">5 miles</a></li>' +
+                             '<li><a role="menuitem" tabindex="-1" href="#" onClick="return false;" class="trial-distance-val">25 miles</a></li>' +
+                             '<li><a role="menuitem" tabindex="-1" href="#" onClick="return false;" class="trial-distance-val">100 miles</a></li>' +
+                             '<li><a role="menuitem" tabindex="-1" href="#" onClick="return false;" class="trial-distance-val">Any distance</a></li>' +
+                           '</ul>' +
+                          '</div></h6>' +
+                        '<h6>of <input type="text" class="form-inline" id="trial-zip" placeholder="ZIP Code" style="width: 75px"></h6>' +
+                        '<h6 id="bad-zip"></h6>' +
+                      '</div>';
+
 var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center">' +
                             '<small><p><strong>This view only shows trials that are in the recruiting phase or earlier.</strong></p>' +
                             '<p>Refine these results by providing information about the trial participant, then click</p></small></div>' +
@@ -68,6 +86,7 @@ var patient_filters_html =  '<div style="line-height: 0.8em; text-align: center"
                                     '</tr>' +
                                 '</table>' +
                             '</div>' +
+                            (cond_id ? distance_filter : '') +
                             '<div id="patient-filters-crit">' +
                             '</div>' +
                             '<div id="patient-filters-healthy" class="filter-div">' +
@@ -184,6 +203,12 @@ function get_trials(trial_criteria) {
         }
 
         $("#trial-list").effect("highlight", {}, 1000);
+
+        if (!data.okzip) {
+          $("#bad-zip").html('<small class="text-danger">Unrecognized ZIP Code</small>');
+        } else {
+          $("#bad-zip").empty();
+        }
     });
 
 }
@@ -280,17 +305,24 @@ if (!has_filterBy) {
 
 
 
+// update distance dropdown text based on selection
+$("body").delegate(".trial-distance-val", "click", function(e) {
+  $("#trial-distance button").html($(this).text() + ' <span class="caret"></span>');
+});
+
+
 // update trials based on new filters
 $("body").delegate(".update-patient-results", 'click', function(e) {
   thinking();
   var gender = $('input[name=gender-radio]:checked').val(),
       age = $("#participant-age").val(),
-      healthy = $("#filter-only-healthy").prop('checked');
+      healthy = $("#filter-only-healthy").prop('checked'),
+      zip_dist = $("#trial-distance button").text(),
+      zip_val = $("#trial-zip").val();
   var criteria_filters = {};
   $("#concept-filter-table input:checked").each(function() {
     criteria_filters[$(this).attr('name')] = $(this).val();
   });
-  console.log(criteria_filters);
   gender = gender ? gender : false;
   cur_limit = 50;
   query_obj = {page: cond_id ? 'cond' : 'inst', 
@@ -298,6 +330,8 @@ $("body").delegate(".update-patient-results", 'click', function(e) {
                 gender: gender,
                 age: age,
                 healthy: healthy,
+                zip_dist: zip_dist,
+                zip_val: zip_val,
                 criteria_filters: JSON.stringify(criteria_filters),
                 status: JSON.stringify(['recruiting','not yet recruiting', 'enrolling by invitation']),
                 limit: cur_limit

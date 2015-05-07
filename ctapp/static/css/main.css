@@ -433,6 +433,12 @@ tspan {
     margin-top: 1em;
 }
 
+.filter-div h6 {
+    margin-left: 1em;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
 #see-more-trials:hover {
     cursor: pointer;
 }

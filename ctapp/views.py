@@ -28,7 +28,7 @@ from db_tables import metadata, InstitutionDescription, InstitutionLookup, Condi
     Users, MeshAssignStaging, UserHistoryMesh, CriteriaConceptStaging, UserHistoryCriteria, \
     Sponsors, Facilities, TrialPublications, CriteriaText, CriteriaTagged, CriteriaConceptLookup, \
     ConceptTerms, CriteriaConcept, ConceptPredictors, ConceptPredictorsReject, ConceptTerms, \
-    ConceptTermsReject, ConditionBrowse, MeshThesaurus
+    ConceptTermsReject, ConditionBrowse, MeshThesaurus, ZipLatlong, ZipFacilities
 
 
 
@@ -817,6 +817,27 @@ def trial_list():
     if 'healthy' in params and params['healthy'] != 'false':
         wheres.append(text("trial_summary.healthy_volunteers = 'Accepts Healthy Volunteers'"))
 
+    okzip = True
+    if 'zip_dist' in params and params['zip_dist'] in ['5 miles ','25 miles ','100 miles ']:
+        if 'zip_val' in params and len(params['zip_val']) == 5:
+            zip_loc = conn.execute(select([ZipLatlong.c.latitude, ZipLatlong.c.longitude]).\
+                                   where(ZipLatlong.c.zip == params['zip_val'])).\
+                           fetchone()
+            if len(zip_loc) > 0:
+                zip_lat, zip_lng = zip_loc
+                zip_miles = params['zip_dist'].split()[0]
+                zip_table = select([ZipFacilities.c.nct_id]).\
+                                where(text("(3959*acos(cos(radians(%g))*cos(radians(zip_facilities.latitude))*" % zip_lat + \
+                                           "cos(radians(zip_facilities.longitude)-radians(%g))+sin(radians(%g))*" % (zip_lng, zip_lat)+ \
+                                           "sin(radians(zip_facilities.latitude))))<%s" % zip_miles)).\
+                                distinct().alias()
+                main_table = main_table.join(zip_table, zip_table.c.nct_id == TrialSummary.c.nct_id) 
+
+            else:
+                okzip = False
+        else:
+            okzip = False
+
     if 'status' in params and json.loads(params['status']):
         if 'All (default)' not in json.loads(params['status']):
             wheres.append(text("trial_summary.overall_status in ('%s')" % "','".join(json.loads(params['status']))))
@@ -895,7 +916,8 @@ def trial_list():
 
     return flask.jsonify(result=out_obj,
                          total_results=len(trials),
-                         num_results=len(nct_ids))
+                         num_results=len(nct_ids),
+                         okzip=okzip)
 
 
 @app.route('/_patient_filters')
