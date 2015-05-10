@@ -1104,23 +1104,16 @@ def learning_startup():
     initial_term = params['initial_term']
     criteria_text_id = params['criteria_text_id']
 
-    concepts = conn.execute(select([CriteriaConcept.c.concept_name]).\
-                                select_from(CriteriaConceptLookup.join(ConceptTerms,
-                                        and_(CriteriaConceptLookup.c.criteria_text_id == criteria_text_id,
-                                             ConceptTerms.c.term == initial_term.lower(),
-                                             CriteriaConceptLookup.c.term_id == ConceptTerms.c.term_id,
-                                             CriteriaConceptLookup.c.concept_id == ConceptTerms.c.concept_id)).\
-                                    join(CriteriaConcept,CriteriaConceptLookup.c.concept_id == CriteriaConcept.c.concept_id))).\
-                            fetchall()
-
     ctypes = ['term','term-reject','predictor','predictor-reject']
     if concept_id:
         new_concept = 0
+        flask.session['concept_id'] = concept_id
         for c in ctypes:
             exec('%s = get_list(["%s"])' % (c.replace('-','_'),c))
     else:
         new_concept = 1
         concept_id = str(uuid.uuid4())
+        flask.session['concept_id'] = concept_id
         for c in ctypes:
             exec('%s = []' % c.replace('-','_'))
 
@@ -1133,7 +1126,7 @@ def learning_startup():
 
     # setting session variables
     flask.session['new_concept'] = new_concept
-    flask.session['concept_id'] = concept_id
+    #flask.session['concept_id'] = concept_id
     #flask.session['all_preds'] = all_preds
 
     # write concept info to the database
@@ -1463,9 +1456,10 @@ def write_criteria_approval():
                       (ConceptPredictors, 'predictor'),
                       (ConceptPredictorsReject, 'predictor-reject')]
         for tab, ttype in other_tabs:
-            r = conn.execute(tab.insert(), [{'concept_id': concept_id,
-                                             'term': k}
-                                            for k, v in existing[ttype].items()])
+            if len(existing[ttype].keys()) > 0:
+                r = conn.execute(tab.insert(), [{'concept_id': concept_id,
+                                                 ttype.split('-')[0]: k}
+                                                for k in existing[ttype].keys()])
     except Exception, e:
         print 'Problem inserting concept terms and predictors: %s' % e
 
