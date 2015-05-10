@@ -1020,8 +1020,8 @@ def structure_trial_criteria():
                             phrase, start = chunk
 
                             concept_class = 'criteria-highlight'
-                            concept_list = [{'id': criteria_dict[c]['terms'][t][m],
-                                             'name': t}
+                            concept_list = [{'id': criteria_dict[c]['terms'][phrase.lower()][m],
+                                             'name': phrase.lower()}
                                              for m in sorted(criteria_dict[c]['terms'][phrase.lower()].keys())
                                              if phrase.lower() in criteria_dict[c]['terms']]
                             concept_list += [{'id': '', 'name': 'Start a new concept'}]
@@ -1042,16 +1042,20 @@ def structure_trial_criteria():
                             else:
                                 for concept in concept_list:
                                     if concept['id']:
-                                        link_text = 'Continue developing <b>%s</b>' % concept['name']
-                                        in_db.append([concept['name']])
+                                        in_db.append(concept['name'])
+                                        if concept['name'] == phrase.lower():
+                                            link_text = 'Continue developing <b>%s</b>' % concept['name']
+                                        else:
+                                            link_text = None
                                     else:
                                         link_text = concept['name']
-                                    chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
-                                                                                                               phrase,
-                                                                                                               concept['id'],
-                                                                                                               criteria_dict[c]['id'],
-                                                                                                               link_text)
-                                    chunk_links.append('<p>%s</p>' % chunk_link)
+                                    if link_text:
+                                        chunk_link = '<a href="%s?term=%s&cid=%s&id=%d" target="_blank">%s</a>' % (url_for('active_learning'),
+                                                                                                                   phrase.lower(),
+                                                                                                                   concept['id'],
+                                                                                                                   criteria_dict[c]['id'],
+                                                                                                                   link_text)
+                                        chunk_links.append('<p>%s</p>' % chunk_link)
 
                             if in_db:
                                 in_db_text = "Part of %s" % add_commas(in_db)
